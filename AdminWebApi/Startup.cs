@@ -27,11 +27,6 @@ namespace AdminWebApi
         public void ConfigureServices(IServiceCollection services)
         {
 
-            //Also make top level configuration available (for EF configuration and access to connection string)
-            services.AddSingleton(Configuration); //IConfigurationRoot
-            services.AddSingleton<IConfiguration>(Configuration);
-
-
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                 .AddJsonOptions(opt =>
@@ -60,7 +55,7 @@ namespace AdminWebApi
 
             //Set database.
             services.AddDbContext<FoodTrackerDbContext>(c =>
-                    c.UseSqlServer(Configuration.GetConnectionString("FoodTrackerDbConnection_Local")));
+                    c.UseSqlServer(Configuration.GetConnectionString("FoodTrackerDbConnection_Azure")));
 
         }
 

@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLogic", "BusinessLo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DTO", "DTO\DTO.csproj", "{C35E402B-FF74-4D1D-94AC-FD42725B2A0F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{1BAE6DDA-D163-4F0B-8FE7-D734FD2C42B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csproj", "{1BAE6DDA-D163-4F0B-8FE7-D734FD2C42B6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebClient", "WebClient\WebClient.csproj", "{27FA8EFE-DFAE-4EEF-84D9-09DE6ADE1654}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +49,10 @@ Global
 		{1BAE6DDA-D163-4F0B-8FE7-D734FD2C42B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1BAE6DDA-D163-4F0B-8FE7-D734FD2C42B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1BAE6DDA-D163-4F0B-8FE7-D734FD2C42B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27FA8EFE-DFAE-4EEF-84D9-09DE6ADE1654}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27FA8EFE-DFAE-4EEF-84D9-09DE6ADE1654}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27FA8EFE-DFAE-4EEF-84D9-09DE6ADE1654}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27FA8EFE-DFAE-4EEF-84D9-09DE6ADE1654}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
