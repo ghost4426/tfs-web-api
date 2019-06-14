@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using DTO.Entities;
 using System.Threading.Tasks;
-using DTO.Entities;
 
 namespace BusinessLogic.IBusinessLogic
 {
-   public interface IUserBL
+    public interface IUserBL
     {
         Task<int> CreateUser(User newUser);
 

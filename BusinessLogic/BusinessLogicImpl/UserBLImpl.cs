@@ -1,15 +1,12 @@
 ﻿using BusinessLogic.IBusinessLogic;
-using DTO.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 using Common.Utils;
 using DataAccess.IRepositories;
+using DTO.Entities;
+using System.Threading.Tasks;
 
 namespace BusinessLogic.BusinessLogicImpl
 {
-   public class UserBLImpl : IUserBL
+    public class UserBLImpl : IUserBL
     {
 
         private IUserRepository repos;
@@ -22,7 +19,7 @@ namespace BusinessLogic.BusinessLogicImpl
 
         public async Task<int> CreateUser(User newUser)
         {
-          var hashedPassword =  PasswordHasher.GetHashPassword(newUser.Password);
+            var hashedPassword = PasswordHasher.GetHashPassword(newUser.Password);
             newUser.Password = hashedPassword.HashedPassword;
             newUser.Salt = hashedPassword.Salt;
             return await this.repos.CreateUserAsync(newUser);

@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using DTO.Models;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using System;
 using System.Security.Cryptography;
 using System.Text;
-using DTO.Models;
-using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
 namespace Common.Utils
 {
-   public static class Util
+    public static class Util
     {
 
         public static HashPassword GetHashPassword(string password)
@@ -27,7 +26,7 @@ namespace Common.Utils
 
         public static bool CheckHashedPassword(HashPassword hashPassword)
         {
-            return string.Compare(hashPassword.HashedPassword, EncryptPassword(hashPassword.Salt, hashPassword.Password)) == 0 ?true: false;
+            return string.Compare(hashPassword.HashedPassword, EncryptPassword(hashPassword.Salt, hashPassword.Password)) == 0 ? true : false;
         }
 
         private static string EncryptPassword(string salt, string password)
@@ -41,6 +40,6 @@ namespace Common.Utils
             return hashed;
 
         }
-        
+
     }
 }

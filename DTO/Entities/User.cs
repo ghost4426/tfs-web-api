@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DTO.Entities
 {
-   public class User
+    public class User
     {
         [Key]
         public int UserId { get; set; }

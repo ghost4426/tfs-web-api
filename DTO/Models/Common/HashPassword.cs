@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace DTO.Models
+﻿namespace DTO.Models
 {
-   public class HashPassword
+    public class HashPassword
     {
         public string Password { get; set; }
 

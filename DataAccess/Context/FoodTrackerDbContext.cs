@@ -1,12 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using DTO.Entities;
+﻿using DTO.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Context
 {
-   public class FoodTrackerDbContext : DbContext
+    public class FoodTrackerDbContext : DbContext
     {
 
         public FoodTrackerDbContext(DbContextOptions<FoodTrackerDbContext> options) : base(options)

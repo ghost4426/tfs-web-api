@@ -1,8 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using BusinessLogic.IBusinessLogic;
 using Microsoft.AspNetCore.Mvc;
-using Models = DTO.Models;
+using System.Threading.Tasks;
 using Entities = DTO.Entities;
-using BusinessLogic.IBusinessLogic;
+using Models = DTO.Models;
 
 
 namespace AdminWebApi.Controllers
@@ -31,7 +31,7 @@ namespace AdminWebApi.Controllers
             {
                 UserId = user.UserId
             };
-        return reponseModel;
+            return reponseModel;
         }
 
     }

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace DTO.Entities
+﻿namespace DTO.Entities
 {
-   public class Role
+    public class Role
     {
         public int RoleId { get; set; }
 

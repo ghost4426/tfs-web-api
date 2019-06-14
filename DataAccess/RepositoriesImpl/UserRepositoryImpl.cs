@@ -2,13 +2,11 @@
 using DataAccess.IRepositories;
 using DTO.Entities;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DataAccess.RepositoriesImpl
 {
-    public class UserRepositoryImpl : GenericRepository<User> , IUserRepository
+    public class UserRepositoryImpl : GenericRepository<User>, IUserRepository
     {
 
         private FoodTrackerDbContext foodTrackerDbContext;

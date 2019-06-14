@@ -1,9 +1,4 @@
-﻿using DTO.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace DTO.Models
+﻿namespace DTO.Models
 {
     public class UserLoginReponse
     {

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using DTO.Entities;
 using System.Threading.Tasks;
-using DTO.Entities;
 
 namespace DataAccess.IRepositories
 {

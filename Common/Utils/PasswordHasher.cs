@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Common.Utils
 {
-   public static class PasswordHasher
+    public static class PasswordHasher
     {
         public static HashPassword GetHashPassword(string password)
         {
