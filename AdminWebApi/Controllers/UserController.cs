@@ -23,9 +23,9 @@ namespace AdminWebApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("/createUser")]
-        public async Task<Models.CreateUserReponse> CreateUser(string username, string password, int roleId)
+        public async Task<Models.CreateUserReponse> CreateUser([FromBody] Models.CreateNewUserRequest newUser)
         {
-            Entities.User user = new Entities.User() { Username = username, Password = password, RoleId = roleId, IsActive = true };
+            Entities.User user = new Entities.User() { Username = newUser.Username, Password = newUser.Password, RoleId = newUser.RoleId, IsActive = true };
             await bl.CreateUser(user);
             var reponseModel = new Models.CreateUserReponse()
             {
