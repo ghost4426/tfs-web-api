@@ -5,9 +5,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Mapper\" />
-    <Folder Include="ViewModels\" />
-    <Folder Include="wwwroot\" />
+    <Compile Remove="Mapper\**" />
+    <Compile Remove="ViewModels\**" />
+    <Compile Remove="wwwroot\**" />
+    <Content Remove="Mapper\**" />
+    <Content Remove="ViewModels\**" />
+    <Content Remove="wwwroot\**" />
+    <EmbeddedResource Remove="Mapper\**" />
+    <EmbeddedResource Remove="ViewModels\**" />
+    <EmbeddedResource Remove="wwwroot\**" />
+    <None Remove="Mapper\**" />
+    <None Remove="ViewModels\**" />
+    <None Remove="wwwroot\**" />
   </ItemGroup>
 
   <ItemGroup>
