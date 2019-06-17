@@ -143,7 +143,6 @@
 
 
   <ItemGroup>
-    <Folder Include="Views\Distributor\" />
     <Folder Include="wwwroot\css\home\" />
     <Folder Include="wwwroot\css\distributor\" />
     <Folder Include="wwwroot\css\admin\" />
