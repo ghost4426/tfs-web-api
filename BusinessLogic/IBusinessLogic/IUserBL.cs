@@ -9,6 +9,6 @@ namespace BusinessLogic.IBusinessLogic
    public interface IUserBL
     {
         Task<int> CreateUser(User newUser);
-
+        Task<IList<User>> GetUsers();
     }
 }

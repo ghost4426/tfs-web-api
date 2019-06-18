@@ -10,6 +10,6 @@ namespace DataAccess.IRepositories
     {
 
         Task<int> CreateUserAsync(User newUser);
-
+        Task<IList<User>> GetUsers();
     }
 }

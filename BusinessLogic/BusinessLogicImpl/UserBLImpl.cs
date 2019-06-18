@@ -27,5 +27,10 @@ namespace BusinessLogic.BusinessLogicImpl
             newUser.Salt = hashedPassword.Salt;
             return await this.repos.CreateUserAsync(newUser);
         }
+        public async Task<IList<User>> GetUsers()
+        {
+            return await this.repos.GetAllAsync();
+
+        }
     }
 }
