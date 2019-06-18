@@ -37,10 +37,14 @@ namespace DataAccess.RepositoriesImpl
         }
 
         public IList<TEntity> GetAllMatched(Expression<Func<TEntity, bool>> match)
-        {
+        { 
             return this.DbSet.Where(match).ToList();
         }
 
+        public IList<TEntity> GetAllMatchedOrderBy(Expression<Func<TEntity, bool>> match)
+        {
+            return this.DbSet.Where(match).ToList();
+        }
         public IQueryable<TEntity> GetAllIncluding(params Expression<Func<TEntity, object>>[] includeProperties)
         {
             IQueryable<TEntity> queryable = this.DbSet;

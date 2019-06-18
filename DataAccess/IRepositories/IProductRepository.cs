@@ -14,5 +14,6 @@ namespace DataAccess.IRepositories
         Task<IList<Product>> FindAllProductByProviderAsync(int providerID);
 
         Task<int> CreateProductAsync(Product newProduct);
+        Task<IEnumerable<Product>> GetMatchedWithNumber(int distributorId);
     }
 }
