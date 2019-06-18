@@ -26,6 +26,6 @@ namespace DTO.Entities
 
         public string Salt { get; set; }
 
-        public DateTime CreateDate { get; set; }
+        public DateTime CreatedDate { get; set; }
     }
 }
