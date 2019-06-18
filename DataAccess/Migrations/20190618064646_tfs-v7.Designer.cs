@@ -4,14 +4,16 @@ using DataAccess.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(FoodTrackerDbContext))]
-    partial class FoodTrackerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190618064646_tfs-v7")]
+    partial class tfsv7
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,7 +40,7 @@ namespace DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CategoriesId");
+                    b.Property<int?>("CategoriesId");
 
                     b.Property<DateTime>("CreatedDate");
 
@@ -46,7 +48,7 @@ namespace DataAccess.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<int>("ProviderUserId");
+                    b.Property<int?>("ProviderUserId");
 
                     b.HasKey("Id");
 
@@ -107,8 +109,7 @@ namespace DataAccess.Migrations
                 {
                     b.HasOne("DTO.Entities.Categories", "Categories")
                         .WithMany()
-                        .HasForeignKey("CategoriesId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("CategoriesId");
 
                     b.HasOne("DTO.Entities.User", "Distributor")
                         .WithMany()
@@ -116,8 +117,7 @@ namespace DataAccess.Migrations
 
                     b.HasOne("DTO.Entities.User", "Provider")
                         .WithMany()
-                        .HasForeignKey("ProviderUserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ProviderUserId");
                 });
 
             modelBuilder.Entity("DTO.Entities.User", b =>

@@ -26,6 +26,11 @@ namespace DTO.Entities
 
         public string Salt { get; set; }
 
-        public DateTime CreateDate { get; set; }
+        public DateTime CreatedDate { get; set; }
+
+        public static implicit operator User(int v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
