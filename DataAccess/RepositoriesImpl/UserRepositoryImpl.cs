@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq;
+
 
 namespace DataAccess.RepositoriesImpl
 {
@@ -28,7 +30,8 @@ namespace DataAccess.RepositoriesImpl
         }
         public async Task<IList<User>> GetUsers()
         {
-            return await this.GetAllAsync();
+            IList<User> users = await this.repos.FindAllAsync(u => u.RoleId > 1);
+            return users;
         }
     }
 }

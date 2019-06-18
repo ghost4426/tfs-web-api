@@ -1,7 +1,6 @@
 ﻿using BusinessLogic.IBusinessLogic;
 using Microsoft.AspNetCore.Mvc;
 using Models = DTO.Models;
-using Entities = DTO.Entities;
 using System.Threading.Tasks;
 using DTO.Entities;
 using System.Collections.Generic;
@@ -28,8 +27,7 @@ namespace AdminWebApi.Controllers
             {
                 User = IList< User > users = await bl.GetUsers()
         };*/
-            IList<User> notAdminUser = users.Where(u => u.RoleId > 1).ToArray();
-                return notAdminUser;
+                return users;
         }
     }
 }

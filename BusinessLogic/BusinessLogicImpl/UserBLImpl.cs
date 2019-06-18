@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Common.Utils;
 using DataAccess.IRepositories;
+using System.Linq;
+
 
 namespace BusinessLogic.BusinessLogicImpl
 {
@@ -29,7 +31,10 @@ namespace BusinessLogic.BusinessLogicImpl
         }
         public async Task<IList<User>> GetUsers()
         {
-            return await this.repos.GetAllAsync();
+            
+            IList<User> users = await this.repos.FindAllAsync(u => u.RoleId > 1);
+
+            return users;
 
         }
     }
