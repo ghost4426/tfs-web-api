@@ -9,7 +9,9 @@ namespace DataAccess.IRepositories
     public interface IUserRepository : IGenericRepository<User>
     {
 
-        Task<int> CreateUserAsync(User newUser);
+        Task<int> CreateUser(User newUser);
+
+        Task<User> FindByUsername(string username);
 
     }
 }
