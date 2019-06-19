@@ -1,33 +1,59 @@
-﻿using BusinessLogic.IBusinessLogic;
 using Microsoft.AspNetCore.Mvc;
 using Models = DTO.Models;
-using System.Threading.Tasks;
-using DTO.Entities;
-using System.Collections.Generic;
+using Entities = DTO.Entities;
+using BusinessLogic.IBusinessLogic;
+using Microsoft.AspNetCore.Authorization;
+using Common.Constant;
+using System;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace AdminWebApi.Controllers
 {
-    public class AdminController : Controller
+    [ApiController]
+    [Route("api/[controller]")]
+    [Authorize(Roles = RoleConstant.ADMIN)]
+    public class AdminController : ControllerBase
     {
-        private IUserBL bl;
+        private readonly IUserBL _bl;
+
 
         public AdminController(IUserBL UserBL)
         {
-            this.bl = UserBL;
+            _bl = UserBL;
         }
 
-        [HttpPost("/Users")]
-        public async Task<IList<User>> Users()
-        {
-            IList<User> users = await bl.GetUsers();
-            //Tự gán list user vào useRespone . Db k trả về null
 
-            /*var reponseModel = new Models.GetUserResponse()
+
+        //POST : /api/Admin/createUser
+        //[Authorize(Roles = RoleConstant.ADMIN)]
+        [HttpPost("createUser")]
+        public async Task<Models.CreateUserReponse> CreateUser([FromBody] Models.CreateNewUserRequest newUser)
+        {
+            Entities.User user = new Entities.User() { Username = newUser.Username, Password = newUser.Password, RoleId = newUser.RoleId, IsActive = true };
+            await _bl.CreateUser(user);
+            var reponseModel = new Models.CreateUserReponse()
             {
-                User = IList< User > users = await bl.GetUsers()
-        };*/
-                return users;
+                UserId = user.UserId
+            };
+            return reponseModel;
+        }
+
+        //GET : /api/admin/profile
+        //[Authorize(Roles = RoleConstant.ADMIN)]
+        [HttpGet("profile")]
+        public async Task<Object> GetUserProfile()
+        {
+            var claim = User.Claims;
+            string userId = User.Claims.First(c => c.Type == "UserID").Value;
+            var user = await _bl.GetById(int.Parse(userId));
+            return user;
+        }
+        [HttpPost("/Users")]
+        public async Task<IList<Entities.User>> Users()
+        {
+          return  await _bl.GetUsers();
         }
     }
 }

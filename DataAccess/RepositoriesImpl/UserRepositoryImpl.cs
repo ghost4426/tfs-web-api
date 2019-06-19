@@ -13,24 +13,29 @@ namespace DataAccess.RepositoriesImpl
     public class UserRepositoryImpl : GenericRepository<User> , IUserRepository
     {
 
-        private FoodTrackerDbContext foodTrackerDbContext;
+        private FoodTrackingDbContext foodTrackingDbContext;
 
-        public UserRepositoryImpl(FoodTrackerDbContext context)
+        public UserRepositoryImpl(FoodTrackingDbContext context)
            : base(context)
         {
-            foodTrackerDbContext = context;
+            foodTrackingDbContext = context;
         }
-        public async Task<int> CreateUserAsync(User newUser)
+        public async Task<int> CreateUser(User newUser)
         {
             newUser.UserId = 0;
             newUser.CreatedDate = DateTime.Now;
-            await this.InsertAsync(newUser, true);
+            await InsertAsync(newUser, true);
             //this.Commit();
             return newUser.UserId;
         }
+
+        public Task<User> FindByUsername(string username)
+        {
+            return FindAsync(u => u.Username.CompareTo(username) == 0);
+        }
         public async Task<IList<User>> GetUsers()
         {
-            IList<User> users = await this.repos.FindAllAsync(u => u.RoleId > 1);
+            IList<User> users = await FindAllAsync(u => u.RoleId > 1);
             return users;
         }
     }

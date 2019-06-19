@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataAccess.Migrations
 {
-    public partial class FoodTrackerV1 : Migration
+    public partial class tfs_v1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -35,7 +35,7 @@ namespace DataAccess.Migrations
                     RoleId = table.Column<int>(nullable: false),
                     IsActive = table.Column<bool>(nullable: false),
                     Salt = table.Column<string>(nullable: true),
-                    CreateDate = table.Column<DateTime>(nullable: false)
+                    CreatedDate = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
