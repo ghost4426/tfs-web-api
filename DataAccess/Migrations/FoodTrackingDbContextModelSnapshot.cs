@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(FoodTrackingDbContext))]
-    partial class FoodTrackerDbContextModelSnapshot : ModelSnapshot
+    partial class FoodTrackingDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -18,6 +18,46 @@ namespace DataAccess.Migrations
                 .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("DTO.Entities.Categories", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("DTO.Entities.Product", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CategoriesId");
+
+                    b.Property<DateTime>("CreatedDate");
+
+                    b.Property<int?>("DistributorUserId");
+
+                    b.Property<string>("Name");
+
+                    b.Property<int>("ProviderUserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoriesId");
+
+                    b.HasIndex("DistributorUserId");
+
+                    b.HasIndex("ProviderUserId");
+
+                    b.ToTable("Product");
+                });
 
             modelBuilder.Entity("DTO.Entities.Role", b =>
                 {
@@ -61,6 +101,23 @@ namespace DataAccess.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("User");
+                });
+
+            modelBuilder.Entity("DTO.Entities.Product", b =>
+                {
+                    b.HasOne("DTO.Entities.Categories", "Categories")
+                        .WithMany()
+                        .HasForeignKey("CategoriesId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("DTO.Entities.User", "Distributor")
+                        .WithMany()
+                        .HasForeignKey("DistributorUserId");
+
+                    b.HasOne("DTO.Entities.User", "Provider")
+                        .WithMany()
+                        .HasForeignKey("ProviderUserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("DTO.Entities.User", b =>
