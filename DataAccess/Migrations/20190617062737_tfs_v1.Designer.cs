@@ -4,14 +4,16 @@ using DataAccess.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(FoodTrackingDbContext))]
-    partial class FoodTrackerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190617062737_tfs_v1")]
+    partial class tfs_v1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -19,53 +21,13 @@ namespace DataAccess.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("DTO.Entities.Categories", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("DTO.Entities.Product", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("CategoriesId");
-
-                    b.Property<DateTime>("CreatedDate");
-
-                    b.Property<int?>("DistributorUserId");
-
-                    b.Property<string>("Name");
-
-                    b.Property<int>("ProviderUserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoriesId");
-
-                    b.HasIndex("DistributorUserId");
-
-                    b.HasIndex("ProviderUserId");
-
-                    b.ToTable("Product");
-                });
-
             modelBuilder.Entity("DTO.Entities.Role", b =>
                 {
                     b.Property<int>("RoleId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Name");
+                    b.Property<string>("RoleName");
 
                     b.HasKey("RoleId");
 
@@ -101,23 +63,6 @@ namespace DataAccess.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("User");
-                });
-
-            modelBuilder.Entity("DTO.Entities.Product", b =>
-                {
-                    b.HasOne("DTO.Entities.Categories", "Categories")
-                        .WithMany()
-                        .HasForeignKey("CategoriesId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("DTO.Entities.User", "Distributor")
-                        .WithMany()
-                        .HasForeignKey("DistributorUserId");
-
-                    b.HasOne("DTO.Entities.User", "Provider")
-                        .WithMany()
-                        .HasForeignKey("ProviderUserId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("DTO.Entities.User", b =>

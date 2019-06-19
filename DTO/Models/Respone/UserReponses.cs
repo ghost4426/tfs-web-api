@@ -14,4 +14,8 @@ namespace DTO.Models
     {
         public int UserId { get; set; }
     }
+    public class GetUserResponse
+    {
+        public IList<User> User { get; set; }
+    }
 }

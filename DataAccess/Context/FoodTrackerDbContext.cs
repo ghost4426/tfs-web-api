@@ -6,10 +6,10 @@ using DTO.Entities;
 
 namespace DataAccess.Context
 {
-    public class FoodTrackerDbContext : DbContext
+   public class FoodTrackingDbContext : DbContext
     {
 
-        public FoodTrackerDbContext(DbContextOptions<FoodTrackerDbContext> options) : base(options)
+        public FoodTrackingDbContext(DbContextOptions<FoodTrackingDbContext> options) : base(options)
         {
         }
         public DbSet<User> Users { get; set; }
@@ -26,5 +26,6 @@ namespace DataAccess.Context
             builder.Entity<Product>().ToTable("Product");
             builder.Entity<Categories>().ToTable("Categories");
         }
+        
     }
 }
