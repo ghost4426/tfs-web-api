@@ -6,7 +6,7 @@ namespace Common.Constant
 {
     public static class AppConstant
     {
-        public const string DB_CONNECT = "FoodTrackerDbConnection_Local";
+        public const string DB_CONNECT = "FoodTrackerDbConnection_Azure";
 
     }
 }

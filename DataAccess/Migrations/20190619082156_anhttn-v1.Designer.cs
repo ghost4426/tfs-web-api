@@ -9,9 +9,9 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataAccess.Migrations
 {
-    [DbContext(typeof(FoodTrackerDbContext))]
-    [Migration("20190618101306_tfs-v8")]
-    partial class tfsv8
+    [DbContext(typeof(FoodTrackingDbContext))]
+    [Migration("20190619082156_anhttn-v1")]
+    partial class anhttnv1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -67,7 +67,7 @@ namespace DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("RoleName");
+                    b.Property<string>("Name");
 
                     b.HasKey("RoleId");
 

@@ -21,6 +21,8 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Serialization;
 using Swashbuckle.AspNetCore.Swagger;
 using Common.Constant;
+using Swashbuckle.AspNetCore.Filters;
+using Microsoft.IdentityModel.Tokens;
 
 namespace CommonWebApi
 {

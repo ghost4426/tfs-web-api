@@ -13,8 +13,8 @@ namespace DataAccess.RepositoriesImpl
 {
     public class ProductRepositoryImpl : GenericRepository<Product>, IProductRepository
     {
-        private FoodTrackerDbContext foodTrackerDbContext;
-        public ProductRepositoryImpl(FoodTrackerDbContext context) : base(context)
+        private FoodTrackingDbContext foodTrackerDbContext;
+        public ProductRepositoryImpl(FoodTrackingDbContext context) : base(context)
         {
             foodTrackerDbContext = context;
         }
