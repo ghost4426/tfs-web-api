@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Authorization;
 using Common.Constant;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace AdminWebApi.Controllers
 {
@@ -49,10 +51,9 @@ namespace AdminWebApi.Controllers
             return user;
         }
         [HttpPost("/Users")]
-        public async Task<IList<User>> Users()
+        public async Task<IList<Entities.User>> Users()
         {
-            IList<User> users = await bl.GetUsers();
-                return users;
+          return  await _bl.GetUsers();
         }
     }
 }

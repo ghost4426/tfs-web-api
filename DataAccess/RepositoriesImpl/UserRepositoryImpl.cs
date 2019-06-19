@@ -35,7 +35,7 @@ namespace DataAccess.RepositoriesImpl
         }
         public async Task<IList<User>> GetUsers()
         {
-            IList<User> users = await this.repos.FindAllAsync(u => u.RoleId > 1);
+            IList<User> users = await FindAllAsync(u => u.RoleId > 1);
             return users;
         }
     }
