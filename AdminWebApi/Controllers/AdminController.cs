@@ -55,5 +55,11 @@ namespace AdminWebApi.Controllers
         {
           return  await _bl.GetUsers();
         }
+
+        [HttpPut("/Users/Update/{id}")]
+        public void Put(int id, [FromBody] string value)
+        {
+
+        }
     }
 }
