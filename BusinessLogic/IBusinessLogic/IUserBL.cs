@@ -10,5 +10,6 @@ namespace BusinessLogic.IBusinessLogic
     {
         Task<int> CreateUser(User newUser);
         Task<IList<User>> GetUsers();
+        Task<string> changeRole1User(int id, int role);
     }
 }

@@ -12,7 +12,7 @@ namespace DataAccess.RepositoriesImpl
 {
     public class UserRepositoryImpl : GenericRepository<User> , IUserRepository
     {
-
+        private IUserRepository repos;
         private FoodTrackerDbContext foodTrackerDbContext;
 
         public UserRepositoryImpl(FoodTrackerDbContext context)
@@ -28,10 +28,15 @@ namespace DataAccess.RepositoriesImpl
             //this.Commit();
             return newUser.UserId;
         }
-        public async Task<IList<User>> GetUsers()
+        public async Task<string> changeRole1User(User user)
         {
-            IList<User> users = await this.repos.FindAllAsync(u => u.RoleId > 1);
-            return users;
+            await this.UpdateAsync(user, true);
+            return user.RoleId.ToString();
+        }
+
+        public Task<IList<User>> GetUsers()
+        {
+            return repos.GetUsers();
         }
     }
 }
