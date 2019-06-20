@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DTO.Models.Common;
+using System;
 using System.Collections.Generic;
 using System.Text;
 

@@ -33,5 +33,10 @@ namespace BusinessLogic.BusinessLogicImpl
         {
             return await this.repos.CreateProductAsync(newProduct);
         }
+
+        public async Task<IEnumerable<Product>> getMatchedWithNumber(int distributorId)
+        {
+            return await this.repos.GetMatchedWithNumber(distributorId);
+        }
     }
 }

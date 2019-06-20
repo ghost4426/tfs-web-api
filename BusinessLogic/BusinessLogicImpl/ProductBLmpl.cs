@@ -11,23 +11,39 @@ namespace BusinessLogic.BusinessLogicImpl
 {
     public class ProductBLmpl : IProductBL
     {
-        private IProductRepository repo;
+        private IProductRepository repos;
 
         public ProductBLmpl(IProductRepository productRepository)
         {
             if(productRepository != null)
             {
-                this.repo = productRepository;
+                this.repos = productRepository;
             }
         }
+
+        public async Task<int> CreateProductAsync(Product newProduct)
+        {
+            return await this.repos.CreateProductAsync(newProduct);
+        }
+
+        public async Task<IList<Product>> FindAllProductByProviderAsync(int providerID)
+        {
+            return await this.repos.FindAllProductByProviderAsync(providerID);
+        }
+
         public async Task<IList<Product>> GetAllProduct()
         {
-            return await this.repo.GetAllAsync();
+            return await this.repos.GetAllAsync();
+        }
+
+        public async Task<IList<Product>> GetAllProductAsync()
+        {
+            return await this.repos.GetAllAsync();
         }
 
         public async Task<IEnumerable<Product>> getMatchedWithNumber(int distributorId)
         {
-            return await this.repo.GetMatchedWithNumber(distributorId);
+            return await this.repos.GetMatchedWithNumber(distributorId);
         }
     }
 }
