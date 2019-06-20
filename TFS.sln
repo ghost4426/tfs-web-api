@@ -19,6 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebClient", "WebClient\WebClient.csproj", "{CAA8E916-21EC-492F-932E-59B1F5E0DAD1}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContractInteraction", "..\ContractInteraction\ContractInteraction.csproj", "{ADF1EF1C-4257-4690-BA0F-D0973FE809D1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,10 @@ Global
 		{CAA8E916-21EC-492F-932E-59B1F5E0DAD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CAA8E916-21EC-492F-932E-59B1F5E0DAD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CAA8E916-21EC-492F-932E-59B1F5E0DAD1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADF1EF1C-4257-4690-BA0F-D0973FE809D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADF1EF1C-4257-4690-BA0F-D0973FE809D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADF1EF1C-4257-4690-BA0F-D0973FE809D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADF1EF1C-4257-4690-BA0F-D0973FE809D1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

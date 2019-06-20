@@ -15,19 +15,23 @@ namespace DataAccess.RepositoriesImpl
         private IUserRepository repos;
         private FoodTrackerDbContext foodTrackerDbContext;
 
-        public UserRepositoryImpl(FoodTrackerDbContext context)
+        private FoodTrackingDbContext foodTrackingDbContext;
+
+
+        public UserRepositoryImpl(FoodTrackingDbContext context)
            : base(context)
         {
-            foodTrackerDbContext = context;
+            foodTrackingDbContext = context;
         }
-        public async Task<int> CreateUserAsync(User newUser)
+        public async Task<int> CreateUser(User newUser)
         {
             newUser.UserId = 0;
             newUser.CreatedDate = DateTime.Now;
-            await this.InsertAsync(newUser, true);
+            await InsertAsync(newUser, true);
             //this.Commit();
             return newUser.UserId;
         }
+
         public async Task<string> changeRole1User(User user)
         {
             await this.UpdateAsync(user, true);
@@ -37,6 +41,16 @@ namespace DataAccess.RepositoriesImpl
         public Task<IList<User>> GetUsers()
         {
             return repos.GetUsers();
+
+
+        public Task<User> FindByUsername(string username)
+        {
+            return FindAsync(u => u.Username.CompareTo(username) == 0);
+        }
+        public async Task<IList<User>> GetUsers()
+        {
+            IList<User> users = await FindAllAsync(u => u.RoleId > 1);
+            return users;
         }
     }
 }
