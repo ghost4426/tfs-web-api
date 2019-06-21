@@ -1,5 +1,4 @@
 ﻿using DTO.Entities;
-using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
@@ -15,6 +14,6 @@ namespace BusinessLogic.IBusinessLogic
 
         Task<int> CreateProductAsync(Product newProduct);
 
-        Task<IList<Categories>> getAllCategory();
+        Task<IEnumerable<Product>> getMatchedWithNumber(int distributorId);
     }
 }

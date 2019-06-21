@@ -37,5 +37,10 @@ namespace DataAccess.RepositoriesImpl
             await this.InsertAsync(newProduct, true);
             return newProduct.Id;
         }
+        public async Task<IEnumerable<Product>> GetMatchedWithNumber(int distributorId)
+        {
+            IList<Product> list = await this.FindAllAsync(x => x.Distributor.UserId == distributorId);
+            return  list.OrderByDescending(x => x.CreatedDate).Take(500);
+        }
     }
 }

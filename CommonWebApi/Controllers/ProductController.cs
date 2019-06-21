@@ -64,5 +64,11 @@ namespace CommonWebApi.Controllers
         {
             return await bl.getAllCategory();
         }
+        
+        [HttpGet("getProductMatched/{distributorId}")]
+        public async Task<IEnumerable<Product>> getMatchedWithNumber(int distributorId)
+        {
+            return await bl.getMatchedWithNumber(distributorId);
+        }
     }
 }
