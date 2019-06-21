@@ -14,5 +14,7 @@ namespace BusinessLogic.IBusinessLogic
         Task<IList<Product>> FindAllProductByProviderAsync(int providerID);
 
         Task<int> CreateProductAsync(Product newProduct);
+
+        Task<IList<Categories>> getAllCategory();
     }
 }
