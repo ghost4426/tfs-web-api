@@ -11,32 +11,44 @@ namespace BusinessLogic.BusinessLogicImpl
 {
     public class ProductBLImpl : IProductBL
     {
-        private IProductRepository repos;
+        private IProductRepository _productRepos;
+        private ICategoryRepository _categoryRepos;
 
-        public ProductBLImpl(IProductRepository productRepository)
+        public ProductBLImpl(IProductRepository productRepos, ICategoryRepository categoryRepos)
         {
-            if (productRepository != null)
-                this.repos = productRepository;
-        }        
+            this._productRepos = productRepos;
+            this._categoryRepos = categoryRepos;
+        }
 
         public async Task<IList<Product>> GetAllProductAsync()
         {
-            return await this.repos.GetAllAsync();
+            return await this._productRepos.GetAllAsync();
         }
 
         public async Task<IList<Product>> FindAllProductByProviderAsync(int providerID)
         {
-            return await this.repos.FindAllProductByProviderAsync(providerID);
+            var products = await this._productRepos.FindAllProductByProviderAsync(providerID);
+            foreach (var product in products)
+            {
+                var cat = _categoryRepos.GetById(product.CategoriesId);
+                product.Categories = cat;
+            }
+            return products;
         }
 
         public async Task<int> CreateProductAsync(Product newProduct)
         {
-            return await this.repos.CreateProductAsync(newProduct);
+            return await this._productRepos.CreateProductAsync(newProduct);
+        }
+
+        public async Task<IList<Categories>> getAllCategory()
+        {
+            return await this._categoryRepos.GetAllAsync();
         }
 
         public async Task<IEnumerable<Product>> getMatchedWithNumber(int distributorId)
         {
-            return await this.repos.GetMatchedWithNumber(distributorId);
+            return await this._productRepos.GetMatchedWithNumber(distributorId);
         }
     }
 }
