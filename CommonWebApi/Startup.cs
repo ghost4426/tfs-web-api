@@ -55,18 +55,15 @@ namespace CommonWebApi
             // Repositories
             services.AddScoped<IUserRepository, UserRepositoryImpl>();
             services.AddScoped<IRoleRepository, RoleRepositoryImpl>();
-            services.AddScoped<ICategoryRepository, CategoryRepositoryImpl>();
-            services.AddScoped<IProductRepository, ProductRepositoryImpl>();
 
             //BusinessLogic
             services.AddScoped<IUserBL, UserBLImpl>();
             services.AddScoped<IRoleBL, RoleBLImpl>();
-            services.AddScoped<IProductBL, ProductBLImpl>()
             #endregion
 
 
-
-            ;
+            services.AddScoped<IProductRepository, ProductRepositoryImpl>();
+            services.AddScoped<IProductBL, ProductBLImpl>();
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
             {
@@ -113,7 +110,7 @@ namespace CommonWebApi
             //Inject AppSettings
             services.Configure<JWTSetttings>(Configuration.GetSection("JWTSetttings"));
 
-            
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -144,10 +141,10 @@ namespace CommonWebApi
             app.UseAuthentication();
 
             app.UseCors(builder =>
-            builder.AllowAnyOrigin()
+            builder.WithOrigins(Configuration["JWTSetttings:Client_URL"].ToString())
             .AllowAnyHeader()
             .AllowAnyMethod()
-            ) ;
+            );
 
             app.UseMvc();
 

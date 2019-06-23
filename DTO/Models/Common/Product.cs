@@ -5,12 +5,18 @@ using System.Text;
 
 namespace DTO.Models
 {
-    public class Products
+    public class Product
     {
-        public string Name { get; set; }
+        public int ProductId { get; set; }
 
-        public int CategoriesId { get; set; }
+        public string ProductName { get; set; }
 
-        public int ProviderUserId { get; set; }
+        public virtual Categories Categories { get; set; }
+
+        public virtual User Provider { get; set; }
+
+        public virtual User Distributor { get; set; }
+
+        public DateTime CreatedDate { get; set; }
     }
 }
