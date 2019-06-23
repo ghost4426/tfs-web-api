@@ -34,6 +34,44 @@
                                     <th>Hành động</th>
                                 </tr>
                             </thead>
+                            <tbody>
+                                @for (var i = 0; i < 25; i++)
+                                {
+                                    <tr>
+                                        <td>Rau @i</td>
+                                        <td>Rau củ quả</td>
+                                        <td>17/05/2019</td>
+                                        <td>
+                                            <button class="btn btn-grey btn-min-width mr-1 mb-1" data-toggle="modal"
+                                                    data-target="#getinfo">
+                                                Chi tiết <i class="icon-eye"></i>
+                                            </button>
+                                            <button class="btn btn-info btn-min-width mr-1 mb-1" data-toggle="modal"
+                                                    data-target="#addinfo">
+                                                Thêm thông tin <i class="icon-pencil"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                                @for (var k = 0; k < 25; k++)
+                                {
+                                    <tr>
+                                        <td>Thịt @k</td>
+                                        <td>Thịt</td>
+                                        <td>17/05/2019</td>
+                                        <td>
+                                            <button class="btn btn-grey btn-min-width mr-1 mb-1" data-toggle="modal"
+                                                    data-target="#getinfo">
+                                                Chi tiết <i class="icon-eye"></i>
+                                            </button>
+                                            <button class="btn btn-info btn-min-width mr-1 mb-1" data-toggle="modal"
+                                                    data-target="#addinfo">
+                                                Thêm thông tin <i class="icon-pencil"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -59,8 +97,8 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="projectinput1">Tên</label>
-                                    <input type="text" id="NewName" class="form-control" placeholder="Tên thực phẩm"
-                                           name="NewName">
+                                    <input type="text" id="Name" class="form-control" placeholder="Tên thực phẩm"
+                                           name="Name">
                                 </div>
                             </div>
                         </div>
@@ -68,8 +106,20 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="projectinput3">Loại</label>
-                                    <select class="form-control" name="NewCategory" id="NewCategory">
+                                    <select class="form-control" name="Category">
+                                        <option>-- Chọn --</option>
+                                        <option>Rau củ quả</option>
+                                        <option>Thịt</option>
                                     </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="projectinput1"> Ngày tạo</label>
+                                    <input type="date" id="Name" class="form-control" placeholder="Ngày tạo"
+                                           name="createdDate">
                                 </div>
                             </div>
                         </div>
@@ -78,7 +128,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">Đóng</button>
-                <button type="button" class="btn btn-outline-primary" id="btnAddProduct">Xác nhận</button>
+                <button type="button" class="btn btn-outline-primary">Xác nhận</button>
             </div>
         </div>
     </div>
@@ -181,6 +231,8 @@
     <script src="~/app-assets/vendors/js/forms/select/select2.full.min.js" type="text/javascript"></script>
     <!-- END PAGE VENDOR JS-->
     <!-- BEGIN PAGE LEVEL JS-->
+    <script src="~/app-assets/js/scripts/tables/datatables-extensions/datatable-button/datatable-html5.js"
+            type="text/javascript"></script>
     <script src="~/app-assets/js/scripts/forms/select/form-select2.js" type="text/javascript"></script>
     <script src="~/app-assets/js/scripts/modal/components-modal.js" type="text/javascript"></script>
     <!-- END PAGE LEVEL JS-->
