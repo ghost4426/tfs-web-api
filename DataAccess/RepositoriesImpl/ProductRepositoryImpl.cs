@@ -14,8 +14,11 @@ namespace DataAccess.RepositoriesImpl
     public class ProductRepositoryImpl : GenericRepository<Product>, IProductRepository
     {
         private FoodTrackingDbContext foodTrackerDbContext;
-        public ProductRepositoryImpl(FoodTrackingDbContext context) : base(context)
+        private IUserRepository UserRepo;
+
+        public ProductRepositoryImpl(FoodTrackingDbContext context, IUserRepository userRepository) : base(context)
         {
+            UserRepo = userRepository;
             foodTrackerDbContext = context;
         }
 
@@ -40,7 +43,13 @@ namespace DataAccess.RepositoriesImpl
         public async Task<IEnumerable<Product>> GetMatchedWithNumber(int distributorId)
         {
             IList<Product> list = await this.FindAllAsync(x => x.Distributor.UserId == distributorId);
-            return  list.OrderByDescending(x => x.CreatedDate).Take(500);
+            list.OrderByDescending(x => x.CreatedDate).Take(500);
+            for (int i = 0; i < list.Count; i++)
+            {
+                User provider = await UserRepo.FindByUserId(list.ElementAt(i).ProviderUserId);
+                list.ElementAt(i).Provider = provider;
+            }
+            return list;
         }
     }
 }

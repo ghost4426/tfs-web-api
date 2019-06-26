@@ -38,5 +38,10 @@ namespace DataAccess.RepositoriesImpl
             IList<User> users = await FindAllAsync(u => u.RoleId > 1);
             return users;
         }
+        public async Task<User> FindByUserId(int id) {
+           User user = await FindAsync(x => x.UserId == id);
+           return user;     
+        }
+
     }
 }
