@@ -18,4 +18,8 @@ namespace DTO.Models
     {
         public IList<User> User { get; set; }
     }
+    public class UpdateUserReponse
+    {
+        public int UserId { get; set; }
+    }
 }
