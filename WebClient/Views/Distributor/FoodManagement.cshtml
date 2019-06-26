@@ -12,6 +12,7 @@
 </head>
 <!-- Excel - Cell background table -->
 <section id="cell-background">
+
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -24,28 +25,28 @@
                         <table class="table table-striped table-bordered dataex-html5-background">
                             <thead>
                                 <tr>
-                                    <th style="text-align: center">Mã thực phẩm</th>
-                                    <th style="text-align: center">Tên thực phẩm</th>
-                                    <th style="text-align: center">Ngày tạo</th>
-                                    <th style="text-align: center">Nhà sản xuất</th>
-                                    <th style="text-align: center">Hành động</th>
+                                    <th style="text-align: center; width: 10%">Mã thực phẩm</th>
+                                    <th style="text-align: center; width: 25%">Tên thực phẩm</th>
+                                    <th style="text-align: center; width: 10%">Ngày tạo</th>
+                                    <th style="text-align: center; width: 25%">Nhà sản xuất</th>
+                                    <th style="text-align: center; width: 30%">Hành động</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                @for (var i = 0; i < 25; i++)
-                                {
+                            @*<tbody>
+                                    @for (var i = 0; i < 25; i++)
+                                    {
                                     <tr>
                                         <td>Mã @i</td>
                                         <td>Rau @i</td>
                                         <td>15/6/2019</td>
                                         <td>Nhà sản xuất @i</td>
                                         <td>
-                                            <button class="btn btn-grey" style="font-size:10px">Thông tin chi tiết<i class="icon-eye"></i></button>
-                                            <button class="btn btn-info" style="font-size:10px">Thêm thông tin<i class="icon-pencil"></i></button>
+                                            <button class="btn btn-grey" style="font-size:10px" data-target="#moreInfo" data-toggle="modal">Thông tin chi tiết<i class="icon-eye"></i></button>
+                                            <button class="btn btn-info" style="font-size:10px" data-target="#AddMoreInfo" data-toggle="modal">Thêm thông tin<i class="icon-pencil"></i></button>
                                         </td>
                                     </tr>
-                                }
-                            </tbody>
+                                    }
+                                </tbody>*@
                         </table>
                     </div>
                 </div>
@@ -53,7 +54,57 @@
         </div>
     </div>
 </section>
-
+<!--Show more information -->
+<div class="modal fade text-left" id="moreInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1"
+     aria-hidden="true" style="height: 600px;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <h3 class="modal-title" style="text-align: center">Thông tin thực phẩm</h3>
+            <div class="my-custom-scrollbar my-custom-scrollbar-primary">
+                <!--INPUT PRODUCT DETAIL-->
+                <!--END INPUT PRODUCT DETAIL-->
+            </div>
+            <div class="text-center">
+                <button type="button" class="btn btn-success btn-block btn-rounded z-depth-1" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- -->
+<!--Add more information -->
+<div class="modal fade text-left" id="AddMoreInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <section class="form-elegant scrollbar-light-blue">
+                <div class="card" style="width: 100%; height: 100%; margin-bottom:0 !important;">
+                    <div class="card-body mx-4">
+                        <div class="text-center">
+                            <h3 class="dark-grey-text mb-5"><strong>Thêm thông tin sản phẩm</strong></h3>
+                        </div>
+                        <div class="md-form">
+                            <label for="Form-name1">Nội dung</label>
+                            <textarea class="form-control" rows="5" id="Form-content"></textarea>
+                        </div>
+                        <div>
+                            <label for="Form-name1">Hình ảnh</label>
+                            <input type="file" name="imageUpload" accept="image/*" /><br />
+                        </div>
+                        <div class="md-form">
+                            <label for="projectinput1"> Ngày thực hiện</label>
+                            <input type="date" id="Form-date" class="form-control">
+                        </div>
+                        <div class="text-center">
+                            <button type="button" class="btn btn-success btn-block btn-rounded z-depth-1" data-dismiss="modal">Đóng</button>
+                            <button type="button" class="btn btn-success btn-block btn-rounded z-depth-1">Xác nhận</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+<!-- -->
 @section Scripts{
     <!-- BEGIN PAGE VENDOR JS-->
     <script src="~/app-assets/vendors/js/tables/datatable/datatables.min.js" type="text/javascript"></script>
@@ -69,15 +120,33 @@
     <script src="~/app-assets/vendors/js/tables/buttons.colVis.min.js" type="text/javascript"></script>
     <script src="~/app-assets/vendors/js/forms/select/select2.full.min.js" type="text/javascript"></script>
     <!-- END PAGE VENDOR JS-->
-    <!-- BEGIN PAGE LEVEL JS-->
-    <script src="~/app-assets/js/scripts/tables/datatables-extensions/datatable-button/datatable-html5.js"
-            type="text/javascript"></script>
+    <!-- BEGIN PAGE LEVEL JS-->    
     <script src="~/app-assets/js/scripts/forms/select/form-select2.js" type="text/javascript"></script>
     <script src="~/app-assets/js/scripts/modal/components-modal.js" type="text/javascript"></script>
     <!-- END PAGE LEVEL JS-->
+    <script src="~/js/distributor/distributor.js" type="text/javascript"></script>
 }
 <style scoped>
     a.btn.btn-secondary.buttons-excel.buttons-html5 {
         z-index: -1;
     }
+
+    .my-custom-scrollbar {
+        position: relative;
+        width: 800px;
+        height: 400px;
+        overflow: auto;
+    }
 </style>
+<script>
+
+    var myCustomScrollbar = document.querySelector('.my-custom-scrollbar');
+    var ps = new PerfectScrollbar(myCustomScrollbar);
+
+    var scrollbarY = myCustomScrollbar.querySelector('.ps.ps--active-y>.ps__scrollbar-y-rail');
+
+    myCustomScrollbar.onscroll = function () {
+        scrollbarY.style.cssText = `top: ${this.scrollTop}px!important; height: 400px; right: ${-this.scrollLeft}px`;
+    }
+</script>
+

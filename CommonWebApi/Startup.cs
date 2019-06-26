@@ -55,14 +55,14 @@ namespace CommonWebApi
             // Repositories
             services.AddScoped<IUserRepository, UserRepositoryImpl>();
             services.AddScoped<IRoleRepository, RoleRepositoryImpl>();
+            services.AddScoped<IProductRepository, ProductRepositoryImpl>();
+            services.AddScoped<IMaterialRepository, MaterialRepositoryImpl>();
 
             //BusinessLogic
             services.AddScoped<IUserBL, UserBLImpl>();
             services.AddScoped<IRoleBL, RoleBLImpl>();
             #endregion
-
-
-            services.AddScoped<IProductRepository, ProductRepositoryImpl>();
+            services.AddScoped<IMaterialBL, MaterialBLImpl>();
             services.AddScoped<IProductBL, ProductBLImpl>();
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
@@ -139,9 +139,9 @@ namespace CommonWebApi
             });
 
             app.UseAuthentication();
-
+            //Configuration["JWTSetttings:Client_URL"].ToString()
             app.UseCors(builder =>
-            builder.WithOrigins(Configuration["JWTSetttings:Client_URL"].ToString())
+            builder.AllowAnyOrigin()
             .AllowAnyHeader()
             .AllowAnyMethod()
             );
