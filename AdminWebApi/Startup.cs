@@ -18,6 +18,7 @@ using System;
 using DTO.Models.Common;
 using Swashbuckle.AspNetCore.Filters;
 using Common.Constant;
+using System.Data.SqlClient;
 
 namespace AdminWebApi
 {
@@ -135,7 +136,7 @@ namespace AdminWebApi
             app.UseAuthentication();
 
             app.UseCors(builder =>
-            builder.WithOrigins(Configuration["JWTSetttings:Client_URL"].ToString())
+            builder.AllowAnyOrigin()
             .AllowAnyHeader()
             .AllowAnyMethod()
             );

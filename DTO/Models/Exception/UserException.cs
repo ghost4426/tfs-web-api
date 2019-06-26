@@ -17,4 +17,17 @@ namespace DTO.Models.Exception
         {
         }
     }
+    public class NotFoundException : ApplicationException
+    {
+        public NotFoundException(string msg) : base(msg)
+        {
+        }
+    }
+    public class NotMatchException : ApplicationException
+    {
+        public NotMatchException(string msg) : base(msg)
+        {
+        }
+
+    }
 }
