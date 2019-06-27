@@ -34,7 +34,9 @@ namespace CommonWebApi.Controllers
         [HttpGet("getByProvider")]
         public async Task<IList<Product>> FindAllProductByProviderAsync() 
         {
-            return await bl.FindAllProductByProviderAsync(providerID);
+            int userId = Int32.Parse(User.Claims.First(c => c.Type == "UserID").Value);
+
+            return await bl.FindAllProductByProviderAsync(userId);
         }
 
         [HttpGet("testgetByProvider")]

@@ -9,6 +9,7 @@ using Common.Utils;
 using DataAccess.IRepositories;
 using System.Linq;
 using Models = DTO.Models;
+using Common.Constant;
 using Entities = DTO.Entities;
 
 
@@ -18,22 +19,37 @@ namespace BusinessLogic.BusinessLogicImpl
     {
         private IUserRepository _userRepos;
         private IRoleRepository _roleRepos;
-        public UserBLImpl(IUserRepository userRepository, IRoleRepository roleRepository)
+
+        public UserBLImpl(IUserRepository userRepos, IRoleRepository roleRepos)
         {
-            if (userRepository != null)
-                this._userRepos = userRepository;
-            if (roleRepository != null)
-                this._roleRepos = roleRepository;
+            _userRepos = userRepos;
+            _roleRepos = roleRepos;
         }
-        public async Task<int> CreateUser(User newUser)
+
+
+        public async Task<bool> CreateUser(User newUser)
         {
             var hashedPassword = PasswordHasher.GetHashPassword(newUser.Password);
+            var user = await _userRepos.FindByUsername(newUser.Username);
+            if (user != null)
+            {
+                throw new DulicatedUsernameException(msg: MessageConstant.DUPLICATED_USERNAME);
+            }
+            newUser.UserId = 0;
             newUser.Password = hashedPassword.HashedPassword;
             newUser.Salt = hashedPassword.Salt;
-            return await this._userRepos.CreateUser(newUser);
+            newUser.CreatedDate = DateTime.Now;
+            newUser.IsActive = true;
+            _userRepos.Insert(newUser, true);
+            if (newUser.UserId > 0)
+            {
+                return true;
+            }
+            return false;
         }
         public async Task<IList<Entities.User>> GetUsers()
         {
+
             IList<User> users = await _userRepos.FindAllAsync(u => u.RoleId > 1);
             return users;
         }
@@ -65,18 +81,24 @@ namespace BusinessLogic.BusinessLogicImpl
                     HashedPassword = user.Password,
                     Password = loginInfo.Password,
                     Salt = user.Salt
-                });
+                });     
                 if (isCorrectPassword)
                 {
+                    user.Role =  _roleRepos.GetById(user.RoleId);
                     return user;
                 }
             }
-            throw new InvalidUsernameOrPasswordException("Wrong Username or Password");
+            throw new InvalidUsernameOrPasswordException(msg: MessageConstant.WRONG_PASS_OR_USERNAME);
         }
 
         public async Task<User> GetById(int id)
         {
             return await _userRepos.GetByIdAsync(id);
+        }
+
+        public async Task RemoveByIdAsync(int id)
+        {
+           await _userRepos.DeleteAsync(id, true);
         }
         public async Task<User> UpdateUser(User user, int ssId)
         {

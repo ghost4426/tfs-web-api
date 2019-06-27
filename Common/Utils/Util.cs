@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 using DTO.Models;
+using DTO.Models.Common;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
 namespace Common.Utils
@@ -10,37 +11,45 @@ namespace Common.Utils
    public static class Util
     {
 
-        public static HashPassword GetHashPassword(string password)
+        public static string GeneratePassword(PasswordOptions options)
         {
-            byte[] salts = new byte[128 / 8];
-            using (var rng = RandomNumberGenerator.Create())
+
+            int length = options.RequiredLength;
+            bool nonAlphanumeric = options.RequireNonAlphanumeric;
+            bool digit = options.RequireDigit;
+            bool lowercase = options.RequireLowercase;
+            bool uppercase = options.RequireUppercase;
+
+            StringBuilder password = new StringBuilder();
+            Random random = new Random();
+
+            while (password.Length < length)
             {
-                rng.GetBytes(salts);
+                char c = (char)random.Next(32, 126);
+
+                password.Append(c);
+
+                if (char.IsDigit(c))
+                    digit = false;
+                else if (char.IsLower(c))
+                    lowercase = false;
+                else if (char.IsUpper(c))
+                    uppercase = false;
+                else if (!char.IsLetterOrDigit(c))
+                    nonAlphanumeric = false;
             }
 
-            string salt = Convert.ToBase64String(salts);
+            if (nonAlphanumeric)
+                password.Append((char)random.Next(33, 48));
+            if (digit)
+                password.Append((char)random.Next(48, 58));
+            if (lowercase)
+                password.Append((char)random.Next(97, 123));
+            if (uppercase)
+                password.Append((char)random.Next(65, 91));
 
-            string hashedPassword = EncryptPassword(salt, password);
-
-            return new HashPassword() { Salt = salt, Password = hashedPassword };
+            return password.ToString();
         }
 
-        public static bool CheckHashedPassword(HashPassword hashPassword)
-        {
-            return string.Compare(hashPassword.HashedPassword, EncryptPassword(hashPassword.Salt, hashPassword.Password)) == 0 ?true: false;
-        }
-
-        private static string EncryptPassword(string salt, string password)
-        {
-            string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-                password: password,
-                salt: Encoding.ASCII.GetBytes(salt),
-                prf: KeyDerivationPrf.HMACSHA1,
-                iterationCount: 10000,
-                numBytesRequested: 256 / 8));
-            return hashed;
-
-        }
-        
     }
 }

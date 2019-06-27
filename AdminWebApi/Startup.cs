@@ -18,6 +18,9 @@ using System;
 using DTO.Models.Common;
 using Swashbuckle.AspNetCore.Filters;
 using Common.Constant;
+using Common.Utils;
+using System.Reflection;
+using System.IO;
 using System.Data.SqlClient;
 
 namespace AdminWebApi
@@ -48,6 +51,8 @@ namespace AdminWebApi
                 });
 
             #region Instanceinjection
+            services.AddScoped(typeof(IAutoMapConverter<,>), typeof(AutoMapConverter<,>));
+
             // Repositories
             services.AddScoped<IUserRepository, UserRepositoryImpl>();
             services.AddScoped<IRoleRepository, RoleRepositoryImpl>();
@@ -57,7 +62,8 @@ namespace AdminWebApi
             services.AddScoped<IRoleBL, RoleBLImpl>();
             #endregion
 
-
+            services.Configure<AuthMessageSenderOptions>(Configuration.GetSection("AuthMessageSenderOptions"));
+            services.AddSingleton<IEmailSender, EmailSender>();
             //Set Swagger
             services.AddSwaggerGen(c =>
             {
@@ -69,8 +75,14 @@ namespace AdminWebApi
                     Name = "Authorization",
                     Type = "apiKey"
                 });
+                // Set the comments path for the Swagger JSON and UI.
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
                 c.OperationFilter<SecurityRequirementsOperationFilter>();
             });
+
+
 
 
             //Set database.
@@ -105,6 +117,16 @@ namespace AdminWebApi
             //Inject AppSettings
             services.Configure<JWTSetttings>(Configuration.GetSection("JWTSetttings"));
 
+            //Add cors
+            services.AddCors(options =>
+            {
+                options.AddPolicy("default", policy =>
+                {
+                    policy.AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -142,6 +164,7 @@ namespace AdminWebApi
             );
 
             app.UseMvc();
+            app.UseCors("default");
 
         }
     }

@@ -110,7 +110,6 @@ namespace CommonWebApi
             //Inject AppSettings
             services.Configure<JWTSetttings>(Configuration.GetSection("JWTSetttings"));
 
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -147,7 +146,6 @@ namespace CommonWebApi
             );
 
             app.UseMvc();
-
         }
     }
 }
