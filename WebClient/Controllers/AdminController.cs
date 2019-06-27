@@ -6,13 +6,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebClient.Controllers
 {
-    [Route("tai-khoan")]
+    [Route("quan-tri-vien")]
     public class AdminController : Controller
     {
         public IActionResult Index()
         {
             return RedirectToAction("UserManagement");
         }
+
         [Route("quan-ly-tai-khoan")]
         public IActionResult UserManagement()
         {

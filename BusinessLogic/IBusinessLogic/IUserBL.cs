@@ -9,12 +9,14 @@ namespace BusinessLogic.IBusinessLogic
 {
    public interface IUserBL
     {
-        Task<int> CreateUser(User newUser);
+        Task<bool> CreateUser(User newUser);
 
         Task<User> CheckLogin(Models.LoginRequest loginInfo);
 
         Task<User> GetById(int id);
 
         Task<IList<User>> GetUsers();
+
+        Task RemoveByIdAsync(int id);
     }
 }

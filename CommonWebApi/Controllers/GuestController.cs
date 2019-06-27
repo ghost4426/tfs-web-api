@@ -38,7 +38,6 @@ namespace AdminWebApi.Controllers
             try
             {
                 var user = await _userBL.CheckLogin(login);
-                user.Role = await _roleBL.GetById(user.RoleId);
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
                     Subject = new ClaimsIdentity(new Claim[]
