@@ -24,6 +24,7 @@ namespace AdminWebApi.Controllers
         private IAutoMapConverter<Models.CreateUserRequest, Entities.User> _mapCreateUserRequestToEntity;
         private IEmailSender _mailSender;
 
+        //private IAutoMapConverter<Models.Contact, Entities.Contact> mapModelToEntity;
 
 
         public AdminController(IUserBL UserBL,
