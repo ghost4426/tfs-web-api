@@ -33,7 +33,7 @@ namespace CommonWebApi.Controllers
         }
 
         // GET api/values
-        [HttpGet("/getByProvider")]
+        [HttpGet("getByProvider")]
         public async Task<IList<Product>> FindAllProductByProviderAsync() 
         {
             int userId = Int32.Parse(User.Claims.First(c => c.Type == "UserID").Value);
@@ -41,13 +41,13 @@ namespace CommonWebApi.Controllers
             return await bl.FindAllProductByProviderAsync(userId);
         }
 
-        [HttpGet("/testgetByProvider")]
+        [HttpGet("testgetByProvider")]
         public async Task<IList<Product>> TestFindAllProductByProviderAsync()
         {
             return await bl.FindAllProductByProviderAsync(3);
         }
 
-        [HttpPost("/createProduct")]
+        [HttpPost("createProduct")]
         public async Task<Models.ProductReponse.CreateProductReponse> CreateProduct([FromBody]Models.Products productModel)
         {
             Product product = new Product() { Name = productModel.Name, CategoriesId = productModel.CategoriesId, ProviderUserId = productModel.ProviderUserId };
@@ -59,7 +59,7 @@ namespace CommonWebApi.Controllers
             return reponseModel;
         }
 
-        [HttpGet("/getAllCategory")]
+        [HttpGet("getAllCategory")]
         public async Task<IList<Categories>> getAllCategory()
         {
             return await bl.getAllCategory();
