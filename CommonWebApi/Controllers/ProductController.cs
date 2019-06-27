@@ -16,18 +16,18 @@ namespace CommonWebApi.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private IProductBL bl;
+        private IProductBL _productBL;
 
         public ProductController(IProductBL productBL)
         {
-            this.bl = productBL;
+            _productBL = productBL;
         }
 
         // GET api/values
         [HttpGet]
        public async Task<IList<Product>> GetAllProduct()
         {
-            return await bl.GetAllProductAsync();
+            return await _productBL.GetAllProductAsync();
         }
 
         // GET api/values
@@ -36,20 +36,20 @@ namespace CommonWebApi.Controllers
         {
             int userId = Int32.Parse(User.Claims.First(c => c.Type == "UserID").Value);
 
-            return await bl.FindAllProductByProviderAsync(userId);
+            return await _productBL.FindAllProductByProviderAsync(userId);
         }
 
         [HttpGet("testgetByProvider")]
         public async Task<IList<Product>> TestFindAllProductByProviderAsync()
         {
-            return await bl.FindAllProductByProviderAsync(3);
+            return await _productBL.FindAllProductByProviderAsync(3);
         }
 
         [HttpPost("createProduct")]
         public async Task<Models.ProductReponse.CreateProductReponse> CreateProduct([FromBody]Models.Products productModel)
         {
             Entities.Product product = new Entities.Product() { Name = productModel.Name, CategoriesId = productModel.CategoriesId, ProviderUserId = productModel.ProviderUserId };
-            await bl.CreateProductAsync(product);
+            await _productBL.CreateProductAsync(product);
             var reponseModel = new Models.ProductReponse.CreateProductReponse()
             {
                 ProductId = product.Id
@@ -60,13 +60,13 @@ namespace CommonWebApi.Controllers
         [HttpGet("getAllCategory")]
         public async Task<IList<Categories>> getAllCategory()
         {
-            return await bl.getAllCategory();
+            return await _productBL.getAllCategory();
         }
         
         [HttpGet("getProductMatched/{distributorId}")]
         public async Task<IEnumerable<Product>> getMatchedWithNumber(int distributorId)
         {
-            return await bl.getMatchedWithNumber(distributorId);
+            return await _productBL.getMatchedWithNumber(distributorId);
         }
     }
 }

@@ -21,7 +21,6 @@ using Common.Constant;
 using Common.Utils;
 using System.Reflection;
 using System.IO;
-using System.Data.SqlClient;
 
 namespace AdminWebApi
 {

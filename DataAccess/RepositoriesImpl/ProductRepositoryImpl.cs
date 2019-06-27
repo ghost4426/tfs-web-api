@@ -13,13 +13,11 @@ namespace DataAccess.RepositoriesImpl
 {
     public class ProductRepositoryImpl : GenericRepository<Product>, IProductRepository
     {
-        private FoodTrackingDbContext foodTrackerDbContext;
         private IUserRepository UserRepo;
 
-        public ProductRepositoryImpl(FoodTrackingDbContext context, IUserRepository userRepository) : base(context)
+        public ProductRepositoryImpl(FoodTrackingDbContext _dbContext, IUserRepository userRepository) : base(_dbContext)
         {
             UserRepo = userRepository;
-            foodTrackerDbContext = context;
         }
 
         public async Task<IList<Product>> GetAllProductAsync()

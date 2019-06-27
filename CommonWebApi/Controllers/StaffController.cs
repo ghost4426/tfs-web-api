@@ -16,14 +16,14 @@ namespace CommonWebApi.Controllers
     [ApiController]
     public class StaffController : ControllerBase
     {
-        private IMaterialBL MaterialBL;
-        private IProductBL Bl;
+        private IMaterialBL _materialBL;
+        private IProductBL _productBL;
 
 
         public StaffController(IProductBL ProductBL, IMaterialBL MaterialBL)
         {
-            this.MaterialBL = MaterialBL;
-            this.Bl = ProductBL;
+           _materialBL = MaterialBL;
+            _productBL = ProductBL;
         }
 
 
@@ -31,14 +31,14 @@ namespace CommonWebApi.Controllers
         [HttpGet("getByProvider")]
         public async Task<IList<Product>> FindAllProductByProviderAsync(int providerID)
         {
-            return await Bl.FindAllProductByProviderAsync(providerID);
+            return await _productBL.FindAllProductByProviderAsync(providerID);
         }
 
         [HttpPost("createProduct")]
         public async Task<Models.ProductReponse.CreateProductReponse> CreateProduct([FromBody] Product productModel)
         {
             Entities.Product product = new Entities.Product() { Name = productModel.Name, CategoriesId = productModel.CategoriesId, ProviderUserId = productModel.ProviderUserId };
-            await Bl.CreateProductAsync(product);
+            await _productBL.CreateProductAsync(product);
             var reponseModel = new Models.ProductReponse.CreateProductReponse()
             {
                 ProductId = product.Id
@@ -49,7 +49,7 @@ namespace CommonWebApi.Controllers
         [HttpGet("getProductMatched/{distributorId}")]
         public async Task<IEnumerable<Product>> getMatchedWithNumber(int distributorId)
         {
-            return await Bl.getMatchedWithNumber(distributorId);
+            return await _productBL.getMatchedWithNumber(distributorId);
         }
 
         [HttpGet("getMaterialMatched/{FarmerId}")]
