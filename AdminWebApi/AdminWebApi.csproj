@@ -2,6 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
+    <UserSecretsId>269f74cd-91d0-49b0-bb83-f2423f032f79</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
