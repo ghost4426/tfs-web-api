@@ -6,14 +6,12 @@ using BusinessLogic.IBusinessLogic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models = DTO.Models;
+using Entities = DTO.Entities;
 using DTO.Entities;
 using System.Linq.Expressions;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
 
 namespace CommonWebApi.Controllers
 {
-    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductController : ControllerBase
@@ -36,9 +34,7 @@ namespace CommonWebApi.Controllers
         [HttpGet("getByProvider")]
         public async Task<IList<Product>> FindAllProductByProviderAsync() 
         {
-            int userId = Int32.Parse(User.Claims.First(c => c.Type == "UserID").Value);
-
-            return await bl.FindAllProductByProviderAsync(userId);
+            return await bl.FindAllProductByProviderAsync(providerID);
         }
 
         [HttpGet("testgetByProvider")]
@@ -50,7 +46,7 @@ namespace CommonWebApi.Controllers
         [HttpPost("createProduct")]
         public async Task<Models.ProductReponse.CreateProductReponse> CreateProduct([FromBody]Models.Products productModel)
         {
-            Product product = new Product() { Name = productModel.Name, CategoriesId = productModel.CategoriesId, ProviderUserId = productModel.ProviderUserId };
+            Entities.Product product = new Entities.Product() { Name = productModel.Name, CategoriesId = productModel.CategoriesId, ProviderUserId = productModel.ProviderUserId };
             await bl.CreateProductAsync(product);
             var reponseModel = new Models.ProductReponse.CreateProductReponse()
             {

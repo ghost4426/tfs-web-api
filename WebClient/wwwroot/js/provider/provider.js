@@ -1,7 +1,5 @@
 ﻿$(document).ready(function () {
-    getProduct();
-    loadCategory();
-    insertProduct();
+    testAPI();
 });
 
 function getProduct() {
@@ -84,7 +82,8 @@ function loadCategory() {
             }
             document.getElementById("NewCategory").innerHTML = option;
         }
-    });
+    }
+    request.send();
 }
 function insertProduct() {
     $('#btnAddProduct').click(function () {

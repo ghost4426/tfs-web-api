@@ -5,11 +5,10 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-
 namespace DataAccess.IRepositories
 {
-    public interface ICategoryRepository : IGenericRepository<Categories>
+    public interface IMaterialRepository : IGenericRepository<Material>
     {
-        Task<Categories> GetCategoryById(int id);
+        Task<IEnumerable<Material>> GetMaterialByFarmerId(int FarmerId);
     }
 }
