@@ -11,12 +11,12 @@ namespace DataAccess.RepositoriesImpl
     public class RoleRepositoryImpl : GenericRepository<Role>, IRoleRepository
     {
 
-        private readonly FoodTrackingDbContext contex;
+        private readonly FoodTrackingDbContext _dbContext;
 
-        public RoleRepositoryImpl(FoodTrackingDbContext context)
-           : base(context)
+        public RoleRepositoryImpl(FoodTrackingDbContext dbContext)
+           : base(dbContext)
         {
-            contex = context;
+            _dbContext = dbContext;
         }
 
 

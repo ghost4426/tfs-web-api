@@ -18,8 +18,11 @@ namespace BusinessLogic.IBusinessLogic
         Task<IList<User>> GetUsers();
 
         Task RemoveByIdAsync(int id);
+
         Task<string> ChangeRole1User(int id, int role);
+
         Task<User> UpdateUser(User user,int ssId);
+
         Task updateUserStatus(int userId);
 
     }

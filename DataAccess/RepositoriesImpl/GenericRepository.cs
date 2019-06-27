@@ -250,5 +250,15 @@ namespace DataAccess.RepositoriesImpl
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
+        public async Task<IList<TEntity>> FindTopAsync(Expression<Func<TEntity, bool>> match, Expression<Func<TEntity, bool>> orderBy, int top)
+        {
+            return await this.DbSet.Where(match).OrderBy(orderBy).Take(top).ToListAsync();
+        }
+
+        public async Task<IList<TEntity>> GetTopAsync(Expression<Func<TEntity, bool>> orderBy, int top)
+        {
+            return await this.DbSet.Take(top).OrderBy(orderBy).ToListAsync();
+        }
     }
 }

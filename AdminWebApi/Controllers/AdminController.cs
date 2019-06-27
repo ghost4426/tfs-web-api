@@ -2,7 +2,6 @@
 using Models = DTO.Models;
 using Entities = DTO.Entities;
 using BusinessLogic.IBusinessLogic;
-using Microsoft.AspNetCore.Authorization;
 using Common.Constant;
 using System;
 using System.Linq;

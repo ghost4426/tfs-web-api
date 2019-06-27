@@ -1,10 +1,7 @@
 ﻿using BusinessLogic.IBusinessLogic;
 using DataAccess.IRepositories;
 using DTO.Entities;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace BusinessLogic.BusinessLogicImpl
@@ -16,8 +13,8 @@ namespace BusinessLogic.BusinessLogicImpl
 
         public ProductBLImpl(IProductRepository productRepos, ICategoryRepository categoryRepos)
         {
-            this._productRepos = productRepos;
-            this._categoryRepos = categoryRepos;
+            _productRepos = productRepos;
+            _categoryRepos = categoryRepos;
         }
 
         public async Task<IList<Product>> GetAllProductAsync()

@@ -13,13 +13,13 @@ namespace DataAccess.RepositoriesImpl
     public class UserRepositoryImpl : GenericRepository<User>, IUserRepository
     {
         private IUserRepository _userrepos;
-        private FoodTrackingDbContext foodTrackingDbContext;
+        private FoodTrackingDbContext _dbContext;
 
 
-        public UserRepositoryImpl(FoodTrackingDbContext context)
-           : base(context)
+        public UserRepositoryImpl(FoodTrackingDbContext dbContext)
+           : base(dbContext)
         {
-            foodTrackingDbContext = context;
+            _dbContext = dbContext;
         }
 
         public async Task<string> changeRole1User(User user)

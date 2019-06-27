@@ -100,6 +100,7 @@ namespace BusinessLogic.BusinessLogicImpl
         {
            await _userRepos.DeleteAsync(id, true);
         }
+
         public async Task<User> UpdateUser(User user, int ssId)
         {
             User dbUser = await this.GetById(user.UserId);
