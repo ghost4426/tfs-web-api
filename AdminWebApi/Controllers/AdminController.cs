@@ -24,9 +24,6 @@ namespace AdminWebApi.Controllers
         private IAutoMapConverter<Models.CreateUserRequest, Entities.User> _mapCreateUserRequestToEntity;
         private IEmailSender _mailSender;
 
-        //private IAutoMapConverter<Models.Contact, Entities.Contact> mapModelToEntity;
-
-
         public AdminController(IUserBL UserBL,
             IAutoMapConverter<Models.CreateUserRequest, Entities.User> mapCreateUserRequestToEntity,
             IEmailSender mailSender
@@ -65,14 +62,14 @@ namespace AdminWebApi.Controllers
                 isCreated = await _bl.CreateUser(user);
                 if (isCreated)
                 {
-                   await _mailSender.SendEmailAsync(user.Email, "Created Account", "Your password: " + password);
+                    await _mailSender.SendEmailAsync(user.Email, "Created Account", "Your password: " + password);
                 }
                 return Ok(new { messsage = MessageConstant.INSERT_SUCCESS });
 
             }
-            catch(DulicatedUsernameException e)
+            catch (DulicatedUsernameException e)
             {
-                return BadRequest(new { message = e.Message});
+                return BadRequest(new { message = e.Message });
             }
             catch (Exception)
             {
@@ -85,27 +82,31 @@ namespace AdminWebApi.Controllers
 
         }
 
-        [HttpGet("/Users")]
+        [HttpGet("Users")]
         public async Task<IList<Entities.User>> Users()
+        {
+            return await _bl.GetUsers();
+        }
+
         //GET : /api/admin/profile
         //[Authorize(Roles = RoleConstant.ADMIN)]
         [HttpGet("profile")]
         public async Task<IActionResult> GetUserProfile()
         {
-            return await _bl.GetUsers();
-        }
-        [HttpGet("/User/{userId}")]
-        public async Task<Entities.User> Get1Users(int userId)
-        {
-            var user = await _bl.GetById(userId);
-            return user;
             var claim = User.Claims;
             string userId = User.Claims.First(c => c.Type == "UserID").Value;
             var user = await _bl.GetById(int.Parse(userId));
             return Ok(user);
         }
-        [HttpPut("/Users/Update/{id}")]
-        public async Task<Models.UpdateUserReponse> UpdateUser(int id,[FromBody] Models.UpdateUserRequest userInfo)
+        [HttpGet("User/{userId}")]
+        public async Task<Entities.User> Get1Users(int userId)
+        {
+            var user = await _bl.GetById(userId);
+            return user;
+
+        }
+        [HttpPut("Users/Update/{id}")]
+        public async Task<Models.UpdateUserReponse> UpdateUser(int id, [FromBody] Models.UpdateUserRequest userInfo)
         {
             Entities.User user = new Entities.User()
             {
@@ -114,29 +115,15 @@ namespace AdminWebApi.Controllers
                 Email = userInfo.email,
                 PhoneNo = userInfo.phone,
             };
-/*            var claim = User.Claims;
-            string userId = User.Claims.First(c => c.Type == "UserID").Value;*/
             await _bl.UpdateUser(user, 3);
             var reponseModel = new Models.UpdateUserReponse()
             {
                 UserId = user.UserId
             };
             return reponseModel;
-            /*  var claim = User.Claims;
-              string userId = User.Claims.First(c => c.Type == "UserID").Value;*/
-            /*var userId = 7;
-            if (id == userId)
-            {
-                var user = await _bl.GetById(id);
-                return await _bl.UpdateUser(user, fullName, Email, phone);
-            }
-            else
-            {
-                return BadRequest(new { message = "Wrong User" });
-            }*/
 
         }
-        [HttpPut("/User/Role/{id}")]
+        [HttpPut("User/Role/{id}")]
         public async Task<IActionResult> Role(int id, [FromBody] string role)
         {
             try
@@ -151,7 +138,7 @@ namespace AdminWebApi.Controllers
             }
         }
 
-        [HttpPut("/User/Deactive/{userId}")]
+        [HttpPut("User/Deactive/{userId}")]
         public async Task<IActionResult> Deactive(int userId)
         {
             try

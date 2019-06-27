@@ -41,5 +41,10 @@ namespace DataAccess.RepositoriesImpl
            return user;     
         }
 
+        public async Task<IList<User>> GetUsersAsync()
+        {
+            IList<User> users = await this._userrepos.FindAllAsync(u => u.RoleId > 1);
+            return users;
+        }
     }
 }

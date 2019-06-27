@@ -27,7 +27,7 @@ namespace DataAccess.RepositoriesImpl
             list.OrderByDescending(x => x.CreatedDate).Take(500);
             for (int i = 0; i < list.Count; i++)
             {
-                User provider = await UserRepo.FindByUserId(list.ElementAt(i).ProviderId.Value);
+                User provider = UserRepo.GetById(list.ElementAt(i).ProviderId.Value);
                 list.ElementAt(i).Provider = provider;
             }
             return list;
