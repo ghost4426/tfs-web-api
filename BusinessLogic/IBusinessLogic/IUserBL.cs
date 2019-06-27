@@ -7,7 +7,7 @@ using Models = DTO.Models;
 
 namespace BusinessLogic.IBusinessLogic
 {
-   public interface IUserBL
+    public interface IUserBL
     {
         Task<int> CreateUser(User newUser);
 
@@ -16,5 +16,9 @@ namespace BusinessLogic.IBusinessLogic
         Task<User> GetById(int id);
 
         Task<IList<User>> GetUsers();
+        Task<string> ChangeRole1User(int id, int role);
+        Task<User> UpdateUser(User user,int ssId);
+        Task updateUserStatus(int userId);
+
     }
 }

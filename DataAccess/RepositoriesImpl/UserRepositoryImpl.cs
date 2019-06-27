@@ -10,10 +10,11 @@ using System.Linq;
 
 namespace DataAccess.RepositoriesImpl
 {
-    public class UserRepositoryImpl : GenericRepository<User> , IUserRepository
+    public class UserRepositoryImpl : GenericRepository<User>, IUserRepository
     {
-
+        private IUserRepository _userrepos;
         private FoodTrackingDbContext foodTrackingDbContext;
+
 
         public UserRepositoryImpl(FoodTrackingDbContext context)
            : base(context)
@@ -28,15 +29,25 @@ namespace DataAccess.RepositoriesImpl
             //this.Commit();
             return newUser.UserId;
         }
+        public async Task<IList<User>> GetUsers()
+        {
+            IList<User> users = await this._userrepos.FindAllAsync(u => u.RoleId > 1);
+            return users;
+        }
 
+        public async Task<string> changeRole1User(User user)
+        {
+            await this.UpdateAsync(user, true);
+            return user.RoleId.ToString();
+        }
         public Task<User> FindByUsername(string username)
         {
             return FindAsync(u => u.Username.CompareTo(username) == 0);
         }
-        public async Task<IList<User>> GetUsers()
+        public async Task<User> UpdateUser(User user)
         {
-            IList<User> users = await FindAllAsync(u => u.RoleId > 1);
-            return users;
+            await this.UpdateAsync(user, true);
+            return user;
         }
     }
 }
