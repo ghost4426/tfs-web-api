@@ -8,7 +8,7 @@ function loadUser() {
     $.ajax({
         method: "GET",
         crossDomain: true,
-        url: "http://localhost:4200/Users",
+        url: "https://localhost:4200/api/Admin/Users",
         dataType: 'json',
         success: function (data) {
             $('#userTable').DataTable({
@@ -39,7 +39,7 @@ function loadUser() {
 }
 function statusChange(userId) {
     $.ajax({
-        url: 'http://localhost:4200/User/Deactive/' + userId,
+        url: 'https://localhost:4200/api/Admin/User/Deactive/' + userId,
         type: 'PUT',
         success: function () {
             toastr.success('Bạn đã thay đổi trạng thái thành công. Làm mới trong 2s', 'Thay đổi thành công');
@@ -52,7 +52,7 @@ function statusChange(userId) {
 }
 function getUserInfo(userId) {
     $.ajax({
-        url: 'http://localhost:4200/User/' + userId,
+        url: 'https://localhost:4200/api/Admin/User/' + userId,
         type: 'GET',
         success: function (data) {
             $('input[name="userId"]').val(data.UserId);
@@ -75,7 +75,7 @@ function updateUser() {
         var Phone = $('input[name="Phone"]').val();
         $.ajax({
             type: 'PUT',
-            url: 'http://localhost:4200/Users/Update/' + userId,
+            url: 'https://localhost:4200/api/Admin/Users/Update/' + userId,
             contentType: 'json',
             headers: {
                 'Accept': 'application/json',
@@ -106,7 +106,7 @@ function changeRole() {
         var roleId = $('input[name="Role2"]').val();
         $.ajax({
             type: 'PUT',
-            url: 'http://localhost:4200/User/Role/' + userId,
+            url: 'https://localhost:4200/api/Admin/User/Role/' + userId,
             contentType: 'json',
             headers: {
                 //'Accept': 'application/json',

@@ -1,5 +1,7 @@
 ﻿$(document).ready(function () {
-    testAPI();
+    getProduct();
+    loadCategory();
+    insertProduct();
 });
 
 function getProduct() {
@@ -37,7 +39,7 @@ function getProduct() {
                     },
                     {
                         extend: 'excel',
-                        text:'Tải báo cáo'
+                        text: 'Tải báo cáo'
                     }
                 ],
                 language: {
@@ -65,7 +67,7 @@ function getProduct() {
                 }
             });
             $('.buttons-excel, .btn-addNew').addClass('btn btn-primary mr-1');
-            $('.btn-addNew').attr({ 'data-toggle': 'modal', 'data-target': "#default"});
+            $('.btn-addNew').attr({ 'data-toggle': 'modal', 'data-target': "#default" });
         }
     });
 }
@@ -82,8 +84,7 @@ function loadCategory() {
             }
             document.getElementById("NewCategory").innerHTML = option;
         }
-    }
-    request.send();
+    });
 }
 function insertProduct() {
     $('#btnAddProduct').click(function () {
@@ -107,7 +108,7 @@ function insertProduct() {
                 getProduct();
                 $('#default').modal('hide');
                 $('input[name="NewName"]').val("");
-                $('select[name="NewCategory"]').val("1");                
+                $('select[name="NewCategory"]').val("1");
             }
         })
     });
