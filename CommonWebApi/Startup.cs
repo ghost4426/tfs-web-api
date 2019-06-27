@@ -57,13 +57,16 @@ namespace CommonWebApi
             services.AddScoped<IRoleRepository, RoleRepositoryImpl>();
             services.AddScoped<IProductRepository, ProductRepositoryImpl>();
             services.AddScoped<IMaterialRepository, MaterialRepositoryImpl>();
+            services.AddScoped<ICategoryRepository, CategoryRepositoryImpl>();
+            services.AddScoped<IProductRepository, ProductRepositoryImpl>();
 
             //BusinessLogic
             services.AddScoped<IUserBL, UserBLImpl>();
             services.AddScoped<IRoleBL, RoleBLImpl>();
-            #endregion
             services.AddScoped<IMaterialBL, MaterialBLImpl>();
             services.AddScoped<IProductBL, ProductBLImpl>();
+            #endregion
+
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
             {

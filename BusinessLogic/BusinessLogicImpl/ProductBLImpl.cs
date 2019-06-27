@@ -27,7 +27,13 @@ namespace BusinessLogic.BusinessLogicImpl
 
         public async Task<IList<Product>> FindAllProductByProviderAsync(int providerID)
         {
-            return await this._productRepos.FindAllProductByProviderAsync(providerID);
+            var products = await this._productRepos.FindAllProductByProviderAsync(providerID);
+            foreach (var product in products)
+            {
+                var cat = _categoryRepos.GetById(product.CategoriesId);
+                product.Categories = cat;
+            }
+            return products;
         }
 
         public async Task<int> CreateProductAsync(Product newProduct)
