@@ -5,11 +5,11 @@ using System.Text;
 
 namespace DTO.Entities
 {
-    public class Categories
+   public class PremisesType
     {
         [Key]
-        public int Id { get; set; }
+        public int TypeId { get; set; }
 
-        public string Name { get; set; }
+        public int Name { get; set; }
     }
 }

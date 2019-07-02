@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace DataAccess.IRepositories
 {
-   public interface IProductRepository : IGenericRepository<Product>
+   public interface IProductRepository : IGenericRepository<Food>
     {
-        Task<IList<Product>> GetAllProductAsync();
+        Task<IList<Food>> GetAllProductAsync();
 
-        Task<IList<Product>> FindAllProductByProviderAsync(int providerID);
+        Task<IList<Food>> FindAllProductByProviderAsync(int providerID);
 
-        Task<int> CreateProductAsync(Product newProduct);
-        Task<IEnumerable<Product>> GetMatchedWithNumber(int distributorId);
+        Task<int> CreateProductAsync(Food newProduct);
+        Task<IEnumerable<Food>> GetMatchedWithNumber(int distributorId);
     }
 }

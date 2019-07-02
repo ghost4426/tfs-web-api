@@ -8,12 +8,12 @@ namespace DTO.Models
     public class ProductReponse
     {
         public class ProductGetAllReponse{
-            public IList<Product> ListProduct { get; set; }
+            public IList<Food> ListProduct { get; set; }
         }
 
         public class ProductGetByProviderReponse
         {
-            public IList<Product> ListProduct { get; set; }
+            public IList<Food> ListProduct { get; set; }
         }
 
         public class CreateProductReponse

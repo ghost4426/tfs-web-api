@@ -10,7 +10,7 @@ namespace DTO.Models
 
         public class GetAllProduct
         {
-            public IList<Product> ListProduct { get; set; }
+            public IList<Food> ListProduct { get; set; }
         }
     }
 }

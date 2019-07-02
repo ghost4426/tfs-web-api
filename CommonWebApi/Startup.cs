@@ -23,6 +23,7 @@ using Swashbuckle.AspNetCore.Swagger;
 using Common.Constant;
 using Swashbuckle.AspNetCore.Filters;
 using Microsoft.IdentityModel.Tokens;
+using ContractInteraction.Services;
 
 namespace CommonWebApi
 {
@@ -56,7 +57,6 @@ namespace CommonWebApi
             services.AddScoped<IUserRepository, UserRepositoryImpl>();
             services.AddScoped<IRoleRepository, RoleRepositoryImpl>();
             services.AddScoped<IProductRepository, ProductRepositoryImpl>();
-            services.AddScoped<IMaterialRepository, MaterialRepositoryImpl>();
             services.AddScoped<ICategoryRepository, CategoryRepositoryImpl>();
             services.AddScoped<IProductRepository, ProductRepositoryImpl>();
 
@@ -65,6 +65,11 @@ namespace CommonWebApi
             services.AddScoped<IRoleBL, RoleBLImpl>();
             services.AddScoped<IMaterialBL, MaterialBLImpl>();
             services.AddScoped<IProductBL, ProductBLImpl>();
+            services.AddScoped<IFoodDataBL, FoodDataBLImpl>();
+
+            //Service
+            services.AddScoped<IService, ServiceImpl>();
+
             #endregion
 
             // Register the Swagger generator, defining 1 or more Swagger documents

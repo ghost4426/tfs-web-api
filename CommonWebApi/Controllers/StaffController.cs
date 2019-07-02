@@ -7,8 +7,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models = DTO.Models;
 using Entities = DTO.Entities;
-using DTO.Entities;
 using System.Linq.Expressions;
+using DTO.Models.FoodData;
+using Common.Utils;
 
 namespace CommonWebApi.Controllers
 {
@@ -18,44 +19,78 @@ namespace CommonWebApi.Controllers
     {
         private IMaterialBL _materialBL;
         private IProductBL _productBL;
+        private IFoodDataBL _foodDataBL;
+        private IAutoMapConverter<Models.Food, Entities.Food> _mapCreateUserRequestToEntity;
 
-
-        public StaffController(IProductBL ProductBL, IMaterialBL MaterialBL)
+        public StaffController(IMaterialBL materialBL, IProductBL productBL, IFoodDataBL foodDataBL, )
         {
-           _materialBL = MaterialBL;
-            _productBL = ProductBL;
+            _materialBL = materialBL;
+            _productBL = productBL;
+            _foodDataBL = foodDataBL;
         }
 
 
         // GET api/values
         [HttpGet("getByProvider")]
-        public async Task<IList<Product>> FindAllProductByProviderAsync(int providerID)
+        public async Task<IList<Entities.Food>> FindAllProductByProviderAsync(int providerID)
         {
             return await _productBL.FindAllProductByProviderAsync(providerID);
         }
 
-        [HttpPost("createProduct")]
-        public async Task<Models.ProductReponse.CreateProductReponse> CreateProduct([FromBody] Product productModel)
-        {
-            Entities.Product product = new Entities.Product() { Name = productModel.Name, CategoriesId = productModel.CategoriesId, ProviderUserId = productModel.ProviderUserId };
-            await _productBL.CreateProductAsync(product);
-            var reponseModel = new Models.ProductReponse.CreateProductReponse()
-            {
-                ProductId = product.Id
-            };
-            return reponseModel;
-        }
+
 
         [HttpGet("getProductMatched/{distributorId}")]
-        public async Task<IEnumerable<Product>> getMatchedWithNumber(int distributorId)
+        public async Task<IEnumerable<Entities.Food>> getMatchedWithNumber(int distributorId)
         {
             return await _productBL.getMatchedWithNumber(distributorId);
         }
 
-        [HttpGet("getMaterialMatched/{FarmerId}")]
-        public async Task<IEnumerable<Material>> GetMaterialByFarmerId(int FarmerId)
+        //[HttpGet("getMaterialMatched/{FarmerId}")]
+        //public async Task<IEnumerable<Entities.Material>> GetMaterialByFarmerId(int FarmerId)
+        //{
+        //    return await _materialBL.GetMaterialByFarmerId(FarmerId);
+        //}
+            
+        [HttpPost("createFood")]
+        public async Task<Models.ProductReponse.CreateProductReponse> CreateFood([FromBody]Models.Food foodRequest )
         {
-            return await MaterialBL.GetMaterialByFarmerId(FarmerId);
+            Entities.Food food = new Entities.Food() { CategoriesId = foodRequest.CategoriesId, FarmerId = foodRequest.FamerId };
+            await _productBL.CreateProductAsync(food);
+            var reponseModel = new Models.ProductReponse.CreateProductReponse()
+            {
+                ProductId = food.FoodId
+            };
+            return reponseModel;
+        }
+
+        [HttpGet("getFoodData")]
+        public async Task<FoodData> GetFoodDataById(long id)
+        {
+            return await _foodDataBL.GetFoodDataByID(id);
+        }
+
+        [HttpPost("saveFoodData")]
+        public async Task<string> SaveFoodData()
+        {
+            FoodData foodData = new FoodData()
+            {
+                Id = 1,
+                Category = "Thịt Heo",
+                Farm = new Farm()
+                {
+                    Name = "Farm Test",
+                    FarmId = 1
+                },
+                Distributor = new Distributor()
+                {
+                    Name = "Dis test"
+                },
+                Provider = new Provider()
+                {
+                    Name = "Provider test"
+                }
+            };
+            return await _foodDataBL.SaveFoodData(foodData);
         }
 
     }
