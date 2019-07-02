@@ -10,6 +10,6 @@ namespace DTO.Entities
         [Key]
         public int TypeId { get; set; }
 
-        public int Name { get; set; }
+        public string Name { get; set; }
     }
 }
