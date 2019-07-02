@@ -5,12 +5,12 @@ using System.Text;
 
 namespace DTO.Models
 {
-    public class Products
+    public class Food
     {
         public string Name { get; set; }
 
         public int CategoriesId { get; set; }
 
-        public int ProviderUserId { get; set; }
+        public int FamerId { get; set; }
     }
 }

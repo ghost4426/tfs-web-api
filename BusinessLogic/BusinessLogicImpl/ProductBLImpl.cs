@@ -17,12 +17,12 @@ namespace BusinessLogic.BusinessLogicImpl
             _categoryRepos = categoryRepos;
         }
 
-        public async Task<IList<Product>> GetAllProductAsync()
+        public async Task<IList<Food>> GetAllProductAsync()
         {
             return await this._productRepos.GetAllAsync();
         }
 
-        public async Task<IList<Product>> FindAllProductByProviderAsync(int providerID)
+        public async Task<IList<Food>> FindAllProductByProviderAsync(int providerID)
         {
             var products = await this._productRepos.FindAllProductByProviderAsync(providerID);
             foreach (var product in products)
@@ -33,12 +33,12 @@ namespace BusinessLogic.BusinessLogicImpl
             return products;
         }
 
-        public async Task<int> CreateProductAsync(Product newProduct)
+        public async Task<int> CreateProductAsync(Food newProduct)
         {
             return await this._productRepos.CreateProductAsync(newProduct);
         }
 
-        public async Task<IEnumerable<Product>> getMatchedWithNumber(int distributorId)
+        public async Task<IEnumerable<Food>> getMatchedWithNumber(int distributorId)
         {
             return await this._productRepos.GetMatchedWithNumber(distributorId);
         }

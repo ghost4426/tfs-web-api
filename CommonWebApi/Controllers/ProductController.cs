@@ -25,14 +25,14 @@ namespace CommonWebApi.Controllers
 
         // GET api/values
         [HttpGet]
-       public async Task<IList<Product>> GetAllProduct()
+       public async Task<IList<Food>> GetAllProduct()
         {
             return await _productBL.GetAllProductAsync();
         }
 
         // GET api/values
         [HttpGet("getByProvider")]
-        public async Task<IList<Product>> FindAllProductByProviderAsync() 
+        public async Task<IList<Food>> FindAllProductByProviderAsync() 
         {
             int userId = Int32.Parse(User.Claims.First(c => c.Type == "UserID").Value);
 
@@ -40,22 +40,12 @@ namespace CommonWebApi.Controllers
         }
 
         [HttpGet("testgetByProvider")]
-        public async Task<IList<Product>> TestFindAllProductByProviderAsync()
+        public async Task<IList<Food>> TestFindAllProductByProviderAsync()
         {
             return await _productBL.FindAllProductByProviderAsync(3);
         }
 
-        [HttpPost("createProduct")]
-        public async Task<Models.ProductReponse.CreateProductReponse> CreateProduct([FromBody]Models.Products productModel)
-        {
-            Entities.Product product = new Entities.Product() { Name = productModel.Name, CategoriesId = productModel.CategoriesId, ProviderUserId = productModel.ProviderUserId };
-            await _productBL.CreateProductAsync(product);
-            var reponseModel = new Models.ProductReponse.CreateProductReponse()
-            {
-                ProductId = product.Id
-            };
-            return reponseModel;
-        }
+       
 
         [HttpGet("getAllCategory")]
         public async Task<IList<Categories>> getAllCategory()
@@ -64,7 +54,7 @@ namespace CommonWebApi.Controllers
         }
         
         [HttpGet("getProductMatched/{distributorId}")]
-        public async Task<IEnumerable<Product>> getMatchedWithNumber(int distributorId)
+        public async Task<IEnumerable<Food>> getMatchedWithNumber(int distributorId)
         {
             return await _productBL.getMatchedWithNumber(distributorId);
         }

@@ -8,13 +8,13 @@ namespace BusinessLogic.IBusinessLogic
 {
     public interface IProductBL
     {
-        Task<IList<Product>> GetAllProductAsync();
+        Task<IList<Food>> GetAllProductAsync();
 
-        Task<IList<Product>> FindAllProductByProviderAsync(int providerID);
+        Task<IList<Food>> FindAllProductByProviderAsync(int providerID);
 
-        Task<int> CreateProductAsync(Product newProduct);
+        Task<int> CreateProductAsync(Food newProduct);
 
-        Task<IEnumerable<Product>> getMatchedWithNumber(int distributorId);
+        Task<IEnumerable<Food>> getMatchedWithNumber(int distributorId);
 
         Task<IList<Categories>> getAllCategory();
 

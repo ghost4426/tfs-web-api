@@ -4,14 +4,16 @@ using DataAccess.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(FoodTrackingDbContext))]
-    partial class FoodTrackingDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190702095121_giantt-v2")]
+    partial class gianttv2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,23 +32,6 @@ namespace DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("DTO.Entities.DistributorFood", b =>
-                {
-                    b.Property<int>("FoodId");
-
-                    b.Property<int>("PremisesId");
-
-                    b.HasKey("FoodId", "PremisesId");
-
-                    b.HasIndex("FoodId")
-                        .IsUnique();
-
-                    b.HasIndex("PremisesId")
-                        .IsUnique();
-
-                    b.ToTable("DistributorFood");
                 });
 
             modelBuilder.Entity("DTO.Entities.Food", b =>
@@ -107,6 +92,19 @@ namespace DataAccess.Migrations
                     b.ToTable("Premises");
                 });
 
+            modelBuilder.Entity("DTO.Entities.PremisesFood", b =>
+                {
+                    b.Property<int>("FoodId");
+
+                    b.Property<int>("PremisesId");
+
+                    b.HasKey("FoodId", "PremisesId");
+
+                    b.HasIndex("PremisesId");
+
+                    b.ToTable("DistributorFood");
+                });
+
             modelBuilder.Entity("DTO.Entities.PremisesType", b =>
                 {
                     b.Property<int>("TypeId")
@@ -130,7 +128,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("RoleId");
 
-                    b.ToTable("Roles");
+                    b.ToTable("Role");
                 });
 
             modelBuilder.Entity("DTO.Entities.Transaction", b =>
@@ -228,20 +226,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("DTO.Entities.DistributorFood", b =>
-                {
-                    b.HasOne("DTO.Entities.Food", "Food")
-                        .WithOne("DistributorFood")
-                        .HasForeignKey("DTO.Entities.DistributorFood", "FoodId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("DTO.Entities.Premises", "Premises")
-                        .WithOne("DistributorFood")
-                        .HasForeignKey("DTO.Entities.DistributorFood", "PremisesId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                    b.ToTable("User");
                 });
 
             modelBuilder.Entity("DTO.Entities.Food", b =>
@@ -270,6 +255,19 @@ namespace DataAccess.Migrations
                     b.HasOne("DTO.Entities.PremisesType", "PremisesType")
                         .WithMany()
                         .HasForeignKey("TypeId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("DTO.Entities.PremisesFood", b =>
+                {
+                    b.HasOne("DTO.Entities.Food", "Food")
+                        .WithMany("DistributorFoods")
+                        .HasForeignKey("FoodId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("DTO.Entities.Premises", "Premises")
+                        .WithMany("DistributorFoods")
+                        .HasForeignKey("PremisesId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

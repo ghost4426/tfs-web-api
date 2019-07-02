@@ -11,7 +11,7 @@ using Models = DTO.Models;
 
 namespace DataAccess.RepositoriesImpl
 {
-    public class ProductRepositoryImpl : GenericRepository<Product>, IProductRepository
+    public class ProductRepositoryImpl : GenericRepository<Food>, IProductRepository
     {
         private IUserRepository UserRepo;
 
@@ -20,34 +20,36 @@ namespace DataAccess.RepositoriesImpl
             UserRepo = userRepository;
         }
 
-        public async Task<IList<Product>> GetAllProductAsync()
+        public async Task<IList<Food>> GetAllProductAsync()
         {
             return await this.GetAllAsync();
         }
-        public async Task<IList<Product>> FindAllProductByProviderAsync(int providerID)
+        public async Task<IList<Food>> FindAllProductByProviderAsync(int providerID)
         {
-            IList<Product> products = await FindAllAsync(x => x.Provider.UserId == providerID);
-            IEnumerable<Product> result = products.OrderByDescending(x => x.CreatedDate).Take(500);
+            IList<Food> products = await FindAllAsync(x => x.Provider.PremisesId == providerID);
+            IEnumerable<Food> result = products.OrderByDescending(x => x.CreatedDate).Take(500);
             return result.ToList();
         }
 
-        public async Task<int> CreateProductAsync(Product newProduct)
+        public async Task<int> CreateProductAsync(Food newProduct)
         {
-            newProduct.Id = 0;
-            newProduct.CreatedDate = DateTime.Now;
-            await this.InsertAsync(newProduct, true);
-            return newProduct.Id;
+            //    newProduct.Id = 0;
+            //    newProduct.CreatedDate = DateTime.Now;
+            //    await this.InsertAsync(newProduct, true);
+            //    return newProduct.Id;
+            return 0;
         }
-        public async Task<IEnumerable<Product>> GetMatchedWithNumber(int distributorId)
+        public async Task<IEnumerable<Food>> GetMatchedWithNumber(int distributorId)
         {
-            IList<Product> list = await this.FindAllAsync(x => x.Distributor.UserId == distributorId);
-            list.OrderByDescending(x => x.CreatedDate).Take(500);
-            for (int i = 0; i < list.Count; i++)
-            {
-                User provider = await UserRepo.GetByIdAsync(list.ElementAt(i).ProviderUserId);
-                list.ElementAt(i).Provider = provider;
-            }
-            return list;
+            ////IList<Food> list = await this.FindAllAsync(x => x.DistributorFoods.Contains(distributorId == distributorId);
+            //list.OrderByDescending(x => x.CreatedDate).Take(500);
+            ////for (int i = 0; i < list.Count; i++)
+            ////{
+            ////    var provider = await UserRepo.GetByIdAsync(list.ElementAt(i).ProviderUserId);
+            ////    list.ElementAt(i).Provider = provider;
+            ////}
+            //return list;
+            return null;
         }
     }
 }

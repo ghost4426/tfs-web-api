@@ -8,6 +8,6 @@ namespace BusinessLogic.IBusinessLogic
 {
     public interface IMaterialBL
     {
-        Task<IEnumerable<Material>> GetMaterialByFarmerId(int FarmerId);
+        //Task<IEnumerable<Material>> GetMaterialByFarmerId(int FarmerId);
     }
 }
