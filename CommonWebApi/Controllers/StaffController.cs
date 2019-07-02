@@ -20,13 +20,18 @@ namespace CommonWebApi.Controllers
         private IMaterialBL _materialBL;
         private IProductBL _productBL;
         private IFoodDataBL _foodDataBL;
-        private IAutoMapConverter<Models.Food, Entities.Food> _mapCreateUserRequestToEntity;
+        private IAutoMapConverter<Models.CreateFoodRequest, Entities.Food> _mapCreateFoodRequestModelToEntity;
 
-        public StaffController(IMaterialBL materialBL, IProductBL productBL, IFoodDataBL foodDataBL, )
+        public StaffController(
+            IMaterialBL materialBL,
+            IProductBL productBL,
+            IFoodDataBL foodDataBL,
+            IAutoMapConverter<Models.CreateFoodRequest, Entities.Food> mapCreateFoodRequestModelToEntity)
         {
             _materialBL = materialBL;
             _productBL = productBL;
             _foodDataBL = foodDataBL;
+            _mapCreateFoodRequestModelToEntity = mapCreateFoodRequestModelToEntity;
         }
 
 
@@ -52,9 +57,10 @@ namespace CommonWebApi.Controllers
         //}
             
         [HttpPost("createFood")]
-        public async Task<Models.ProductReponse.CreateProductReponse> CreateFood([FromBody]Models.Food foodRequest )
+        public async Task<Models.ProductReponse.CreateProductReponse> CreateFood([FromBody]Models.CreateFoodRequest foodRequest )
         {
-            Entities.Food food = new Entities.Food() { CategoriesId = foodRequest.CategoriesId, FarmerId = foodRequest.FamerId };
+            Entities.Food food = _mapCreateFoodRequestModelToEntity.ConvertObject(foodRequest);
+                //new Entities.Food() { CategoriesId = foodRequest.CategoriesId, FarmerId = foodRequest.FamerId };
             await _productBL.CreateProductAsync(food);
             var reponseModel = new Models.ProductReponse.CreateProductReponse()
             {
