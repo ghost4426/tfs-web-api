@@ -4,7 +4,7 @@ using System.Text;
 
 namespace DTO.Models.FoodData
 {
-    public class Treatment
+    public class Treatments
     {
         public DateTime TreatmentDate { get; set; }
 

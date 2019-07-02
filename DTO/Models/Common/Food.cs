@@ -7,10 +7,10 @@ namespace DTO.Models
 {
     public class Food
     {
-        public string Name { get; set; }
+        public int CategoryId { get; set; }
 
-        public int CategoriesId { get; set; }
+        public string Breed { get; set; }
 
-        public int FamerId { get; set; }
+        public int FarmerId { get; set; }
     }
 }

@@ -12,7 +12,7 @@ namespace DTO.Models.FoodData
 
         public DateTime ReceivedDate { get; set; }
 
-        public Treatment Treatment { get; set; }
+        public Treatments Treatment { get; set; }
 
         public DateTime PackagingDate { get; set; }
 
