@@ -10,6 +10,8 @@ namespace DTO.Entities
         [Key]
         public int FoodId { get; set; }
 
+        public string Breed { get; set; }
+
         public int CategoriesId { get; set; }
 
         public virtual Categories Categories { get; set; }
