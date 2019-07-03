@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.IBusinessLogic
 {
-    public interface IProductBL
+    public interface IFoodBL
     {
         Task<IList<Food>> GetAllProductAsync();
 

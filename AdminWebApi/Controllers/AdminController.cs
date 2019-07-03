@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Common.Utils;
 using DTO.Models.Exception;
-
+using AutoMapper;
 
 namespace AdminWebApi.Controllers
 {
@@ -20,16 +20,16 @@ namespace AdminWebApi.Controllers
     {
 
         private readonly IUserBL _bl;
-        private IAutoMapConverter<Models.CreateUserRequest, Entities.User> _mapCreateUserRequestToEntity;
+        private IMapper _mapper;
         private IEmailSender _mailSender;
 
         public AdminController(IUserBL UserBL,
-            IAutoMapConverter<Models.CreateUserRequest, Entities.User> mapCreateUserRequestToEntity,
+            IMapper mapper,
             IEmailSender mailSender
             )
         {
             _bl = UserBL;
-            _mapCreateUserRequestToEntity = mapCreateUserRequestToEntity;
+            _mapper = mapper;
             _mailSender = mailSender;
         }
 
@@ -48,7 +48,7 @@ namespace AdminWebApi.Controllers
             var isCreated = false;
             try
             {
-                user = _mapCreateUserRequestToEntity.ConvertObject(rUser);
+                user = _mapper.Map<Entities.User>(rUser);
                 var password = Util.GeneratePassword(new Models.PasswordOptions()
                 {
                     RequireDigit = true,

@@ -10,11 +10,11 @@ namespace DTO.Models.FoodData
 
         public string Name { get; set; }
 
+        public string Address { get; set; }
+
         public List<string> Feedings { get; set; }
 
         public List<Vaccination> Vaccinations { get; set; }
-
-        public Dictionary<int, string> VaccationList { get; set; }
 
         public DateTime CertificationDate { get; set; }
 

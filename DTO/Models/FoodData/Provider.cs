@@ -10,11 +10,13 @@ namespace DTO.Models.FoodData
 
         public string Name { get; set; }
 
+        public string Address { get; set; }
+
         public DateTime ReceivedDate { get; set; }
 
         public Treatments Treatment { get; set; }
 
-        public DateTime PackagingDate { get; set; }
+        public Packaging Packaging { get; set; }
 
         public DateTime ProvideDate { get; set; }
     }

@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.BusinessLogicImpl
 {
-    public class ProductBLImpl : IProductBL
+    public class FoodBLImpl : IFoodBL
     {
         private IProductRepository _productRepos;
         private ICategoryRepository _categoryRepos;
 
-        public ProductBLImpl(IProductRepository productRepos, ICategoryRepository categoryRepos)
+        public FoodBLImpl(IProductRepository productRepos, ICategoryRepository categoryRepos)
         {
             _productRepos = productRepos;
             _categoryRepos = categoryRepos;

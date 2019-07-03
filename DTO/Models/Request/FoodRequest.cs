@@ -12,4 +12,12 @@ namespace DTO.Models
 
         public int FarmerId { get; set; }
     }
+
+    public class PackagingRequest
+    {
+        public DateTime MFGDate { get; set; }
+
+        public DateTime EXPDate { get; set; }
+
+    }
 }

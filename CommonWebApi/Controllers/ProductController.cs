@@ -16,9 +16,9 @@ namespace CommonWebApi.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private IProductBL _productBL;
+        private IFoodBL _productBL;
 
-        public ProductController(IProductBL productBL)
+        public ProductController(IFoodBL productBL)
         {
             _productBL = productBL;
         }
