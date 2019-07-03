@@ -14,6 +14,8 @@ namespace DTO.Entities
 
         public int CategoriesId { get; set; }
 
+        public string Breed { get; set; }
+
         public virtual Categories Categories { get; set; }
 
         public int FarmerId { get; set; }

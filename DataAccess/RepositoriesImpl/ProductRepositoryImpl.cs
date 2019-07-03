@@ -26,18 +26,22 @@ namespace DataAccess.RepositoriesImpl
         }
         public async Task<IList<Food>> FindAllProductByProviderAsync(int providerID)
         {
-            IList<Food> products = await FindAllAsync(x => x.Provider.PremisesId == providerID);
+            IList<Food> products = await FindAllAsync(x => x.ProviderId == providerID);
             IEnumerable<Food> result = products.OrderByDescending(x => x.CreatedDate).Take(500);
             return result.ToList();
         }
 
         public async Task<int> CreateProductAsync(Food newProduct)
         {
-            //    newProduct.Id = 0;
-            //    newProduct.CreatedDate = DateTime.Now;
-            //    await this.InsertAsync(newProduct, true);
-            //    return newProduct.Id;
-            return 0;
+            newProduct.FoodId = 0;
+            newProduct.IsCertification = false;
+            newProduct.IsFeeding = false;
+            newProduct.IsPackaging = false;
+            newProduct.IsTreatment = false;
+            newProduct.IsVaccination = false;
+            newProduct.CreatedDate = DateTime.Now;
+            await this.InsertAsync(newProduct, true);
+            return newProduct.FoodId;
         }
         public async Task<IEnumerable<Food>> GetMatchedWithNumber(int distributorId)
         {
@@ -50,6 +54,13 @@ namespace DataAccess.RepositoriesImpl
             ////}
             //return list;
             return null;
+        }
+
+        public async Task<IList<Food>> FindAllProductByFarmerAsync(int farmerID)
+        {
+            IList<Food> products = await FindAllAsync(x => x.FarmerId == farmerID);
+            IEnumerable<Food> result = products.OrderByDescending(x => x.CreatedDate).Take(500);
+            return result.ToList();
         }
     }
 }

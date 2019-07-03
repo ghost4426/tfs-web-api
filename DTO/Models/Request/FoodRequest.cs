@@ -6,7 +6,7 @@ namespace DTO.Models
 {
    public class CreateFoodRequest
     {
-        public int CategoryId { get; set; }
+        public int CategoriesId { get; set; }
 
         public string Breed { get; set; }
 

@@ -1,19 +1,23 @@
 ﻿$(document).ready(function () {
     getProduct();
+    loadCategory();
+    insertProduct();
 });
 
 function getProduct() {
     $.ajax({
         type: 'get',
-        url: 'https://localhost:4201/api/Provider/testgetByProvider',
+        url: 'https://localhost:4201/api/Farmer/getByFarmer',
         dataType: 'json',
         success: function (data) {
+            console.log(data);
             $('.file-export').DataTable({
                 data: data,
                 ordering: false,
                 destroy: true,
                 columns: [
                     { data: 'Categories.Name' },
+                    { data : 'Breed'},
                     {
                         data: 'CreatedDate',
                         render: function (data, type, row) {
@@ -83,29 +87,30 @@ function loadCategory() {
         }
     });
 }
+
 function insertProduct() {
     $('#btnAddProduct').click(function () {
-        var name = $('input[name="NewName"]').val();
         var cate = parseInt($('select[name="NewCategory"]').val());
+        var breed = $('input[name="Breed"]').val();
         $.ajax({
             type: 'post',
-            url: 'https://localhost:4201/api/Product/createProduct',
+            url: 'https://localhost:4201/api/Farmer/createFood',
             dataType: 'json',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json; charset=utf-8'
             },
             data: JSON.stringify({
-                Name: name,
                 CategoriesId: cate,
-                ProviderUserId: 3
+                Breed: breed,
+                FarmerId: 2
             }),
             success: function (data) {
                 toastr.success('Bạn đã thêm ' + name + ' vào danh sách sản phẩm', 'Thêm thành công');
                 getProduct();
                 $('#default').modal('hide');
-                $('input[name="NewName"]').val("");
                 $('select[name="NewCategory"]').val("1");
+                $('input[name="Breed"]').val("");
             }
         })
     });

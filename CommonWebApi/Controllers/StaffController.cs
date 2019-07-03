@@ -56,18 +56,18 @@ namespace CommonWebApi.Controllers
         //    return await _materialBL.GetMaterialByFarmerId(FarmerId);
         //}
             
-        [HttpPost("createFood")]
-        public async Task<Models.ProductReponse.CreateProductReponse> CreateFood([FromBody]Models.CreateFoodRequest foodRequest )
-        {
-            Entities.Food food = _mapCreateFoodRequestModelToEntity.ConvertObject(foodRequest);
-                //new Entities.Food() { CategoriesId = foodRequest.CategoriesId, FarmerId = foodRequest.FamerId };
-            await _productBL.CreateProductAsync(food);
-            var reponseModel = new Models.ProductReponse.CreateProductReponse()
-            {
-                ProductId = food.FoodId
-            };
-            return reponseModel;
-        }
+        //[HttpPost("createFood")]
+        //public async Task<Models.ProductReponse.CreateProductReponse> CreateFood([FromBody]Models.CreateFoodRequest foodRequest )
+        //{
+        //    Entities.Food food = _mapCreateFoodRequestModelToEntity.ConvertObject(foodRequest);
+        //        //new Entities.Food() { CategoriesId = foodRequest.CategoriesId, FarmerId = foodRequest.FamerId };
+        //    await _productBL.CreateProductAsync(food);
+        //    var reponseModel = new Models.ProductReponse.CreateProductReponse()
+        //    {
+        //        ProductId = food.FoodId
+        //    };
+        //    return reponseModel;
+        //}
 
         [HttpGet("getFoodData")]
         public async Task<FoodData> GetFoodDataById(long id)
