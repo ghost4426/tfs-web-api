@@ -1,6 +1,8 @@
-﻿$(document).ready(function () {
+﻿
+
+$(document).ready(function () {
     getProduct();
-    
+
 })
 
 function getProduct() {
@@ -25,9 +27,9 @@ function getProduct() {
                     },
                     { data: 'Provider.Fullname' },
                     {
-                        data: null,
-                        render: function (o) {
-                            return '<button class="btn btn-grey" style="width: 50%" data-target="#moreInfo" data-toggle="modal">Thông tin chi tiết<i class="icon-eye"></i></button><button class="btn btn-info" style="width: 50%" data-target="#AddMoreInfo" data-toggle="modal">Thêm thông tin<i class="icon-pencil"></i></button>';
+                        data: 'Id',
+                        render: function (data) {
+                            return '<button class="btn btn-grey" style="width: 25%" data-target="#moreInfo" data-toggle="modal">Chi tiết<i class="icon-eye"></i></button><button class="btn btn-info" style="width: 50%" data-target="#AddMoreInfo" data-toggle="modal">Thêm thông tin<i class="icon-pencil"></i></button><button class="btn btn-success" style="width: 25%" data-target="#GetQRCode" onclick="makeCode(' + data + ')" data-toggle="modal">Mã QR</button>';
                         }
                     }
                 ],
@@ -35,5 +37,19 @@ function getProduct() {
         },
         dom: 'Bfrtip'
     });
+}
+
+//var qrcode = new QRCode(document.getElementById("qrcode"));
+function makeCode(id) {
+    //qrcode.clear();
+    //qrcode.makeCode(id + "");
+    //JsBarcode("#barcode", "abc" , {
+    //    format: "pharmacode",
+    //    lineColor: "#0aa",
+    //    width: 4,
+    //    height: 80,
+    //    displayValue: false
+    //});
+    JsBarcode("#barcode", "" + id);
 }
 
