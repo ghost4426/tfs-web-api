@@ -17,24 +17,28 @@ namespace DataAccess.IRepositories
         IQueryable<TEntity> GetIQueryable();
         IList<TEntity> GetAllPaged(int pageIndex, int pageSize, out int totalCount);
         int Count();
-        object Insert(TEntity entity, bool saveChanges = false);
-        void Delete(object id, bool saveChanges = false);
-        void Delete(TEntity entity, bool saveChanges = false);
-        void Update(TEntity entity, bool saveChanges = false);
-        TEntity Update(TEntity entity, object key, bool saveChanges = false);
+        object Insert(TEntity entity, bool saveChanges = true);
+        void Delete(object id, bool saveChanges = true);
+        void Delete(TEntity entity, bool saveChanges = true);
+        void Update(TEntity entity, bool saveChanges = true);
+        TEntity Update(TEntity entity, object key, bool saveChanges = true);
         void Commit();
 
         Task<IList<TEntity>> GetAllAsync();
+        Task<IList<TEntity>> GetTopAsync(Expression<Func<TEntity, bool>> orderBy, int top);
         Task<IList<TEntity>> FindAllAsync(Expression<Func<TEntity, bool>> match);
+        Task<IList<TEntity>> FindTopAsync(Expression<Func<TEntity, bool>> match, Expression<Func<TEntity, bool>> orderBy, int top);
         Task<TEntity> GetByIdAsync(object id);
         Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> match);
         Task<int> CountAsync();
-        Task<object> InsertAsync(TEntity entity, bool saveChanges = false);
-        Task DeleteAsync(object id, bool saveChanges = false);
-        Task DeleteAsync(TEntity entity, bool saveChanges = false);
-        Task UpdateAsync(TEntity entity, bool saveChanges = false);
-        Task<TEntity> UpdateAsync(TEntity entity, object key, bool saveChanges = false);
+        Task<object> InsertAsync(TEntity entity, bool saveChanges = true);
+        Task DeleteAsync(object id, bool saveChanges = true);
+        Task DeleteAsync(TEntity entity, bool saveChanges = true);
+        Task UpdateAsync(TEntity entity, bool saveChanges = true);
+        Task UpdateRangeAsync(ICollection<TEntity> entities, bool saveChanges = true);
+        Task<TEntity> UpdateAsync(TEntity entity, object key, bool saveChanges = true);
         Task CommitAsync();
         void Dispose();
+
     }
 }

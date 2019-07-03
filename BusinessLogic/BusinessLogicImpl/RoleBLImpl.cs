@@ -10,17 +10,16 @@ namespace BusinessLogic.BusinessLogicImpl
 {
     public class RoleBLImpl : IRoleBL
     {
-        private IRoleRepository roleRepository;
+        private IRoleRepository _roleRepos;
 
-        public RoleBLImpl(IRoleRepository roleRepository)
+        public RoleBLImpl(IRoleRepository roleRepos)
         {
-            if (roleRepository != null)
-                this.roleRepository = roleRepository;
+                _roleRepos = roleRepos;
         }
 
         public async Task<Role> GetById(int id)
         {
-           return await roleRepository.GetByIdAsync(id);
+           return await _roleRepos.GetByIdAsync(id);
         }
     }
 }

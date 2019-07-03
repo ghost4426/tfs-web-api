@@ -1,23 +1,28 @@
-﻿using DataAccess.Context;
+﻿using System;
+using System.Text;
+using BusinessLogic.BusinessLogicImpl;
+using BusinessLogic.IBusinessLogic;
+using DataAccess.Context;
+using DataAccess.IRepositories;
+using DataAccess.RepositoriesImpl;
+using DTO.Models.Common;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Swashbuckle.AspNetCore.Swagger;
-using DataAccess.IRepositories;
-using DataAccess.RepositoriesImpl;
-using BusinessLogic.IBusinessLogic;
-using BusinessLogic.BusinessLogicImpl;
 using Newtonsoft.Json.Serialization;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using System.Text;
-using System;
-using DTO.Models.Common;
-using Swashbuckle.AspNetCore.Filters;
+using Swashbuckle.AspNetCore.Swagger;
 using Common.Constant;
+using Swashbuckle.AspNetCore.Filters;
+using Microsoft.IdentityModel.Tokens;
+using Common.Utils;
+using AutoMapper;
+using Common.Mapper;
+using System.Reflection;
+using System.IO;
 
 namespace AdminWebApi
 {
@@ -46,7 +51,13 @@ namespace AdminWebApi
                     }
                 });
 
+            //Auto mapper
+            Mapper.Initialize(cfg => cfg.AddProfile<MappingProfiles>());
+            services.AddAutoMapper();
+
+
             #region Instanceinjection
+
             // Repositories
             services.AddScoped<IUserRepository, UserRepositoryImpl>();
             services.AddScoped<IRoleRepository, RoleRepositoryImpl>();
@@ -56,7 +67,8 @@ namespace AdminWebApi
             services.AddScoped<IRoleBL, RoleBLImpl>();
             #endregion
 
-
+            services.Configure<AuthMessageSenderOptions>(Configuration.GetSection("AuthMessageSenderOptions"));
+            services.AddSingleton<IEmailSender, EmailSender>();
             //Set Swagger
             services.AddSwaggerGen(c =>
             {
@@ -68,9 +80,12 @@ namespace AdminWebApi
                     Name = "Authorization",
                     Type = "apiKey"
                 });
+                // Set the comments path for the Swagger JSON and UI.
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
                 c.OperationFilter<SecurityRequirementsOperationFilter>();
             });
-
 
             //Set database.
             services.AddDbContext<FoodTrackingDbContext>(c =>
@@ -135,7 +150,7 @@ namespace AdminWebApi
             app.UseAuthentication();
 
             app.UseCors(builder =>
-            builder.WithOrigins(Configuration["JWTSetttings:Client_URL"].ToString())
+            builder.AllowAnyOrigin()
             .AllowAnyHeader()
             .AllowAnyMethod()
             );

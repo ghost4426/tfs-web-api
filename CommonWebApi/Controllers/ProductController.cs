@@ -16,42 +16,47 @@ namespace CommonWebApi.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private IProductBL bl;
+        private IFoodBL _productBL;
 
-        public ProductController(IProductBL productBL)
+        public ProductController(IFoodBL productBL)
         {
-            this.bl = productBL;
-        }
-
-        // GET api/values
-        [HttpGet]
-       public async Task<IList<Product>> GetAllProduct()
-        {
-            return await bl.GetAllProductAsync();
+            _productBL = productBL;
         }
 
         // GET api/values
-        [HttpGet("/getByProvider")]
-        public async Task<IList<Product>> FindAllProductByProviderAsync(int providerID) 
-        {
-            return await bl.FindAllProductByProviderAsync(providerID);
-        }
+       // [HttpGet]
+       //public async Task<IList<Food>> GetAllProduct()
+       // {
+       //     return await _productBL.GetAllProductAsync();
+       // }
 
-        [HttpPost("/createProduct")]
-        public async Task<Models.ProductReponse.CreateProductReponse> CreateProduct([FromBody] Product productModel)
-        {
-            Entities.Product product = new Entities.Product() { Name = productModel.Name, CategoriesId = productModel.CategoriesId, ProviderUserId = productModel.ProviderUserId };
-            await bl.CreateProductAsync(product);
-            var reponseModel = new Models.ProductReponse.CreateProductReponse()
-            {
-                ProductId = product.Id
-            };
-            return reponseModel;
-        }
-        [HttpGet("getProductMatched/{distributorId}")]
-        public async Task<IEnumerable<Product>> getMatchedWithNumber(int distributorId)
-        {
-            return await bl.getMatchedWithNumber(distributorId);
-        }
+        // GET api/values
+        //[HttpGet("getByProvider")]
+        //public async Task<IList<Food>> FindAllProductByProviderAsync() 
+        //{
+        //    int userId = Int32.Parse(User.Claims.First(c => c.Type == "UserID").Value);
+
+        //    return await _productBL.FindAllProductByProviderAsync(userId);
+        //}
+
+        //[HttpGet("testgetByProvider")]
+        //public async Task<IList<Food>> TestFindAllProductByProviderAsync()
+        //{
+        //    return await _productBL.FindAllProductByProviderAsync(3);
+        //}
+
+       
+
+        //[HttpGet("getAllCategory")]
+        //public async Task<IList<Categories>> getAllCategory()
+        //{
+        //    return await _productBL.getAllCategory();
+        //}
+        
+        //[HttpGet("getProductMatched/{distributorId}")]
+        //public async Task<IEnumerable<Food>> getMatchedWithNumber(int distributorId)
+        //{
+        //    return await _productBL.getMatchedWithNumber(distributorId);
+        //}
     }
 }

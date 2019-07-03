@@ -24,15 +24,15 @@ namespace DTO.Entities
 
         public virtual Role Role { get; set; }
 
+        public int? PremisesId { get; set; }
+
+        public virtual Premises Premises { get; set; }
+
         public bool IsActive { get; set; }
 
         public string Salt { get; set; }
 
         public DateTime CreatedDate { get; set; }
-
-        public ICollection<Material> farmerMateials;
-        public ICollection<Material> distributeMateials;
-        public ICollection<Material> mateialsCreateBy;
 
     }
 }

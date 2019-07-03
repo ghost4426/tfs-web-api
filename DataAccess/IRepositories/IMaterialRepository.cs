@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace DataAccess.IRepositories
 {
-    public interface IMaterialRepository : IGenericRepository<Material>
-    {
-        Task<IEnumerable<Material>> GetMaterialByFarmerId(int FarmerId);
-    }
+    //public interface IMaterialRepository : IGenericRepository<Material>
+    //{
+    //    Task<IEnumerable<Material>> GetMaterialByFarmerId(int FarmerId);
+    //}
 }

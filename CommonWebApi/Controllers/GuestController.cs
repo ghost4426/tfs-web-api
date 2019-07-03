@@ -22,14 +22,14 @@ namespace AdminWebApi.Controllers
 
         private readonly IUserBL _userBL;
         private readonly IRoleBL _roleBL;
-        private readonly JWTSetttings AppSettings;
+        private readonly JWTSetttings _appSettings;
 
 
         public GuestController(IUserBL userBL, IRoleBL roleBL, IOptions<JWTSetttings> appSettings)
         {
             _userBL = userBL;
             _roleBL = roleBL;
-            AppSettings = appSettings.Value;
+            _appSettings = appSettings.Value;
         }
 
         [HttpPost("login")]
@@ -38,16 +38,16 @@ namespace AdminWebApi.Controllers
             try
             {
                 var user = await _userBL.CheckLogin(login);
-                user.Role = await _roleBL.GetById(user.RoleId);
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
                     Subject = new ClaimsIdentity(new Claim[]
                     {
                         new Claim("UserID",user.UserId.ToString()),
-                        new Claim("roles", user.Role.Name)
+                        new Claim("roles", user.Role.Name),
+                        new Claim("premesisId", user.PremisesId.ToString())
                     }),
                     Expires = DateTime.UtcNow.AddMinutes(30),
-                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(AppSettings.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature)
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature)
                 };
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var securityToken = tokenHandler.CreateToken(tokenDescriptor);

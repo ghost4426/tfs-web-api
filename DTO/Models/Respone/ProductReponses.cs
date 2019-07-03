@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DTO.Entities;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -9,7 +10,7 @@ namespace DTO.Models
 
         public class GetAllProduct
         {
-            public IList<Product> ListProduct { get; set; }
+            public IList<Food> ListProduct { get; set; }
         }
     }
 }

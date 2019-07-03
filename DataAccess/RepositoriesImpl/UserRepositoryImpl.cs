@@ -10,33 +10,30 @@ using System.Linq;
 
 namespace DataAccess.RepositoriesImpl
 {
-    public class UserRepositoryImpl : GenericRepository<User> , IUserRepository
+    public class UserRepositoryImpl : GenericRepository<User>, IUserRepository
     {
+        private FoodTrackingDbContext _dbContext;
 
-        private FoodTrackingDbContext foodTrackingDbContext;
 
-        public UserRepositoryImpl(FoodTrackingDbContext context)
-           : base(context)
+        public UserRepositoryImpl(FoodTrackingDbContext dbContext)
+           : base(dbContext)
         {
-            foodTrackingDbContext = context;
-        }
-        public async Task<int> CreateUser(User newUser)
-        {
-            newUser.UserId = 0;
-            newUser.CreatedDate = DateTime.Now;
-            await InsertAsync(newUser, true);
-            //this.Commit();
-            return newUser.UserId;
+            _dbContext = dbContext;
         }
 
+        public async Task<string> changeRole1User(User user)
+        {
+            await this.UpdateAsync(user, true);
+            return user.RoleId.ToString();
+        }
         public Task<User> FindByUsername(string username)
         {
-            return FindAsync(u => u.Username.CompareTo(username) == 0);
+            return FindAsync(u => u.Username == username);
         }
-        public async Task<IList<User>> GetUsers()
+        public async Task<User> UpdateUser(User user)
         {
-            IList<User> users = await FindAllAsync(u => u.RoleId > 1);
-            return users;
+            await this.UpdateAsync(user, true);
+            return user;
         }
         public async Task<User> FindByUserId(int id) {
            User user = await FindAsync(x => x.UserId == id);

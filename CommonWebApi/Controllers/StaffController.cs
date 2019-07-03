@@ -7,8 +7,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models = DTO.Models;
 using Entities = DTO.Entities;
-using DTO.Entities;
 using System.Linq.Expressions;
+using DTO.Models.FoodData;
+using Common.Utils;
 
 namespace CommonWebApi.Controllers
 {
@@ -16,46 +17,71 @@ namespace CommonWebApi.Controllers
     [ApiController]
     public class StaffController : ControllerBase
     {
-        private IMaterialBL MaterialBL;
-        private IProductBL Bl;
+        private IMaterialBL _materialBL;
+        private IFoodBL _productBL;
+        private IFoodDataBL _foodDataBL;
 
-
-        public StaffController(IProductBL ProductBL, IMaterialBL MaterialBL)
+        public StaffController(
+            IMaterialBL materialBL,
+            IFoodBL productBL,
+            IFoodDataBL foodDataBL)
         {
-            this.MaterialBL = MaterialBL;
-            this.Bl = ProductBL;
+            _materialBL = materialBL;
+            _productBL = productBL;
+            _foodDataBL = foodDataBL;
         }
 
 
         // GET api/values
         [HttpGet("getByProvider")]
-        public async Task<IList<Product>> FindAllProductByProviderAsync(int providerID)
+        public async Task<IList<Entities.Food>> FindAllProductByProviderAsync(int providerID)
         {
-            return await Bl.FindAllProductByProviderAsync(providerID);
+            return await _productBL.FindAllProductByProviderAsync(providerID);
         }
 
-        [HttpPost("createProduct")]
-        public async Task<Models.ProductReponse.CreateProductReponse> CreateProduct([FromBody] Product productModel)
-        {
-            Entities.Product product = new Entities.Product() { Name = productModel.Name, CategoriesId = productModel.CategoriesId, ProviderUserId = productModel.ProviderUserId };
-            await Bl.CreateProductAsync(product);
-            var reponseModel = new Models.ProductReponse.CreateProductReponse()
-            {
-                ProductId = product.Id
-            };
-            return reponseModel;
-        }
+
 
         [HttpGet("getProductMatched/{distributorId}")]
-        public async Task<IEnumerable<Product>> getMatchedWithNumber(int distributorId)
+        public async Task<IEnumerable<Entities.Food>> getMatchedWithNumber(int distributorId)
         {
-            return await Bl.getMatchedWithNumber(distributorId);
+            return await _productBL.getMatchedWithNumber(distributorId);
         }
 
-        [HttpGet("getMaterialMatched/{FarmerId}")]
-        public async Task<IEnumerable<Material>> GetMaterialByFarmerId(int FarmerId)
+        //[HttpGet("getMaterialMatched/{FarmerId}")]
+        //public async Task<IEnumerable<Entities.Material>> GetMaterialByFarmerId(int FarmerId)
+        //{
+        //    return await _materialBL.GetMaterialByFarmerId(FarmerId);
+        //}
+        
+
+        [HttpGet("getFoodData")]
+        public async Task<FoodData> GetFoodDataById(long id)
         {
-            return await MaterialBL.GetMaterialByFarmerId(FarmerId);
+            return await _foodDataBL.GetFoodDataByID(id);
+        }
+
+        [HttpPost("saveFoodData")]
+        public async Task<string> SaveFoodData()
+        {
+            FoodData foodData = new FoodData()
+            {
+                FoodId = 1,
+                Category = "Thịt Heo",
+                Farm = new Farm()
+                {
+                    Name = "Farm Test",
+                    FarmId = 1
+                },
+                Distributor = new Distributor()
+                {
+                    Name = "Dis test"
+                },
+                Provider = new Provider()
+                {
+                    Name = "Provider test"
+                }
+            };
+            return await _foodDataBL.SaveFoodData(foodData);
         }
 
     }
