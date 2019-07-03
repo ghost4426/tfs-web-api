@@ -24,6 +24,7 @@ using Common.Constant;
 using Swashbuckle.AspNetCore.Filters;
 using Microsoft.IdentityModel.Tokens;
 using ContractInteraction.Services;
+using Common.Utils;
 
 namespace CommonWebApi
 {
@@ -69,6 +70,7 @@ namespace CommonWebApi
 
             //Service
             services.AddScoped<IService, ServiceImpl>();
+            services.AddScoped(typeof(IAutoMapConverter<,>), typeof(AutoMapConverter<,>));
 
             #endregion
 
