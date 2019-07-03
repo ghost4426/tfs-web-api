@@ -80,6 +80,7 @@ namespace CommonWebApi
 
             //Service
             services.AddScoped<IService, ServiceImpl>();
+            services.AddScoped(typeof(IAutoMapConverter<,>), typeof(AutoMapConverter<,>));
 
             #endregion
 

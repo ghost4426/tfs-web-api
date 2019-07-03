@@ -18,5 +18,7 @@ namespace BusinessLogic.IBusinessLogic
 
         Task<IList<Categories>> getAllCategory();
 
+        Task<IList<Food>> FindAllProductByFarmerAsync(int farmerID);
+
     }
 }

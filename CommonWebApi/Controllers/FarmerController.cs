@@ -55,5 +55,30 @@ namespace CommonWebApi.Controllers
         {
             return await _foodDataBL.AddCertification(foodId, certificationNumber);
         }
+
+        [HttpGet("getAllCategory")]
+        public async Task<IList<Categories>> getAllCategory()
+        {
+            return await _productBL.getAllCategory();
+        }
+
+        [HttpGet("getByFarmer")]
+        public async Task<IList<Food>> FindAllProductByFarmerAsync()
+        {
+            return await _productBL.FindAllProductByFarmerAsync(2);
+        }
+
+        [HttpPost("createFood")]
+        public async Task<Models.ProductReponse.CreateProductReponse> CreateFood([FromBody]Models.CreateFoodRequest foodRequest)
+        {
+            Entities.Food food = _mapCreateFoodRequestModelToEntity.ConvertObject(foodRequest);
+            //new Entities.Food() { CategoriesId = foodRequest.CategoriesId, FarmerId = foodRequest.FamerId };
+            await _productBL.CreateProductAsync(food);
+            var reponseModel = new Models.ProductReponse.CreateProductReponse()
+            {
+                ProductId = food.FoodId
+            };
+            return reponseModel;
+        }
     }
 }

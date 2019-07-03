@@ -67,8 +67,8 @@
                                 <span class="user-name">John Doe</span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="user-detail.html"><i class="ft-user"></i> Edit Profile</a>
-                                <div class="dropdown-divider"></div><a class="dropdown-item" href="#"><i class="ft-power"></i> Logout</a>
+                                <a class="dropdown-item" href="user-detail.html"><i class="ft-user"></i> Cập nhật thông tin</a>
+                                <div class="dropdown-divider"></div><a class="dropdown-item" href="#"><i class="ft-power"></i> Đăng xuất</a>
                             </div>
                         </li>
                     </ul>
@@ -83,15 +83,21 @@
         <div class="navbar-container main-menu-content container center-layout" data-menu="menu-container">
             <ul class="nav navbar-nav" id="main-menu-navigation" data-menu="menu-navigation">
                 @*<li class="dropdown nav-item">
-                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">
-                            <i class="icon-user"></i>
-                            Quản lý tài khoản
-                        </a>
-                    </li>*@
+            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">
+                <i class="icon-user"></i>
+                Quản lý tài khoản
+            </a>
+        </li>*@
                 <li class="dropdown nav-item">
                     <a class="nav-link" asp-controller="Admin" asp-action="Index">
                         <i class="icon-user"></i>
                         <span data-i18n="nav.category.general">Quản lý tài khoản</span>
+                    </a>
+                </li>
+                <li class="dropdown nav-item">
+                    <a class="nav-link" asp-controller="Farmer" asp-action="Index">
+                        <i class="fa fa-pied-piper-alt"></i>
+                        <span data-i18n="nav.category.general">Quản lý thực phẩm</span>
                     </a>
                 </li>
                 <li class="dropdown nav-item">
@@ -102,7 +108,7 @@
                 </li>
                 <li class="dropdown nav-item">
                     <a class="nav-link" asp-controller="Distributor" asp-action="Index">
-                        <i class="icon-user"></i>
+                        <i class="fa fa-truck"></i>
                         <span data-i18n="nav.category.general">Quản lý thực phẩm</span>
                     </a>
                 </li>
