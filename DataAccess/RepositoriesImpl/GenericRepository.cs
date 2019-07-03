@@ -82,7 +82,7 @@ namespace DataAccess.RepositoriesImpl
             return this.DbSet.Count();
         }
 
-        public virtual object Insert(TEntity entity, bool saveChanges = false)
+        public virtual object Insert(TEntity entity, bool saveChanges = true)
         {
             var rtn = this.DbSet.Add(entity);
             if (saveChanges)
@@ -92,7 +92,7 @@ namespace DataAccess.RepositoriesImpl
             return rtn;
         }
 
-        public virtual void Delete(object id, bool saveChanges = false)
+        public virtual void Delete(object id, bool saveChanges = true)
         {
             var item = GetById(id);
             this.DbSet.Remove(item);
@@ -102,7 +102,7 @@ namespace DataAccess.RepositoriesImpl
             }
         }
 
-        public virtual void Delete(TEntity entity, bool saveChanges = false)
+        public virtual void Delete(TEntity entity, bool saveChanges = true)
         {
             this.DbSet.Attach(entity);
             this.DbSet.Remove(entity);
@@ -112,7 +112,7 @@ namespace DataAccess.RepositoriesImpl
             }
         }
 
-        public virtual void Update(TEntity entity, bool saveChanges = false)
+        public virtual void Update(TEntity entity, bool saveChanges = true)
         {
             var entry = Context.Entry(entity);
             this.DbSet.Attach(entity);
@@ -123,7 +123,7 @@ namespace DataAccess.RepositoriesImpl
             }
         }
 
-        public virtual TEntity Update(TEntity entity, object key, bool saveChanges = false)
+        public virtual TEntity Update(TEntity entity, object key, bool saveChanges = true)
         {
             if (entity == null)
                 return null;
@@ -171,7 +171,7 @@ namespace DataAccess.RepositoriesImpl
             return await this.DbSet.CountAsync();
         }
 
-        public virtual async Task<object> InsertAsync(TEntity entity, bool saveChanges = false)
+        public virtual async Task<object> InsertAsync(TEntity entity, bool saveChanges = true)
         {
             var rtn = await this.DbSet.AddAsync(entity);
             if (saveChanges)
@@ -181,7 +181,7 @@ namespace DataAccess.RepositoriesImpl
             return rtn;
         }
 
-        public virtual async Task DeleteAsync(object id, bool saveChanges = false)
+        public virtual async Task DeleteAsync(object id, bool saveChanges = true)
         {
             this.DbSet.Remove(GetById(id));
             if (saveChanges)
@@ -190,7 +190,7 @@ namespace DataAccess.RepositoriesImpl
             }
         }
 
-        public virtual async Task DeleteAsync(TEntity entity, bool saveChanges = false)
+        public virtual async Task DeleteAsync(TEntity entity, bool saveChanges = true)
         {
             this.DbSet.Attach(entity);
             this.DbSet.Remove(entity);
@@ -200,7 +200,7 @@ namespace DataAccess.RepositoriesImpl
             }
         }
 
-        public virtual async Task UpdateAsync(TEntity entity, bool saveChanges = false)
+        public virtual async Task UpdateAsync(TEntity entity, bool saveChanges = true)
         {
             var entry = Context.Entry(entity);
             this.DbSet.Attach(entity);
@@ -211,7 +211,7 @@ namespace DataAccess.RepositoriesImpl
             }
         }
 
-        public virtual async Task<TEntity> UpdateAsync(TEntity entity, object key, bool saveChanges = false)
+        public virtual async Task<TEntity> UpdateAsync(TEntity entity, object key, bool saveChanges = true)
         {
             if (entity == null)
                 return null;
@@ -259,6 +259,17 @@ namespace DataAccess.RepositoriesImpl
         public async Task<IList<TEntity>> GetTopAsync(Expression<Func<TEntity, bool>> orderBy, int top)
         {
             return await this.DbSet.Take(top).OrderBy(orderBy).ToListAsync();
+        }
+
+        public async Task UpdateRangeAsync(ICollection<TEntity> entities, bool saveChanges = true)
+        {
+            var entry = Context.Entry(entities);
+            this.DbSet.AttachRange(entities);
+            entry.State = EntityState.Modified;
+            if (saveChanges)
+            {
+                await Context.SaveChangesAsync();
+            }
         }
     }
 }

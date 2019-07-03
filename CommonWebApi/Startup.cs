@@ -24,6 +24,11 @@ using Common.Constant;
 using Swashbuckle.AspNetCore.Filters;
 using Microsoft.IdentityModel.Tokens;
 using ContractInteraction.Services;
+using Common.Utils;
+using AutoMapper;
+using Common.Mapper;
+using System.Reflection;
+using System.IO;
 
 namespace CommonWebApi
 {
@@ -49,22 +54,28 @@ namespace CommonWebApi
                         var res = resolver as DefaultContractResolver;
                         res.NamingStrategy = null;
                     }
-                }); ;
+                });
 
+            //Auto mapper
+            Mapper.Initialize(cfg => cfg.AddProfile<MappingProfiles>());
+            services.AddAutoMapper();
 
             #region Instanceinjection
+
             // Repositories
             services.AddScoped<IUserRepository, UserRepositoryImpl>();
             services.AddScoped<IRoleRepository, RoleRepositoryImpl>();
             services.AddScoped<IProductRepository, ProductRepositoryImpl>();
             services.AddScoped<ICategoryRepository, CategoryRepositoryImpl>();
             services.AddScoped<IProductRepository, ProductRepositoryImpl>();
+            services.AddScoped<ITreatmentRepository, TreatmentRepositoryImpl>();
+            services.AddScoped<IPremesisRepository, PremisesRepositoryImpl>();
 
             //BusinessLogic
             services.AddScoped<IUserBL, UserBLImpl>();
             services.AddScoped<IRoleBL, RoleBLImpl>();
             services.AddScoped<IMaterialBL, MaterialBLImpl>();
-            services.AddScoped<IProductBL, ProductBLImpl>();
+            services.AddScoped<IFoodBL, FoodBLImpl>();
             services.AddScoped<IFoodDataBL, FoodDataBLImpl>();
 
             //Service
@@ -83,6 +94,10 @@ namespace CommonWebApi
                     Name = "Authorization",
                     Type = "apiKey"
                 });
+                // Set the comments path for the Swagger JSON and UI.
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
                 c.OperationFilter<SecurityRequirementsOperationFilter>(); 
             });
 

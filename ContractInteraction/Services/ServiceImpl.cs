@@ -41,7 +41,7 @@ namespace ContractInteraction.Services
             var setting = new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore };
             string Data = JsonConvert.SerializeObject(FoodData, setting);
             var result = await service.SaveDataRequestAndWaitForReceiptAsync(
-                    new SaveDataFunction { Data = Data, Id = FoodData.Id, Gas = 1000000 });
+                    new SaveDataFunction { Data = Data, Id = FoodData.FoodId, Gas = 1000000 });
             return result.TransactionHash;
 
         }

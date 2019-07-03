@@ -7,6 +7,10 @@
     <UserSecretsId>269f74cd-91d0-49b0-bb83-f2423f032f79</UserSecretsId>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <WarningLevel>1</WarningLevel>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Remove="ViewModels\**" />
     <Compile Remove="wwwroot\**" />
@@ -19,7 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="8.1.1" />
     <PackageReference Include="DataTables-Editor-Server" Version="1.9.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
@@ -30,7 +33,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BusinessLogic\BusinessLogic.csproj" />
-    <ProjectReference Include="..\Common\Common.csproj" />
     <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
     <ProjectReference Include="..\DTO\DTO.csproj" />
   </ItemGroup>

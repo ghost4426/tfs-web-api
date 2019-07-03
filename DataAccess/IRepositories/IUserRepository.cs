@@ -11,8 +11,8 @@ namespace DataAccess.IRepositories
 
         Task<User> FindByUsername(string username);
 
-        Task<IList<User>> GetUsersAsync();
         Task<string> changeRole1User(User user);
+
         Task<User> UpdateUser(User user);
     }
 }

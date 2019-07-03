@@ -43,7 +43,8 @@ namespace AdminWebApi.Controllers
                     Subject = new ClaimsIdentity(new Claim[]
                     {
                         new Claim("UserID",user.UserId.ToString()),
-                        new Claim("roles", user.Role.Name)
+                        new Claim("roles", user.Role.Name),
+                        new Claim("premesisId", user.PremisesId.ToString())
                     }),
                     Expires = DateTime.UtcNow.AddMinutes(30),
                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature)
