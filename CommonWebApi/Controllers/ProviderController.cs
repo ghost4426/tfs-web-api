@@ -60,17 +60,17 @@ namespace CommonWebApi.Controllers
         }
 
         [HttpGet("testgetByProvider")]
-        public async Task<IList<Food>> TestFindAllProductByProviderAsync()
+        public async Task<IList<Entities.Food>> TestFindAllProductByProviderAsync()
         {
-            return await _productBL.FindAllProductByProviderAsync(3);
+            return await _foodBL.FindAllProductByProviderAsync(3);
         }
 
         [HttpGet("getByProvider")]
-        public async Task<IList<Food>> FindAllProductByProviderAsync()
+        public async Task<IList<Entities.Food>> FindAllProductByProviderAsync()
         {
             int userId = Int32.Parse(User.Claims.First(c => c.Type == "UserID").Value);
 
-            return await _productBL.FindAllProductByProviderAsync(userId);
+            return await _foodBL.FindAllProductByProviderAsync(userId);
         }
     }
 }

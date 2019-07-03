@@ -34,7 +34,7 @@ namespace CommonWebApi.Controllers
         public async Task<string> CreateFood([FromBody]Models.CreateFoodRequest foodRequest)
         {
             Entities.Food food = _mapper.Map<Entities.Food>(foodRequest);
-            food.FoodId = 99;
+            await _foodBL.CreateProductAsync(food);
             return await _foodDataBL.CreateFood(food, 2);
         }
 
@@ -57,28 +57,16 @@ namespace CommonWebApi.Controllers
         }
 
         [HttpGet("getAllCategory")]
-        public async Task<IList<Categories>> getAllCategory()
+        public async Task<IList<Entities.Categories>> getAllCategory()
         {
-            return await _productBL.getAllCategory();
+            return await _foodBL.getAllCategory();
         }
 
         [HttpGet("getByFarmer")]
-        public async Task<IList<Food>> FindAllProductByFarmerAsync()
+        public async Task<IList<Entities.Food>> FindAllProductByFarmerAsync()
         {
-            return await _productBL.FindAllProductByFarmerAsync(2);
+            return await _foodBL.FindAllProductByFarmerAsync(2);
         }
 
-        [HttpPost("createFood")]
-        public async Task<Models.ProductReponse.CreateProductReponse> CreateFood([FromBody]Models.CreateFoodRequest foodRequest)
-        {
-            Entities.Food food = _mapCreateFoodRequestModelToEntity.ConvertObject(foodRequest);
-            //new Entities.Food() { CategoriesId = foodRequest.CategoriesId, FarmerId = foodRequest.FamerId };
-            await _productBL.CreateProductAsync(food);
-            var reponseModel = new Models.ProductReponse.CreateProductReponse()
-            {
-                ProductId = food.FoodId
-            };
-            return reponseModel;
-        }
     }
 }
