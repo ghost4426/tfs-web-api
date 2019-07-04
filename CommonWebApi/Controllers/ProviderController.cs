@@ -11,6 +11,7 @@ using BusinessLogic.IBusinessLogic;
 using Common.Utils;
 using Common.Constant;
 using AutoMapper;
+using Common.Enum;
 
 namespace CommonWebApi.Controllers
 {
@@ -18,10 +19,10 @@ namespace CommonWebApi.Controllers
     [ApiController]
     public class ProviderController : ControllerBase
     {
-        private IFoodBL _foodBL;
-        private IFoodDataBL _foodDataBL;
-        private ITreatmentBL _treatmentBL;
-        private IMapper _mapper;
+        private readonly IFoodBL _foodBL;
+        private readonly IFoodDataBL _foodDataBL;
+        private readonly ITreatmentBL _treatmentBL;
+        private readonly IMapper _mapper;
 
         public ProviderController(
             IFoodBL foodBL,
@@ -49,12 +50,14 @@ namespace CommonWebApi.Controllers
         [HttpPut("food/treatment/{foodId}")]
         public async Task<string> AddTreatment(long foodId, [FromBody]string treatmentId)
         {
+            await _foodBL.AddDetail(foodId, EFoodDetailType.TREATMENT);
             return await _foodDataBL.AddTreatment(foodId, int.Parse(treatmentId));
         }
 
         [HttpPut("food/packaging/{foodId}")]
         public async Task<string> Packaging(long foodId, [FromBody]Models.PackagingRequest packagingRequest)
         {
+            await _foodBL.AddDetail(foodId, EFoodDetailType.PACKAGING);
             var Packaging = _mapper.Map<Models.FoodData.Packaging>(packagingRequest);
             return await _foodDataBL.Packaging(foodId, Packaging);
         }

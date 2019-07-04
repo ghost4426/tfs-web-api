@@ -1,4 +1,5 @@
-﻿using DTO.Entities;
+﻿using Common.Enum;
+using DTO.Entities;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
@@ -20,5 +21,6 @@ namespace BusinessLogic.IBusinessLogic
 
         Task<IList<Food>> FindAllProductByFarmerAsync(int farmerID);
 
+        Task AddDetail(long foodId, EFoodDetailType type);
     }
 }
