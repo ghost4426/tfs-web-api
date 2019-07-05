@@ -9,6 +9,7 @@ using Entities = DTO.Entities;
 using BusinessLogic.IBusinessLogic;
 using Common.Utils;
 using AutoMapper;
+using Common.Enum;
 
 namespace CommonWebApi.Controllers
 {
@@ -17,9 +18,9 @@ namespace CommonWebApi.Controllers
     public class FarmerController : ControllerBase
     {
 
-        private IFoodBL _foodBL;
-        private IFoodDataBL _foodDataBL;
-        private IMapper _mapper;
+        private readonly IFoodBL _foodBL;
+        private readonly IFoodDataBL _foodDataBL;
+        private readonly IMapper _mapper;
         public FarmerController(
             IFoodBL foodBL,
             IFoodDataBL foodDataBL,
@@ -34,51 +35,42 @@ namespace CommonWebApi.Controllers
         public async Task<string> CreateFood([FromBody]Models.CreateFoodRequest foodRequest)
         {
             Entities.Food food = _mapper.Map<Entities.Food>(foodRequest);
-            food.FoodId = 99;
-            return await _foodDataBL.CreateFood(food, 2);
+            await _foodBL.CreateProductAsync(food);
+            return await _foodDataBL.CreateFood(food, food.FarmerId);
         }
 
         [HttpPut("food/feedings/{foodId}")]
         public async Task<string> AddFeedings(long foodId, [FromBody]List<string> feedings)
         {
+            await _foodBL.AddDetail(foodId, EFoodDetailType.FEEDING);
             return await _foodDataBL.AddFeedings(foodId, feedings);
         }
 
         [HttpPut("food/vaccination/{foodId}")]
         public async Task<string> AddVaccination(long foodId, [FromBody]string vaccinationType)
         {
+            await _foodBL.AddDetail(foodId, EFoodDetailType.VACCINATION);
             return await _foodDataBL.AddVaccination(foodId, vaccinationType);
         }
 
         [HttpPut("food/certification/{foodId}")]
         public async Task<string> AddCertification(long foodId, [FromBody]string certificationNumber)
         {
+            await _foodBL.AddDetail(foodId, EFoodDetailType.CERTIFICATION);
             return await _foodDataBL.AddCertification(foodId, certificationNumber);
         }
 
         [HttpGet("getAllCategory")]
-        public async Task<IList<Categories>> getAllCategory()
+        public async Task<IList<Entities.Categories>> getAllCategory()
         {
-            return await _productBL.getAllCategory();
+            return await _foodBL.getAllCategory();
         }
 
         [HttpGet("getByFarmer")]
-        public async Task<IList<Food>> FindAllProductByFarmerAsync()
+        public async Task<IList<Entities.Food>> FindAllProductByFarmerAsync()
         {
-            return await _productBL.FindAllProductByFarmerAsync(2);
+            return await _foodBL.FindAllProductByFarmerAsync(2);
         }
 
-        [HttpPost("createFood")]
-        public async Task<Models.ProductReponse.CreateProductReponse> CreateFood([FromBody]Models.CreateFoodRequest foodRequest)
-        {
-            Entities.Food food = _mapCreateFoodRequestModelToEntity.ConvertObject(foodRequest);
-            //new Entities.Food() { CategoriesId = foodRequest.CategoriesId, FarmerId = foodRequest.FamerId };
-            await _productBL.CreateProductAsync(food);
-            var reponseModel = new Models.ProductReponse.CreateProductReponse()
-            {
-                ProductId = food.FoodId
-            };
-            return reponseModel;
-        }
     }
 }

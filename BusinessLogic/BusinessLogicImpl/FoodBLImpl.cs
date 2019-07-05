@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.IBusinessLogic;
+using Common.Enum;
 using DataAccess.IRepositories;
 using DTO.Entities;
 using System.Collections.Generic;
@@ -57,6 +58,31 @@ namespace BusinessLogic.BusinessLogicImpl
                 product.Categories = cat;
             }
             return products;
+        }
+
+        public async Task AddDetail(long foodId, EFoodDetailType type)
+        {
+            var food =  _productRepos.GetById((int)foodId);
+            switch (type)
+            {
+                case EFoodDetailType.FEEDING:
+                    food.IsFeeding = true;
+                    break;
+                case EFoodDetailType.VACCINATION:
+                    food.IsVaccination = true;
+                    break;
+                case EFoodDetailType.CERTIFICATION:
+                    food.IsCertification = true;
+                    break;
+                case EFoodDetailType.TREATMENT:
+                    food.IsTreatment = true;
+                    break;
+                case EFoodDetailType.PACKAGING:
+                    food.IsPackaging = true;
+                    break;
+                default: break;
+            }
+           await _productRepos.UpdateAsync(food);
         }
     }
 }

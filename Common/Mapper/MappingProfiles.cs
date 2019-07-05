@@ -28,6 +28,14 @@ namespace Common.Mapper
             CreateMap<Models.PackagingRequest, Models.FoodData.Packaging>().ReverseMap();
 
             CreateMap<Entities.User, Models.CreateUserRequest>().ReverseMap();
+
+            CreateMap<Entities.User, Models.RegisterRequest>().ReverseMap();
+
+            CreateMap<Entities.Premises, Models.RegisterRequest>()
+                .ForMember(dest => dest.PremisesName, opts => opts.MapFrom(src => src.Name))
+                .ForMember(dest => dest.PremisesAddress, opts => opts.MapFrom(src => src.Address))
+                .ForMember(dest => dest.PremisesTypeId, opts => opts.MapFrom(src => src.TypeId))
+                .ReverseMap();
         }
     }
 }
