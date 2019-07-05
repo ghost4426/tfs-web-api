@@ -39,14 +39,6 @@ namespace CommonWebApi.Controllers
             return await _productBL.FindAllProductByProviderAsync(providerID);
         }
 
-
-
-        [HttpGet("getProductMatched/{distributorId}")]
-        public async Task<IEnumerable<Entities.Food>> getMatchedWithNumber(int distributorId)
-        {
-            return await _productBL.getMatchedWithNumber(distributorId);
-        }
-
         //[HttpGet("getMaterialMatched/{FarmerId}")]
         //public async Task<IEnumerable<Entities.Material>> GetMaterialByFarmerId(int FarmerId)
         //{

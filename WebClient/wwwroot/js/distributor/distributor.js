@@ -8,7 +8,7 @@ $(document).ready(function () {
 function getProduct() {
     $.ajax({
         type: 'GET',
-        url: 'https://localhost:4201/api/Staff/getProductMatched/1',
+        url: 'https://localhost:4201/api/Distributor/getProductMatched/4',
         dataType: 'JSON',
         success: function (data) {
             console.log(data);
@@ -16,8 +16,8 @@ function getProduct() {
                 data: data,
                 ordering: false,
                 columns: [
-                    { data: 'Id' },
-                    { data: 'Name' },
+                    { data: 'FoodId' },
+                    { data: 'Breed' },
                     {
                         data: 'CreatedDate',
                         render: function (data, type, row) {
@@ -25,9 +25,9 @@ function getProduct() {
                             return d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear();
                         }
                     },
-                    { data: 'Provider.Fullname' },
+                    { data: 'Provider.Name' },
                     {
-                        data: 'Id',
+                        data: 'FoodId',
                         render: function (data) {
                             return '<button class="btn btn-grey" style="width: 25%" data-target="#moreInfo" data-toggle="modal">Chi tiết<i class="icon-eye"></i></button><button class="btn btn-info" style="width: 50%" data-target="#AddMoreInfo" data-toggle="modal">Thêm thông tin<i class="icon-pencil"></i></button><button class="btn btn-success" style="width: 25%" data-target="#GetQRCode" onclick="makeCode(' + data + ')" data-toggle="modal">Mã QR</button>';
                         }
@@ -51,5 +51,22 @@ function makeCode(id) {
     //    displayValue: false
     //});
     JsBarcode("#barcode", "" + id);
+}
+
+var myCustomScrollbar = document.querySelector('.my-custom-scrollbar');
+var ps = new PerfectScrollbar(myCustomScrollbar);
+
+var scrollbarY = myCustomScrollbar.querySelector('.ps.ps--active-y>.ps__scrollbar-y-rail');
+
+myCustomScrollbar.onscroll = function () {
+    scrollbarY.style.cssText = `top: ${this.scrollTop}px!important; height: 400px; right: ${-this.scrollLeft}px`;
+}
+
+function exportPfd() {
+    var doc = new jsPDF();
+    doc.fromHTML($('#printJs-form').get(0), 20, 20, {
+        'width': 500
+    });
+    doc.save('barcode.pdf');
 }
 
