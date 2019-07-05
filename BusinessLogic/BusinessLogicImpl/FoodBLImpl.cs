@@ -11,11 +11,13 @@ namespace BusinessLogic.BusinessLogicImpl
     {
         private IProductRepository _productRepos;
         private ICategoryRepository _categoryRepos;
+        private IPremesisRepository _premesisRepository;
 
-        public FoodBLImpl(IProductRepository productRepos, ICategoryRepository categoryRepos)
+        public FoodBLImpl(IProductRepository productRepos, ICategoryRepository categoryRepos, IPremesisRepository premesisRepository)
         {
             _productRepos = productRepos;
             _categoryRepos = categoryRepos;
+            _premesisRepository = premesisRepository;
         }
 
         public async Task<IList<Food>> GetAllProductAsync()
@@ -41,7 +43,13 @@ namespace BusinessLogic.BusinessLogicImpl
 
         public async Task<IEnumerable<Food>> getMatchedWithNumber(int distributorId)
         {
-            return await this._productRepos.GetMatchedWithNumber(distributorId);
+            var products = await this._productRepos.GetMatchedWithNumber(distributorId);
+            foreach (var product in products)
+            {
+                var provider = _premesisRepository.GetById(product.ProviderId);
+                product.Provider = provider;
+            }
+            return products;
         }
 
         public async Task<IList<Categories>> getAllCategory()
