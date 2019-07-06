@@ -45,19 +45,20 @@ namespace DataAccess.RepositoriesImpl
         }
         public async Task<IEnumerable<Food>> GetMatchedWithNumber(int distributorId)
         {
-            IList<Food> list = await this.FindAllAsync(x => x.DistributorFood.PremisesId == distributorId);
-            list.OrderByDescending(x => x.CreatedDate).Take(500);
-            for (int i = 0; i < list.Count; i++)
-            {
-                var provider = await UserRepo.GetByIdAsync(list.ElementAt(i).ProviderId);
-                //list.ElementAt(i).Provider = provider;
-            }
-            return list;
+            //IList<Food> list = await this.FindAllAsync(x => x.DistributorFood.PremisesId == distributorId);
+            //list.OrderByDescending(x => x.CreatedDate).Take(500);
+            //for (int i = 0; i < list.Count; i++)
+            //{
+            //    var provider = await UserRepo.GetByIdAsync(list.ElementAt(i).ProviderId);
+            //    //list.ElementAt(i).Provider = provider;
+            //}
+            //return list;
+            return null;
         }
 
         public async Task<IList<Food>> FindAllProductByFarmerAsync(int farmerID)
         {
-            IList<Food> products = await FindAllAsync(x => x.FarmerId == farmerID);
+            IList<Food> products = await FindAllAsync(x => x.FarmId == farmerID);
             IEnumerable<Food> result = products.OrderByDescending(x => x.CreatedDate).Take(500);
             return result.ToList();
         }

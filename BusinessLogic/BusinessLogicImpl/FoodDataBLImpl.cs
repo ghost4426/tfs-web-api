@@ -36,7 +36,7 @@ namespace BusinessLogic.BusinessLogicImpl
         public async Task<string> CreateFood(Entities.Food newFood, int farmId)
         {
             var Premises = _premesisRepository.GetById(farmId);
-            var Cat = _categoryRepository.GetById(newFood.CategoriesId);
+            var Cat = _categoryRepository.GetById(newFood.CategoryId);
             var FoodData = new FoodData()
             {
                 FoodId = newFood.FoodId,
@@ -52,7 +52,7 @@ namespace BusinessLogic.BusinessLogicImpl
 
         public async Task<string> AddTreatment(long foodId, int treamentId)
         {
-            var Treament = await _treatmentRepository.FindAllAsync(t => t.ParentTreatmentId == treamentId);
+            var Treament = await _treatmentRepository.FindAllAsync(t => t.TreatmentParentId == treamentId);
             var FoodData = await GetFoodDataByID(foodId);
             List<string> TreatmentProcess = new List<string>();
             for (int i = 0; i < Treament.Count; i++)

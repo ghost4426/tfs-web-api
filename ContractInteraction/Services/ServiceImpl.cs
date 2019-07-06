@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using ContractInteraction.FoodDataStorage;
@@ -42,6 +43,7 @@ namespace ContractInteraction.Services
             string Data = JsonConvert.SerializeObject(FoodData, setting);
             var result = await service.SaveDataRequestAndWaitForReceiptAsync(
                     new SaveDataFunction { Data = Data, Id = FoodData.FoodId, Gas = 1000000 });
+            var BlockNumber = (int)result.BlockNumber.Value; ;
             return result.TransactionHash;
 
         }

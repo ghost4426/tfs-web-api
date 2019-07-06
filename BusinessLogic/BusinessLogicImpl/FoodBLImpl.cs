@@ -28,8 +28,8 @@ namespace BusinessLogic.BusinessLogicImpl
             var products = await this._productRepos.FindAllProductByProviderAsync(providerID);
             foreach (var product in products)
             {
-                var cat = _categoryRepos.GetById(product.CategoriesId);
-                product.Categories = cat;
+                var cat = _categoryRepos.GetById(product.CategoryId);
+                product.Category = cat;
             }
             return products;
         }
@@ -44,7 +44,7 @@ namespace BusinessLogic.BusinessLogicImpl
             return await this._productRepos.GetMatchedWithNumber(distributorId);
         }
 
-        public async Task<IList<Categories>> getAllCategory()
+        public async Task<IList<Category>> getAllCategory()
         {
             return await this._categoryRepos.GetAllAsync();
         }
@@ -54,8 +54,8 @@ namespace BusinessLogic.BusinessLogicImpl
             var products = await this._productRepos.FindAllProductByFarmerAsync(farmerID);
             foreach (var product in products)
             {
-                var cat = _categoryRepos.GetById(product.CategoriesId);
-                product.Categories = cat;
+                var cat = _categoryRepos.GetById(product.CategoryId);
+                product.Category = cat;
             }
             return products;
         }

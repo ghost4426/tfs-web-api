@@ -6,16 +6,15 @@ using System.Text;
 
 namespace DTO.Entities
 {
-   public class PremisesType
+    public class Category
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int TypeId { get; set; }
+        public int CategoryId { get; set; }
 
         [Required]
         public string Name { get; set; }
 
-        public ICollection<Premises> Premises { get; set; }
-        public ICollection<RegisterInfo> RegisterInfos { get; set; }
+        public ICollection<Food> Foods { get; set; }
     }
 }

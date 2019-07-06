@@ -17,7 +17,7 @@ namespace BusinessLogic.IBusinessLogic
 
         Task<IEnumerable<Food>> getMatchedWithNumber(int distributorId);
 
-        Task<IList<Categories>> getAllCategory();
+        Task<IList<Category>> getAllCategory();
 
         Task<IList<Food>> FindAllProductByFarmerAsync(int farmerID);
 
