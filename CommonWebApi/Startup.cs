@@ -65,9 +65,9 @@ namespace CommonWebApi
             // Repositories
             services.AddScoped<IUserRepository, UserRepositoryImpl>();
             services.AddScoped<IRoleRepository, RoleRepositoryImpl>();
-            services.AddScoped<IProductRepository, ProductRepositoryImpl>();
+            services.AddScoped<IFoodRepository, FoodRepositoryImpl>();
             services.AddScoped<ICategoryRepository, CategoryRepositoryImpl>();
-            services.AddScoped<IProductRepository, ProductRepositoryImpl>();
+            services.AddScoped<IFoodRepository, FoodRepositoryImpl>();
             services.AddScoped<ITreatmentRepository, TreatmentRepositoryImpl>();
             services.AddScoped<IPremesisRepository, PremisesRepositoryImpl>();
 

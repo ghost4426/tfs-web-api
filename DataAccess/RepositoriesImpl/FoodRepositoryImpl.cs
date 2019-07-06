@@ -11,11 +11,11 @@ using Models = DTO.Models;
 
 namespace DataAccess.RepositoriesImpl
 {
-    public class ProductRepositoryImpl : GenericRepository<Food>, IProductRepository
+    public class FoodRepositoryImpl : GenericRepository<Food>, IFoodRepository
     {
         private IUserRepository UserRepo;
 
-        public ProductRepositoryImpl(FoodTrackingDbContext _dbContext, IUserRepository userRepository) : base(_dbContext)
+        public FoodRepositoryImpl(FoodTrackingDbContext _dbContext, IUserRepository userRepository) : base(_dbContext)
         {
             UserRepo = userRepository;
         }

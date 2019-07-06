@@ -9,11 +9,11 @@ namespace BusinessLogic.BusinessLogicImpl
 {
     public class FoodBLImpl : IFoodBL
     {
-        private IProductRepository _productRepos;
+        private IFoodRepository _productRepos;
         private ICategoryRepository _categoryRepos;
         private IPremesisRepository _premesisRepository;
 
-        public FoodBLImpl(IProductRepository productRepos, ICategoryRepository categoryRepos, IPremesisRepository premesisRepository)
+        public FoodBLImpl(IFoodRepository productRepos, ICategoryRepository categoryRepos, IPremesisRepository premesisRepository)
         {
             _productRepos = productRepos;
             _categoryRepos = categoryRepos;
