@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace DataAccess.IRepositories
 {
-    public interface ICategoryRepository : IGenericRepository<Categories>
+    public interface ICategoryRepository : IGenericRepository<Category>
     {
-        Task<Categories> GetCategoryById(int id);
+        Task<Category> GetCategoryById(int id);
     }
 }

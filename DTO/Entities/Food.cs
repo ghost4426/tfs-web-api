@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace DTO.Entities
@@ -10,36 +11,41 @@ namespace DTO.Entities
         [Key]
         public int FoodId { get; set; }
 
+        [Required]
         public string Breed { get; set; }
 
-        public int CategoriesId { get; set; }
+        [ForeignKey("Category")]
+        public int CategoryId { get; set; }
 
-        public virtual Categories Categories { get; set; }
+        [ForeignKey("Farm")]
+        public int FarmId { get; set; }
 
-        public int FarmerId { get; set; }
-
-        public virtual Premises Farmer { get; set; }
-
+        [ForeignKey("Provider")]
         public int? ProviderId { get; set; }
 
-        public virtual Premises Provider { get; set; }
-
-        public DistributorFood DistributorFood { get; set; }
-
+        [ForeignKey("Treatment")]
         public int? TreatmentId { get; set; }
 
-        public Treatment Treatment { get; set; }
+        public bool IsFeeding { get; set; }
 
-        public bool IsFeeding { get; set; } = false;
+        public bool IsVaccination { get; set; }
 
-        public bool IsVaccination { get; set; } = false;
+        public bool IsCertification { get; set; }
 
-        public bool IsCertification { get; set; } = false;
+        public bool IsTreatment { get; set; }
 
-        public bool IsTreatment { get; set; } = false;
-
-        public bool IsPackaging { get; set; } = false;
+        public bool IsPackaging { get; set; }
 
         public DateTime CreatedDate { get; set; }
+
+        public virtual Category Category { get; set; }
+        public virtual Premises Provider { get; set; }
+        public virtual Premises Farm { get; set; }
+        public virtual Treatment Treatment { get; set; }
+        
+        public virtual ICollection<DistributorFood> DistributorFoods { get; set; }
+        public virtual ICollection<FoodDetail> FoodDetails { get; set; }
+        public virtual ICollection<Transaction> Transactions { get; set; }
+
     }
 }

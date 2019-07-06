@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(FoodTrackingDbContext))]
-    [Migration("20190702175924_giantt-v5")]
-    partial class gianttv5
+    [Migration("20190706105727_giantt-v1")]
+    partial class gianttv1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,17 +21,15 @@ namespace DataAccess.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("DTO.Entities.Categories", b =>
+            modelBuilder.Entity("DTO.Entities.Category", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<int>("Id");
 
                     b.Property<string>("Name");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Category");
                 });
 
             modelBuilder.Entity("DTO.Entities.DistributorFood", b =>
@@ -42,11 +40,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("FoodId", "PremisesId");
 
-                    b.HasIndex("FoodId")
-                        .IsUnique();
-
-                    b.HasIndex("PremisesId")
-                        .IsUnique();
+                    b.HasIndex("PremisesId");
 
                     b.ToTable("DistributorFood");
                 });
@@ -59,21 +53,31 @@ namespace DataAccess.Migrations
 
                     b.Property<string>("Breed");
 
-                    b.Property<int>("CategoriesId");
+                    b.Property<int>("CategoryId");
 
                     b.Property<DateTime>("CreatedDate");
 
-                    b.Property<int>("FarmerId");
+                    b.Property<int>("FarmId");
 
-                    b.Property<bool>("IsCertification");
+                    b.Property<bool>("IsCertification")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(false);
 
-                    b.Property<bool>("IsFeeding");
+                    b.Property<bool>("IsFeeding")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(false);
 
-                    b.Property<bool>("IsPackaging");
+                    b.Property<bool>("IsPackaging")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(false);
 
-                    b.Property<bool>("IsTreatment");
+                    b.Property<bool>("IsTreatment")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(false);
 
-                    b.Property<bool>("IsVaccination");
+                    b.Property<bool>("IsVaccination")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(false);
 
                     b.Property<int?>("ProviderId");
 
@@ -81,15 +85,55 @@ namespace DataAccess.Migrations
 
                     b.HasKey("FoodId");
 
-                    b.HasIndex("CategoriesId");
+                    b.HasIndex("CategoryId");
 
-                    b.HasIndex("FarmerId");
+                    b.HasIndex("FarmId");
 
                     b.HasIndex("ProviderId");
 
                     b.HasIndex("TreatmentId");
 
                     b.ToTable("Food");
+                });
+
+            modelBuilder.Entity("DTO.Entities.FoodDetail", b =>
+                {
+                    b.Property<int>("DetailId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("BlockNumber");
+
+                    b.Property<int>("CreatedById");
+
+                    b.Property<DateTime>("CreatedDate");
+
+                    b.Property<int>("FoodId");
+
+                    b.Property<string>("TransactionHash");
+
+                    b.Property<int>("TypeId");
+
+                    b.HasKey("DetailId");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("FoodId");
+
+                    b.HasIndex("TypeId");
+
+                    b.ToTable("FoodDetail");
+                });
+
+            modelBuilder.Entity("DTO.Entities.FoodDetailType", b =>
+                {
+                    b.Property<int>("TypeId");
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("TypeId");
+
+                    b.ToTable("FoodDetailType");
                 });
 
             modelBuilder.Entity("DTO.Entities.Premises", b =>
@@ -113,9 +157,7 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("DTO.Entities.PremisesType", b =>
                 {
-                    b.Property<int>("TypeId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<int>("TypeId");
 
                     b.Property<string>("Name");
 
@@ -126,9 +168,7 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("DTO.Entities.Role", b =>
                 {
-                    b.Property<int>("RoleId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<int>("RoleId");
 
                     b.Property<string>("Name");
 
@@ -143,11 +183,11 @@ namespace DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("ConfirmDate");
+                    b.Property<DateTime?>("ConfirmDate");
 
                     b.Property<DateTime>("CreatedDate");
 
-                    b.Property<int>("FarmerId");
+                    b.Property<int>("FarmId");
 
                     b.Property<int>("FoodId");
 
@@ -157,7 +197,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("TransactionId");
 
-                    b.HasIndex("FarmerId");
+                    b.HasIndex("FarmId");
 
                     b.HasIndex("FoodId");
 
@@ -170,9 +210,7 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("DTO.Entities.TransactionStatus", b =>
                 {
-                    b.Property<int>("StatusId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<int>("StatusId");
 
                     b.Property<string>("Status");
 
@@ -189,13 +227,15 @@ namespace DataAccess.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<int?>("ParentTreatmentId");
-
                     b.Property<int>("PremisesId");
+
+                    b.Property<int?>("TreatmentParentId");
 
                     b.HasKey("TreatmentId");
 
                     b.HasIndex("PremisesId");
+
+                    b.HasIndex("TreatmentParentId");
 
                     b.ToTable("Treatment");
                 });
@@ -218,7 +258,7 @@ namespace DataAccess.Migrations
 
                     b.Property<string>("PhoneNo");
 
-                    b.Property<int?>("PremisesId");
+                    b.Property<int>("PremisesId");
 
                     b.Property<int>("RoleId");
 
@@ -238,64 +278,83 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("DTO.Entities.DistributorFood", b =>
                 {
                     b.HasOne("DTO.Entities.Food", "Food")
-                        .WithOne("DistributorFood")
-                        .HasForeignKey("DTO.Entities.DistributorFood", "FoodId")
+                        .WithMany("DistributorFoods")
+                        .HasForeignKey("FoodId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("DTO.Entities.Premises", "Premises")
-                        .WithOne("DistributorFood")
-                        .HasForeignKey("DTO.Entities.DistributorFood", "PremisesId")
+                        .WithMany("DistributorFoods")
+                        .HasForeignKey("PremisesId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("DTO.Entities.Food", b =>
                 {
-                    b.HasOne("DTO.Entities.Categories", "Categories")
-                        .WithMany()
-                        .HasForeignKey("CategoriesId")
+                    b.HasOne("DTO.Entities.Category", "Category")
+                        .WithMany("Foods")
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("DTO.Entities.Premises", "Farmer")
-                        .WithMany()
-                        .HasForeignKey("FarmerId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                    b.HasOne("DTO.Entities.Premises", "Farm")
+                        .WithMany("FarmFoods")
+                        .HasForeignKey("FarmId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("DTO.Entities.Premises", "Provider")
-                        .WithMany()
-                        .HasForeignKey("ProviderId");
+                        .WithMany("ProviderFoods")
+                        .HasForeignKey("ProviderId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("DTO.Entities.Treatment", "Treatment")
-                        .WithMany()
+                        .WithMany("Foods")
                         .HasForeignKey("TreatmentId");
+                });
+
+            modelBuilder.Entity("DTO.Entities.FoodDetail", b =>
+                {
+                    b.HasOne("DTO.Entities.User", "CreatedBy")
+                        .WithMany("UserCreatedFoodDetails")
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("DTO.Entities.Food", "Food")
+                        .WithMany("FoodDetails")
+                        .HasForeignKey("FoodId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("DTO.Entities.FoodDetailType", "Type")
+                        .WithMany("FoodDetails")
+                        .HasForeignKey("TypeId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("DTO.Entities.Premises", b =>
                 {
                     b.HasOne("DTO.Entities.PremisesType", "PremisesType")
-                        .WithMany()
+                        .WithMany("Premises")
                         .HasForeignKey("TypeId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("DTO.Entities.Transaction", b =>
                 {
-                    b.HasOne("DTO.Entities.Premises", "Farmer")
-                        .WithMany()
-                        .HasForeignKey("FarmerId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                    b.HasOne("DTO.Entities.Premises", "Farm")
+                        .WithMany("FarmTransactions")
+                        .HasForeignKey("FarmId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("DTO.Entities.Food", "Food")
-                        .WithMany()
+                        .WithMany("Transactions")
                         .HasForeignKey("FoodId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("DTO.Entities.Premises", "Provider")
-                        .WithMany()
+                        .WithMany("ProviderTransactions")
                         .HasForeignKey("ProviderId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("DTO.Entities.TransactionStatus", "TransactionStatus")
-                        .WithMany()
+                        .WithMany("Transactions")
                         .HasForeignKey("StatusId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
@@ -306,16 +365,21 @@ namespace DataAccess.Migrations
                         .WithMany()
                         .HasForeignKey("PremisesId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("DTO.Entities.Treatment", "TreatmentParent")
+                        .WithMany("Treatments")
+                        .HasForeignKey("TreatmentParentId");
                 });
 
             modelBuilder.Entity("DTO.Entities.User", b =>
                 {
                     b.HasOne("DTO.Entities.Premises", "Premises")
-                        .WithMany()
-                        .HasForeignKey("PremisesId");
+                        .WithMany("Users")
+                        .HasForeignKey("PremisesId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("DTO.Entities.Role", "Role")
-                        .WithMany()
+                        .WithMany("Users")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

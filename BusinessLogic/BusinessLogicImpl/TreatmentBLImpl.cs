@@ -25,7 +25,7 @@ namespace BusinessLogic.BusinessLogicImpl
              await _treatmentRepos.InsertAsync(new Treatment()
                 {
                     Name = process,
-                    ParentTreatmentId = treatment.TreatmentId,
+                    TreatmentParentId = treatment.TreatmentId,
                     PremisesId = treatment.PremisesId
                 });
             }   
