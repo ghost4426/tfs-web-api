@@ -74,7 +74,6 @@ namespace CommonWebApi
             //BusinessLogic
             services.AddScoped<IUserBL, UserBLImpl>();
             services.AddScoped<IRoleBL, RoleBLImpl>();
-            services.AddScoped<IMaterialBL, MaterialBLImpl>();
             services.AddScoped<IFoodBL, FoodBLImpl>();
             services.AddScoped<IFoodDataBL, FoodDataBLImpl>();
 

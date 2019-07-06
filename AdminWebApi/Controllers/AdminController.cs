@@ -41,7 +41,7 @@ namespace AdminWebApi.Controllers
         /// <returns></returns>
         //POST : /api/Admin/createUser
         //[Authorize(Roles = RoleConstant.ADMIN)]
-        [HttpPost("createUser")]
+        [HttpPost("user")]
         public async Task<IActionResult> CreateUser([FromBody] Models.CreateUserRequest rUser)
         {
             Entities.User user = null;
