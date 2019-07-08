@@ -22,7 +22,7 @@ namespace CommonWebApi.Controllers
         {
             _productBL = productBL;
         }
-        [HttpGet("getProductMatched/{distributorId}")]
+        [HttpGet("getProductMatched")]
         public async Task<IList<Entities.Food>> getMatchedWithNumber()
         {
             //string disID = User.Claims.First(c => c.Type == "PremisesId").Value;

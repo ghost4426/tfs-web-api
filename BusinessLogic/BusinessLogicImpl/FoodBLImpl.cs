@@ -12,12 +12,14 @@ namespace BusinessLogic.BusinessLogicImpl
         private IFoodRepository _productRepos;
         private ICategoryRepository _categoryRepos;
         private IPremesisRepository _premesisRepository;
+        private IDistributorFoodRepository _distributorFoodRepository;
 
-        public FoodBLImpl(IFoodRepository productRepos, ICategoryRepository categoryRepos, IPremesisRepository premesisRepository)
+        public FoodBLImpl(IFoodRepository productRepos, ICategoryRepository categoryRepos, IPremesisRepository premesisRepository, IDistributorFoodRepository distributorFoodRepository)
         {
             _productRepos = productRepos;
             _categoryRepos = categoryRepos;
             _premesisRepository = premesisRepository;
+            _distributorFoodRepository = distributorFoodRepository;
         }
 
         public async Task<IList<Food>> GetAllProductAsync()
@@ -43,13 +45,16 @@ namespace BusinessLogic.BusinessLogicImpl
 
         public async Task<IList<Food>> getMatchedWithNumber(int distributorId)
         {
-            var products = await this._productRepos.GetMatchedWithNumber(distributorId);
-            foreach (var product in products)
+            IList<DistributorFood> foodIDs = await _distributorFoodRepository.GetDistributorFoods(distributorId);
+            IList<Food> foods = null;
+            foreach (var foodID in foodIDs)
             {
-                var provider = _premesisRepository.GetById(product.ProviderId);
-                product.Provider = provider;
+                var food = _productRepos.GetById(foodID);
+                foods.Add(food);
+                var provider = _premesisRepository.GetById(food.ProviderId);
+                food.Provider = provider;
             }
-            return products;
+            return foods;
         }
 
         public async Task<IList<Category>> getAllCategory()
@@ -70,7 +75,7 @@ namespace BusinessLogic.BusinessLogicImpl
 
         public async Task AddDetail(long foodId, EFoodDetailType type)
         {
-            var food =  _productRepos.GetById((int)foodId);
+            var food = _productRepos.GetById((int)foodId);
             switch (type)
             {
                 case EFoodDetailType.FEEDING:
@@ -90,7 +95,7 @@ namespace BusinessLogic.BusinessLogicImpl
                     break;
                 default: break;
             }
-           await _productRepos.UpdateAsync(food);
+            await _productRepos.UpdateAsync(food);
         }
     }
 }

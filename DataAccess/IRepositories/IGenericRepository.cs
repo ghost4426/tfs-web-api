@@ -27,7 +27,7 @@ namespace DataAccess.IRepositories
         Task<IList<TEntity>> GetAllAsync();
         Task<IList<TEntity>> GetTopAsync(Expression<Func<TEntity, bool>> orderBy, int top);
         Task<IList<TEntity>> FindAllAsync(Expression<Func<TEntity, bool>> match);
-        Task<IList<TEntity>> FindTopAsync(Expression<Func<TEntity, bool>> match, Expression<Func<TEntity, bool>> orderBy, int top);
+        Task<IList<TEntity>> FindTopAsync<TSortedBy>(Expression<Func<TEntity, bool>> match, Expression<Func<TEntity, TSortedBy>> orderBy, int top);
         Task<TEntity> GetByIdAsync(object id);
         Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> match);
         Task<int> CountAsync();
