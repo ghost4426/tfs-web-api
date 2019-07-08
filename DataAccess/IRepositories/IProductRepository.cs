@@ -12,7 +12,7 @@ namespace DataAccess.IRepositories
 
         Task<int> CreateProductAsync(Food newProduct);
 
-        Task<IEnumerable<Food>> GetMatchedWithNumber(int distributorId);
+        Task<IList<Food>> GetMatchedWithNumber(int distributorId);
 
         Task<IList<Food>> FindAllProductByFarmerAsync(int farmerID);
     }

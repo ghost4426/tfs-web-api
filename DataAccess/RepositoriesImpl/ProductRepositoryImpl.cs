@@ -43,11 +43,15 @@ namespace DataAccess.RepositoriesImpl
             await this.InsertAsync(newProduct, true);
             return newProduct.FoodId;
         }
-        public async Task<IEnumerable<Food>> GetMatchedWithNumber(int distributorId)
+        public async Task<IList<Food>> GetMatchedWithNumber(int distributorId)
         {
-            IList<Food> list = await this.FindAllAsync(x => x.DistributorFood.PremisesId == distributorId);
-            list.OrderByDescending(x => x.CreatedDate).Take(500);
-            return list;
+            
+            //IList<Food> list = await this.FindAllAsync(x => x.DistributorFood.PremisesId == distributorId);
+            //list.OrderByDescending(x => x.CreatedDate).Take(500);
+            //return list;
+             
+            IList<Food> t = await this.FindTopAsync(x => x.DistributorFood.PremisesId == distributorId, x => x.CreatedDate, 500);
+            return t;    
         }
 
         public async Task<IList<Food>> FindAllProductByFarmerAsync(int farmerID)

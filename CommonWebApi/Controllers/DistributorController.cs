@@ -23,9 +23,11 @@ namespace CommonWebApi.Controllers
             _productBL = productBL;
         }
         [HttpGet("getProductMatched/{distributorId}")]
-        public async Task<IEnumerable<Entities.Food>> getMatchedWithNumber(int distributorId)
+        public async Task<IList<Entities.Food>> getMatchedWithNumber()
         {
-            return await _productBL.getMatchedWithNumber(distributorId);
+            //string disID = User.Claims.First(c => c.Type == "PremisesId").Value;
+            var disID = 4; 
+            return await _productBL.getMatchedWithNumber(disID);
         }
 
     }

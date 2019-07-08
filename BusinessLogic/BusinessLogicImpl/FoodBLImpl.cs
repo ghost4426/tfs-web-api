@@ -41,7 +41,7 @@ namespace BusinessLogic.BusinessLogicImpl
             return await this._productRepos.CreateProductAsync(newProduct);
         }
 
-        public async Task<IEnumerable<Food>> getMatchedWithNumber(int distributorId)
+        public async Task<IList<Food>> getMatchedWithNumber(int distributorId)
         {
             var products = await this._productRepos.GetMatchedWithNumber(distributorId);
             foreach (var product in products)
