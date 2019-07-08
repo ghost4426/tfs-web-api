@@ -36,7 +36,7 @@ namespace CommonWebApi.Controllers
         {
             Entities.Food food = _mapper.Map<Entities.Food>(foodRequest);
             await _foodBL.CreateProductAsync(food);
-            return await _foodDataBL.CreateFood(food, food.FarmerId);
+            return await _foodDataBL.CreateFood(food, food.FarmId);
         }
 
         [HttpPut("food/feedings/{foodId}")]
@@ -61,7 +61,7 @@ namespace CommonWebApi.Controllers
         }
 
         [HttpGet("getAllCategory")]
-        public async Task<IList<Entities.Categories>> getAllCategory()
+        public async Task<IList<Entities.Category>> getAllCategory()
         {
             return await _foodBL.getAllCategory();
         }

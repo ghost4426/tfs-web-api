@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace DTO.Entities
@@ -10,24 +11,25 @@ namespace DTO.Entities
         [Key]
         public int TransactionId { get; set; }
 
-        public int FarmerId { get; set; }
+        [ForeignKey("Farm")]
+        public int FarmId { get; set; }
 
-        public Premises Farmer { get; set; }
-
+        [ForeignKey("Provider")]
         public int ProviderId { get; set; }
 
-        public Premises Provider { get; set; }
-
+        [ForeignKey("Food")]
         public int FoodId { get; set; }
 
-        public Food Food { get; set; }
+        [ForeignKey("TransactionStatus")]
+        public int StatusId { get; set; }
 
         public DateTime CreatedDate { get; set; }
 
-        public DateTime ConfirmDate { get; set; }
+        public DateTime? ConfirmDate { get; set; }
 
-        public int StatusId { get; set; }
-
+        public Premises Farm { get; set; }
+        public Premises Provider { get; set; }
+        public Food Food { get; set; }
         public TransactionStatus TransactionStatus { get; set; }
     }
 }

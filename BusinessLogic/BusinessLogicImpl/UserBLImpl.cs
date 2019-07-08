@@ -40,8 +40,6 @@ namespace BusinessLogic.BusinessLogicImpl
             newUser.UserId = 0;
             newUser.Password = hashedPassword.HashedPassword;
             newUser.Salt = hashedPassword.Salt;
-            newUser.CreatedDate = DateTime.Now;
-            newUser.IsActive = true;
             _userRepos.Insert(newUser, true);
             if (newUser.UserId > 0)
             {

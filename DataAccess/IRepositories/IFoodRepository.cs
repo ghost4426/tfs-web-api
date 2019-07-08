@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.IRepositories
 {
-   public interface IProductRepository : IGenericRepository<Food>
+   public interface IFoodRepository : IGenericRepository<Food>
     {
         Task<IList<Food>> GetAllProductAsync();
 

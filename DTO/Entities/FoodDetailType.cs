@@ -6,7 +6,7 @@ using System.Text;
 
 namespace DTO.Entities
 {
-   public class PremisesType
+   public class FoodDetailType
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
@@ -15,7 +15,6 @@ namespace DTO.Entities
         [Required]
         public string Name { get; set; }
 
-        public ICollection<Premises> Premises { get; set; }
-        public ICollection<RegisterInfo> RegisterInfos { get; set; }
+       public virtual ICollection<FoodDetail> FoodDetails { get; set; }
     }
 }

@@ -5,13 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20190621094920_hoang-v1.cs" />
-    <Compile Remove="Migrations\20190621094920_hoang-v1.Designer.cs" />
-    <Compile Remove="Migrations\20190621100722_hoang-v1.cs" />
-    <Compile Remove="Migrations\20190621100722_hoang-v1.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.4">
@@ -22,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj" />
     <ProjectReference Include="..\DTO\DTO.csproj" />
   </ItemGroup>
 
