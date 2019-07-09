@@ -1,24 +1,26 @@
-﻿using DataAccess.Context;
+﻿using System;
+using System.Text;
+using BusinessLogic.BusinessLogicImpl;
+using BusinessLogic.IBusinessLogic;
+using DataAccess.Context;
+using DataAccess.IRepositories;
+using DataAccess.RepositoriesImpl;
+using DTO.Models.Common;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Swashbuckle.AspNetCore.Swagger;
-using DataAccess.IRepositories;
-using DataAccess.RepositoriesImpl;
-using BusinessLogic.IBusinessLogic;
-using BusinessLogic.BusinessLogicImpl;
 using Newtonsoft.Json.Serialization;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using System.Text;
-using System;
-using DTO.Models.Common;
-using Swashbuckle.AspNetCore.Filters;
+using Swashbuckle.AspNetCore.Swagger;
 using Common.Constant;
+using Swashbuckle.AspNetCore.Filters;
+using Microsoft.IdentityModel.Tokens;
 using Common.Utils;
+using AutoMapper;
+using Common.Mapper;
 using System.Reflection;
 using System.IO;
 
@@ -49,12 +51,17 @@ namespace AdminWebApi
                     }
                 });
 
+            //Auto mapper
+            Mapper.Initialize(cfg => cfg.AddProfile<MappingProfiles>());
+            services.AddAutoMapper();
+
+
             #region Instanceinjection
-            services.AddScoped(typeof(IAutoMapConverter<,>), typeof(AutoMapConverter<,>));
 
             // Repositories
             services.AddScoped<IUserRepository, UserRepositoryImpl>();
             services.AddScoped<IRoleRepository, RoleRepositoryImpl>();
+            services.AddScoped<IPremesisRepository, PremisesRepositoryImpl>();
 
             //BusinessLogic
             services.AddScoped<IUserBL, UserBLImpl>();
@@ -80,9 +87,6 @@ namespace AdminWebApi
                 c.IncludeXmlComments(xmlPath);
                 c.OperationFilter<SecurityRequirementsOperationFilter>();
             });
-
-
-
 
             //Set database.
             services.AddDbContext<FoodTrackingDbContext>(c =>
@@ -116,16 +120,6 @@ namespace AdminWebApi
             //Inject AppSettings
             services.Configure<JWTSetttings>(Configuration.GetSection("JWTSetttings"));
 
-            //Add cors
-            services.AddCors(options =>
-            {
-                options.AddPolicy("default", policy =>
-                {
-                    policy.AllowAnyOrigin()
-                        .AllowAnyHeader()
-                        .AllowAnyMethod();
-                });
-            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -163,7 +157,6 @@ namespace AdminWebApi
             );
 
             app.UseMvc();
-            app.UseCors("default");
 
         }
     }

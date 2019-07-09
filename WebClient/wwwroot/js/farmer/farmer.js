@@ -96,7 +96,7 @@ function insertProduct() {
         var breed = $('input[name="Breed"]').val();
         $.ajax({
             type: 'post',
-            url: 'https://localhost:4201/api/Farmer/createFood',
+            url: 'https://localhost:4201/api/Farmer/food',
             dataType: 'json',
             headers: {
                 'Accept': 'application/json',

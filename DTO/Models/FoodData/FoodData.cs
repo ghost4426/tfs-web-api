@@ -6,7 +6,7 @@ namespace DTO.Models.FoodData
 {
     public class FoodData
     {
-        public int Id { get; set; }
+        public int FoodId { get; set; }
 
         public string Breed { get; set; }
         //Pork, Chicken, Beef
@@ -18,6 +18,7 @@ namespace DTO.Models.FoodData
 
         public Distributor Distributor { get; set; }
 
-       
+        public DateTime StartedDate { get; set; }
+
     }
 }

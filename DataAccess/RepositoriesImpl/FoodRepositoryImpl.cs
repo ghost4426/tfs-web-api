@@ -11,11 +11,11 @@ using Models = DTO.Models;
 
 namespace DataAccess.RepositoriesImpl
 {
-    public class ProductRepositoryImpl : GenericRepository<Food>, IProductRepository
+    public class FoodRepositoryImpl : GenericRepository<Food>, IFoodRepository
     {
         private IUserRepository UserRepo;
 
-        public ProductRepositoryImpl(FoodTrackingDbContext _dbContext, IUserRepository userRepository) : base(_dbContext)
+        public FoodRepositoryImpl(FoodTrackingDbContext _dbContext, IUserRepository userRepository) : base(_dbContext)
         {
             UserRepo = userRepository;
         }
@@ -45,20 +45,15 @@ namespace DataAccess.RepositoriesImpl
         }
         public async Task<IEnumerable<Food>> GetMatchedWithNumber(int distributorId)
         {
-            ////IList<Food> list = await this.FindAllAsync(x => x.DistributorFoods.Contains(distributorId == distributorId);
+            //IList<Food> list = await this.FindAllAsync(x => x.Distrib == distributorId);
             //list.OrderByDescending(x => x.CreatedDate).Take(500);
-            ////for (int i = 0; i < list.Count; i++)
-            ////{
-            ////    var provider = await UserRepo.GetByIdAsync(list.ElementAt(i).ProviderUserId);
-            ////    list.ElementAt(i).Provider = provider;
-            ////}
             //return list;
             return null;
         }
 
         public async Task<IList<Food>> FindAllProductByFarmerAsync(int farmerID)
         {
-            IList<Food> products = await FindAllAsync(x => x.FarmerId == farmerID);
+            IList<Food> products = await FindAllAsync(x => x.FarmId == farmerID);
             IEnumerable<Food> result = products.OrderByDescending(x => x.CreatedDate).Take(500);
             return result.ToList();
         }

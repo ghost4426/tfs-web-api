@@ -12,7 +12,6 @@ namespace DataAccess.RepositoriesImpl
 {
     public class UserRepositoryImpl : GenericRepository<User>, IUserRepository
     {
-        private IUserRepository _userrepos;
         private FoodTrackingDbContext _dbContext;
 
 
@@ -36,15 +35,6 @@ namespace DataAccess.RepositoriesImpl
             await this.UpdateAsync(user, true);
             return user;
         }
-        public async Task<User> FindByUserId(int id) {
-           User user = await FindAsync(x => x.UserId == id);
-           return user;     
-        }
 
-        public async Task<IList<User>> GetUsersAsync()
-        {
-            IList<User> users = await this._userrepos.FindAllAsync(u => u.RoleId > 1);
-            return users;
-        }
     }
 }

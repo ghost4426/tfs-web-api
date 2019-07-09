@@ -19,11 +19,13 @@ namespace BusinessLogic.BusinessLogicImpl
     {
         private IUserRepository _userRepos;
         private IRoleRepository _roleRepos;
+        private IPremesisRepository _premesisRepos;
 
-        public UserBLImpl(IUserRepository userRepos, IRoleRepository roleRepos)
+        public UserBLImpl(IUserRepository userRepos, IRoleRepository roleRepos, IPremesisRepository premesisRepos)
         {
             _userRepos = userRepos;
             _roleRepos = roleRepos;
+            _premesisRepos = premesisRepos;
         }
 
 
@@ -38,8 +40,6 @@ namespace BusinessLogic.BusinessLogicImpl
             newUser.UserId = 0;
             newUser.Password = hashedPassword.HashedPassword;
             newUser.Salt = hashedPassword.Salt;
-            newUser.CreatedDate = DateTime.Now;
-            newUser.IsActive = true;
             _userRepos.Insert(newUser, true);
             if (newUser.UserId > 0)
             {
@@ -132,6 +132,17 @@ namespace BusinessLogic.BusinessLogicImpl
             else { user.IsActive = true; }
             await _userRepos.UpdateAsync(user, true);
         }
+
+        public Task Register(User user, Premises premises)
+        {
+            throw new NotImplementedException();
+        }
+
+        //public Task Register(User user, Premises premises)
+        //{
+        //    _userRepos.Insert(user);
+        //    _premesisRepos.Insert(premises);
+        //}
     }
 }
 

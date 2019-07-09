@@ -25,5 +25,7 @@ namespace BusinessLogic.IBusinessLogic
 
         Task updateUserStatus(int userId);
 
+        Task Register(User user, Premises premises);
+
     }
 }

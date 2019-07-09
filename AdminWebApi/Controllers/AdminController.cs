@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Common.Utils;
 using DTO.Models.Exception;
-
+using AutoMapper;
 
 namespace AdminWebApi.Controllers
 {
@@ -19,17 +19,17 @@ namespace AdminWebApi.Controllers
     public class AdminController : ControllerBase
     {
 
-        private readonly IUserBL _bl;
-        private IAutoMapConverter<Models.CreateUserRequest, Entities.User> _mapCreateUserRequestToEntity;
+        private readonly IUserBL _userBL;
+        private IMapper _mapper;
         private IEmailSender _mailSender;
 
         public AdminController(IUserBL UserBL,
-            IAutoMapConverter<Models.CreateUserRequest, Entities.User> mapCreateUserRequestToEntity,
+            IMapper mapper,
             IEmailSender mailSender
             )
         {
-            _bl = UserBL;
-            _mapCreateUserRequestToEntity = mapCreateUserRequestToEntity;
+            _userBL = UserBL;
+            _mapper = mapper;
             _mailSender = mailSender;
         }
 
@@ -41,14 +41,14 @@ namespace AdminWebApi.Controllers
         /// <returns></returns>
         //POST : /api/Admin/createUser
         //[Authorize(Roles = RoleConstant.ADMIN)]
-        [HttpPost("createUser")]
+        [HttpPost("user")]
         public async Task<IActionResult> CreateUser([FromBody] Models.CreateUserRequest rUser)
         {
             Entities.User user = null;
             var isCreated = false;
             try
             {
-                user = _mapCreateUserRequestToEntity.ConvertObject(rUser);
+                user = _mapper.Map<Entities.User>(rUser);
                 var password = Util.GeneratePassword(new Models.PasswordOptions()
                 {
                     RequireDigit = true,
@@ -58,7 +58,7 @@ namespace AdminWebApi.Controllers
                     RequireUppercase = true
                 });
                 user.Password = password;
-                isCreated = await _bl.CreateUser(user);
+                isCreated = await _userBL.CreateUser(user);
                 if (isCreated)
                 {
                     await _mailSender.SendEmailAsync(user.Email, "Created Account", "Your password: " + password);
@@ -74,7 +74,7 @@ namespace AdminWebApi.Controllers
             {
                 if (isCreated)
                 {
-                    await _bl.RemoveByIdAsync(user.UserId);
+                    await _userBL.RemoveByIdAsync(user.UserId);
                 }
                 return BadRequest(new { message = MessageConstant.UNHANDLE_ERROR });
             }
@@ -84,7 +84,7 @@ namespace AdminWebApi.Controllers
         [HttpGet("Users")]
         public async Task<IList<Entities.User>> Users()
         {
-            return await _bl.GetUsers();
+            return await _userBL.GetUsers();
         }
 
         //GET : /api/admin/profile
@@ -94,13 +94,13 @@ namespace AdminWebApi.Controllers
         {
             var claim = User.Claims;
             string userId = User.Claims.First(c => c.Type == "UserID").Value;
-            var user = await _bl.GetById(int.Parse(userId));
+            var user = await _userBL.GetById(int.Parse(userId));
             return Ok(user);
         }
         [HttpGet("User/{userId}")]
         public async Task<Entities.User> Get1Users(int userId)
         {
-            var user = await _bl.GetById(userId);
+            var user = await _userBL.GetById(userId);
             return user;
 
         }
@@ -114,7 +114,7 @@ namespace AdminWebApi.Controllers
                 Email = userInfo.email,
                 PhoneNo = userInfo.phone,
             };
-            await _bl.UpdateUser(user, 3);
+            await _userBL.UpdateUser(user, 3);
             var reponseModel = new Models.UpdateUserReponse()
             {
                 UserId = user.UserId
@@ -127,7 +127,7 @@ namespace AdminWebApi.Controllers
         {
             try
             {
-                var userRole = await _bl.ChangeRole1User(id, int.Parse(role));
+                var userRole = await _userBL.ChangeRole1User(id, int.Parse(role));
                 return Ok("Success!");
             }
             catch (Exception e)
@@ -142,7 +142,7 @@ namespace AdminWebApi.Controllers
         {
             try
             {
-                await _bl.updateUserStatus(userId);
+                await _userBL.updateUserStatus(userId);
                 return Ok("Success!");
             }
             catch (NotFoundException e)

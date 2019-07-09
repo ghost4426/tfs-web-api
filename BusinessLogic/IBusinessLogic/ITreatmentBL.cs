@@ -1,13 +1,14 @@
 ﻿using DTO.Entities;
+using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace BusinessLogic.IBusinessLogic
 {
-    public interface IMaterialBL
+   public interface ITreatmentBL
     {
-        //Task<IEnumerable<Material>> GetMaterialByFarmerId(int FarmerId);
+        Task CreateTreatment(Treatment treatment, List<string> treatmentProcess);
+       
     }
 }

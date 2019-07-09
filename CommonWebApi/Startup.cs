@@ -25,6 +25,10 @@ using Swashbuckle.AspNetCore.Filters;
 using Microsoft.IdentityModel.Tokens;
 using ContractInteraction.Services;
 using Common.Utils;
+using AutoMapper;
+using Common.Mapper;
+using System.Reflection;
+using System.IO;
 
 namespace CommonWebApi
 {
@@ -50,31 +54,34 @@ namespace CommonWebApi
                         var res = resolver as DefaultContractResolver;
                         res.NamingStrategy = null;
                     }
-                }); ;
+                });
 
+            //Auto mapper
+            Mapper.Initialize(cfg => cfg.AddProfile<MappingProfiles>());
+            services.AddAutoMapper();
 
             #region Instanceinjection
+
             // Repositories
             services.AddScoped<IUserRepository, UserRepositoryImpl>();
             services.AddScoped<IRoleRepository, RoleRepositoryImpl>();
-            services.AddScoped<IProductRepository, ProductRepositoryImpl>();
+            services.AddScoped<IFoodRepository, FoodRepositoryImpl>();
             services.AddScoped<ICategoryRepository, CategoryRepositoryImpl>();
-            services.AddScoped<IProductRepository, ProductRepositoryImpl>();
+            services.AddScoped<IFoodRepository, FoodRepositoryImpl>();
+            services.AddScoped<ITreatmentRepository, TreatmentRepositoryImpl>();
+            services.AddScoped<IPremesisRepository, PremisesRepositoryImpl>();
             services.AddScoped<ITransactionRepository, TransactionRepositoryImpl>();
-            services.AddScoped<IPremisesRepository, PremisesRepositoryImpl>();
 
             //BusinessLogic
             services.AddScoped<IUserBL, UserBLImpl>();
             services.AddScoped<IRoleBL, RoleBLImpl>();
-            services.AddScoped<IMaterialBL, MaterialBLImpl>();
-            services.AddScoped<IProductBL, ProductBLImpl>();
+            services.AddScoped<IFoodBL, FoodBLImpl>();
             services.AddScoped<IFoodDataBL, FoodDataBLImpl>();
             services.AddScoped<ITransactionBL, TransactionBLImpl>();
             services.AddScoped<IPremisesBL, PremisesBLImpl>();
 
             //Service
             services.AddScoped<IService, ServiceImpl>();
-            services.AddScoped(typeof(IAutoMapConverter<,>), typeof(AutoMapConverter<,>));
 
             #endregion
 
@@ -89,6 +96,10 @@ namespace CommonWebApi
                     Name = "Authorization",
                     Type = "apiKey"
                 });
+                // Set the comments path for the Swagger JSON and UI.
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
                 c.OperationFilter<SecurityRequirementsOperationFilter>(); 
             });
 

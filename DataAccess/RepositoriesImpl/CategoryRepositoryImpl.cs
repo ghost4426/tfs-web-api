@@ -9,16 +9,16 @@ namespace DataAccess.RepositoriesImpl
 {
 
 
-    public class CategoryRepositoryImpl : GenericRepository<Categories>, ICategoryRepository
+    public class CategoryRepositoryImpl : GenericRepository<Category>, ICategoryRepository
     {
         private FoodTrackingDbContext foodTrackerDbContext;
         public CategoryRepositoryImpl(FoodTrackingDbContext context) : base(context)
         {
             foodTrackerDbContext = context;
         }
-        public async Task<Categories> GetCategoryById(int id)
+        public async Task<Category> GetCategoryById(int id)
         {
-            return await FindAsync(x => x.Id == id);
+            return await FindAsync(x => x.CategoryId == id);
         }
 
     }
