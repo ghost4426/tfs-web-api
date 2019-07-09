@@ -11,9 +11,9 @@ namespace BusinessLogic.BusinessLogicImpl
     {
         private IFoodRepository _productRepos;
         private ICategoryRepository _categoryRepos;
-        private IPremesisRepository _premesisRepository;
+        private IPremisesRepository _premesisRepository;
 
-        public FoodBLImpl(IFoodRepository productRepos, ICategoryRepository categoryRepos, IPremesisRepository premesisRepository)
+        public FoodBLImpl(IFoodRepository productRepos, ICategoryRepository categoryRepos, IPremisesRepository premesisRepository)
         {
             _productRepos = productRepos;
             _categoryRepos = categoryRepos;
