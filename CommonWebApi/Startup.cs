@@ -60,6 +60,8 @@ namespace CommonWebApi
             services.AddScoped<IProductRepository, ProductRepositoryImpl>();
             services.AddScoped<ICategoryRepository, CategoryRepositoryImpl>();
             services.AddScoped<IProductRepository, ProductRepositoryImpl>();
+            services.AddScoped<ITransactionRepository, TransactionRepositoryImpl>();
+            services.AddScoped<IPremisesRepository, PremisesRepositoryImpl>();
 
             //BusinessLogic
             services.AddScoped<IUserBL, UserBLImpl>();
@@ -67,6 +69,8 @@ namespace CommonWebApi
             services.AddScoped<IMaterialBL, MaterialBLImpl>();
             services.AddScoped<IProductBL, ProductBLImpl>();
             services.AddScoped<IFoodDataBL, FoodDataBLImpl>();
+            services.AddScoped<ITransactionBL, TransactionBLImpl>();
+            services.AddScoped<IPremisesBL, PremisesBLImpl>();
 
             //Service
             services.AddScoped<IService, ServiceImpl>();

@@ -2,6 +2,8 @@
     getProduct();
     loadCategory();
     insertProduct();
+    loadProvider();
+    insertProvider();
 });
 
 function getProduct() {
@@ -10,11 +12,11 @@ function getProduct() {
         url: 'https://localhost:4201/api/Farmer/getByFarmer',
         dataType: 'json',
         success: function (data) {
-            console.log(data);
             $('.file-export').DataTable({
                 data: data,
                 ordering: false,
                 destroy: true,
+                responsive: true,
                 columns: [
                     { data: 'Categories.Name' },
                     { data : 'Breed'},
@@ -26,9 +28,9 @@ function getProduct() {
                         }
                     },
                     {
-                        data: null,
-                        render: function (o) {
-                            return '<button class="btn btn-grey" data-toggle="modal" data-target="#getinfo" title="Chi tiết"><i class="icon-eye"></i ></button >&nbsp;<button class="btn btn-info" data-toggle="modal" data-target="#addinfo" title="Thêm thông tin"><i class="icon-pencil"></i></button>&nbsp;<button class="btn btn-success" data-toggle="modal" data-target="#addDistributor" title="Bán sản phẩm"><i class="icon-basket"></i></button>';
+                        data: 'FoodId',
+                        render: function (data, type, row) {
+                            return '<button class="btn btn-grey" data-toggle="modal" data-target="#getinfo" title="Chi tiết"><i class="icon-eye"></i ></button >&nbsp;<button class="btn btn-info" data-toggle="modal" data-target="#addinfo" title="Thêm thông tin"><i class="icon-pencil"></i></button>&nbsp;<button class="btn btn-success" onclick="addProvider(' + data + ')" data-toggle="modal" data-target="#addDistributor" title="Bán sản phẩm"><i class="icon-basket"></i></button>';
                         }
                     }
                 ],
@@ -114,4 +116,57 @@ function insertProduct() {
             }
         })
     });
+}
+
+function loadProvider() {
+    $('.select2-placeholder').css('width', '100%');
+    $(".select2-placeholder").select2({
+        placeholder: "Chọn nhà cung cấp",
+        allowClear: true
+    });
+    $.ajax({
+        type: 'get',
+        url: 'https://localhost:4201/api/Farmer/getAllProvider',
+        dataType: 'json',
+        success: function (data) {
+            console.log(data);
+            var option = "";
+            for (var i = 0; i < data.length; i++) {
+                option += "<option value='" + data[i].PremisesId + "'>" + data[i].Name + "</option>";
+            }
+            document.getElementById("single-placeholder").innerHTML = option;
+        }
+    });
+}
+
+function addProvider(foodId) {
+    $('input[name="foodId"]').val(foodId);
+}
+
+function insertProvider() {
+    $('#btn-addProvider').click(function () {
+        var providerId = $('#single-placeholder').val();
+        var foodId = $('input[name="foodId"]').val();
+        $.ajax({
+            type: 'post',
+            url: 'https://localhost:4201/api/Farmer/createTransaction',
+            dataType: 'json',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json; charset=utf-8'
+            },
+            data: JSON.stringify({
+                FarmerId: 2,
+                ProviderId: providerId,
+                FoodId: foodId,
+                StatusId: 1
+            }),
+            success: function (data) {
+                toastr.success('Sản phẩm đang được giao dịch, vui lòng chờ nhà cung cấp xác nhận', 'Giao dịch thành công');
+                getProduct();
+                $('#addDistributor').modal('hide');
+                $('select[name="providerID"]').val("1");
+            }
+        })
+    });    
 }

@@ -62,5 +62,11 @@ namespace DataAccess.RepositoriesImpl
             IEnumerable<Food> result = products.OrderByDescending(x => x.CreatedDate).Take(500);
             return result.ToList();
         }
+
+        public async Task<Food> GetProductByIdAsync(int foodID)
+        {
+            Food product = await FindAsync(x => x.FoodId == foodID);
+            return product;
+        }
     }
 }

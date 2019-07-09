@@ -18,12 +18,20 @@ namespace CommonWebApi.Controllers
     public class FarmerController : ControllerBase
     {
         private IProductBL _productBL;
+        private ITransactionBL _transactionBL;
+        private IPremisesBL _premisesBL;
         private IAutoMapConverter<Models.CreateFoodRequest, Entities.Food> _mapCreateFoodRequestModelToEntity;
+        private IAutoMapConverter<Models.TransactionRequest, Entities.Transaction> _mapCreateTransactionRequestModelToEntity;
 
-        public FarmerController(IProductBL productBL, IAutoMapConverter<Models.CreateFoodRequest, Entities.Food> mapCreateFoodRequestModelToEntity)
+        public FarmerController(IProductBL productBL, ITransactionBL transactionBL,IPremisesBL premisesBL
+            , IAutoMapConverter<Models.CreateFoodRequest, Entities.Food> mapCreateFoodRequestModelToEntity
+            , IAutoMapConverter<Models.TransactionRequest, Entities.Transaction> mapCreateTransactionRequestModelToEntity)
         {
             _productBL = productBL;
+            _transactionBL = transactionBL;
+            _premisesBL = premisesBL;
             _mapCreateFoodRequestModelToEntity = mapCreateFoodRequestModelToEntity;
+            _mapCreateTransactionRequestModelToEntity = mapCreateTransactionRequestModelToEntity;
         }
 
         [HttpGet("getAllCategory")]
@@ -49,6 +57,24 @@ namespace CommonWebApi.Controllers
                 ProductId = food.FoodId
             };
             return reponseModel;
+        }
+
+        [HttpPost("createTransaction")]
+        public async Task<Models.TransactionReponse.CreateTransactionReponse> CreateTransaction([FromBody]Models.TransactionRequest transactionRequest)
+        {
+            Entities.Transaction transaction = _mapCreateTransactionRequestModelToEntity.ConvertObject(transactionRequest);
+            await _transactionBL.CreateSellFoodTransactionAsync(transaction);
+            var reponseModel = new Models.TransactionReponse.CreateTransactionReponse()
+            {
+                TransactionId = transaction.TransactionId
+            };
+            return reponseModel;
+        }
+
+        [HttpGet("getAllProvider")]
+        public async Task<IList<Premises>> GetAllProvider()
+        {
+            return await _premisesBL.getAllProviderAsync();
         }
     }
 }

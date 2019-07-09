@@ -58,5 +58,13 @@ namespace BusinessLogic.BusinessLogicImpl
             }
             return products;
         }
+
+        public async Task<Food> FindProductById(int foodID)
+        {
+            var product = await this._productRepos.GetProductByIdAsync(foodID);
+            var cat = _categoryRepos.GetById(product.CategoriesId);
+            product.Categories = cat;
+            return product;
+        }
     }
 }

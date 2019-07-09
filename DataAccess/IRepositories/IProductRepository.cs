@@ -17,5 +17,7 @@ namespace DataAccess.IRepositories
         Task<IEnumerable<Food>> GetMatchedWithNumber(int distributorId);
 
         Task<IList<Food>> FindAllProductByFarmerAsync(int farmerID);
+
+        Task<Food> GetProductByIdAsync(int foodID);
     }
 }
