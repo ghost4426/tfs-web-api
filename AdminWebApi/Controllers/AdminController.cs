@@ -58,6 +58,7 @@ namespace AdminWebApi.Controllers
                     RequireUppercase = true
                 });
                 user.Password = password;
+                user.Fullname = "Admin";
                 isCreated = await _userBL.CreateUser(user);
                 if (isCreated)
                 {

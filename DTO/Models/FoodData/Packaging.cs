@@ -6,7 +6,6 @@ namespace DTO.Models.FoodData
 {
    public class Packaging
     {
-        public DateTime MFGDate { get; set; }
 
         public DateTime EXPDate { get; set; }
 
