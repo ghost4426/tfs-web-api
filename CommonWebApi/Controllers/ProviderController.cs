@@ -63,9 +63,11 @@ namespace CommonWebApi.Controllers
         }
 
         [HttpGet("testgetByProvider")]
-        public async Task<IList<Entities.Food>> TestFindAllProductByProviderAsync()
+        public async Task<IList<Models.FoodProvider>> TestFindAllProductByProviderAsync()
         {
-            return await _foodBL.FindAllProductByProviderAsync(3);
+            IList<Entities.Food> list = await _foodBL.FindAllProductByProviderAsync(2);
+            var result = _mapper.Map <IList<Models.FoodProvider>>(list);
+            return result;
         }
 
         [HttpGet("getByProvider")]

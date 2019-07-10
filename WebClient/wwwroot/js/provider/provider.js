@@ -13,7 +13,9 @@ function getProduct() {
                 ordering: false,
                 destroy: true,
                 columns: [
-                    { data: 'Categories.Name' },
+                    { data: 'CategoryName' },
+                    { data: 'Breed' },
+                    { data: 'FarmName' },
                     {
                         data: 'CreatedDate',
                         render: function (data, type, row) {
@@ -24,16 +26,12 @@ function getProduct() {
                     {
                         data: null,
                         render: function (o) {
-                            return '<button class="btn btn-grey" data-toggle="modal" data-target="#getinfo" title="Chi tiết"><i class="icon-eye"></i ></button >&nbsp;<button class="btn btn-info" data-toggle="modal" data-target="#addinfo" title="Thêm thông tin"><i class="icon-pencil"></i></button>&nbsp;<button class="btn btn-success" data-toggle="modal" data-target="#addDistributor" title="Bán sản phẩm"><i class="icon-basket"></i></button>';
+                            return '<button class="btn btn-grey" data-toggle="modal" data-target="#getinfo" title="Chi tiết"><i class="icon-eye"></i ></button >&nbsp;<button class="btn btn-info" data-toggle="modal" data-target="#addinfo" title="Thêm thông tin"><i class="icon-pencil"></i></button>';
                         }
                     }
                 ],
                 dom: 'Bfrtip',
                 buttons: [
-                    {
-                        text: 'Thêm mới',
-                        className: 'btn-addNew'
-                    },
                     {
                         extend: 'excel',
                         text: 'Tải báo cáo'
@@ -63,8 +61,7 @@ function getProduct() {
                     }
                 }
             });
-            $('.buttons-excel, .btn-addNew').addClass('btn btn-primary mr-1');
-            $('.btn-addNew').attr({ 'data-toggle': 'modal', 'data-target': "#default" });
+            $('.buttons-excel').addClass('btn btn-primary mr-1');
         }
     });
 }

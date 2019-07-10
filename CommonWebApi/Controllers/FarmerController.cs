@@ -76,20 +76,7 @@ namespace CommonWebApi.Controllers
         public async Task<IList<Models.FoodFarm>> FindAllProductByFarmerAsync()
         {
             IList<Entities.Food> list = await _foodBL.FindAllProductByFarmerAsync(1);
-            IList<Models.FoodFarm> result = new List<Models.FoodFarm>();
-            foreach(var i in list)
-            {
-                Models.FoodFarm item = new Models.FoodFarm()
-                {
-                    CategoryId = i.CategoryId,
-                    CategoryName = i.Category.Name,
-                    Breed = i.Breed,
-                    FarmId = i.FarmId,
-                    FoodId = i.FoodId,
-                    CreatedDate = i.CreatedDate
-                };
-                result.Add(item);
-            }
+            var result = _mapper.Map<IList<Models.FoodFarm>>(list); 
             return result;        
         }
 
@@ -119,9 +106,17 @@ namespace CommonWebApi.Controllers
         }
 
         [HttpGet("getAllProvider")]
-        public async Task<IList<Entities.Premises>> GetAllProvider()
+        public async Task<IList<Models.PremisesProvider>> GetAllProvider()
         {
-            return await _premisesBL.getAllProviderAsync();
+            IList<Entities.Premises> list = await _premisesBL.getAllProviderAsync();
+            var result = _mapper.Map<IList<Models.PremisesProvider>>(list);
+            return result;
+        }
+
+        [HttpGet("food/foodDetail/{foodId}")]
+        public async Task<Models.FoodData.FoodData> getFoodDetail(long foodId)
+        {
+            return await _foodDataBL.GetFoodDataByID(foodId);
         }
     }
 }

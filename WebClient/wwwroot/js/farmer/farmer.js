@@ -12,7 +12,6 @@ function getProduct() {
         url: 'https://localhost:4201/api/Farmer/getByFarmer',
         dataType: 'json',
         success: function (data) {
-            console.log(data);
             $('.file-export').DataTable({
                 data: data,
                 ordering: false,
@@ -130,6 +129,7 @@ function loadProvider() {
         url: 'https://localhost:4201/api/Farmer/getAllProvider',
         dataType: 'json',
         success: function (data) {
+            console.log(data);
             var option = "";
             for (var i = 0; i < data.length; i++) {
                 option += "<option value='" + data[i].PremisesId + "'>" + data[i].Name + "</option>";
@@ -156,7 +156,7 @@ function insertProvider() {
                 'Content-Type': 'application/json; charset=utf-8'
             },
             data: JSON.stringify({
-                FarmerId: 2,
+                FarmId: 1,
                 ProviderId: providerId,
                 FoodId: foodId,
                 StatusId: 1

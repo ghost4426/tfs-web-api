@@ -32,6 +32,8 @@ namespace BusinessLogic.BusinessLogicImpl
             {
                 var cat = _categoryRepos.GetById(product.CategoryId);
                 product.Category = cat;
+                var farm = _premesisRepository.GetById(product.FarmId);
+                product.Farm = farm;
             }
             return products;
         }
