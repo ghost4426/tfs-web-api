@@ -18,16 +18,18 @@ namespace AdminWebApi.Controllers
     //[Authorize(Roles = RoleConstant.ADMIN)]
     public class AdminController : ControllerBase
     {
-
         private readonly IUserBL _userBL;
+        private readonly IRoleBL _roleBl;
         private IMapper _mapper;
         private IEmailSender _mailSender;
 
         public AdminController(IUserBL UserBL,
+            IRoleBL RoleBL,
             IMapper mapper,
             IEmailSender mailSender
             )
         {
+            _roleBl = RoleBL;
             _userBL = UserBL;
             _mapper = mapper;
             _mailSender = mailSender;
@@ -58,7 +60,8 @@ namespace AdminWebApi.Controllers
                     RequireUppercase = true
                 });
                 user.Password = password;
-                user.Fullname = "Admin";
+                user.Fullname = "thaihd";
+                user.Salt = "haha";
                 isCreated = await _userBL.CreateUser(user);
                 if (isCreated)
                 {
@@ -71,13 +74,13 @@ namespace AdminWebApi.Controllers
             {
                 return BadRequest(new { message = e.Message });
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 if (isCreated)
                 {
                     await _userBL.RemoveByIdAsync(user.UserId);
                 }
-                return BadRequest(new { message = MessageConstant.UNHANDLE_ERROR });
+                return BadRequest(new { message = e.ToString() });
             }
 
         }
@@ -105,6 +108,20 @@ namespace AdminWebApi.Controllers
             return user;
 
         }
+        [HttpGet("Role")]
+        public async Task<IList<Entities.Role>> GetRole()
+        {
+            var roleList = await _roleBl.GetAllRole();
+            return roleList;
+
+        }
+        [HttpGet("Role/{roleId}")]
+        public async Task<Entities.Role> GetRoleInfo(int roleId)
+        {
+            var role = await _roleBl.GetById(roleId);
+            return role;
+
+        }
         [HttpPut("Users/Update/{id}")]
         public async Task<Models.UpdateUserReponse> UpdateUser(int id, [FromBody] Models.UpdateUserRequest userInfo)
         {
@@ -115,7 +132,7 @@ namespace AdminWebApi.Controllers
                 Email = userInfo.email,
                 PhoneNo = userInfo.phone,
             };
-            await _userBL.UpdateUser(user, 3);
+            await _userBL.UpdateUser(user, 16);
             var reponseModel = new Models.UpdateUserReponse()
             {
                 UserId = user.UserId
