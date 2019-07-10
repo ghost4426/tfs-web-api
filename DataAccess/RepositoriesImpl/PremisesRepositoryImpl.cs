@@ -18,7 +18,7 @@ namespace DataAccess.RepositoriesImpl
         }
         public async Task<IList<Premises>> getAllProviderAsync()
         {
-            IList<Premises> provider = await FindAllAsync(x => x.TypeId == 3);
+            IList<Premises> provider = await FindAllAsync(x => x.TypeId == 2);
             return provider;
         }
     }

@@ -12,13 +12,14 @@ function getProduct() {
         url: 'https://localhost:4201/api/Farmer/getByFarmer',
         dataType: 'json',
         success: function (data) {
+            console.log(data);
             $('.file-export').DataTable({
                 data: data,
                 ordering: false,
                 destroy: true,
                 responsive: true,
                 columns: [
-                    { data: 'Categories.Name' },
+                    { data: 'CategoryName' },
                     { data : 'Breed'},
                     {
                         data: 'CreatedDate',
@@ -105,7 +106,7 @@ function insertProduct() {
             data: JSON.stringify({
                 CategoriesId: cate,
                 Breed: breed,
-                FarmerId: 2
+                FarmerId: 1
             }),
             success: function (data) {
                 toastr.success('Bạn đã thêm ' + name + ' vào danh sách sản phẩm', 'Thêm thành công');
@@ -129,7 +130,6 @@ function loadProvider() {
         url: 'https://localhost:4201/api/Farmer/getAllProvider',
         dataType: 'json',
         success: function (data) {
-            console.log(data);
             var option = "";
             for (var i = 0; i < data.length; i++) {
                 option += "<option value='" + data[i].PremisesId + "'>" + data[i].Name + "</option>";

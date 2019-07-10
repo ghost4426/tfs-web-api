@@ -21,16 +21,19 @@ namespace CommonWebApi.Controllers
         private readonly IFoodBL _foodBL;
         private readonly IFoodDataBL _foodDataBL;
         private readonly IPremisesBL _premisesBL;
+        private readonly ITransactionBL _transactionBL;
         private readonly IMapper _mapper;
         public FarmerController(
             IFoodBL foodBL,
             IFoodDataBL foodDataBL,
             IPremisesBL premisesBL,
+            ITransactionBL transactionBL,
             IMapper mapper)
         {
             _foodBL = foodBL;
             _foodDataBL = foodDataBL;
             _premisesBL = premisesBL;
+            _transactionBL = transactionBL;
             _mapper = mapper;
         }
 
@@ -70,9 +73,24 @@ namespace CommonWebApi.Controllers
         }
 
         [HttpGet("getByFarmer")]
-        public async Task<IList<Entities.Food>> FindAllProductByFarmerAsync()
+        public async Task<IList<Models.FoodFarm>> FindAllProductByFarmerAsync()
         {
-            return await _foodBL.FindAllProductByFarmerAsync(2);
+            IList<Entities.Food> list = await _foodBL.FindAllProductByFarmerAsync(1);
+            IList<Models.FoodFarm> result = new List<Models.FoodFarm>();
+            foreach(var i in list)
+            {
+                Models.FoodFarm item = new Models.FoodFarm()
+                {
+                    CategoryId = i.CategoryId,
+                    CategoryName = i.Category.Name,
+                    Breed = i.Breed,
+                    FarmId = i.FarmId,
+                    FoodId = i.FoodId,
+                    CreatedDate = i.CreatedDate
+                };
+                result.Add(item);
+            }
+            return result;        
         }
 
         //[HttpPost("createFood")]
@@ -88,17 +106,17 @@ namespace CommonWebApi.Controllers
         //    return reponseModel;
         //}
 
-        //[HttpPost("createTransaction")]
-        //public async Task<Models.TransactionReponse.CreateTransactionReponse> CreateTransaction([FromBody]Models.TransactionRequest transactionRequest)
-        //{
-        //    Entities.Transaction transaction = _mapCreateTransactionRequestModelToEntity.ConvertObject(transactionRequest);
-        //    await _transactionBL.CreateSellFoodTransactionAsync(transaction);
-        //    var reponseModel = new Models.TransactionReponse.CreateTransactionReponse()
-        //    {
-        //        TransactionId = transaction.TransactionId
-        //    };
-        //    return reponseModel;
-        //}
+        [HttpPost("createTransaction")]
+        public async Task<Models.TransactionReponse.CreateTransactionReponse> CreateTransaction([FromBody]Models.TransactionRequest transactionRequest)
+        {
+            Entities.Transaction transaction = _mapper.Map<Entities.Transaction>(transactionRequest);
+            await _transactionBL.CreateSellFoodTransactionAsync(transaction);
+            var reponseModel = new Models.TransactionReponse.CreateTransactionReponse()
+            {
+                TransactionId = transaction.TransactionId
+            };
+            return reponseModel;
+        }
 
         [HttpGet("getAllProvider")]
         public async Task<IList<Entities.Premises>> GetAllProvider()
