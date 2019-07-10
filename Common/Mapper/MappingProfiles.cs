@@ -36,6 +36,17 @@ namespace Common.Mapper
                 .ForMember(dest => dest.PremisesAddress, opts => opts.MapFrom(src => src.Address))
                 .ForMember(dest => dest.PremisesTypeId, opts => opts.MapFrom(src => src.TypeId))
                 .ReverseMap();
+
+            CreateMap<Entities.Category, Models.Category>()
+               .ReverseMap();
+
+            CreateMap<Entities.Food, Models.Food>()
+               .ReverseMap();
+
+            CreateMap<Entities.FoodDetailType, Models.Option>()
+                 .ForMember(dest => dest.id, opts => opts.MapFrom(src => src.TypeId))
+                 .ForMember(dest => dest.text, opts => opts.MapFrom(src => src.Name))
+               .ReverseMap();
         }
     }
 }
