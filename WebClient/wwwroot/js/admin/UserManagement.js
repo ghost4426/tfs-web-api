@@ -2,6 +2,7 @@
     loadUser();
     updateUser();
     changeRole();
+    statusChange();
 });
 
 function loadUser() {
@@ -19,14 +20,27 @@ function loadUser() {
                     { data: 'UserId' },
                     { data: 'Username' },
                     { data: 'Fullname' },
-                    { data: 'RoleId' },
+                    {
+                        data: getRoleForTable('RoleId'),
+
+                    },
                     { data: 'PhoneNo' },
                     { data: 'Email' },
-                    { data: 'IsActive' },
+                    {
+                        data: 'IsActive',
+                        render: function (data, type, row) {
+                            if (data == true) {
+                                return '<font color="green">True</font>';
+                            }
+                            else {
+                                return '<font color="red">False</font>';
+                            };
+                        }
+                    },   
                     {
                         data: null,
                         render: function (data, type, row) {
-                            return '<button onclick="statusChange(' + data.UserId + ')" class="btn btn-grey" tittle="Đổi trạng thái"><i class="fa fa-repeat"></i ></button >' +
+                            return '<button onclick="getUserInfo(' + data.UserId + ')" class="btn btn-grey" data-toggle="modal" data-target="#confirm" tittle="Đổi trạng thái"><i class="fa fa-repeat"></i ></button >' +
                                 '<button onclick="getUserInfo(' + data.UserId + ')" class="btn btn-info" data-toggle="modal" data-target="#updateInfo" title="Cập Nhật Thông Tin Người Dùng"><i class="icon-pencil"></i ></button >' +
                                 '<button onclick="getUserInfo(' + data.UserId + ')" class="btn btn-primary" data-toggle="modal" data-target="#changeRole" title="Đổi vai trò"><i class="fa fa-odnoklassniki"></i ></button >';
 
@@ -37,17 +51,21 @@ function loadUser() {
         }
     });
 }
-function statusChange(userId) {
-    $.ajax({
-        url: 'https://localhost:4200/api/Admin/User/Deactive/' + userId,
-        type: 'PUT',
-        success: function () {
-            toastr.success('Bạn đã thay đổi trạng thái thành công', 'Thay đổi thành công');
-            loadUser();
-        },
-        error: function () {
-            toastr.error('Xin hãy kiểm tra lại', 'Thay đổi thất bại');
-        }
+function statusChange() {
+    $('#confirmButton').click(function () {
+        var userId = parseInt($('input[name="UserId3"]').val());
+        $.ajax({
+            url: 'https://localhost:4200/api/Admin/User/Deactive/' + userId,
+            type: 'PUT',
+            success: function () {
+                toastr.success('Bạn đã thay đổi trạng thái thành công', 'Thay đổi thành công');
+                $('#confirm').modal('hide');
+                loadUser();
+            },
+            error: function () {
+                toastr.error('Xin hãy kiểm tra lại', 'Thay đổi thất bại');
+            }
+        })
     })
 }
 function getUserInfo(userId) {
@@ -60,12 +78,31 @@ function getUserInfo(userId) {
             $('input[name="Email"]').val(data.Email);
             $('input[name="Phone"]').val(data.PhoneNo);
             $('input[name="UserId2"]').val(data.UserId);
+            $('input[name="UserId3"]').val(data.UserId);
+            if (data.IsActive == true) {
+                document.getElementById("statusLabel").innerHTML = "Bạn có muốn thay đổi trạng thái sang Deactive không?";
+            } else {
+                document.getElementById("statusLabel").innerHTML = "Bạn có muốn thay đổi trạng thái sang Active không?";
+            }
+            $('input[name="status"]').val(data.IsActive);
         },
         error: function () {
             toastr.error('Xin hãy kiểm tra lại', 'Thất bại');
         }
     })
     getRole();
+}
+function getRoleForTable(roleId) {
+    $.ajax({
+        url: 'https://localhost:4200/api/Admin/Role/' + roleId,
+        type: 'GET',
+        success: function (data) {
+            return data.Name;
+        },
+        error: function () {
+            toastr.error('Xin hãy kiểm tra lại', 'Thất bại');
+        }
+    })
 }
 function getRole() {
     $("#Role2").empty();
@@ -104,6 +141,7 @@ function updateUser() {
             success: function () {
                 toastr.success('Cập nhật thông tin người dùng thành công', 'Thành Công');
                 //setTimeout("location.reload(true);", 2000);
+                $('#updateInfo').modal('hide');
                 loadUser();
             },
             error: function () {
