@@ -42,8 +42,8 @@ function statusChange(userId) {
         url: 'https://localhost:4200/api/Admin/User/Deactive/' + userId,
         type: 'PUT',
         success: function () {
-            toastr.success('Bạn đã thay đổi trạng thái thành công. Làm mới trong 2s', 'Thay đổi thành công');
-            setTimeout("location.reload(true);", 2000);
+            toastr.success('Bạn đã thay đổi trạng thái thành công', 'Thay đổi thành công');
+            loadUser();
         },
         error: function () {
             toastr.error('Xin hãy kiểm tra lại', 'Thay đổi thất bại');
@@ -60,7 +60,22 @@ function getUserInfo(userId) {
             $('input[name="Email"]').val(data.Email);
             $('input[name="Phone"]').val(data.PhoneNo);
             $('input[name="UserId2"]').val(data.UserId);
-            $('input[name="Role2"]').val(data.RoleId);
+        },
+        error: function () {
+            toastr.error('Xin hãy kiểm tra lại', 'Thất bại');
+        }
+    })
+    getRole();
+}
+function getRole() {
+    $("#Role2").empty();
+    $.ajax({
+        url: 'https://localhost:4200/api/Admin/Role/',
+        type: 'GET',
+        success: function (data) {
+            $.each(data, function (key, value) {
+                $("#Role2").append($("<option></option>").val(value.RoleId).html(value.Name));
+            });
         },
         error: function () {
             toastr.error('Xin hãy kiểm tra lại', 'Thất bại');
@@ -103,9 +118,9 @@ function updateUser() {
 function changeRole() {
     $('#changeRoleButton').click(function () {
         var userId = parseInt($('input[name="UserId2"]').val());
-        var roleId = $('input[name="Role2"]').val();
+        var roleId = $('select[name="Role2"]').val();
         $.ajax({
-            type: 'PUT',
+            type: 'PUT',    
             url: 'https://localhost:4200/api/Admin/User/Role/' + userId,
             contentType: 'json',
             headers: {
