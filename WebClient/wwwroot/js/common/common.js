@@ -3,16 +3,17 @@ var ajaxDataParams = {};
 
 var table_vi_lang = {
     "decimal": "",
-    "emptyTable": "Không có giá trị",
-    "info": "Hiển thị _START_ đến _END_ trong tổng số _TOTAL_ sản phẩm",
-    "infoEmpty": "Hiển thị 0 đến 0 trong tổng số 0 sản phẩm",
-    "infoFiltered": "(Lọc từ _MAX_ tổng sản phẩm)",
+    "emptyTable": "Không có thực phẩm",
+    "info": "Hiển thị _START_ - _END_ trong tổng số _TOTAL_ thực phẩm",
+    "infoEmpty": "Hiển thị 0 đến 0 trong tổng số 0 thực phẩm",
+    "infoFiltered": "(Lọc từ _MAX_ tổng thực phẩm)",
     "infoPostFix": "",
     "thousands": ",",
-    "loadingRecords": "Loading...",
+    "loadingRecords": "Đang tải...",
     "processing": "Đang tiến hành...",
+    "sLengthMenu": "Hiển thị _MENU_ thực phẩm",
     "search": "Tìm kiếm:",
-    "zeroRecords": "Không tìm thấy sản phẩm phù hợp",
+    "zeroRecords": "Không tìm thấy thực phẩm phù hợp",
     "paginate": {
         "first": "Đầu",
         "last": "Cuối",
