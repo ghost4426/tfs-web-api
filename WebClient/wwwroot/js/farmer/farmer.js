@@ -43,7 +43,7 @@ var farmFoodTable = $('#farm-food-mng').DataTable({
         beforeSend: showLoadingPage,
         complete: hideLoadingPage
     },
-    "autoWidth": false,
+    'autoWidth': false,
     columns: [
         { data: 'FoodId' },
         { data: 'Category.Name' },
@@ -65,6 +65,10 @@ var farmFoodTable = $('#farm-food-mng').DataTable({
             }
         }
     ],
+    dom: '<"row" <"col-sm-12"Bf>>'
+        + '<"row" <"col-sm-12"i>>'
+        + '<"row" <"col-sm-12"tr>>'
+        + '<"row"<"col-sm-5"l><"col-sm-7"p>>',
     buttons: [
         {
             text: '<i class="fa fa-plus white"></i> Thêm mới',
