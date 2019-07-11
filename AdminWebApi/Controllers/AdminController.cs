@@ -59,6 +59,7 @@ namespace AdminWebApi.Controllers
                 });
                 user.Password = password;
                 user.Fullname = "Admin";
+                user.Salt = "111";
                 isCreated = await _userBL.CreateUser(user);
                 if (isCreated)
                 {
@@ -71,13 +72,13 @@ namespace AdminWebApi.Controllers
             {
                 return BadRequest(new { message = e.Message });
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 if (isCreated)
                 {
                     await _userBL.RemoveByIdAsync(user.UserId);
                 }
-                return BadRequest(new { message = MessageConstant.UNHANDLE_ERROR });
+                return BadRequest(new { message = e.Message });
             }
 
         }
