@@ -15,13 +15,13 @@ namespace CommonWebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class FarmerController : ControllerBase
+    public class FarmController : ControllerBase
     {
 
         private readonly IFoodBL _foodBL;
         private readonly IFoodDataBL _foodDataBL;
         private readonly IMapper _mapper;
-        public FarmerController(
+        public FarmController(
             IFoodBL foodBL,
             IFoodDataBL foodDataBL,
             IMapper mapper)
@@ -35,6 +35,7 @@ namespace CommonWebApi.Controllers
         public async Task<string> CreateFood([FromBody]Models.CreateFoodRequest foodRequest)
         {
             Entities.Food food = _mapper.Map<Entities.Food>(foodRequest);
+            food.FarmId = 1;
             await _foodBL.CreateProductAsync(food);
             return await _foodDataBL.CreateFood(food, food.FarmId);
         }
@@ -67,10 +68,12 @@ namespace CommonWebApi.Controllers
         }
 
         [HttpGet("getByFarmer")]
-        public async Task<IList<Entities.Food>> FindAllProductByFarmerAsync()
+        public async Task<IActionResult> FindAllProductByFarmerAsync()
         {
-            return await _foodBL.FindAllProductByFarmerAsync(2);
+            return Ok(new {data = _mapper.Map<IList<Models.Food>>(await _foodBL.FindAllProductByFarmerAsync(1))});
         }
+
+       
 
     }
 }
