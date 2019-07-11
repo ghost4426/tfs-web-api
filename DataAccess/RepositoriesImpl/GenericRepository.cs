@@ -251,7 +251,7 @@ namespace DataAccess.RepositoriesImpl
             GC.SuppressFinalize(this);
         }
 
-        public async Task<IList<TEntity>> FindTopAsync(Expression<Func<TEntity, bool>> match, Expression<Func<TEntity, bool>> orderBy, int top)
+        public async Task<IList<TEntity>> FindTopAsync<TSortedBy>(Expression<Func<TEntity, bool>> match, Expression<Func<TEntity, TSortedBy>> orderBy, int top)
         {
             return await this.DbSet.Where(match).OrderBy(orderBy).Take(top).ToListAsync();
         }
