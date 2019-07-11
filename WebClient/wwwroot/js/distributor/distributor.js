@@ -8,7 +8,7 @@ $(document).ready(function () {
 function getProduct() {
     $.ajax({
         type: 'GET',
-        url: 'https://localhost:4201/api/Distributor/getProductMatched/4',
+        url: 'https://localhost:4201/api/Distributor/getProductMatched',
         dataType: 'JSON',
         success: function (data) {
             console.log(data);
@@ -53,14 +53,14 @@ function makeCode(id) {
     JsBarcode("#barcode", "" + id);
 }
 
-var myCustomScrollbar = document.querySelector('.my-custom-scrollbar');
-var ps = new PerfectScrollbar(myCustomScrollbar);
+//var myCustomScrollbar = document.querySelector('.my-custom-scrollbar');
+//var ps = new PerfectScrollbar(myCustomScrollbar);
 
-var scrollbarY = myCustomScrollbar.querySelector('.ps.ps--active-y>.ps__scrollbar-y-rail');
+//var scrollbarY = myCustomScrollbar.querySelector('.ps.ps--active-y>.ps__scrollbar-y-rail');
 
-myCustomScrollbar.onscroll = function () {
-    scrollbarY.style.cssText = `top: ${this.scrollTop}px!important; height: 400px; right: ${-this.scrollLeft}px`;
-}
+//myCustomScrollbar.onscroll = function () {
+//    scrollbarY.style.cssText = `top: ${this.scrollTop}px!important; height: 400px; right: ${-this.scrollLeft}px`;
+//}
 
 function exportPfd() {
     var doc = new jsPDF();
