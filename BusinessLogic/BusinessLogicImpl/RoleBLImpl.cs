@@ -1,6 +1,6 @@
 ﻿using BusinessLogic.IBusinessLogic;
 using DataAccess.IRepositories;
-using DTO.Entities;
+using Entities = DTO.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -17,9 +17,14 @@ namespace BusinessLogic.BusinessLogicImpl
                 _roleRepos = roleRepos;
         }
 
-        public async Task<Role> GetById(int id)
+        public async Task<Entities.Role> GetById(int id)
         {
            return await _roleRepos.GetByIdAsync(id);
+        }
+        public async Task<IList<Entities.Role>> GetAllRole()
+        {
+            IList<Entities.Role> roleList = await _roleRepos.GetAllAsync();
+            return roleList;
         }
     }
 }

@@ -18,22 +18,22 @@ namespace AdminWebApi.Controllers
     //[Authorize(Roles = RoleConstant.ADMIN)]
     public class AdminController : ControllerBase
     {
-
         private readonly IUserBL _userBL;
+        private readonly IRoleBL _roleBl;
         private IMapper _mapper;
         private IEmailSender _mailSender;
 
         public AdminController(IUserBL UserBL,
+            IRoleBL RoleBL,
             IMapper mapper,
             IEmailSender mailSender
             )
         {
+            _roleBl = RoleBL;
             _userBL = UserBL;
             _mapper = mapper;
             _mailSender = mailSender;
         }
-
-
         /// <summary>
         /// create new user
         /// </summary>
@@ -58,8 +58,8 @@ namespace AdminWebApi.Controllers
                     RequireUppercase = true
                 });
                 user.Password = password;
-                user.Fullname = "Admin";
-                user.Salt = "111";
+                user.Fullname = "thaihd";
+                user.Salt = "haha";
                 isCreated = await _userBL.CreateUser(user);
                 if (isCreated)
                 {
@@ -78,15 +78,15 @@ namespace AdminWebApi.Controllers
                 {
                     await _userBL.RemoveByIdAsync(user.UserId);
                 }
-                return BadRequest(new { message = e.Message });
+                return BadRequest(new { message = e.ToString() });
             }
 
         }
 
         [HttpGet("Users")]
-        public async Task<IList<Entities.User>> Users()
+        public async Task<IActionResult> Users()
         {
-            return await _userBL.GetUsers();
+            return Ok(new { data = _mapper.Map<IList<Models.User>>(await _userBL.GetUsers()) });
         }
 
         //GET : /api/admin/profile
@@ -106,6 +106,20 @@ namespace AdminWebApi.Controllers
             return user;
 
         }
+        [HttpGet("Role")]
+        public async Task<IList<Entities.Role>> GetRole()
+        {
+            var roleList = await _roleBl.GetAllRole();
+            return roleList;
+
+        }
+        [HttpGet("Role/{roleId}")]
+        public async Task<Entities.Role> GetRoleInfo(int roleId)
+        {
+            var role = await _roleBl.GetById(roleId);
+            return role;
+
+        }
         [HttpPut("Users/Update/{id}")]
         public async Task<Models.UpdateUserReponse> UpdateUser(int id, [FromBody] Models.UpdateUserRequest userInfo)
         {
@@ -116,7 +130,7 @@ namespace AdminWebApi.Controllers
                 Email = userInfo.email,
                 PhoneNo = userInfo.phone,
             };
-            await _userBL.UpdateUser(user, 3);
+            await _userBL.UpdateUser(user, 16);
             var reponseModel = new Models.UpdateUserReponse()
             {
                 UserId = user.UserId
