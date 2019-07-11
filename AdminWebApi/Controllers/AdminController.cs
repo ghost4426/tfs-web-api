@@ -34,8 +34,6 @@ namespace AdminWebApi.Controllers
             _mapper = mapper;
             _mailSender = mailSender;
         }
-
-
         /// <summary>
         /// create new user
         /// </summary>
@@ -86,9 +84,9 @@ namespace AdminWebApi.Controllers
         }
 
         [HttpGet("Users")]
-        public async Task<IList<Entities.User>> Users()
+        public async Task<IActionResult> Users()
         {
-            return await _userBL.GetUsers();
+            return Ok(new { data = _mapper.Map<IList<Models.User>>(await _userBL.GetUsers()) });
         }
 
         //GET : /api/admin/profile

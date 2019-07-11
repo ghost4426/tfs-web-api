@@ -47,10 +47,14 @@ namespace BusinessLogic.BusinessLogicImpl
             }
             return false;
         }
-        public async Task<IList<Entities.User>> GetUsers()
+        public async Task<IList<User>> GetUsers()
         {
-
-            IList<User> users = await _userRepos.FindAllAsync(u => u.RoleId > 1);
+            var users = await this._userRepos.FindAllAsync(u => u.RoleId > 1);
+            foreach (var user in users)
+            {
+                var role = _roleRepos.GetById(user.RoleId);
+                user.Role = role;
+            }
             return users;
         }
 
