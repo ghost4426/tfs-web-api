@@ -71,13 +71,13 @@ namespace AdminWebApi.Controllers
             {
                 return BadRequest(new { message = e.Message });
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 if (isCreated)
                 {
                     await _userBL.RemoveByIdAsync(user.UserId);
                 }
-                return BadRequest(new { message = MessageConstant.UNHANDLE_ERROR });
+                return BadRequest(new { message = MessageConstant.UNHANDLE_ERROR, error = e.Message });
             }
 
         }

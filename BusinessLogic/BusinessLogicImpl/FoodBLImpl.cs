@@ -43,13 +43,14 @@ namespace BusinessLogic.BusinessLogicImpl
 
         public async Task<IEnumerable<Food>> getMatchedWithNumber(int distributorId)
         {
-            var products = await this._productRepos.GetMatchedWithNumber(distributorId);
-            foreach (var product in products)
-            {
-                var provider = _premesisRepository.GetById(product.ProviderId);
-                product.Provider = provider;
-            }
-            return products;
+            //var products = await this._productRepos.GetMatchedWithNumber(distributorId);
+            //foreach (var product in products)
+            //{
+            //    var provider = _premesisRepository.GetById(product.ProviderId);
+            //    product.Provider = provider;
+            //}
+            //return products;
+            return null;
         }
 
         public async Task<IList<Category>> getAllCategory()

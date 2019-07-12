@@ -136,5 +136,10 @@ namespace BusinessLogic.BusinessLogicImpl
 
             return await SaveFoodData(FoodData);
         }
+
+        public Task<IList<string>> GetFeedingsByIdAsync(int foodId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

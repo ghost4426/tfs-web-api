@@ -40,6 +40,12 @@ namespace CommonWebApi.Controllers
             return await _foodDataBL.CreateFood(food, food.FarmId);
         }
 
+        [HttpGet("food/feedings/{foodId}")]
+        public async Task<IList<string>> GetFeedingsById(int foodId)
+        {
+            return await _foodDataBL.GetFeedingsByIdAsync(foodId);
+        }
+
         [HttpPut("food/feedings/{foodId}")]
         public async Task<string> AddFeedings(long foodId, [FromBody]List<string> feedings)
         {
