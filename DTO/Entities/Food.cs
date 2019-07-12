@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace DTO.Entities
 {
@@ -20,9 +19,6 @@ namespace DTO.Entities
         [ForeignKey("Farm")]
         public int FarmId { get; set; }
 
-        [ForeignKey("Provider")]
-        public int? ProviderId { get; set; }
-
         [ForeignKey("Treatment")]
         public int? TreatmentId { get; set; }
 
@@ -38,14 +34,19 @@ namespace DTO.Entities
 
         public DateTime CreatedDate { get; set; }
 
-        public virtual Category Category { get; set; }
-        public virtual Premises Provider { get; set; }
-        public virtual Premises Farm { get; set; }
-        public virtual Treatment Treatment { get; set; }
+        [ForeignKey("CreatedBy")]
+        public int CreatedById { get; set; }
+
+
+        public Category Category { get; set; }
+        public Premises Farm { get; set; }
+        public Treatment Treatment { get; set; }
+        public User CreatedBy { get; set; }
         
-        public virtual ICollection<DistributorFood> DistributorFoods { get; set; }
-        public virtual ICollection<FoodDetail> FoodDetails { get; set; }
-        public virtual ICollection<Transaction> Transactions { get; set; }
+        public ICollection<DistributorFood> DistributorFoods { get; set; }
+        public ICollection<ProviderFood> ProviderFoods { get; set; }
+        public ICollection<FoodDetail> FoodDetails { get; set; }
+        public ICollection<Transaction> Transactions { get; set; }
 
     }
 }

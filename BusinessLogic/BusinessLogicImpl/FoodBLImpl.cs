@@ -45,16 +45,14 @@ namespace BusinessLogic.BusinessLogicImpl
 
         public async Task<IList<Food>> getMatchedWithNumber(int distributorId)
         {
-            IList<DistributorFood> foodIDs = await _distributorFoodRepository.GetDistributorFoods(distributorId);
-            IList<Food> foods = new List<Food>();
-            foreach (var foodID in foodIDs)
-            {
-                var food = _productRepos.GetById(foodID.FoodId);
-                var provider = _premesisRepository.GetById(food.ProviderId);
-                food.Provider = provider;
-                foods.Add(food);
-            }
-            return foods;
+            //var products = await this._productRepos.GetMatchedWithNumber(distributorId);
+            //foreach (var product in products)
+            //{
+            //    var provider = _premesisRepository.GetById(product.ProviderId);
+            //    product.Provider = provider;
+            //}
+            //return products;
+            return null;
         }
 
         public async Task<IList<Category>> getAllCategory()

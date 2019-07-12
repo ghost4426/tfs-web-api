@@ -9,10 +9,12 @@ namespace Common.Constant
         public const string ADMIN = "Admin";
         public const string MANAGER = "Manager";
         public const string STAFF = "Staff";
+        public const string VETERINARY = "Veterinary";
 
         public const int ADMIN_ID = 1;
         public const int MANAGER_ID = 2;
         public const int STAFF_ID = 3;
+        public const int VETERINARY_ID = 4;
     }
 
     public static class PremisesTypeDataConstant
@@ -53,12 +55,12 @@ namespace Common.Constant
     public static class FoodDetailTypeDataConstant
     {
         public const string CREATE_NEW = "Tạo mới";
-        public const string ADD_FEEDING = "Thêm thông tin thức ăn";
-        public const string ADD_VACCINATION = "Thêm thông tin vac-xin";
-        public const string ADD_CERTIFICATION = "Thêm thông tin kiểm định";
-        public const string ADD_PROVIDER = "Thêm nhà cung cấp";
-        public const string ADD_TREATMENT = "Thêm quy trình xử lý";
-        public const string ADD_PACKAGING = "Thêm thông tin đóng gói";
+        public const string ADD_FEEDING = "Thức ăn";
+        public const string ADD_VACCINATION = "Vac-xin";
+        public const string ADD_CERTIFICATION = "Kiểm định";
+        public const string ADD_PROVIDER = "Nhà cung cấp";
+        public const string ADD_TREATMENT = "Quy trình xử lý";
+        public const string ADD_PACKAGING = "Đóng gói";
 
         public const int CREATE_NEW_ID = 1;
         public const int ADD_FEEDING_ID = 2;

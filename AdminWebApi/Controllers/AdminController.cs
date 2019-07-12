@@ -78,7 +78,7 @@ namespace AdminWebApi.Controllers
                 {
                     await _userBL.RemoveByIdAsync(user.UserId);
                 }
-                return BadRequest(new { message = e.ToString() });
+                return BadRequest(new { message = MessageConstant.UNHANDLE_ERROR, error = e.Message });
             }
 
         }
