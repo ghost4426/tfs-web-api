@@ -10,7 +10,6 @@ namespace WebClient.Controllers
     [Route("")]
     public class HomeController : Controller
     {
-        [Route("trang-chu")]
         public IActionResult Index()
         {
             return View();

@@ -102,7 +102,7 @@ $('#btnAddProduct').click(function () {
     var breed = $('input[name="Breed"]').val();
     callAjax(
         {
-            url: 'https://localhost:4201/api/Farmer/food',
+            url: CREATE_FOOD_DATA_URI,
             dataType: JSON_DATATYPE,
             type: POST
         }, JSON.stringify({

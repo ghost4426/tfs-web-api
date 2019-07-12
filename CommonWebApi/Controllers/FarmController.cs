@@ -36,6 +36,7 @@ namespace CommonWebApi.Controllers
         {
             Entities.Food food = _mapper.Map<Entities.Food>(foodRequest);
             food.FarmId = 1;
+            food.CreatedById = 17;
             await _foodBL.CreateProductAsync(food);
             return await _foodDataBL.CreateFood(food, food.FarmId);
         }
