@@ -47,6 +47,30 @@ namespace BusinessLogic.BusinessLogicImpl
             }
             return false;
         }
+        public async Task ChangePassword(int id, string password, string oldPass)
+        {
+            var user = await this._userRepos.GetByIdAsync(id);
+            /*var hashedPassword = PasswordHasher.GetHashPassword(password);
+            user.Password = hashedPassword.HashedPassword;
+            user.Salt = hashedPassword.Salt;
+            await _userRepos.UpdateUser(user);*/
+            var isCorrectPassword = PasswordHasher.CheckHashedPassword(new Models.HashPassword()
+            {
+                HashedPassword = user.Password,
+                Password = oldPass,
+                Salt = user.Salt
+            });
+            if (isCorrectPassword)
+            {
+                var hashedPassword = PasswordHasher.GetHashPassword(password);
+                user.Password = hashedPassword.HashedPassword;
+                user.Salt = hashedPassword.Salt;
+                await _userRepos.UpdateUser(user);
+            }
+            else throw new Exception("Mật khẩu cũ không đúng");
+
+
+        }
         public async Task<IList<User>> GetUsers()
         {
             var users = await this._userRepos.FindAllAsync(u => u.RoleId > 1);

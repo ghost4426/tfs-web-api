@@ -27,8 +27,5 @@ namespace BusinessLogic.IBusinessLogic
         Task<string> Packaging(long foodId, Packaging packaging);
 
         Task<FoodData> GetFoodDataByID(long id);
-
-        Task<IList<string>> GetFeedingsByIdAsync(int foodId);
-
     }
 }

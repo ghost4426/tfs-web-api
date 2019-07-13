@@ -27,8 +27,8 @@ namespace DTO.Entities
 
         public DateTime CreatedDate { get; set; }
 
-        public FoodDetailType Type { get; set; }
+        public virtual FoodDetailType Type { get; set; }
         public Food Food { get; set; }
-        public User CreatedBy { get; set; }
+        public virtual User CreatedBy { get; set; }
     }
 }

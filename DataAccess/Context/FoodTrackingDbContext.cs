@@ -27,7 +27,6 @@ namespace DataAccess.Context
         public DbSet<Transaction> Transaction { get; set; }
         public DbSet<TransactionStatus> TransactionStatus { get; set; }
         public DbSet<RegisterInfo> RegisterInfo { get; set; }
-        public DbSet<ProviderFood> ProviderFood { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -44,17 +43,17 @@ namespace DataAccess.Context
             #endregion
 
             #region Food
-            //builder.Entity<Food>()
-            //    .HasOne(df => df.Farm)
-            //    .WithMany(f => f.FarmFoods)
-            //    .HasForeignKey(df => df.FarmId)
-            //    .OnDelete(DeleteBehavior.);
+            builder.Entity<Food>()
+                .HasOne(df => df.Farm)
+                .WithMany(f => f.FarmFoods)
+                .HasForeignKey(df => df.FarmId)
+                .OnDelete(DeleteBehavior.SetNull);
 
-            ////builder.Entity<Food>()
-            ////    .HasOne(df => df.Provider)
-            ////    .WithMany(f => f.ProviderFoods)
-            ////    .HasForeignKey(df => df.ProviderId)
-            ////    .OnDelete(DeleteBehavior.SetNull);
+            builder.Entity<Food>()
+                .HasOne(df => df.Provider)
+                .WithMany(f => f.ProviderFoods)
+                .HasForeignKey(df => df.ProviderId)
+                .OnDelete(DeleteBehavior.SetNull);
 
             builder.Entity<Food>()
                .Property(f => f.IsCertification)
@@ -109,22 +108,6 @@ namespace DataAccess.Context
             .HasDefaultValueSql("getdate()");
             #endregion
 
-            #region ProviderFood
-            builder.Entity<ProviderFood>()
-                .HasKey(df => new { df.FoodId, df.PremisesId });
-            builder.Entity<ProviderFood>()
-                .HasOne(df => df.Premises)
-                .WithMany(d => d.ProviderFoods)
-                .HasForeignKey(df => df.PremisesId);
-            builder.Entity<ProviderFood>()
-                .HasOne(df => df.Food)
-                .WithMany(f => f.ProviderFoods)
-                .HasForeignKey(df => df.FoodId);
-            builder.Entity<ProviderFood>()
-            .Property(f => f.CreatedDate)
-            .HasDefaultValueSql("getdate()");
-            #endregion
-
             #region Transaction
             builder.Entity<Transaction>()
                 .HasOne(df => df.Farm)
@@ -141,16 +124,6 @@ namespace DataAccess.Context
             builder.Entity<Transaction>()
                .Property(f => f.CreatedDate)
                .HasDefaultValueSql("getdate()");
-
-            builder.Entity<Transaction>()
-                .HasOne(df => df.CreatedBy)
-                .WithMany(f => f.UserCreatedTransactions)
-                .HasForeignKey(df => df.CreatedById);
-
-            builder.Entity<Transaction>()
-                .HasOne(df => df.Veterinary)
-                .WithMany(f => f.VeterinaryTransactions)
-                .HasForeignKey(df => df.VeterinaryId);
 
             #endregion RegisterInfo
 

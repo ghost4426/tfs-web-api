@@ -26,10 +26,9 @@ namespace DataAccess.RepositoriesImpl
         }
         public async Task<IList<Food>> FindAllProductByProviderAsync(int providerID)
         {
-            //IList<Food> products = await FindAllAsync(x => x.ProviderId == providerID);
-            //IEnumerable<Food> result = products.OrderByDescending(x => x.CreatedDate).Take(500);
-            //return result.ToList();
-            return null;
+            IList<Food> products = await FindAllAsync(x => x.ProviderId == providerID);
+            IEnumerable<Food> result = products.OrderByDescending(x => x.CreatedDate).Take(500);
+            return result.ToList();
         }
 
         public async Task<int> CreateProductAsync(Food newProduct)

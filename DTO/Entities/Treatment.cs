@@ -20,15 +20,10 @@ namespace DTO.Entities
         [ForeignKey("Premises")]
         public int PremisesId { get; set; }
 
-        public DateTime CreatedDate { get; set; }
+        public virtual Premises Premises { get; set; }
+        public virtual Treatment TreatmentParent { get; set; }
 
-        public int CreatedById { get; set; }
-
-        public Premises Premises { get; set; }
-        public Treatment TreatmentParent { get; set; }
-        public User CreatedBy { get; set; }
-
-        public ICollection<Food> Foods { get; set; }
-        public ICollection<Treatment> Treatments { get; set; }
+        public virtual ICollection<Food> Foods { get; set; }
+        public virtual ICollection<Treatment> Treatments { get; set; }
     }
 }
