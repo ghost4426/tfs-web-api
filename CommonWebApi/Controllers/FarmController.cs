@@ -73,12 +73,18 @@ namespace CommonWebApi.Controllers
             return await _foodBL.getAllCategory();
         }
 
+        //[HttpGet("getByFarmer")]
+        //public async Task<IList<Models.FoodFarm>> FindAllProductByFarmerAsync()
+        //{
+        //    IList<Entities.Food> list = await _foodBL.FindAllProductByFarmerAsync(1);
+        //    var result = _mapper.Map<IList<Models.FoodFarm>>(list); 
+        //    return result;        
+        //}
+
         [HttpGet("getByFarmer")]
-        public async Task<IList<Models.FoodFarm>> FindAllProductByFarmerAsync()
+        public async Task<IActionResult> FindAllProductByFarmerAsync()
         {
-            IList<Entities.Food> list = await _foodBL.FindAllProductByFarmerAsync(1);
-            var result = _mapper.Map<IList<Models.FoodFarm>>(list); 
-            return result;        
+            return Ok(new { data = _mapper.Map<IList<Models.FoodFarm>>(await _foodBL.FindAllProductByFarmerAsync(1)) });
         }
 
         //[HttpPost("createFood")]
@@ -107,11 +113,16 @@ namespace CommonWebApi.Controllers
         }
 
         [HttpGet("getAllProvider")]
-        public async Task<IList<Models.PremisesProvider>> GetAllProvider()
+        public async Task<IActionResult> GetAllProvider(string keyword)
         {
-            IList<Entities.Premises> list = await _premisesBL.getAllProviderAsync();
-            var result = _mapper.Map<IList<Models.PremisesProvider>>(list);
-            return result;
+            try
+            {
+                return Ok(new { results = _mapper.Map<IList<Models.Option>>(await _premisesBL.getAllProviderAsync(keyword)) });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { msg = e.Message });
+            }
         }
 
         [HttpGet("food/foodDetail/{foodId}")]

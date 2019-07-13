@@ -62,6 +62,10 @@ namespace Common.Mapper
                  .ForMember(dest => dest.id, opts => opts.MapFrom(src => src.TypeId))
                  .ForMember(dest => dest.text, opts => opts.MapFrom(src => src.Name))
                .ReverseMap();
+            CreateMap<Entities.Premises, Models.Option>()
+                .ForMember(dest => dest.id, opts => opts.MapFrom(src => src.PremisesId))
+                .ForMember(dest => dest.text, opts => opts.MapFrom(src => src.Name))
+                .ReverseMap();
         }
     }
 }

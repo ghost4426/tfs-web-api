@@ -12,9 +12,31 @@
             },
             cache: true
         },
-        //minimumResultsForSearch: Infinity,
+        minimumResultsForSearch: Infinity,
         placeholder: "Chọn thông tin",
         language: "vi"
+    });
+
+    //load provider
+    $("#ddlProvider").select2({
+        ajax: {
+            url: GET_PROVIDER,
+            dataType: JSON_DATATYPE,
+            data: function (params) {
+                return {
+                    q: params.term, // search term
+                    //page: params.page
+                };
+            },
+            processResults: function (data, params) {
+                return {
+                    results: data.results
+                };
+            },
+            cache: true
+        },
+        placeholder: "Chọn nhà cung cấp",
+        language:"vi"
     });
 
     //Load category
@@ -46,7 +68,7 @@ var farmFoodTable = $('#farm-food-mng').DataTable({
     'autoWidth': false,
     columns: [
         { data: 'FoodId' },
-        { data: 'Category.Name' },
+        { data: 'CategoryName' },
         { data: 'Breed' },
         {
             data: 'CreatedDate',
@@ -96,7 +118,7 @@ $('#btnAddProduct').click(function () {
     var breed = $('input[name="Breed"]').val();
     callAjax(
         {
-            url: 'https://localhost:4201/api/Farmer/food',
+            url: ADD_FOOD,
             dataType: JSON_DATATYPE,
             type: POST
         }, JSON.stringify({
@@ -122,7 +144,7 @@ $('#farm-food-mng').on('click', 'button.btn-add-detail', function () {
     var row = farmFoodTable.row(tr);
     var id = row.data().FoodId;
     $('#txtFoodId').val(id);
-    $('#txtFoodCategory').val(row.data().Category.Name);
+    $('#txtFoodCategory').val(row.data().CategoryName);
     $('#txtFoodBreed').val(row.data().Breed);
     $('#add-food-data').modal('show'); 
 
