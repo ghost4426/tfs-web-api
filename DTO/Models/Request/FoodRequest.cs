@@ -10,7 +10,6 @@ namespace DTO.Models
 
         public string Breed { get; set; }
 
-        public int FarmId { get; set; }
     }
 
     public class PackagingRequest

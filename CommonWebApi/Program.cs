@@ -18,7 +18,7 @@ namespace CommonWebApi
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
+            WebHost.CreateDefaultBuilder(args).UseKestrel().UseUrls("https://*:4201")
                 .UseStartup<Startup>();
     }
 }

@@ -15,7 +15,7 @@ namespace CommonWebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class FarmerController : ControllerBase
+    public class FarmController : ControllerBase
     {
 
         private readonly IFoodBL _foodBL;
@@ -23,7 +23,7 @@ namespace CommonWebApi.Controllers
         private readonly IPremisesBL _premisesBL;
         private readonly ITransactionBL _transactionBL;
         private readonly IMapper _mapper;
-        public FarmerController(
+        public FarmController(
             IFoodBL foodBL,
             IFoodDataBL foodDataBL,
             IPremisesBL premisesBL,
@@ -41,6 +41,7 @@ namespace CommonWebApi.Controllers
         public async Task<string> CreateFood([FromBody]Models.CreateFoodRequest foodRequest)
         {
             Entities.Food food = _mapper.Map<Entities.Food>(foodRequest);
+            food.FarmId = 1;
             await _foodBL.CreateProductAsync(food);
             return await _foodDataBL.CreateFood(food, food.FarmId);
         }

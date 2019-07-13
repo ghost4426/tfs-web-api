@@ -71,6 +71,7 @@ namespace CommonWebApi
             services.AddScoped<ITreatmentRepository, TreatmentRepositoryImpl>();
             services.AddScoped<IPremisesRepository, PremisesRepositoryImpl>();
             services.AddScoped<ITransactionRepository, TransactionRepositoryImpl>();
+            services.AddScoped<IFoodDetailTypeRepository, FoodDetailTypeRepositoryImpl>();
 
             //BusinessLogic
             services.AddScoped<IUserBL, UserBLImpl>();
@@ -80,6 +81,7 @@ namespace CommonWebApi
             services.AddScoped<ITransactionBL, TransactionBLImpl>();
             services.AddScoped<IPremisesBL, PremisesBLImpl>();
             services.AddScoped<ITreatmentBL, TreatmentBLImpl>();
+            services.AddScoped<IFoodDetailBL, FoodDetailImpl>();
 
             //Service
             services.AddScoped<IService, ServiceImpl>();
