@@ -64,7 +64,6 @@ function getUserInfo(userId) {
             type: GET,
             url: GET_USER_DETAILS_URI + userId,
             dataType: JSON_DATATYPE,
-            
         },
         JSON.stringify({
         }),
