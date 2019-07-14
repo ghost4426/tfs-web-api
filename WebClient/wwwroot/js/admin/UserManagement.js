@@ -58,6 +58,7 @@ $('#confirmButton').click(function () {
 });
 
 function getUserInfo(userId) {
+    
     callAjax(
         {
             type: GET,
@@ -66,22 +67,22 @@ function getUserInfo(userId) {
             
         },
         JSON.stringify({
-            
         }),
-        function (result) {
-            $('#userId').val(data.UserId);
-            $('#FullName').val(data.Fullname);
-            $('#Email').val(data.Email);
-            $('#Phone').val(data.PhoneNo);
-            $('#txtUserIdRole').val(data.UserId);
-            $('div#RoleOption select').val(data.RoleId).change();
-            $('#txtUserIdActive').val(data.UserId);
-            if (data.IsActive == true) {
+        function (user, result) {
+            getRole();
+            $('#userId').val(user.data.UserId);
+            $('#FullName').val(user.data.Fullname);
+            $('#Email').val(user.data.Email);
+            $('#Phone').val(user.data.PhoneNo);
+            $('#txtUserIdRole').val(user.data.UserId);
+            $('div#RoleOption select').val(user.data.RoleId).change();
+            $('#txtUserIdActive').val(user.data.UserId);
+            if (user.data.IsActive == true) {
                 document.getElementById("statusLabel").innerHTML = "Bạn có muốn thay đổi trạng thái sang Deactive không?";
             } else {
                 document.getElementById("statusLabel").innerHTML = "Bạn có muốn thay đổi trạng thái sang Active không?";
             }
-            $('#status').val(data.IsActive);
+            $('#status').val(user.data.IsActive);
         },
         function (result) {
             toastr.error(result);
@@ -103,11 +104,12 @@ function readURL(input) {
     }
 }
 function getRole() {
-    $("#Role2").empty();
+    $("#dllRole").empty();
     $.ajax({
-        url: 'https://localhost:4200/api/Admin/role/',
-        type: 'GET',
+        url: GET_ROLE_URI,
+        type: GET,
         success: function (data) {
+            
             $.each(data, function (key, value) {
                 $("#dllRole").append($("<option></option>").val(value.RoleId).html(value.Name));
             });
