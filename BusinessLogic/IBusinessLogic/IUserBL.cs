@@ -27,7 +27,5 @@ namespace BusinessLogic.IBusinessLogic
 
         Task Register(User user, Premises premises);
 
-        Task ChangePassword(int id, string password, string oldPass);
-
     }
 }

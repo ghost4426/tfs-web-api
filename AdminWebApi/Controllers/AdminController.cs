@@ -59,6 +59,7 @@ namespace AdminWebApi.Controllers
                 });
                 user.Password = password;
                 user.Fullname = "thaihd";
+                user.Salt = "haha";
                 isCreated = await _userBL.CreateUser(user);
                 if (isCreated)
                 {
@@ -77,31 +78,17 @@ namespace AdminWebApi.Controllers
                 {
                     await _userBL.RemoveByIdAsync(user.UserId);
                 }
-                return BadRequest(new { message = e.Message });
+                return BadRequest(new { message = MessageConstant.UNHANDLE_ERROR, error = e.Message });
             }
 
         }
 
-        [HttpGet("users")]
+        [HttpGet("Users")]
         public async Task<IActionResult> Users()
         {
             return Ok(new { data = _mapper.Map<IList<Models.User>>(await _userBL.GetUsers()) });
         }
 
-        [HttpPut("password/{userid}")]
-        public async Task<IActionResult> ChangePassword(int userid, [FromBody] string password, string oldPass)
-        {
-            try
-            {
-                await _userBL.ChangePassword(userid, password, oldPass);
-                return Ok("success!");
-            }
-            catch (Exception e)
-            {
-                return BadRequest(new { message = e.Message });
-            }
-
-        }
         //GET : /api/admin/profile
         //[Authorize(Roles = RoleConstant.ADMIN)]
         [HttpGet("profile")]
@@ -112,27 +99,29 @@ namespace AdminWebApi.Controllers
             var user = await _userBL.GetById(int.Parse(userId));
             return Ok(user);
         }
-        [HttpGet("user/{userId}")]
-        public async Task<IActionResult> Get1Users(int userId)
+        [HttpGet("User/{userId}")]
+        public async Task<Entities.User> Get1Users(int userId)
         {
-            return Ok(new { data = _mapper.Map<Entities.User>(await _userBL.GetById(userId)) });
+            var user = await _userBL.GetById(userId);
+            return user;
+
         }
-        [HttpGet("role")]
+        [HttpGet("Role")]
         public async Task<IList<Entities.Role>> GetRole()
         {
             var roleList = await _roleBl.GetAllRole();
             return roleList;
 
         }
-        [HttpGet("role/{roleId}")]
-        public async Task<IActionResult> GetRoleInfo(int roleId)
+        [HttpGet("Role/{roleId}")]
+        public async Task<Entities.Role> GetRoleInfo(int roleId)
         {
             var role = await _roleBl.GetById(roleId);
-            return Ok(role);
+            return role;
 
         }
-        [HttpPut("users/update/{id}")]
-        public async Task<IActionResult> UpdateUser(int id, [FromBody] Models.UpdateUserRequest userInfo)
+        [HttpPut("Users/Update/{id}")]
+        public async Task<Models.UpdateUserReponse> UpdateUser(int id, [FromBody] Models.UpdateUserRequest userInfo)
         {
             Entities.User user = new Entities.User()
             {
@@ -142,10 +131,14 @@ namespace AdminWebApi.Controllers
                 PhoneNo = userInfo.phone,
             };
             await _userBL.UpdateUser(user, 16);
-            return Ok();
+            var reponseModel = new Models.UpdateUserReponse()
+            {
+                UserId = user.UserId
+            };
+            return reponseModel;
 
         }
-        [HttpPut("user/role/{id}")]
+        [HttpPut("User/Role/{id}")]
         public async Task<IActionResult> Role(int id, [FromBody] string role)
         {
             try
@@ -160,7 +153,7 @@ namespace AdminWebApi.Controllers
             }
         }
 
-        [HttpPut("user/deactive/{userId}")]
+        [HttpPut("User/Deactive/{userId}")]
         public async Task<IActionResult> Deactive(int userId)
         {
             try

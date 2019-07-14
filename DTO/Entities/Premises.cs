@@ -22,13 +22,13 @@ namespace DTO.Entities
 
         public DateTime CreatedDate { get; set; }
 
-        public virtual PremisesType PremisesType { get; set; }
+        public PremisesType PremisesType { get; set; }
 
-        public virtual ICollection<DistributorFood> DistributorFoods { get; set; }
-        public virtual ICollection<Food> ProviderFoods { get; set; }
-        public virtual ICollection<Food> FarmFoods { get; set; }
-        public virtual ICollection<Transaction> ProviderTransactions { get; set; }
-        public virtual ICollection<Transaction> FarmTransactions { get; set; }
-        public virtual ICollection<User> Users { get; set; }
+        public ICollection<DistributorFood> DistributorFoods { get; set; }
+        public ICollection<ProviderFood> ProviderFoods { get; set; }
+        public ICollection<Food> FarmFoods { get; set; }
+        public ICollection<Transaction> ProviderTransactions { get; set; }
+        public ICollection<Transaction> FarmTransactions { get; set; }
+        public ICollection<User> Users { get; set; }
     }
 }
