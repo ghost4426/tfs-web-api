@@ -10,7 +10,6 @@ namespace WebClient.Controllers
     [Route("")]
     public class HomeController : Controller
     {
-        [Route("trang-chu")]
         public IActionResult Index()
         {
             return View();
@@ -28,7 +27,11 @@ namespace WebClient.Controllers
             return View();
         }
 
-        
+        [Route("cap-nhat-thong-tin")]
+        public IActionResult UpdateProfile()
+        {
+            return View("Update");
+        }
 
     }
 }

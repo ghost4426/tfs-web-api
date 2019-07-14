@@ -35,7 +35,6 @@ namespace DataAccess.RepositoriesImpl
             await this.UpdateAsync(user, true);
             return user;
         }
-       
 
     }
 }

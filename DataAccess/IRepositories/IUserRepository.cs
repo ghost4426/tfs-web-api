@@ -14,6 +14,5 @@ namespace DataAccess.IRepositories
         Task<string> changeRole1User(User user);
 
         Task<User> UpdateUser(User user);
-
     }
 }
