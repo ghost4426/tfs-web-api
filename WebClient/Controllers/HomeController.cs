@@ -27,11 +27,5 @@ namespace WebClient.Controllers
             return View();
         }
 
-        [Route("cap-nhat-thong-tin")]
-        public IActionResult UpdateProfile()
-        {
-            return View("Update");
-        }
-
     }
 }

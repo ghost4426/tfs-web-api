@@ -19,7 +19,10 @@ namespace DTO.Models
         public string fullName { get; set; }
         public string email { get; set; }
         public string phone { get; set; }
+        public string newPass { get; set; }
+        public string oldPass { get; set; }
     }
+
     public class RoleUserRequest
     {
         public int RoleId { get; set; }

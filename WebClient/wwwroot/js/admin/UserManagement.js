@@ -4,7 +4,7 @@
 
 var userTable = $('#userTable').DataTable({
     ajax: {
-        url: 'https://localhost:4200/api/Admin/Users',
+        url: GET_USER_URI,
         beforeSend: showLoadingPage,
         complete: hideLoadingPage
     },
@@ -31,7 +31,6 @@ var userTable = $('#userTable').DataTable({
             data: null,
             render: function (data, type, row) {
                 return '<button onclick="getUserInfo(' + data.UserId + ')" class="btn btn-grey" data-toggle="modal" data-target="#confirm" tittle="Đổi trạng thái"><i class="fa fa-repeat"></i ></button >' +
-                    '<button onclick="getUserInfo(' + data.UserId + ')" class="btn btn-info"  title="Cập Nhật Thông Tin Người Dùng"><i class="icon-pencil"></i ></button >' +
                     '<button onclick="getUserInfo(' + data.UserId + ')" class="btn btn-primary" data-toggle="modal" data-target="#changeRole" title="Đổi vai trò"><i class="fa fa-odnoklassniki"></i ></button >';
 
             }
@@ -40,10 +39,10 @@ var userTable = $('#userTable').DataTable({
 });
 
 $('#confirmButton').click(function () {
-    var userId = parseInt($('input[name="UserId3"]').val());
+    var userId = parseInt($('#txtUserIdActive').val());
     callAjax(
         {
-            url: 'https://localhost:4200/api/Admin/User/Deactive/' + userId,
+            url: DEACTIVE_USER_URI + userId,
             dataType: JSON_DATATYPE,
             type: PUT,
         }, JSON.stringify(),
@@ -59,12 +58,13 @@ $('#confirmButton').click(function () {
 });
 
 function getUserInfo(userId) {
-    
+
     callAjax(
         {
             type: GET,
             url: GET_USER_DETAILS_URI + userId,
             dataType: JSON_DATATYPE,
+
         },
         JSON.stringify({
         }),
@@ -82,23 +82,36 @@ function getUserInfo(userId) {
             } else {
                 document.getElementById("statusLabel").innerHTML = "Bạn có muốn thay đổi trạng thái sang Active không?";
             }
-            $('input[name="status"]').val(data.IsActive);
+            $('#status').val(user.data.IsActive);
         },
-        error: function () {
-            toastr.error('Xin hãy kiểm tra lại', 'Thất bại');
-        }
-    })
+        function (result) {
+            toastr.error(result);
+        })
     getRole();
 }
 
+function readURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $('#avatar')
+                .attr('src', e.target.result)
+                .width(150)
+                .height(200);
+        };
+
+        reader.readAsDataURL(input.files[0]);
+    }
+}
 function getRole() {
-    $("#Role2").empty();
+    $("#dllRole").empty();
     $.ajax({
-        url: 'https://localhost:4200/api/Admin/Role/',
-        type: 'GET',
+        url: GET_ROLE_URI,
+        type: GET,
         success: function (data) {
+
             $.each(data, function (key, value) {
-                $("#Role2").append($("<option></option>").val(value.RoleId).html(value.Name));
+                $("#dllRole").append($("<option></option>").val(value.RoleId).html(value.Name));
             });
         },
         error: function () {
@@ -106,17 +119,41 @@ function getRole() {
         }
     })
 }
-
-$('#updateUser').click(function () {
-    var userId = parseInt($('input[name="userId"]').val());
-    var FullName = $('input[name="FullName"]').val();
-    var Email = $('input[name="Email"]').val();
-    var Phone = $('input[name="Phone"]').val();
+//Change pass
+$('#changePassButton').click(function () {
+    var userId = parseInt($('#txtUserIdPass').val());
+    var oldPass = $('#txtOldPass').val();
+    var newPass = $('#txtNewPass').val();
+    callAjax(
+        {
+            url: USER_PASS_CHANGE_URI + userId,
+            dataType: JSON_DATATYPE,
+            type: PUT,
+        },
+        JSON.stringify({
+            newPass: newPass,
+            oldPass: oldPass,
+        }),
+        function (result) {
+            toastr.success('Đổi mật khẩu thành công', 'Thành Công');
+            //setTimeout("location.reload(true);", 2000);
+            $('#changePass').modal('hide');
+            /*$('#userTable').DataTable().ajax.reload();*/
+        },
+        function (result) {
+            toastr.error(alert(result.d));
+        })
+});
+//Confirm save 
+$('#confirmSaveButton').click(function () {
+    var userId = parseInt($('#userId').val());
+    var FullName = $('#FullName').val();
+    var Email = $('#Email').val();
+    var Phone = $('#Phone').val();
     callAjax(
         {
             type: PUT,
-            url: 'https://localhost:4200/api/Admin/Users/Update/' + userId,
-            dataType: JSON_DATATYPE,
+            url: USER_UPDATE_URI + userId,
         },
         JSON.stringify({
             fullName: FullName,
@@ -126,21 +163,21 @@ $('#updateUser').click(function () {
         function (result) {
             toastr.success('Cập nhật thông tin người dùng thành công', 'Thành Công');
             //setTimeout("location.reload(true);", 2000);
-            $('#updateInfo').modal('hide');
-            $('#userTable').DataTable().ajax.reload();
+            $('#confirm').modal('hide');
+            /*$('#userTable').DataTable().ajax.reload();*/
         },
         function (result) {
-            toastr.error('Xin hãy kiểm tra lại', result);
+            toastr.error(result);
         })
 });
-
+//Change Role
 function changeRole() {
     $('#changeRoleButton').click(function () {
-        var userId = parseInt($('input[name="UserId2"]').val());
-        var roleId = $('select[name="Role2"]').val();
+        var userId = parseInt($('#txtUserIdRole').val());
+        var roleId = $('select[id="dllRole"]').val();
         $.ajax({
             type: 'PUT',
-            url: 'https://localhost:4200/api/Admin/User/Role/' + userId,
+            url: CHANGE_ROLE_URI + userId,
             contentType: 'json',
             headers: {
                 //'Accept': 'application/json',
