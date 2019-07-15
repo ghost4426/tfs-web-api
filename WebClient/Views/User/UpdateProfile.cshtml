@@ -31,19 +31,19 @@
                                 <div class="form-group row">
                                     <label class="col-md-3 label-control" for="projectinput2">Họ Và Tên</label>
                                     <div class="col-md-9">
-                                        <input type="text" id="FullName" class="form-control" name="FullName">
+                                        <label id="FullName" name="FullName">thái huỳnh</label>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label class="col-md-3 label-control" for="projectinput3">E-mail</label>
                                     <div class="col-md-9">
-                                        <input type="text" id="Email" class="form-control" name="Email">
+                                        <label id="Email" name="Email">thaihuynhdinh@gmail.com</label>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label class="col-md-3 label-control" for="projectinput4">Số Điện Thoại</label>
                                     <div class="col-md-9">
-                                        <input type="text" id="Phone" class="form-control" name="Phone">
+                                        <label id="Phone"  name="Phone">0909999999</label>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -79,7 +79,7 @@
                             </div>
                             <div class="form-actions">
                                 <button data-toggle="modal" data-target="#confirm" type="button" class="btn btn-primary">
-                                    <i class="fa fa-check-square-o"></i> Save
+                                    <i class="fa fa-check-square-o"></i> Thay đổi thông tin người dùng
                                 </button>
                             </div>
                         </form>
@@ -102,7 +102,24 @@
                 </button>
             </div>
             <div class="modal-body">
-                Lưu thay đổi ?
+                <div class="form-group row">
+                    <label class="col-md-3 label-control" for="projectinput2">Họ Và Tên</label>
+                    <div class="col-md-9">
+                        <input type="text" id="txtFullName" class="form-control" >
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-3 label-control" for="projectinput3">E-mail</label>
+                    <div class="col-md-9">
+                        <input type="text" id="txtEmail" class="form-control" >
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-3 label-control" for="projectinput4">Số Điện Thoại</label>
+                    <div class="col-md-9">
+                        <input type="text" id="txtPhone" class="form-control" >
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button id="confirmSaveButton" type="button" class="btn btn-outline-primary">Xác nhận</button>
@@ -128,8 +145,8 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="projectinput1">Id người dùng</label>
-                                    <input id="txtUserIdPass" class="form-control" readonly value="16" name="txtUserIdPass">
+                                    <!--id người dùng-->
+                                    <input type="hidden" id="txtUserIdPass" class="form-control" readonly value="16" name="txtUserIdPass">
                                 </div>
                             </div>
                         </div>
@@ -146,6 +163,14 @@
                                 <div class="form-group" id="RoleOption">
                                     <label for="projectinput1">Mật khẩu mới</label>
                                     <input type="password" id="txtNewPass" class="form-control" name="txtNewPass">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group" id="RoleOption">
+                                    <label for="projectinput1">Xác nhận Mật khẩu mới</label>
+                                    <input type="password" id="txtConfirmNewPass" class="form-control" name="txtConfirmNewPass">
                                 </div>
                             </div>
                         </div>

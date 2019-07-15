@@ -89,7 +89,7 @@ namespace AdminWebApi.Controllers
         }
 
         [HttpPut("password/{userid}")]
-        public async Task<IActionResult> ChangePassword(int userid, [FromBody] Models.UpdateUserRequest userInfo)
+        public async Task<IActionResult> ChangePassword(int userid, [FromBody] Models.ChangePasswordUserRequest userInfo)
         {
             try
             {
@@ -122,7 +122,6 @@ namespace AdminWebApi.Controllers
         {
             var roleList = await _roleBl.GetAllRole();
             return roleList;
-
         }
         [HttpGet("role/{roleId}")]
         public async Task<IActionResult> GetRoleInfo(int roleId)
@@ -132,17 +131,24 @@ namespace AdminWebApi.Controllers
 
         }
         [HttpPut("users/update/{id}")]
-        public async Task<IActionResult> UpdateUser(int id, [FromBody] Models.UpdateUserRequest userInfo)
+        public async Task<IActionResult> UpdateUser(int id,[FromBody] Models.UpdateUserRequest userInfo)
         {
-            Entities.User user = new Entities.User()
+            Entities.User user = null;
+            try
             {
-                UserId = id,
-                Fullname = userInfo.fullName,
-                Email = userInfo.email,
-                PhoneNo = userInfo.phone,
-            };
-            await _userBL.UpdateUser(user, 16);
-            return Ok();
+                user = _mapper.Map<Entities.User>(userInfo);
+                user.UserId = id;
+                user.Fullname = userInfo.Fullname;
+                user.Email = userInfo.Email;
+                user.PhoneNo = userInfo.PhoneNo;
+                await _userBL.UpdateUser(user, 16);
+                return Ok("success!!");
+
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
 
         }
         [HttpPut("user/role/{id}")]

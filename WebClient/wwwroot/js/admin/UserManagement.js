@@ -20,29 +20,29 @@ var userTable = $('#userTable').DataTable({
             data: 'IsActive',
             render: function (data, type, row) {
                 if (data == true) {
-                    return '<font color="green">Active</font>';
+                    return '<span class="badge badge-success"><b>Hiệu lực</b></span>';
                 }
                 else {
-                    return '<font color="red">Deactive</font>';
+                    return '<span class="badge badge-danger"><b>Vô Hiệu lực</b></span>';
                 };
             }
         },
         {
             data: null,
             render: function (data, type, row) {
-                return '<button onclick="getUserInfo(' + data.UserId + ')" class="btn btn-grey" data-toggle="modal" data-target="#confirm" tittle="Đổi trạng thái"><i class="fa fa-repeat"></i ></button >' +
-                    '<button onclick="getUserInfo(' + data.UserId + ')" class="btn btn-primary" data-toggle="modal" data-target="#changeRole" title="Đổi vai trò"><i class="fa fa-odnoklassniki"></i ></button >';
+                return '<button onclick="getUserInfo(' + data.UserId + ')" class="btn btn-grey" data-toggle="modal" data-target="#confirm" tittle="Đổi trạng thái"><i class="fa fa-repeat"></i ></button >';
 
             }
         },
     ],
+    language: userTable_vi_lang
 });
 
 $('#confirmButton').click(function () {
     var userId = parseInt($('#txtUserIdActive').val());
     callAjax(
         {
-            url: DEACTIVE_USER_URI + userId,
+            url: DEACTIVE_USER_URI + 16,
             dataType: JSON_DATATYPE,
             type: PUT,
         }, JSON.stringify(),
@@ -62,7 +62,7 @@ function getUserInfo(userId) {
     callAjax(
         {
             type: GET,
-            url: GET_USER_DETAILS_URI + userId,
+            url: GET_USER_DETAILS_URI + 16,
             dataType: JSON_DATATYPE,
 
         },
@@ -78,9 +78,9 @@ function getUserInfo(userId) {
             $('div#RoleOption select').val(user.data.RoleId).change();
             $('#txtUserIdActive').val(user.data.UserId);
             if (user.data.IsActive == true) {
-                document.getElementById("statusLabel").innerHTML = "Bạn có muốn thay đổi trạng thái sang Deactive không?";
+                document.getElementById("statusLabel").innerHTML = "Bạn có muốn thay đổi trạng thái sang Vô hiệu lực không?";
             } else {
-                document.getElementById("statusLabel").innerHTML = "Bạn có muốn thay đổi trạng thái sang Active không?";
+                document.getElementById("statusLabel").innerHTML = "Bạn có muốn thay đổi trạng thái sang Hiệu lực không?";
             }
             $('#status').val(user.data.IsActive);
         },
@@ -89,7 +89,7 @@ function getUserInfo(userId) {
         })
     getRole();
 }
-
+//Load Image
 function readURL(input) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
@@ -124,25 +124,30 @@ $('#changePassButton').click(function () {
     var userId = parseInt($('#txtUserIdPass').val());
     var oldPass = $('#txtOldPass').val();
     var newPass = $('#txtNewPass').val();
-    callAjax(
-        {
-            url: USER_PASS_CHANGE_URI + userId,
-            dataType: JSON_DATATYPE,
-            type: PUT,
-        },
-        JSON.stringify({
-            newPass: newPass,
-            oldPass: oldPass,
-        }),
-        function (result) {
-            toastr.success('Đổi mật khẩu thành công', 'Thành Công');
-            //setTimeout("location.reload(true);", 2000);
-            $('#changePass').modal('hide');
-            /*$('#userTable').DataTable().ajax.reload();*/
-        },
-        function (result) {
-            toastr.error(alert(result.d));
-        })
+    var confirmNewPass = $('#txtConfirmNewPass').val();
+    if (confirmNewPass == newPass) {
+        callAjax(
+            {
+                url: USER_PASS_CHANGE_URI + 16,
+                dataType: JSON_DATATYPE,
+                type: PUT,
+            },
+            JSON.stringify({
+                newPass: newPass,
+                oldPass: oldPass,
+            }),
+            function (result) {
+                toastr.success('Đổi mật khẩu thành công', 'Thành Công');
+                //setTimeout("location.reload(true);", 2000);
+                $('#changePass').modal('hide');
+                /*$('#userTable').DataTable().ajax.reload();*/
+            },
+            function (result) {
+                toastr.error("Mật khẩu cũ không chính xác!");
+            })
+    } else {
+        toastr.error("Xác nhận mật khẩu không chính xác!")
+    }
 });
 //Confirm save 
 $('#confirmSaveButton').click(function () {
@@ -153,7 +158,7 @@ $('#confirmSaveButton').click(function () {
     callAjax(
         {
             type: PUT,
-            url: USER_UPDATE_URI + userId,
+            url: USER_UPDATE_URI + 16,
         },
         JSON.stringify({
             fullName: FullName,
@@ -177,7 +182,7 @@ function changeRole() {
         var roleId = $('select[id="dllRole"]').val();
         $.ajax({
             type: 'PUT',
-            url: CHANGE_ROLE_URI + userId,
+            url: CHANGE_ROLE_URI + 16,
             contentType: 'json',
             headers: {
                 //'Accept': 'application/json',

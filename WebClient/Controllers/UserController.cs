@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebClient.Controllers
 {
-    [Route("thong-tin")]
+    [Route("tai-khoan")]
     public class UserController : Controller
     {
 

@@ -26,6 +26,31 @@ var table_vi_lang = {
     }
 };
 
+var userTable_vi_lang = {
+    "decimal": "",
+    "emptyTable": "Không có người dùng",
+    "info": "Hiển thị _START_ - _END_ trong tổng số _TOTAL_ người dùng",
+    "infoEmpty": "Hiển thị 0 đến 0 trong tổng số 0 người dùng",
+    "infoFiltered": "(Lọc từ _MAX_ tổng người dùng)",
+    "infoPostFix": "",
+    "thousands": ",",
+    "loadingRecords": "Đang tải...",
+    "processing": "Đang tiến hành...",
+    "sLengthMenu": "Hiển thị _MENU_ người dùng",
+    "search": "Tìm kiếm:",
+    "zeroRecords": "Không tìm thấy người dùng phù hợp",
+    "paginate": {
+        "first": "Đầu",
+        "last": "Cuối",
+        "next": "Sau",
+        "previous": "Trước"
+    },
+    "aria": {
+        "sortAscending": ": Lọc từ thấp đến cao",
+        "sortDescending": ": Lọc từ cao đến thấp"
+    }
+};
+
 
 
 
