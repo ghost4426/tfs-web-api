@@ -136,5 +136,11 @@ namespace BusinessLogic.BusinessLogicImpl
 
             return await SaveFoodData(FoodData);
         }
+
+        public async Task<IList<string>> GetFeedingsByIdAsync(int foodId)
+        {
+            var FoodData = await GetFoodDataByID(foodId);
+            return FoodData.Farm.Feedings;
+        }
     }
 }

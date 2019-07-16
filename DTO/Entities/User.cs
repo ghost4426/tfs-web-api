@@ -20,6 +20,8 @@ namespace DTO.Entities
         [Required]
         public string Password { get; set; }
 
+        public DateTime? Dob { get; set; }
+
         [Required]
         public string Salt { get; set; }
 
@@ -27,6 +29,9 @@ namespace DTO.Entities
         public string Email { get; set; }
 
         public string PhoneNo { get; set; }
+
+        [Required]
+        public string Image { get; set; }
 
         [ForeignKey("Role")]
         public int RoleId { get; set; }
@@ -38,9 +43,13 @@ namespace DTO.Entities
 
         public DateTime CreatedDate { get; set; }
 
-        public virtual Role Role { get; set; }
-        public virtual Premises Premises { get; set; }
+        public Role Role { get; set; }
+        public Premises Premises { get; set; }
 
         public ICollection<FoodDetail> UserCreatedFoodDetails { get; set; }
+        public ICollection<Transaction> UserCreatedTransactions { get; set; }
+        public ICollection<Transaction> VeterinaryTransactions { get; set; }
+        public ICollection<Food> UserCreatedFoods { get; set; }
+        public ICollection<Treatment> UserCreatedTreatments { get; set; }
     }
 }
