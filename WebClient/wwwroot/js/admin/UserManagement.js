@@ -43,9 +43,9 @@ $('#confirmButton').click(function () {
     var userId = parseInt($('input[name="UserId3"]').val());
     callAjax(
         {
-        url: 'https://localhost:4200/api/Admin/User/Deactive/' + userId,
-        dataType: JSON_DATATYPE,
-        type: PUT,
+            url: 'https://localhost:4200/api/Admin/User/Deactive/' + userId,
+            dataType: JSON_DATATYPE,
+            type: PUT,
         }, JSON.stringify(),
         function (result) {
             toastr.success('Bạn đã thay đổi trạng thái thành công', 'Thay đổi thành công');
@@ -55,22 +55,29 @@ $('#confirmButton').click(function () {
         function (result) {
             toastr.error(result);
         }
-        )
+    )
 });
 
 function getUserInfo(userId) {
-    $.ajax({
-        url: 'https://localhost:4200/api/Admin/User/' + userId,
-        type: 'GET',
-        success: function (data) {
-            $('input[name="userId"]').val(data.UserId);
-            $('input[name="FullName"]').val(data.Fullname);
-            $('input[name="Email"]').val(data.Email);
-            $('input[name="Phone"]').val(data.PhoneNo);
-            $('input[name="UserId2"]').val(data.UserId);
-            $('div#RoleOption select').val(data.RoleId).change();
-            $('input[name="UserId3"]').val(data.UserId);
-            if (data.IsActive == true) {
+    
+    callAjax(
+        {
+            type: GET,
+            url: GET_USER_DETAILS_URI + userId,
+            dataType: JSON_DATATYPE,
+        },
+        JSON.stringify({
+        }),
+        function (user, result) {
+            getRole();
+            $('#userId').val(user.data.UserId);
+            $('#FullName').val(user.data.Fullname);
+            $('#Email').val(user.data.Email);
+            $('#Phone').val(user.data.PhoneNo);
+            $('#txtUserIdRole').val(user.data.UserId);
+            $('div#RoleOption select').val(user.data.RoleId).change();
+            $('#txtUserIdActive').val(user.data.UserId);
+            if (user.data.IsActive == true) {
                 document.getElementById("statusLabel").innerHTML = "Bạn có muốn thay đổi trạng thái sang Deactive không?";
             } else {
                 document.getElementById("statusLabel").innerHTML = "Bạn có muốn thay đổi trạng thái sang Active không?";
@@ -132,7 +139,7 @@ function changeRole() {
         var userId = parseInt($('input[name="UserId2"]').val());
         var roleId = $('select[name="Role2"]').val();
         $.ajax({
-            type: 'PUT',    
+            type: 'PUT',
             url: 'https://localhost:4200/api/Admin/User/Role/' + userId,
             contentType: 'json',
             headers: {
