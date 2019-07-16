@@ -11,13 +11,15 @@ namespace BusinessLogic.BusinessLogicImpl
     {
         private IFoodRepository _productRepos;
         private ICategoryRepository _categoryRepos;
-        private IPremisesRepository _premesisRepository;
+        private IPremesisRepository _premesisRepository;
+        private IDistributorFoodRepository _distributorFoodRepository;
 
-        public FoodBLImpl(IFoodRepository productRepos, ICategoryRepository categoryRepos, IPremisesRepository premesisRepository)
+        public FoodBLImpl(IFoodRepository productRepos, ICategoryRepository categoryRepos, IPremesisRepository premesisRepository, IDistributorFoodRepository distributorFoodRepository)
         {
             _productRepos = productRepos;
             _categoryRepos = categoryRepos;
             _premesisRepository = premesisRepository;
+            _distributorFoodRepository = distributorFoodRepository;
         }
 
         public async Task<IList<Food>> GetAllProductAsync()
@@ -43,15 +45,16 @@ namespace BusinessLogic.BusinessLogicImpl
             return await this._productRepos.CreateProductAsync(newProduct);
         }
 
-        public async Task<IEnumerable<Food>> getMatchedWithNumber(int distributorId)
+        public async Task<IList<Food>> getMatchedWithNumber(int distributorId)
         {
-            var products = await this._productRepos.GetMatchedWithNumber(distributorId);
-            foreach (var product in products)
-            {
-                var provider = _premesisRepository.GetById(product.ProviderId);
-                product.Provider = provider;
-            }
-            return products;
+            //var products = await this._productRepos.GetMatchedWithNumber(distributorId);
+            //foreach (var product in products)
+            //{
+            //    var provider = _premesisRepository.GetById(product.ProviderId);
+            //    product.Provider = provider;
+            //}
+            //return products;
+            return null;
         }
 
         public async Task<IList<Category>> getAllCategory()
@@ -72,7 +75,7 @@ namespace BusinessLogic.BusinessLogicImpl
 
         public async Task AddDetail(long foodId, EFoodDetailType type)
         {
-            var food =  _productRepos.GetById((int)foodId);
+            var food = _productRepos.GetById((int)foodId);
             switch (type)
             {
                 case EFoodDetailType.FEEDING:
@@ -92,7 +95,7 @@ namespace BusinessLogic.BusinessLogicImpl
                     break;
                 default: break;
             }
-           await _productRepos.UpdateAsync(food);
+            await _productRepos.UpdateAsync(food);
         }
     }
 }
