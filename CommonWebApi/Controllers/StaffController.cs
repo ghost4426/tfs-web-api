@@ -38,29 +38,6 @@ namespace CommonWebApi.Controllers
             return await _foodDataBL.GetFoodDataByID(id);
         }
 
-        [HttpGet("countTransaction")]
-        public async Task<int> CountTransaction()
-        {
-            //int userId = Int32.Parse(User.Claims.First(c => c.Type == "UserID").Value);
-            int userId = 2;
-            return await _transactionBL.CountTransaction(userId);
-        }
-
-        [HttpGet("getAllTransaction")]
-        public async Task<IActionResult> getAllTransaction()
-        {
-            try
-            {
-                //int userId = Int32.Parse(User.Claims.First(c => c.Type == "UserID").Value);
-                int userId = 2;
-                return Ok(new { data = _mapper.Map<IList<Models.TransactionReponse.GetTransaction>>(await _transactionBL.getAllTransaction(userId)) });
-            }
-            catch (Exception e)
-            {
-                return BadRequest(new { msg = e.Message });
-            }
-        }
-
         //[HttpPost("saveFoodData")]
         //public async Task<string> SaveFoodData()
         //{

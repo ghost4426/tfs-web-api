@@ -13,10 +13,6 @@ const BASE_FAMR_URI = "api/farm/";
 const BASE_STAFF_URI = "api/staff/";
 const BASE_COMMON_URI = "api/common/";
 
-// farm + provider
-const COUNT_TRANSACTION_URI = BASE_COMMON_API_URI + BASE_STAFF_URI + "countTransaction"
-const GET_TRANSACTION_URI = BASE_COMMON_API_URI + BASE_STAFF_URI + "getAllTransaction";
-
 //Farm
 const GET_FOOD_DETAIL_TYPE_URI = BASE_COMMON_API_URI + BASE_COMMON_URI + "productdetailtype";
 const GET_FOOD_CATEGORY_URI = BASE_COMMON_API_URI + BASE_FAMR_URI + "getAllCategory";
@@ -24,6 +20,8 @@ const GET_FARM_FOOD_URI = BASE_COMMON_API_URI + BASE_FAMR_URI + "getByFarmer";
 const CREATE_FOOD_DATA_URI = BASE_COMMON_API_URI + BASE_FAMR_URI + "food";
 const GET_FOOD_FEEDING_DATA_URI = BASE_COMMON_API_URI + BASE_FAMR_URI + "food/feedings/";
 const CREATE_TRANSACTION_URI = BASE_COMMON_API_URI + BASE_FAMR_URI + "createTransaction";
+const COUNT_FARM_TRANSACTION_URI = BASE_COMMON_API_URI + BASE_FAMR_URI + "countFarmTransaction"
+const GET_FARM_TRANSACTION_URI = BASE_COMMON_API_URI + BASE_FAMR_URI + "getAllFarmTransaction";
 
 //Admin
 const GET_USER_URI = BASE_ADMIN_API_URI + BASE_ADMIN_URI + "users";

@@ -21,17 +21,20 @@ namespace CommonWebApi.Controllers
     {
         private readonly IFoodBL _foodBL;
         private readonly IFoodDataBL _foodDataBL;
+        private readonly ITransactionBL _transactionBL;
         private readonly ITreatmentBL _treatmentBL;
         private readonly IMapper _mapper;
 
         public ProviderController(
             IFoodBL foodBL,
             IFoodDataBL foodDataBL,
+            ITransactionBL transactionBL,
             ITreatmentBL treatmentBL,
             IMapper mapper)
         {
             _foodBL = foodBL;
             _foodDataBL = foodDataBL;
+            _transactionBL = transactionBL;
             _treatmentBL = treatmentBL;
             _mapper = mapper;
         }
@@ -85,6 +88,29 @@ namespace CommonWebApi.Controllers
             {
                 //int userId = Int32.Parse(User.Claims.First(c => c.Type == "UserID").Value);
                 return Ok(new { data = _mapper.Map<IList<Models.FoodProvider>>(await _foodBL.getAllFoodByProviderId(2)) });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { msg = e.Message });
+            }
+        }
+
+        [HttpGet("countProviderTransaction")]
+        public async Task<int> CountTransaction()
+        {
+            //int userId = Int32.Parse(User.Claims.First(c => c.Type == "UserID").Value);
+            int premisesId = 2;
+            return await _transactionBL.CountProviderTransaction(premisesId);
+        }
+
+        [HttpGet("getAllProviderTransaction")]
+        public async Task<IActionResult> getAllTransaction()
+        {
+            try
+            {
+                //int userId = Int32.Parse(User.Claims.First(c => c.Type == "UserID").Value);
+                int premisesId = 2;
+                return Ok(new { data = _mapper.Map<IList<Models.TransactionReponse.GetTransaction>>(await _transactionBL.getAllProviderTransaction(premisesId)) });
             }
             catch (Exception e)
             {

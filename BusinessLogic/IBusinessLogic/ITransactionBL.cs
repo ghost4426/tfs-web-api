@@ -10,8 +10,12 @@ namespace BusinessLogic.IBusinessLogic
     {
         Task<int> CreateSellFoodTransactionAsync(Transaction newTransaction);
 
-        Task<int> CountTransaction(int userId);
+        Task<int> CountFarmTransaction(int premisesId);
 
-        Task<IList<Transaction>> getAllTransaction(int userId);
+        Task<int> CountProviderTransaction(int premisesId);
+
+        Task<IList<Transaction>> getAllFarmTransaction(int premisesId);
+
+        Task<IList<Transaction>> getAllProviderTransaction(int premisesId);
     }
 }

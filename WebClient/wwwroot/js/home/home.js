@@ -2,7 +2,7 @@
     // count transaction
     var count = callAjax(
         {
-            url: COUNT_TRANSACTION_URI,
+            url: COUNT_FARM_TRANSACTION_URI,
             dataType: JSON_DATATYPE,
             type: GET,
         }, "",

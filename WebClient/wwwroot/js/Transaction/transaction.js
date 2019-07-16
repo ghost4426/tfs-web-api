@@ -4,7 +4,7 @@
 
 var transactionTable = $('#transaction-mng').DataTable({
     ajax: {
-        url: GET_TRANSACTION_URI,
+        url: GET_FARM_TRANSACTION_URI,
         beforeSend: showLoadingPage,
         complete: hideLoadingPage
     },

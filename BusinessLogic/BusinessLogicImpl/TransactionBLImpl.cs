@@ -29,9 +29,14 @@ namespace BusinessLogic.BusinessLogicImpl
             _categoryRepos = categoryRepos;
         }
 
-        public async Task<int> CountTransaction(int userId)
+        public async Task<int> CountFarmTransaction(int userId)
         {
-            return await _transactionRepos.CountTransaction(userId);
+            return await _transactionRepos.CountFarmTransaction(userId);
+        }
+
+        public async Task<int> CountProviderTransaction(int userId)
+        {
+            return await _transactionRepos.CountProviderTransaction(userId);
         }
 
         public async Task<int> CreateSellFoodTransactionAsync(Transaction newTransaction)
@@ -39,10 +44,24 @@ namespace BusinessLogic.BusinessLogicImpl
             return await this._transactionRepos.CreateSellFoodTransactionAsync(newTransaction);
         }
 
-        public async Task<IList<Transaction>> getAllTransaction(int userId)
+        public async Task<IList<Transaction>> getAllFarmTransaction(int userId)
         {
-            var transaction = await _transactionRepos.getAllTransaction(userId);
+            var transaction = await _transactionRepos.getAllFarmTransaction(userId);
             foreach(var i in transaction)
+            {
+                i.Farm = _premisesRepos.GetById(i.FarmId);
+                i.Provider = _premisesRepos.GetById(i.ProviderId);
+                i.TransactionStatus = _transactionStatusRepos.GetById(i.StatusId);
+                i.Food = _foodRepos.GetById(i.FoodId);
+                i.Food.Category = _categoryRepos.GetById(i.Food.CategoryId);
+            }
+            return transaction;
+        }
+
+        public async Task<IList<Transaction>> getAllProviderTransaction(int userId)
+        {
+            var transaction = await _transactionRepos.getAllProviderTransaction(userId);
+            foreach (var i in transaction)
             {
                 i.Farm = _premisesRepos.GetById(i.FarmId);
                 i.Provider = _premisesRepos.GetById(i.ProviderId);
