@@ -11,5 +11,7 @@ namespace DataAccess.IRepositories
         Task<int> CreateSellFoodTransactionAsync(Transaction newTransaction);
 
         Task<int> CountTransaction(int userId);
+
+        Task<IList<Transaction>> getAllTransaction(int userId);
     }
 }

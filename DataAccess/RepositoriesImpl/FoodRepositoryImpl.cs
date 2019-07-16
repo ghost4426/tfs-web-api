@@ -35,6 +35,7 @@ namespace DataAccess.RepositoriesImpl
         public async Task<int> CreateProductAsync(Food newProduct)
         {
             newProduct.FoodId = 0;
+            newProduct.CreatedById = 11;
             newProduct.IsCertification = false;
             newProduct.IsFeeding = false;
             newProduct.IsPackaging = false;

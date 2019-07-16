@@ -60,6 +60,7 @@ namespace AdminWebApi.Controllers
                 user.Password = password;
                 user.Fullname = "thaihd";
                 user.Salt = "haha";
+                user.Image = "abc";
                 isCreated = await _userBL.CreateUser(user);
                 if (isCreated)
                 {

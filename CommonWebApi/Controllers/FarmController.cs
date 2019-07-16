@@ -136,12 +136,6 @@ namespace CommonWebApi.Controllers
         public async Task<Models.FoodData.FoodData> getFoodDetail(long foodId)
         {
             return await _foodDataBL.GetFoodDataByID(foodId);
-        }
-
-        [HttpGet("countTtransaction")]
-        public async Task<int> CountTransaction(int userId)
-        {
-            return await _transactionBL.CountTransaction(userId);
-        }
+        }        
     }
 }

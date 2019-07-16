@@ -27,11 +27,16 @@ namespace DataAccess.RepositoriesImpl
         {
             newTransaction.TransactionId = 0;
             newTransaction.CreatedDate = DateTime.Now;
-            newTransaction.CreatedById = 28; // sẽ đổi
-            newTransaction.VeterinaryId = 28; // sẽ đổi
+            newTransaction.CreatedById = 11; // sẽ đổi
+            newTransaction.VeterinaryId = 11; // sẽ đổi
             newTransaction.StatusId = 1;
             await this.InsertAsync(newTransaction, true);
             return newTransaction.TransactionId;
+        }
+
+        public async Task<IList<Transaction>> getAllTransaction(int userId)
+        {
+            return await FindAllAsync(x => x.FarmId == userId | x.ProviderId == userId);
         }
     }
 }

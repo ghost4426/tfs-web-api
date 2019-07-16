@@ -11,10 +11,22 @@ namespace BusinessLogic.BusinessLogicImpl
     public class TransactionBLImpl : ITransactionBL
     {
         private ITransactionRepository _transactionRepos;
+        private IPremisesRepository _premisesRepos;
+        private ITransactionStatusRepository _transactionStatusRepos;
+        private IFoodRepository _foodRepos;
+        private ICategoryRepository _categoryRepos;
 
-        public TransactionBLImpl(ITransactionRepository transactionRepos)
+        public TransactionBLImpl(ITransactionRepository transactionRepos,
+            IPremisesRepository premisesRepos,
+            ITransactionStatusRepository transactionStatus,
+            IFoodRepository foodRepos,
+            ICategoryRepository categoryRepos)
         {
             _transactionRepos = transactionRepos;
+            _premisesRepos = premisesRepos;
+            _transactionStatusRepos = transactionStatus;
+            _foodRepos = foodRepos;
+            _categoryRepos = categoryRepos;
         }
 
         public async Task<int> CountTransaction(int userId)
@@ -25,6 +37,20 @@ namespace BusinessLogic.BusinessLogicImpl
         public async Task<int> CreateSellFoodTransactionAsync(Transaction newTransaction)
         {
             return await this._transactionRepos.CreateSellFoodTransactionAsync(newTransaction);
+        }
+
+        public async Task<IList<Transaction>> getAllTransaction(int userId)
+        {
+            var transaction = await _transactionRepos.getAllTransaction(userId);
+            foreach(var i in transaction)
+            {
+                i.Farm = _premisesRepos.GetById(i.FarmId);
+                i.Provider = _premisesRepos.GetById(i.ProviderId);
+                i.TransactionStatus = _transactionStatusRepos.GetById(i.StatusId);
+                i.Food = _foodRepos.GetById(i.FoodId);
+                i.Food.Category = _categoryRepos.GetById(i.Food.CategoryId);
+            }
+            return transaction;
         }
     }
 }
