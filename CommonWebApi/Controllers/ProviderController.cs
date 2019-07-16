@@ -62,20 +62,34 @@ namespace CommonWebApi.Controllers
             return await _foodDataBL.Packaging(foodId, Packaging);
         }
 
-        [HttpGet("testgetByProvider")]
-        public async Task<IList<Models.FoodProvider>> TestFindAllProductByProviderAsync()
-        {
-            IList<Entities.Food> list = await _foodBL.FindAllProductByProviderAsync(2);
-            var result = _mapper.Map <IList<Models.FoodProvider>>(list);
-            return result;
-        }
+        //[HttpGet("testgetByProvider")]
+        //public async Task<IList<Models.FoodProvider>> TestFindAllProductByProviderAsync()
+        //{
+        //    IList<Entities.Food> list = await _foodBL.FindAllProductByProviderAsync(2);
+        //    var result = _mapper.Map <IList<Models.FoodProvider>>(list);
+        //    return result;
+        //}
 
-        [HttpGet("getByProvider")]
-        public async Task<IList<Entities.Food>> FindAllProductByProviderAsync()
-        {
-            int userId = Int32.Parse(User.Claims.First(c => c.Type == "UserID").Value);
+        //[HttpGet("getByProvider")]
+        //public async Task<IList<Entities.Food>> FindAllProductByProviderAsync()
+        //{
+        //    int userId = Int32.Parse(User.Claims.First(c => c.Type == "UserID").Value);
 
-            return await _foodBL.FindAllProductByProviderAsync(userId);
+        //    return await _foodBL.FindAllProductByProviderAsync(userId);
+        //}
+
+        [HttpGet("getFoodByProvider")]
+        public async Task<IActionResult> FindAllProviderFoodAsync()
+        {            
+            try
+            {
+                //int userId = Int32.Parse(User.Claims.First(c => c.Type == "UserID").Value);
+                return Ok(new { data = _mapper.Map<IList<Models.FoodProvider>>(await _foodBL.getAllFoodByProviderId(2)) });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { msg = e.Message });
+            }
         }
     }
 }

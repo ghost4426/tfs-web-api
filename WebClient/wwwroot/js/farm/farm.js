@@ -30,10 +30,7 @@
             url: GET_PROVIDER,
             dataType: JSON_DATATYPE,
             data: function (params) {
-                return {
-                    q: params.term, // search term
-                    //page: params.page
-                };
+                q: params.term
             },
             processResults: function (data, params) {
                 return {
@@ -75,7 +72,7 @@ var farmFoodTable = $('#farm-food-mng').DataTable({
     'autoWidth': false,
     columns: [
         { data: 'FoodId', width: '10%' },
-        { data: 'Category.Name', width: '20%' },
+        { data: 'CategoryName', width: '20%' },
         { data: 'Breed', width: '25%' },
         {
             data: 'CreatedDate', width: '20%',

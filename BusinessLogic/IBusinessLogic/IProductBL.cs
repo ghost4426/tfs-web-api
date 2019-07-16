@@ -14,7 +14,7 @@ namespace BusinessLogic.IBusinessLogic
 
         Task<int> CreateProductAsync(Food newProduct);
 
-        Task<IEnumerable<Food>> getMatchedWithNumber(int distributorId);
+        //Task<IEnumerable<Food>> getMatchedWithNumber(int distributorId);
 
         Task<IList<Category>> getAllCategory();
 

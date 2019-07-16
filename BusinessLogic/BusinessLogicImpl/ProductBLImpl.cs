@@ -38,10 +38,10 @@ namespace BusinessLogic.BusinessLogicImpl
             return await this._foodRepos.CreateProductAsync(newProduct);
         }
 
-        public async Task<IEnumerable<Food>> getMatchedWithNumber(int distributorId)
-        {
-            return await this._foodRepos.GetMatchedWithNumber(distributorId);
-        }
+        //public async Task<IEnumerable<Food>> getMatchedWithNumber(int distributorId)
+        //{
+        //    return await this._foodRepos.GetMatchedWithNumber(distributorId);
+        //}
 
         public async Task<IList<Category>> getAllCategory()
         {

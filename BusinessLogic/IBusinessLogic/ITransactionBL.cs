@@ -9,5 +9,7 @@ namespace BusinessLogic.IBusinessLogic
     public interface ITransactionBL
     {
         Task<int> CreateSellFoodTransactionAsync(Transaction newTransaction);
+
+        Task<int> CountTransaction(int userId);
     }
 }

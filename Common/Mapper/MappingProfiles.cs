@@ -50,14 +50,11 @@ namespace Common.Mapper
 
             CreateMap<Entities.Transaction, Models.TransactionRequest>().ReverseMap();
 
-            CreateMap<Entities.Food, Models.FoodProvider>()
-               .ForMember(dest => dest.CategoryName, opts => opts.MapFrom(src => src.Category.Name))
-               .ForMember(dest => dest.CategoryId, opts => opts.MapFrom(src => src.Category.CategoryId))
-               .ForMember(dest => dest.FarmName, opts => opts.MapFrom(src => src.Farm.Name))
-               .ReverseMap();
-
             CreateMap<Entities.Category, Models.Category>()
                .ReverseMap();
+
+            CreateMap<Entities.ProviderFood, Models.FoodProvider>()
+                .ReverseMap();
 
             CreateMap<Entities.Food, Models.Food>()
                .ReverseMap();
@@ -66,6 +63,7 @@ namespace Common.Mapper
                  .ForMember(dest => dest.id, opts => opts.MapFrom(src => src.TypeId))
                  .ForMember(dest => dest.text, opts => opts.MapFrom(src => src.Name))
                .ReverseMap();
+
             CreateMap<Entities.Premises, Models.Option>()
                 .ForMember(dest => dest.id, opts => opts.MapFrom(src => src.PremisesId))
                 .ForMember(dest => dest.text, opts => opts.MapFrom(src => src.Name))

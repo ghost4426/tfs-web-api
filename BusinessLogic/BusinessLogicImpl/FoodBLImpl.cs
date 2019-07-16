@@ -3,6 +3,7 @@ using Common.Enum;
 using DataAccess.IRepositories;
 using DTO.Entities;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BusinessLogic.BusinessLogicImpl
@@ -11,15 +12,15 @@ namespace BusinessLogic.BusinessLogicImpl
     {
         private IFoodRepository _productRepos;
         private ICategoryRepository _categoryRepos;
-        private IPremesisRepository _premesisRepository;
         private IDistributorFoodRepository _distributorFoodRepository;
+        private IProviderFoodRepository _providerFoodRepository;
 
-        public FoodBLImpl(IFoodRepository productRepos, ICategoryRepository categoryRepos, IPremesisRepository premesisRepository, IDistributorFoodRepository distributorFoodRepository)
+        public FoodBLImpl(IFoodRepository productRepos, ICategoryRepository categoryRepos, IDistributorFoodRepository distributorFoodRepository, IProviderFoodRepository providerFoodRepository)
         {
             _productRepos = productRepos;
             _categoryRepos = categoryRepos;
-            _premesisRepository = premesisRepository;
             _distributorFoodRepository = distributorFoodRepository;
+            _providerFoodRepository = providerFoodRepository;
         }
 
         public async Task<IList<Food>> GetAllProductAsync()
@@ -34,8 +35,6 @@ namespace BusinessLogic.BusinessLogicImpl
             {
                 var cat = _categoryRepos.GetById(product.CategoryId);
                 product.Category = cat;
-                var farm = _premesisRepository.GetById(product.FarmId);
-                product.Farm = farm;
             }
             return products;
         }
@@ -96,6 +95,17 @@ namespace BusinessLogic.BusinessLogicImpl
                 default: break;
             }
             await _productRepos.UpdateAsync(food);
+        }
+
+        public async Task<IList<ProviderFood>> getAllFoodByProviderId(int providerId)
+        {
+            var food = await _providerFoodRepository.getAllFoodByProviderId(providerId);
+            foreach(var i in food)
+            {
+                i.Food = _productRepos.GetById(i.FoodId);
+                i.Food.Category = _categoryRepos.GetById(i.Food.CategoryId);
+            }
+            return food;
         }
     }
 }

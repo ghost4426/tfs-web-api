@@ -1,111 +1,46 @@
 ﻿$(document).ready(function () {
-    getProduct();
-
+    // get List of Food
     
 });
 
-function getProduct() {
-    $.ajax({
-        type: 'get',
-        url: 'https://localhost:4201/api/Provider/testgetByProvider',
-        dataType: 'json',
-        success: function (data) {
-            $('.file-export').DataTable({
-                data: data,
-                ordering: false,
-                destroy: true,
-                columns: [
-                    { data: 'CategoryName' },
-                    { data: 'Breed' },
-                    { data: 'FarmName' },
-                    {
-                        data: 'CreatedDate',
-                        render: function (data, type, row) {
-                            var d = new Date(data);
-                            return d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear();
-                        }
-                    },
-                    {
-                        data: null,
-                        render: function (o) {
-                            return '<button class="btn btn-grey" data-toggle="modal" data-target="#getinfo" title="Chi tiết"><i class="icon-eye"></i ></button >&nbsp;<button class="btn btn-info" data-toggle="modal" data-target="#addinfo" title="Thêm thông tin"><i class="icon-pencil"></i></button>';
-                        }
-                    }
-                ],
-                dom: 'Bfrtip',
-                buttons: [
-                    {
-                        extend: 'excel',
-                        text: 'Tải báo cáo'
-                    }
-                ],
-                language: {
-                    "decimal": "",
-                    "emptyTable": "Không có giá trị",
-                    "info": "Hiển thị _START_ đến _END_ trong tổng số _TOTAL_ sản phẩm",
-                    "infoEmpty": "Hiển thị 0 đến 0 trong tổng số 0 sản phẩm",
-                    "infoFiltered": "(Lọc từ _MAX_ tổng sản phẩm)",
-                    "infoPostFix": "",
-                    "thousands": ",",
-                    "loadingRecords": "Loading...",
-                    "processing": "Đang tiến hành...",
-                    "search": "Tìm kiếm:",
-                    "zeroRecords": "Không tìm thấy sản phẩm phù hợp",
-                    "paginate": {
-                        "first": "Đầu",
-                        "last": "Cuối",
-                        "next": "Sau",
-                        "previous": "Trước"
-                    },
-                    "aria": {
-                        "sortAscending": ": Lọc từ thấp đến cao",
-                        "sortDescending": ": Lọc từ cao đến thấp"
-                    }
-                }
-            });
-            $('.buttons-excel').addClass('btn btn-primary mr-1');
+var providerFoodTable = $('#provider-food-mng').DataTable({
+    ajax: {
+        url: GET_FOOD_PROVIDER_URI,
+        beforeSend: showLoadingPage,
+        complete: hideLoadingPage
+    },
+    'autoWidth': false,
+    columns: [
+        { data: 'FoodId', width: '10%' },
+        { data: 'Food.Category.Name', width: '20%' },
+        { data: 'Food.Breed', width: '25%' },
+        {
+            data: 'CreatedDate', width: '20%',
+            render: function (data, type, row) {
+                return $.format.date(data, "dd-MM-yyyy HH:mm")
+            }
+        },
+        {
+            width: '15%',
+            data: null,
+            render: function (o) {
+                var btnDetail = '<button class="btn btn-grey btn-sm" data-toggle="modal" data-target="#getinfo" title="Chi tiết"><i class="icon-eye"></i ></button >\n';
+                var btnUpdate = '<button class="btn btn-info btn-sm btn-add-detail" title="Thêm thông tin"><i class="icon-pencil"></i></button>\n'
+                return '<div class="col-12">' + btnDetail + btnUpdate + '</div>';
+            }
         }
-    });
-}
+    ],
+    dom: '<"row" <"col-sm-12"Bf>>'
+        + '<"row" <"col-sm-12"i>>'
+        + '<"row" <"col-sm-12"tr>>'
+        + '<"row"<"col-sm-5"l><"col-sm-7"p>>',
+    buttons: [
+        {
+            extend: 'excel',
+            text: '<i class="fa fa-arrow-down white"></i> Tải báo cáo'
+        }
+    ],
+    language: table_vi_lang
+})
 
-function loadCategory() {
-    $.ajax({
-        type: 'get',
-        url: 'https://localhost:4201/api/Farmer/getAllCategory',
-        dataType: 'json',
-        success: function (data) {
-            var option = "";
-            for (var i = 0; i < data.length; i++) {
-                option += "<option value='" + data[i].Id + "'>" + data[i].Name + "</option>";
-            }
-            document.getElementById("NewCategory").innerHTML = option;
-        }
-    });
-}
-function insertProduct() {
-    $('#btnAddProduct').click(function () {
-        var name = $('input[name="NewName"]').val();
-        var cate = parseInt($('select[name="NewCategory"]').val());
-        $.ajax({
-            type: 'post',
-            url: 'https://localhost:4201/api/Product/createProduct',
-            dataType: 'json',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json; charset=utf-8'
-            },
-            data: JSON.stringify({
-                Name: name,
-                CategoriesId: cate,
-                ProviderUserId: 3
-            }),
-            success: function (data) {
-                toastr.success('Bạn đã thêm ' + name + ' vào danh sách sản phẩm', 'Thêm thành công');
-                getProduct();
-                $('#default').modal('hide');
-                $('input[name="NewName"]').val("");
-                $('select[name="NewCategory"]').val("1");
-            }
-        })
-    });
-}
+$('.buttons-excel').addClass('btn btn-primary btn-sm mr-1 ');

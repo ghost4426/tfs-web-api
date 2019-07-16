@@ -16,11 +16,20 @@ namespace DataAccess.RepositoriesImpl
         {
             UserRepo = userRepository;
         }
+
+        public async Task<int> CountTransaction(int userId)
+        {
+            var transaction = await FindAllAsync(x => x.FarmId == userId | x.ProviderId == userId);
+            return transaction.Count;
+        }
+
         public async Task<int> CreateSellFoodTransactionAsync(Transaction newTransaction)
         {
             newTransaction.TransactionId = 0;
             newTransaction.CreatedDate = DateTime.Now;
-            newTransaction.ConfirmDate = DateTime.Now;
+            newTransaction.CreatedById = 28; // sẽ đổi
+            newTransaction.VeterinaryId = 28; // sẽ đổi
+            newTransaction.StatusId = 1;
             await this.InsertAsync(newTransaction, true);
             return newTransaction.TransactionId;
         }

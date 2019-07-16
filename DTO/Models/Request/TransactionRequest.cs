@@ -9,6 +9,5 @@ namespace DTO.Models
         public int FarmId { get; set; }
         public int ProviderId { get; set; }
         public int FoodId { get; set; }
-        public int StatusId { get; set; }
     }
 }

@@ -9,5 +9,7 @@ namespace DataAccess.IRepositories
     public interface ITransactionRepository : IGenericRepository<Transaction>
     {
         Task<int> CreateSellFoodTransactionAsync(Transaction newTransaction);
+
+        Task<int> CountTransaction(int userId);
     }
 }
