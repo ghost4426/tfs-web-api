@@ -35,7 +35,13 @@ namespace Common.Mapper
 
             CreateMap<Entities.User, Models.UpdateUserRequest>().ReverseMap();
 
+            CreateMap<Entities.RegisterInfo, Models.RegisterInfo>().ReverseMap();
+
+            CreateMap<Entities.PremisesType, Models.PremisesType>().ReverseMap();
+
             CreateMap<Entities.Role, Models.Role>().ReverseMap();
+
+            CreateMap<Entities.RegisterInfo, Models.CreateRegisterInfoRequest>().ReverseMap();
 
             CreateMap<Entities.Premises, Models.RegisterRequest>()
                 .ForMember(dest => dest.PremisesName, opts => opts.MapFrom(src => src.Name))

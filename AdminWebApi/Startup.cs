@@ -62,10 +62,13 @@ namespace AdminWebApi
             services.AddScoped<IUserRepository, UserRepositoryImpl>();
             services.AddScoped<IRoleRepository, RoleRepositoryImpl>();
             services.AddScoped<IPremesisRepository, PremisesRepositoryImpl>();
+            services.AddScoped<IRegisterInfoRepository, RegisterInfoRepositoryImpl>();
+            services.AddScoped<IPremisesTypeRepository, PremisesTypeRepositoryImpl>();
 
             //BusinessLogic
             services.AddScoped<IUserBL, UserBLImpl>();
             services.AddScoped<IRoleBL, RoleBLImpl>();
+            services.AddScoped<IRegisterInfoBL, RegisterInfoBLImpl>();
             #endregion
 
             services.Configure<AuthMessageSenderOptions>(Configuration.GetSection("AuthMessageSenderOptions"));

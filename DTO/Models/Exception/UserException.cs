@@ -17,6 +17,12 @@ namespace DTO.Models.Exception
         {
         }
     }
+    public class DulicatedPremisesNameException : ApplicationException
+    {
+        public DulicatedPremisesNameException(string msg) : base(msg)
+        {
+        }
+    }
     public class NotFoundException : ApplicationException
     {
         public NotFoundException(string msg) : base(msg)

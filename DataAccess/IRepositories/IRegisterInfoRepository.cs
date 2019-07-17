@@ -10,5 +10,6 @@ namespace DataAccess.IRepositories
 {
     public interface IRegisterInfoRepository : IGenericRepository<RegisterInfo>
     {
+        Task<RegisterInfo> FindByName(string premisesName);
     }
 }

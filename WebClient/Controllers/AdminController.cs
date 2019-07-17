@@ -19,7 +19,11 @@ namespace WebClient.Controllers
         {
             return View();
         }
+        [Route("quan-ly-thong-tin-dang-ky-co-so")]
+        public IActionResult RegisterInfoManagement()
+        {
+            return View();
+        }
 
-        
     }
 }

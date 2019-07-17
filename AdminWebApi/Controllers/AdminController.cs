@@ -18,6 +18,7 @@ namespace AdminWebApi.Controllers
     //[Authorize(Roles = RoleConstant.ADMIN)]
     public class AdminController : ControllerBase
     {
+        private readonly IRegisterInfoBL _regBl;
         private readonly IUserBL _userBL;
         private readonly IRoleBL _roleBl;
         private IMapper _mapper;
@@ -26,9 +27,11 @@ namespace AdminWebApi.Controllers
         public AdminController(IUserBL UserBL,
             IRoleBL RoleBL,
             IMapper mapper,
-            IEmailSender mailSender
+            IEmailSender mailSender,
+            IRegisterInfoBL regBl
             )
         {
+            _regBl = regBl;
             _roleBl = RoleBL;
             _userBL = UserBL;
             _mapper = mapper;
@@ -77,7 +80,7 @@ namespace AdminWebApi.Controllers
                 {
                     await _userBL.RemoveByIdAsync(user.UserId);
                 }
-                return BadRequest(new { message = e.Message });
+                return BadRequest(new { message = MessageConstant.UNHANDLE_ERROR });
             }
 
         }
@@ -181,6 +184,28 @@ namespace AdminWebApi.Controllers
             catch (Exception e)
             {
                 return BadRequest(new { message = e.Message.ToString() });
+            }
+        }
+        //Premises Management
+        //Get All RegisterInfo
+        [HttpGet("premises")]
+        public async Task<IActionResult> Premises()
+        {
+            return Ok(
+                new { data = _mapper.Map<IList<Models.RegisterInfo>>(await this._regBl.GetAllRegisterInfo()) }
+                );
+        }
+        [HttpPut("premises/status/{regId}")]
+        public async Task<IActionResult> ChangeStatusPremises(int regId,[FromBody] int isConfirm)
+        {
+            try
+            {
+                await _regBl.ChangeStatusRegisterInfo(regId, isConfirm);
+                return Ok("success!");
+            }
+            catch(Exception e)
+            {
+                return BadRequest(new { message = e.Message });
             }
         }
     }

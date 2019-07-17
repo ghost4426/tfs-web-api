@@ -8,8 +8,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.IRepositories
 {
-    public interface IPremesisRepository : IGenericRepository<Premises>
+    public interface IPremisesTypeRepository : IGenericRepository<PremisesType>
     {
-        Task<Premises> FindByName(string premisesName);
     }
 }

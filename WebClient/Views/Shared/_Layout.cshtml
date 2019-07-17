@@ -82,15 +82,21 @@
         <div class="navbar-container main-menu-content container center-layout" data-menu="menu-container">
             <ul class="nav navbar-nav" id="main-menu-navigation" data-menu="menu-navigation">
                 @*<li class="dropdown nav-item">
-                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">
-                            <i class="icon-user"></i>
-                            Quản lý tài khoản
-                        </a>
-                    </li>*@
+            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">
+                <i class="icon-user"></i>
+                Quản lý tài khoản
+            </a>
+        </li>*@
                 <li class="dropdown nav-item">
                     <a class="nav-link" asp-controller="Admin" asp-action="Index">
                         <i class="icon-user"></i>
                         <span data-i18n="nav.category.general">Quản lý tài khoản</span>
+                    </a>
+                </li>
+                <li class="dropdown nav-item">
+                    <a class="nav-link" asp-controller="Admin" asp-action="RegisterInfoManagement">
+                        <i class="fa fa-file-text-o"></i>
+                        <span data-i18n="nav.category.general">Quản lý thông tin cơ sở</span>
                     </a>
                 </li>
                 <li class="dropdown nav-item">

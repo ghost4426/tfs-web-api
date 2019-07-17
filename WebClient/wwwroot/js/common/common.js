@@ -50,6 +50,30 @@ var userTable_vi_lang = {
         "sortDescending": ": Lọc từ cao đến thấp"
     }
 };
+var registerInfoTable_vi_lang = {
+    "decimal": "",
+    "emptyTable": "Không có thông tin đăng ký",
+    "info": "Hiển thị _START_ - _END_ trong tổng số _TOTAL_ thông tin",
+    "infoEmpty": "Hiển thị 0 đến 0 trong tổng số 0 thông tin",
+    "infoFiltered": "(Lọc từ _MAX_ tổng thông tin)",
+    "infoPostFix": "",
+    "thousands": ",",
+    "loadingRecords": "Đang tải...",
+    "processing": "Đang tiến hành...",
+    "sLengthMenu": "Hiển thị _MENU_ thông tin",
+    "search": "Tìm kiếm:",
+    "zeroRecords": "Không tìm thấy thông tin phù hợp",
+    "paginate": {
+        "first": "Đầu",
+        "last": "Cuối",
+        "next": "Sau",
+        "previous": "Trước"
+    },
+    "aria": {
+        "sortAscending": ": Lọc từ thấp đến cao",
+        "sortDescending": ": Lọc từ cao đến thấp"
+    }
+};
 
 
 

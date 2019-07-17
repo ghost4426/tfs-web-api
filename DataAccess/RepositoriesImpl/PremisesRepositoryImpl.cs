@@ -1,9 +1,9 @@
 ﻿using DataAccess.Context;
 using DataAccess.IRepositories;
 using DTO.Entities;
-using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace DataAccess.RepositoriesImpl
 {
@@ -16,5 +16,10 @@ namespace DataAccess.RepositoriesImpl
         {
             _dbContext = dbContext;
         }
+        public async Task<Premises> FindByName(string premisesName)
+        {
+            return await FindAsync(p => p.Name == premisesName);
+        }
+
     }
 }
