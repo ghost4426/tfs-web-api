@@ -33,6 +33,8 @@ namespace Common.Mapper
 
             CreateMap<Entities.User, Models.User>().ReverseMap();
 
+            CreateMap<Entities.User, Models.UpdateUserRequest>().ReverseMap();
+
             CreateMap<Entities.Role, Models.Role>().ReverseMap();
 
             CreateMap<Entities.Premises, Models.RegisterRequest>()
