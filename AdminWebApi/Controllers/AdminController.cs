@@ -39,7 +39,7 @@ namespace AdminWebApi.Controllers
         }
         /// <summary>
         /// create new user
-        /// </summary>
+        /// </summary>  
         /// <param name="rUser"></param>
         /// <returns></returns>
         //POST : /api/Admin/createUser
@@ -70,7 +70,7 @@ namespace AdminWebApi.Controllers
                 return Ok(new { messsage = MessageConstant.INSERT_SUCCESS });
 
             }
-            catch (DulicatedUsernameException e)
+            catch (DuplicatedUsernameException e)
             {
                 return BadRequest(new { message = e.Message });
             }

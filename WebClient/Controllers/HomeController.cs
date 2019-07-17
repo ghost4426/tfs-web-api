@@ -26,6 +26,11 @@ namespace WebClient.Controllers
         {
             return View();
         }
+        [Route("dang-ky-co-so")]
+        public IActionResult CreateRegisterInfo()
+        {
+            return View();
+        }
 
     }
 }

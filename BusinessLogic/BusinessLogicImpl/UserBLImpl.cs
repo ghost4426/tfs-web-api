@@ -35,7 +35,7 @@ namespace BusinessLogic.BusinessLogicImpl
             var user = await _userRepos.FindByUsername(newUser.Username);
             if (user != null)
             {
-                throw new DulicatedUsernameException(msg: MessageConstant.DUPLICATED_USERNAME);
+                throw new DuplicatedUsernameException(msg: MessageConstant.DUPLICATED_USERNAME);
             }
             newUser.UserId = 0;
             newUser.Password = hashedPassword.HashedPassword;

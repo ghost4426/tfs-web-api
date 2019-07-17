@@ -39,24 +39,24 @@ namespace CommonWebApi.Controllers
         [HttpPost("premises")]
         public async Task<IActionResult> CreatePremises([FromBody]Models.CreateRegisterInfoRequest regInfo)
         {
-            Entities.RegisterInfo newReg = null;
             var isCreated = false;
             try
             {
-                newReg = _mapper.Map<Entities.RegisterInfo>(regInfo);
-                isCreated = await _regBl.CreateRegisterInfo(newReg);
-                if (isCreated)
-                {
-                }
+                var newReg = _mapper.Map<Entities.RegisterInfo>(regInfo);
+                await _regBl.CreateRegisterInfo(newReg);
                 return Ok(new { messsage = MessageConstant.INSERT_SUCCESS });
             }
-            catch (DulicatedUsernameException e)
+            catch (DuplicatedUsernameException e)
             {
-                return BadRequest(new { message = e.Message });
+                return BadRequest(new { message = MessageConstant.DUPLICATED_USERNAME });
+            }
+            catch (DuplicatedPremisesNameException e)
+            {
+                return BadRequest(new { message = MessageConstant.DUPLICATED_PREMISESNAME });
             }
             catch (Exception e)
             {
-                return BadRequest(new { message = e.Message });
+                return BadRequest(new { message = MessageConstant.UNHANDLE_ERROR });
             }
         }
     }

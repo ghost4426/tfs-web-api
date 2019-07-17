@@ -1,0 +1,282 @@
+﻿@{
+    ViewData["Title"] = "Đăng ký cơ sở mới";
+    Layout = null;
+
+}
+    <!DOCTYPE html>
+    <html class="loaded" lang="en" data-textdirection="ltr">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+        <meta name="description" content="Robust admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template.">
+        <meta name="keywords" content="admin template, robust admin template, dashboard template, flat admin template, responsive admin template, web app, crypto dashboard, bitcoin dashboard">
+        <meta name="author" content="PIXINVENT">
+        <title>
+            Đăng ký thông tin cơ sở mới
+        </title>
+        <link rel="apple-touch-icon" href="../../../app-assets/images/ico/apple-icon-120.png">
+        <link rel="shortcut icon" type="image/x-icon" href="../../../app-assets/images/ico/favicon.ico">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Muli:300,400,500,700" rel="stylesheet">
+        <!-- BEGIN VENDOR CSS-->
+        <link rel="stylesheet" type="text/css" href="../../../app-assets/css/vendors.css">
+        <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/forms/icheck/icheck.css">
+        <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/forms/icheck/custom.css">
+        <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/forms/selects/select2.min.css">
+        <!-- END VENDOR CSS-->
+        <!-- BEGIN ROBUST CSS-->
+        <link rel="stylesheet" type="text/css" href="../../../app-assets/css/app.css">
+        <!-- END ROBUST CSS-->
+        <!-- BEGIN Page Level CSS-->
+        <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/extensions/toastr.css">
+        <link rel="stylesheet" type="text/css" href="../../../app-assets/css/core/menu/menu-types/horizontal-menu.css">
+        <link rel="stylesheet" type="text/css" href="../../../app-assets/css/core/colors/palette-gradient.css">
+        <link rel="stylesheet" type="text/css" href="../../../app-assets/css/pages/login-register.css">
+        <!-- END Page Level CSS-->
+        <!-- BEGIN Custom CSS-->
+        <link rel="stylesheet" type="text/css" href="../../../assets/css/style.css">
+        <!-- END Custom CSS-->
+    </head>
+    <body class="horizontal-layout horizontal-menu horizontal-menu-padding 1-column  bg-cyan bg-lighten-2 menu-expanded fixed-navbar  pace-done" data-open="hover" data-menu="horizontal-menu" data-col="1-column">
+        <div class="pace  pace-inactive">
+            <div class="pace-progress" data-progress-text="100%" data-progress="99" style="transform: translate3d(100%, 0px, 0px);">
+                <div class="pace-progress-inner"></div>
+            </div>
+            <div class="pace-activity"></div>
+        </div>
+        <!-- fixed-top-->
+        <nav class="header-navbar navbar-expand-md navbar navbar-with-menu fixed-top navbar-dark navbar-border navbar-brand-center">
+            <div class="navbar-wrapper">
+                <center>
+                    <a class="navbar-brand" href="">
+                        <i class="fa fa-hand-o-right"></i>
+                        <h3 class="brand-text">TFS</h3>
+                    </a>
+                </center>
+            </div>
+        </nav>
+        <!-- ////////////////////////////////////////////////////////////////////////////-->
+        <div class="app-content container center-layout mt-2">
+            <div class="content-wrapper">
+                <div class="content-header row">
+                </div>
+                <div class="content-body">
+                    <section class="flexbox-container">
+                        <div class="col-12 d-flex align-items-center justify-content-center">
+                            <div class="col-md-8 col-12 box-shadow-2 p-0">
+                                <div class="card border-grey border-lighten-3 m-0">
+                                    <div class="card-header border-0 pb-0">
+                                        <div class="card-title text-center">
+                                            Traceability Of Food System
+                                        </div>
+                                        <h6 class="card-subtitle line-on-side text-muted text-center font-small-3 pt-2">
+                                            <span>Tạo mới Thông tin đăng ký</span>
+                                        </h6>
+                                    </div>
+                                    <div class="card-content">
+                                        <div class="card-body">
+                                            <form class="form-horizontal" action="index.html" novalidate="">
+                                                <h5 class="form-section"><i class="ft-user"></i>Thông tin người dùng</h5>
+                                                <div class="row">
+                                                    <div class="col-12 col-sm-6 col-md-6">
+                                                        <fieldset class="form-group position-relative has-icon-left">
+                                                            <input type="text" name="txtUsername" id="txtUsername" class="form-control input-lg" placeholder="Tài khoản" tabindex="1">
+                                                            <div class="form-control-position">
+                                                                <i class="ft-user"></i>
+                                                            </div>
+                                                        </fieldset>
+                                                    </div>
+                                                    <div class="col-12 col-sm-6 col-md-6">
+                                                        <fieldset class="form-group position-relative has-icon-left">
+                                                            <input type="text" name="txtFullname" id="txtFullname" class="form-control input-lg" placeholder="Họ và tên" tabindex="2">
+                                                            <div class="form-control-position">
+                                                                <i class="ft-user"></i>
+                                                            </div>
+                                                        </fieldset>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12 col-sm-6 col-md-6">
+                                                        <fieldset class="form-group position-relative has-icon-left">
+                                                            <input type="email" name="txtEmail" id="txtEmail" class="form-control input-lg" placeholder="Email" tabindex="1">
+                                                            <div class="form-control-position">
+                                                                <i class="ft-mail"></i>
+                                                            </div>
+                                                        </fieldset>
+                                                    </div>
+                                                    <div class="col-12 col-sm-6 col-md-6">
+                                                        <fieldset class="form-group position-relative has-icon-left">
+                                                            <input type="text" name="txtPhone" id="txtPhone" class="form-control input-lg" placeholder="Số điện thoại" tabindex="2">
+                                                            <div class="form-control-position">
+                                                                <i class="fa fa-phone"></i>
+                                                            </div>
+                                                        </fieldset>
+                                                    </div>
+                                                </div>
+                                                <h5 class="form-section"><i class="ft-user"></i>Thông tin cơ sở</h5>
+                                                <div class="row">
+                                                    <div class="col-12 col-sm-6 col-md-6">
+                                                        <fieldset class="form-group position-relative has-icon-left">
+                                                            <input type="text" name="txtPremisesName" id="txtPremisesName" class="form-control input-lg" placeholder="Tên cơ sở" tabindex="5" required="">
+                                                            <div class="form-control-position">
+                                                                <i class="fa fa-key"></i>
+                                                            </div>
+                                                            <div class="help-block font-small-3"></div>
+                                                        </fieldset>
+                                                    </div>
+                                                    <div class="col-12 col-sm-6 col-md-6">
+                                                        <fieldset class="form-group position-relative has-icon-left">
+                                                            <input type="text" name="txtPremisesAddress" id="txtPremisesAddress" class="form-control input-lg" placeholder="Địa chỉ cơ sở" tabindex="6">
+                                                            <div class="form-control-position">
+                                                                <i class="fa fa-key"></i>
+                                                            </div>
+                                                            <div class="help-block font-small-3"></div>
+                                                        </fieldset>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-1">
+                                                    <div class="col-4 col-sm-3 col-md-3">
+                                                        <fieldset class="form-group position-relative has-icon-left">
+                                                            <select id="dllPremisesType" class="select2">
+                                                                <option value="0" selected="" disabled="">Loại</option>
+                                                                <option value="1">Farm</option>
+                                                                <option value="2">Provider</option>
+                                                                <option value="3">Distributor</option>
+                                                            </select>
+                                                        </fieldset>
+                                                    </div>
+                                                    <div class="col-8 col-sm-9 col-md-9">
+                                                        <p class="font-small-4">
+                                                            Sau khi đã đăng ký thông tin hoàn tất, vui lòng chờ để được xác nhận thông tin cơ sở.
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-12 col-sm-6 col-md-6">
+                                                        <button type="button" id="createNewRegisterInfoBtn" class="btn btn-info btn-lg btn-block"><i class="ft-user"></i> Đăng ký</button>
+                                                    </div>
+                                                    <div class="col-12 col-sm-6 col-md-6">
+                                                        <a href="" class="btn btn-danger btn-lg btn-block"><i class="ft-unlock"></i> Trở về</a>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+        <!-- ////////////////////////////////////////////////////////////////////////////-->
+        <footer class="footer fixed-bottom footer-dark navbar-shadow">
+            <p class="clearfix blue-grey lighten-2 text-sm-center mb-0 px-2 container center-layout">
+                <span class="float-md-left d-block d-md-inline-block">Copyright © 2018 <a class="text-bold-800 grey darken-2" href="https://themeforest.net/user/pixinvent/portfolio?ref=pixinvent" target="_blank">PIXINVENT </a>, All rights reserved. </span>
+                <span class="float-md-right d-block d-md-inline-blockd-none d-lg-block">Hand-crafted &amp; Made with <i class="ft-heart pink"></i></span>
+            </p>
+        </footer>
+        <!-- BEGIN VENDOR JS-->
+        <script src="../../../app-assets/vendors/js/vendors.min.js" type="text/javascript"></script>
+        <!-- BEGIN VENDOR JS-->
+        <!-- BEGIN PAGE VENDOR JS-->
+        <script type="text/javascript" src="../../../app-assets/vendors/js/ui/jquery.sticky.js"></script>
+        <script src="../../../app-assets/vendors/js/forms/validation/jqBootstrapValidation.js" type="text/javascript"></script>
+        <script src="../../../app-assets/vendors/js/forms/icheck/icheck.min.js" type="text/javascript"></script>
+        <script src="../../../app-assets/vendors/js/forms/select/select2.full.min.js" type="text/javascript"></script>
+        <!-- END PAGE VENDOR JS-->
+        <!-- BEGIN ROBUST JS-->
+        <script src="../../../app-assets/js/core/app-menu.js" type="text/javascript"></script>
+        <script src="../../../app-assets/js/core/app.js" type="text/javascript"></script>
+        <script src="../../../app-assets/js/scripts/customizer.js" type="text/javascript"></script>
+        <!-- END ROBUST JS-->
+        <!-- BEGIN PAGE LEVEL JS-->
+        <script src="../../../app-assets/js/scripts/forms/form-login-register.js" type="text/javascript"></script>
+        <script src="../../../app-assets/js/scripts/forms/select/form-select2.js" type="text/javascript"></script>
+        <!-- END PAGE LEVEL JS-->
+        <!-- MY JS-->
+        <script src="~/js/home/home.js" type="text/javascript"></script>
+        <script src="~/js/constant/app-constant.js" type="text/javascript"></script>
+        <script src="~/js/common/common.js" type="text/javascript"></script>
+        <script src="~/app-assets/vendors/js/extensions/toastr.min.js" type="text/javascript"></script>
+    </body>
+    </html>
+
+<!--
+<section id="horizontal-form-layouts">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title" id="horz-layout-basic">TFS</h4>
+                    <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+                </div>
+                <div class="card-content collpase show">
+                    <div class="card-body">
+                        <form class="form form-horizontal">
+                            <div class="form-body">
+                                <h4 class="form-section"><i class="ft-user"></i>Thông tin người dùng</h4>
+                                <div class="form-group row">
+                                    <label class="col-md-3 label-control" for="projectinput1">Tài khoản</label>
+                                    <div class="col-md-9">
+                                        <input type="text" id="txtUsername" class="form-control" placeholder="tài khoản">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 label-control" for="projectinput2">Họ và Tên</label>
+                                    <div class="col-md-9">
+                                        <input type="text" id="txtFullname" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 label-control" for="projectinput3">E-mail</label>
+                                    <div class="col-md-9">
+                                        <input type="text" id="txtEmail" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 label-control" for="projectinput4">Số điện thoại</label>
+                                    <div class="col-md-9">
+                                        <input type="text" id="txtPhone" class="form-control" placeholder="090xxxxxxx">
+                                    </div>
+                                </div>
+                                <h4 class="form-section"><i class="ft-clipboard"></i>Thông tin cơ sở</h4>
+                                <div class="form-group row">
+                                    <label class="col-md-3 label-control" for="projectinput5">Tên cơ sở</label>
+                                    <div class="col-md-9">
+                                        <input type="text" id="txtPremisesName" class="form-control" placeholder="VD: Vina milk">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 label-control" for="projectinput5">Địa chỉ cơ sở</label>
+                                    <div class="col-md-9">
+                                        <input type="text" id="txtPremisesAddress" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 label-control" for="dllPremisesType">Loại cơ sở</label>
+                                    <div class="col-md-9">
+                                        <select id="dllPremisesType" class="form-control">
+                                            <option value="0" selected="" disabled="">Vui lòng chọn</option>
+                                            <option value="1">Farm</option>
+                                            <option value="2">Provider</option>
+                                            <option value="3">Distributor</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button id="createNewRegisterInfoBtn" type="button" class="btn btn-primary">
+                                    <i class="fa fa-check-square-o"></i> Save
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+-->

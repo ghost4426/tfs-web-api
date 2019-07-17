@@ -20,10 +20,10 @@ var userTable = $('#userTable').DataTable({
             data: 'IsActive',
             render: function (data, type, row) {
                 if (data == true) {
-                    return '<span class="badge badge-success"><b>Hiệu lực</b></span>';
+                    return '<span class="btn btn-success btn-sm mr-1 mb-1 ladda-button"><b>Hiệu lực</b></span>';
                 }
                 else {
-                    return '<span class="badge badge-danger"><b>Vô Hiệu lực</b></span>';
+                    return '<span class="btn btn-danger btn-sm mr-1 mb-1 ladda-button"><b>Vô Hiệu lực</b></span>';
                 };
             }
         },

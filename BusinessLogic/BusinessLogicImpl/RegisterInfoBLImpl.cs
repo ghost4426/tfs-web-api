@@ -20,32 +20,42 @@ namespace BusinessLogic.BusinessLogicImpl
         private IPremisesTypeRepository _premisesTypeRepos;
         private IPremesisRepository _premisesRepos;
         private IRegisterInfoRepository _registerRepos;
+        private IUserRepository _userRepository;
+        private IEmailSender _mailSender;
+        private IRoleRepository _roleRepos;
         public RegisterInfoBLImpl(IRegisterInfoRepository registerRepos,
             IPremisesTypeRepository premisesTypeRepos,
-            IPremesisRepository premisesRepos
+            IPremesisRepository premisesRepos,
+            IUserRepository userRepository,
+            IEmailSender mailSender,
+            IRoleRepository roleRepos
             )
         {
+            _roleRepos = roleRepos;
+            _mailSender = mailSender;
+            _userRepository = userRepository;
             _premisesRepos = premisesRepos;
             _premisesTypeRepos = premisesTypeRepos;
             _registerRepos = registerRepos;
         }
 
-        public async Task<bool> CreateRegisterInfo(RegisterInfo newRegInfo)
+        public async Task CreateRegisterInfo(RegisterInfo newRegInfo)
         {
             var regInfo = await _registerRepos.FindByName(newRegInfo.PremisesName);
-            if(regInfo != null)
+            var isExistUser = await _userRepository.FindByUsername(newRegInfo.Username);
+            if (regInfo != null)
             {   
-                throw new DulicatedPremisesNameException("Tên cơ sở đã tồn tại");
+                throw new DuplicatedPremisesNameException("Tên cơ sở đã tồn tại");
+            }else if(isExistUser!= null)
+            {
+                throw new DuplicatedUsernameException("Tài khoản đã tồn tại");
             }
             //còn user manager nữa
-            newRegInfo.RegisterId = 0;
-            newRegInfo.CreatedDate = DateTime.Now;
-            newRegInfo.IsConfirm = null;
-            _registerRepos.Insert(newRegInfo, true);
-            if (newRegInfo.RegisterId > 0)
-            {
-                return true;
-            }return false;
+            else {
+                newRegInfo.RegisterId = 0;
+                newRegInfo.IsConfirm = null;
+                _registerRepos.Insert(newRegInfo, true);
+            }
         }
         public async Task<IList<Entities.RegisterInfo>> GetAllRegisterInfo()
         {
@@ -57,7 +67,7 @@ namespace BusinessLogic.BusinessLogicImpl
             }
             return regInfos;
         }
-        public async Task ChangeStatusRegisterInfo(int regId, int isConfirm)
+        public async Task<bool> ChangeStatusRegisterInfo(int regId, int isConfirm)
         {
             var regInfo = await _registerRepos.GetByIdAsync(regId);
             if(isConfirm == 1)
@@ -68,26 +78,49 @@ namespace BusinessLogic.BusinessLogicImpl
             {
                 regInfo.IsConfirm = null;
             }
-            else { regInfo.IsConfirm = false; }
+            else {
+                regInfo.IsConfirm = false;
+                
+            }
 
             if (regInfo.IsConfirm == true)
             {
-                var isExistRegInfo = await _premisesRepos.FindByName(regInfo.PremisesName);
-                if (isExistRegInfo != null)
+                try {
+                    var newPremises = new Premises();
+                    newPremises.Name = regInfo.PremisesName;
+                    newPremises.Address = regInfo.PremisesAddress;
+                    newPremises.PremisesType = _premisesTypeRepos.GetById(regInfo.PremisesTypeId);
+                    var user = new User();
+                    var password = Util.GeneratePassword(new Models.PasswordOptions()
+                    {
+                        RequireDigit = true,
+                        RequiredLength = 8,
+                        RequireLowercase = true,
+                        RequireNonAlphanumeric = false,
+                        RequireUppercase = true
+                    });
+                    var hashedPassword = PasswordHasher.GetHashPassword(password);//Get hashedpassword
+                    var role = _roleRepos.GetById(2);//Get manager Role
+                    user.Password = hashedPassword.HashedPassword;
+                    user.Fullname = regInfo.Fullname;
+                    user.Salt = hashedPassword.Salt;
+                    user.Role = role;
+                    user.Username = regInfo.Username;
+                    user.Email = regInfo.Email;
+                    user.Image = "test";
+                    _userRepository.Insert(user, true);
+                    _premisesRepos.Insert(newPremises, true);
+                    await _mailSender.SendEmailAsync(user.Email, "Thông tin cơ sở của bạn đã dc duyệt", "Mật khẩu tài khoản: " + password);
+                    return true;
+                } catch (Exception e)
                 {
-                    
+                    throw new Exception(e.Message);
                 }
-                else
-                {
-                var newPremises = new Premises();
-                newPremises.Name = regInfo.PremisesName;
-                newPremises.Address = regInfo.PremisesAddress;
-                newPremises.CreatedDate = DateTime.Now;
-                newPremises.PremisesType = _premisesTypeRepos.GetById(regInfo.PremisesTypeId);
-                _premisesRepos.Insert(newPremises, true);
-                }
+                
             }
             await _registerRepos.UpdateAsync(regInfo, true);
+            return false;
+            
         }
     }
 }

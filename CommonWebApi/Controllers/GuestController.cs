@@ -30,7 +30,6 @@ namespace AdminWebApi.Controllers
         private readonly IEmailSender _mailSender;
         private readonly JWTSetttings _appSettings;
 
-
         public GuestController(
             IUserBL userBL,
             IRoleBL roleBL,
@@ -89,7 +88,7 @@ namespace AdminWebApi.Controllers
                 return Ok(new { messsage = MessageConstant.INSERT_SUCCESS });
 
             }
-            catch (DulicatedUsernameException e)
+            catch (DuplicatedUsernameException e)
             {
                 return BadRequest(new { message = e.Message });
             }

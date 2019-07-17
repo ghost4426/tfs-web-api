@@ -11,15 +11,15 @@ namespace DTO.Models.Exception
         }
     }
 
-    public class DulicatedUsernameException : ApplicationException
+    public class DuplicatedUsernameException : ApplicationException
     {
-        public DulicatedUsernameException(string msg) : base(msg)
+        public DuplicatedUsernameException(string msg) : base(msg)
         {
         }
     }
-    public class DulicatedPremisesNameException : ApplicationException
+    public class DuplicatedPremisesNameException : ApplicationException
     {
-        public DulicatedPremisesNameException(string msg) : base(msg)
+        public DuplicatedPremisesNameException(string msg) : base(msg)
         {
         }
     }

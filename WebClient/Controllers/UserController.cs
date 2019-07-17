@@ -21,10 +21,6 @@ namespace WebClient.Controllers
         {
             return View();
         }
-        [Route("dang-ky-co-so")]
-        public IActionResult CreatePremises()
-        {
-            return View();
-        }
+        
     }
 }

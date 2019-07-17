@@ -10,36 +10,54 @@ var registerInfoTable = $('#registerInfoTable').DataTable({
     },
     'autoWidth': false,
     columns: [
-        /*{ data: 'RegisterId' },*/
+        { data: 'RegisterId' },
         { data: 'PremisesName' },
-        { data: 'PremisesAddress' },
         { data: 'PremisesType.Name' },
         { data: 'Username' },
-        { data: 'Fullname' },
         { data: 'Email' },
-        { data: 'Phone' },
-        {
-            data: null,
-            render: function (data, type, row) {
-                if (data.IsConfirm == true) {
-                    return '<button onclick="getReg(' + data.RegisterId + ')" class="btn btn-success btn-sm mr-1 mb-1 ladda-button" data-toggle="modal" data-target="#changeStatus" data-style="expand-right" data-size="s"><span class="ladda-label">Duyệt</span></button>';
-                }
-                if (data.IsConfirm == null) {
-                    return '<button onclick="getReg(' + data.RegisterId + ')" class="btn btn-secondary btn-sm mr-1 mb-1 ladda-button" data-toggle="modal" data-target="#changeStatus" data-style="expand-right" data-size="s"><span class="ladda-label">Đang chờ</span></button>';
-                } else {
-                    return '<button onclick="getReg(' + data.RegisterId + ')" class="btn btn-danger btn-sm mr-1 mb-1 ladda-button" data-toggle="modal" data-target="#changeStatus" data-style="expand-right" data-size="s"><span class="ladda-label">Từ chối</span></button>';
-                };
-            }
-        },
         {
             data: 'CreatedDate', width: '20%',
             render: function (data, type, row) {
                 return $.format.date(data, "dd-MM-yyyy HH:mm")
             }
         },
+        {
+            data: null,
+            render: function (data, type, row) {
+                if (data.IsConfirm == true) {
+                    var btnChange = '<button class="btn btn-success btn-sm mr-1 mb-1 ladda-button" data-style="expand-right" data-size="s"><span class="ladda-label">Duyệt</span></button>';
+                } else
+                if (data.IsConfirm == null) {
+                    var btnChange = '<button onclick="getReg(' + data.RegisterId + ')" class="btn btn-secondary btn-sm mr-1 mb-1 ladda-button" data-toggle="modal" data-target="#changeStatus" data-style="expand-right" data-size="s"><span class="ladda-label">Đang chờ</span></button>';
+                } else {
+                    var btnChange = '<button class="btn btn-danger btn-sm mr-1 mb-1 ladda-button" data-style="expand-right" data-size="s"><span class="ladda-label">Từ chối</span></button>';
+                };
+                return btnChange;
+            }
+        },
+        {
+            data: null,
+            render: function (data, type, row) {
+                var btnView = '<button class="btn btn-grey btn-sm btn-view-detail" title="Chi tiết"><i class="icon-eye"></i ></button >';
+                return btnView;
+            }
+        },
     ],
     language: registerInfoTable_vi_lang
 });
+
+var preId = 0;
+//View details
+$('#registerInfoTable').on('click', 'button.btn-view-detail', function () {
+    var tr = $(this).closest('tr');
+    var row = registerInfoTable.row(tr);
+    var id = row.data().RegisterId;
+    $('#txtPreAddress').val(row.data().PremisesAddress);
+    $('#txtFullname').val(row.data().Fullname);
+    $('#txtPhone').val(row.data().Phone);
+    $('#view-reg-data').modal('show');
+});
+
 //Get info for modal
 function getReg(regId) {
     $("#dllStatus").empty();
@@ -95,7 +113,8 @@ function updateStatus() {
         })
     })
 }
-$('#createNewRegisterInfoBtn').click(function () {
+//Create New Info
+/*$('#createNewRegisterInfoBtn').click(function () {
     var username = $('#txtUsername').val();
     var fullName = $('#txtFullname').val();
     var email = $('#txtEmail').val();
@@ -125,3 +144,4 @@ $('#createNewRegisterInfoBtn').click(function () {
         }
     )
 });
+*/
