@@ -149,7 +149,6 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form class="form">
                     <div class="form-body">
                         <div class="row">
                             <div class="col-md-12">
@@ -169,7 +168,6 @@
                             </div>
                         </div>
                     </div>
-                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">Đóng</button>
@@ -178,34 +176,30 @@
     </div>
 </div>
 <!-- End view food info -->
-<!-- Modal addDistributor-->
-<div class="modal fade text-left" id="addDistributor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1"
+<!-- Modal addProvider-->
+<div class="modal fade text-left" id="addDistributor" role="dialog" aria-labelledby="myModalLabel1"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel1">Chuyển cho nhà phân phối</h4>
+                <h4 class="modal-title" id="myModalLabel1">Chuyển cho nhà cung cấp</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <form class="form">
-                    <div class="form-body">
+                    <div class="form-body">                        
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="projectinput1">Tên sản phẩm</label>
-                                    <input type="text" id="Name" class="form-control" name="Name">
-                                </div>
+                                <label for="projectinput2">Mã</label>
+                                <input id="pro-food-id" class="form-control" type="text" name="foodId" readonly />
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="projectinput1">Nhà cung cấp</label>
-                                    <input type="text" id="Name" class="form-control" name="Provider">
-                                </div>
+                                <label for="projectinput2">Nhà cung cấp</label>
+                                <select name="providerID" class="select2-placeholder select2-size-lg form-control" style="width:100%" id="ddlProvider"></select>
                             </div>
                         </div>
                     </div>
@@ -213,7 +207,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">Đóng</button>
-                <button type="button" class="btn btn-outline-primary">Xác nhận</button>
+                <button id="btn-addProvider" type="button" class="btn btn-outline-primary">Xác nhận</button>
             </div>
         </div>
     </div>

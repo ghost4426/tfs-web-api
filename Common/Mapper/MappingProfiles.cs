@@ -43,8 +43,20 @@ namespace Common.Mapper
                 .ForMember(dest => dest.PremisesTypeId, opts => opts.MapFrom(src => src.TypeId))
                 .ReverseMap();
 
+            CreateMap<Entities.Food, Models.FoodFarm>()
+                .ForMember(dest => dest.CategoryName, opts => opts.MapFrom(src => src.Category.Name))
+                .ForMember(dest => dest.CategoryId, opts => opts.MapFrom(src => src.Category.CategoryId))
+                .ReverseMap();
+
+            CreateMap<Entities.Premises, Models.PremisesProvider>().ReverseMap();
+
+            CreateMap<Entities.Transaction, Models.TransactionRequest>().ReverseMap();
+
             CreateMap<Entities.Category, Models.Category>()
                .ReverseMap();
+
+            CreateMap<Entities.ProviderFood, Models.FoodProvider>()
+                .ReverseMap();
 
             CreateMap<Entities.Food, Models.Food>()
                .ReverseMap();
@@ -53,6 +65,27 @@ namespace Common.Mapper
                  .ForMember(dest => dest.id, opts => opts.MapFrom(src => src.TypeId))
                  .ForMember(dest => dest.text, opts => opts.MapFrom(src => src.Name))
                .ReverseMap();
+
+            CreateMap<Entities.Premises, Models.Option>()
+                .ForMember(dest => dest.id, opts => opts.MapFrom(src => src.PremisesId))
+                .ForMember(dest => dest.text, opts => opts.MapFrom(src => src.Name))
+                .ReverseMap();
+
+            CreateMap<Entities.Transaction, Models.TransactionReponse.FarmGetTransaction>()
+                .ForMember(dest => dest.Provider, opts => opts.MapFrom(src => src.Provider.Name))
+                .ForMember(dest => dest.FoodName, opts => opts.MapFrom(src => src.Food.Category.Name))
+                .ForMember(dest => dest.FoodBreed, opts => opts.MapFrom(src => src.Food.Breed))
+                .ForMember(dest => dest.Status, opts => opts.MapFrom(src => src.TransactionStatus.Status))
+                .ReverseMap();
+
+            CreateMap<Entities.Transaction, Models.TransactionReponse.ProviderGetTransaction>()
+                .ForMember(dest => dest.Farm, opts => opts.MapFrom(src => src.Farm.Name))
+                .ForMember(dest => dest.FoodName, opts => opts.MapFrom(src => src.Food.Category.Name))
+                .ForMember(dest => dest.FoodBreed, opts => opts.MapFrom(src => src.Food.Breed))
+                .ForMember(dest => dest.Status, opts => opts.MapFrom(src => src.TransactionStatus.Status))
+                .ReverseMap();
+
+            CreateMap<Entities.ProviderFood, Models.CreateProviderFoodRequest>().ReverseMap();
         }
     }
 }

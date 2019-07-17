@@ -19,9 +19,9 @@ namespace BusinessLogic.BusinessLogicImpl
     {
         private IUserRepository _userRepos;
         private IRoleRepository _roleRepos;
-        private IPremesisRepository _premesisRepos;
+        private IPremisesRepository _premesisRepos;
 
-        public UserBLImpl(IUserRepository userRepos, IRoleRepository roleRepos, IPremesisRepository premesisRepos)
+        public UserBLImpl(IUserRepository userRepos, IRoleRepository roleRepos, IPremisesRepository premesisRepos)
         {
             _userRepos = userRepos;
             _roleRepos = roleRepos;
