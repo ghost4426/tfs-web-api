@@ -47,6 +47,30 @@ namespace BusinessLogic.BusinessLogicImpl
             }
             return false;
         }
+        public async Task ChangePassword(int id, string password, string oldPass)
+        {
+            var user = await this._userRepos.GetByIdAsync(id);
+            /*var hashedPassword = PasswordHasher.GetHashPassword(password);
+            user.Password = hashedPassword.HashedPassword;
+            user.Salt = hashedPassword.Salt;
+            await _userRepos.UpdateUser(user);*/
+            var isCorrectPassword = PasswordHasher.CheckHashedPassword(new Models.HashPassword()
+            {
+                HashedPassword = user.Password,
+                Password = oldPass,
+                Salt = user.Salt
+            });
+            if (isCorrectPassword)
+            {
+                var hashedPassword = PasswordHasher.GetHashPassword(password);
+                user.Password = hashedPassword.HashedPassword;
+                user.Salt = hashedPassword.Salt;
+                await _userRepos.UpdateUser(user);
+            }
+            else throw new Exception("Mật khẩu cũ không đúng");
+
+
+        }
         public async Task<IList<User>> GetUsers()
         {
             var users = await this._userRepos.FindAllAsync(u => u.RoleId > 1);
@@ -85,10 +109,10 @@ namespace BusinessLogic.BusinessLogicImpl
                     HashedPassword = user.Password,
                     Password = loginInfo.Password,
                     Salt = user.Salt
-                });     
+                });
                 if (isCorrectPassword)
                 {
-                    user.Role =  _roleRepos.GetById(user.RoleId);
+                    user.Role = _roleRepos.GetById(user.RoleId);
                     return user;
                 }
             }
@@ -102,14 +126,14 @@ namespace BusinessLogic.BusinessLogicImpl
 
         public async Task RemoveByIdAsync(int id)
         {
-           await _userRepos.DeleteAsync(id, true);
+            await _userRepos.DeleteAsync(id, true);
         }
 
         public async Task<User> UpdateUser(User user, int ssId)
         {
             User dbUser = await this.GetById(user.UserId);
 
-            if(dbUser.UserId == ssId)
+            if (dbUser.UserId == ssId)
             {
                 dbUser.Fullname = user.Fullname;
                 dbUser.PhoneNo = user.PhoneNo;
@@ -120,7 +144,7 @@ namespace BusinessLogic.BusinessLogicImpl
             {
                 throw new NotMatchException("Thông tin chỉnh sửa không khớp với thông tin đăng nhập");
             }
-            
+
         }
         public async Task updateUserStatus(int userId)
         {
