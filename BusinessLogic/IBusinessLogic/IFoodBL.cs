@@ -24,5 +24,7 @@ namespace BusinessLogic.IBusinessLogic
         Task AddDetail(long foodId, EFoodDetailType type);
 
         Task<IList<ProviderFood>> getAllFoodByProviderId(int providerId);
+
+        Task<int> createProviderFood(ProviderFood newProviderFood);
     }
 }

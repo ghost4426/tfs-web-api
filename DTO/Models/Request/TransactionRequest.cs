@@ -10,4 +10,10 @@ namespace DTO.Models
         public int ProviderId { get; set; }
         public int FoodId { get; set; }
     }
+
+    public class TransactionUpdateRequest
+    {
+        public int StatusId { get; set; }
+        public string RejectedReason { get; set; }
+    }
 }

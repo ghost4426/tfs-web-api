@@ -1,19 +1,15 @@
-﻿$(document).ready(function () {
-
-});
-
-var transactionTable = $('#transaction-mng').DataTable({
+﻿var farmTransactionTable = $('#farm-transaction-mng').DataTable({
     ajax: {
         url: GET_FARM_TRANSACTION_URI,
         beforeSend: showLoadingPage,
         complete: hideLoadingPage
     },
     'autoWidth': false,
+    ordering: false,
     columns: [
-        { data: 'TransactionId'},
+        { data: 'TransactionId' },
         { data: 'FoodName' },
-        { data: 'FoodBreed'},
-        { data: 'Farm'},
+        { data: 'FoodBreed' },
         { data: 'Provider' },
         {
             data: 'CreatedDate',
@@ -33,9 +29,10 @@ var transactionTable = $('#transaction-mng').DataTable({
                     return "<span class='badge badge-glow badge-pill badge-success'>" + data.Status + "</span>";
                 } else if (data.StatusId == 4) {
                     return "<span class='badge badge-glow badge-pill badge-danger'>" + data.Status + "</span>";
-                }     
+                }
             }
-        }
+        },
+        { data: 'RejectedReason' }
     ],
     dom: '<"row" <"col-sm-12"Bf>>'
         + '<"row" <"col-sm-12"i>>'
@@ -51,18 +48,15 @@ var transactionTable = $('#transaction-mng').DataTable({
 });
 $('.buttons-excel').addClass('btn btn-primary btn-sm mr-1 ');
 
-$('#transaction-mng').on('click', 'tr', function () {
+$('#farm-transaction-mng').on('click', 'tr', function () {
     var tr = $(this).closest('tr');
-    var row = transactionTable.row(tr);
+    var row = farmTransactionTable.row(tr);
     var id = row.data().TransactionId;
-    makeCode("Trans-"+id);
+
+    makeCode("Trans-" + id);
     $('#GetQRCode').modal('show');
 });
 
 function makeCode(id) {
     JsBarcode("#barcode", "" + id);
-}
-
-function exportBarcode() {
-   
 }

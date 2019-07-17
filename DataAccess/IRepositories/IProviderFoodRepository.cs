@@ -9,5 +9,6 @@ namespace DataAccess.IRepositories
     public interface IProviderFoodRepository:IGenericRepository<ProviderFood>
     {
         Task<IList<ProviderFood>> getAllFoodByProviderId(int providerId);
+        Task<int> createProviderFood(ProviderFood providerFood);
     }
 }

@@ -20,13 +20,13 @@ namespace DataAccess.RepositoriesImpl
 
         public async Task<int> CountFarmTransaction(int premisesId)
         {
-            var transaction = await FindAllAsync(x => x.FarmId == premisesId);
+            var transaction = await FindAllAsync(x => x.FarmId == premisesId & x.StatusId < 3);
             return transaction.Count;
         }
 
         public async Task<int> CountProviderTransaction(int premisesId)
         {
-            var transaction = await FindAllAsync(x => x.ProviderId == premisesId);
+            var transaction = await FindAllAsync(x => x.ProviderId == premisesId & x.StatusId < 3);
             return transaction.Count;
         }
 
@@ -53,6 +53,12 @@ namespace DataAccess.RepositoriesImpl
             IList<Transaction> list = await FindAllAsync(x => x.ProviderId == premisesId);
             IEnumerable<Transaction> result = list.OrderByDescending(x => x.CreatedDate).Take(500);
             return result.ToList();
+        }
+
+        public async Task<Transaction> UpdateTransaction(Transaction transaction)
+        {
+            await this.UpdateAsync(transaction, true);
+            return transaction;
         }
     }
 }

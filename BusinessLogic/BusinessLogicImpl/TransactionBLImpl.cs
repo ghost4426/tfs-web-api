@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.IBusinessLogic;
 using DataAccess.IRepositories;
 using DTO.Entities;
+using DTO.Models.Exception;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -70,6 +71,14 @@ namespace BusinessLogic.BusinessLogicImpl
                 i.Food.Category = _categoryRepos.GetById(i.Food.CategoryId);
             }
             return transaction;
+        }
+
+        public async Task UpdateTransaction(Transaction transaction, int transId)
+        {
+            Transaction trans = _transactionRepos.GetById(transaction.TransactionId);
+            trans.StatusId = transaction.StatusId;
+            trans.RejectedReason = transaction.RejectedReason;
+            await _transactionRepos.UpdateAsync(trans, transId);
         }
     }
 }

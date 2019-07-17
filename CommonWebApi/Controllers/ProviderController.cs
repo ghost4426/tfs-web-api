@@ -65,22 +65,6 @@ namespace CommonWebApi.Controllers
             return await _foodDataBL.Packaging(foodId, Packaging);
         }
 
-        //[HttpGet("testgetByProvider")]
-        //public async Task<IList<Models.FoodProvider>> TestFindAllProductByProviderAsync()
-        //{
-        //    IList<Entities.Food> list = await _foodBL.FindAllProductByProviderAsync(2);
-        //    var result = _mapper.Map <IList<Models.FoodProvider>>(list);
-        //    return result;
-        //}
-
-        //[HttpGet("getByProvider")]
-        //public async Task<IList<Entities.Food>> FindAllProductByProviderAsync()
-        //{
-        //    int userId = Int32.Parse(User.Claims.First(c => c.Type == "UserID").Value);
-
-        //    return await _foodBL.FindAllProductByProviderAsync(userId);
-        //}
-
         [HttpGet("getFoodByProvider")]
         public async Task<IActionResult> FindAllProviderFoodAsync()
         {            
@@ -110,12 +94,39 @@ namespace CommonWebApi.Controllers
             {
                 //int userId = Int32.Parse(User.Claims.First(c => c.Type == "UserID").Value);
                 int premisesId = 2;
-                return Ok(new { data = _mapper.Map<IList<Models.TransactionReponse.GetTransaction>>(await _transactionBL.getAllProviderTransaction(premisesId)) });
+                return Ok(new { data = _mapper.Map<IList<Models.TransactionReponse.ProviderGetTransaction>>(await _transactionBL.getAllProviderTransaction(premisesId)) });
             }
             catch (Exception e)
             {
                 return BadRequest(new { msg = e.Message });
             }
+        }
+
+        [HttpPut("UpdateTransaction/{transactionId}")]
+        public async Task<string> UpdateTransaction(int transactionId, [FromBody] Models.TransactionUpdateRequest trans)
+        {
+            try
+            {
+                Entities.Transaction transaction = new Entities.Transaction()
+                {
+                    TransactionId = transactionId,
+                    StatusId = trans.StatusId,
+                    RejectedReason = trans.RejectedReason,
+                };
+                await _transactionBL.UpdateTransaction(transaction, transactionId);
+                return "OK";
+            }catch(Exception e)
+            {
+                return e.ToString();
+            }
+        }
+
+        [HttpPost("providerFood")]
+        public async Task<int> CreateProviderFood([FromBody]Models.CreateProviderFoodRequest foodRequest)
+        {
+            Entities.ProviderFood food = _mapper.Map<Entities.ProviderFood>(foodRequest);
+            food.PremisesId = 2; // để tạm
+            return await _foodBL.createProviderFood(food);
         }
     }
 }

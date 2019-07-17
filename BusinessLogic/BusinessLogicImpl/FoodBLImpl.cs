@@ -107,5 +107,10 @@ namespace BusinessLogic.BusinessLogicImpl
             }
             return food;
         }
+
+        public async Task<int> createProviderFood(ProviderFood newProviderFood)
+        {
+            return await _providerFoodRepository.createProviderFood(newProviderFood);
+        }
     }
 }

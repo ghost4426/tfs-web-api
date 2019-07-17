@@ -153,7 +153,7 @@ namespace CommonWebApi.Controllers
             {
                 //int userId = Int32.Parse(User.Claims.First(c => c.Type == "UserID").Value);
                 int premisesId = 1;
-                return Ok(new { data = _mapper.Map<IList<Models.TransactionReponse.GetTransaction>>(await _transactionBL.getAllFarmTransaction(premisesId)) });
+                return Ok(new { data = _mapper.Map<IList<Models.TransactionReponse.FarmGetTransaction>>(await _transactionBL.getAllFarmTransaction(premisesId)) });
             }
             catch (Exception e)
             {
