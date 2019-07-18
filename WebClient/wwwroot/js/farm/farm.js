@@ -24,22 +24,48 @@
         language: "vi"
     });
 
-//Load category
-callAjax(
-    {
-        url: GET_FOOD_CATEGORY_URI,
-        dataType: JSON_DATATYPE,
-        type: GET
-    }, "",
-    function (result) {
-        $.each(result, function (data, value) {
-            $("#NewCategory").append($("<option></option>").val(value.CategoryId).html(value.Name));
-        });
-    },
-    function (result) {
-        toastr.error(result);
-    }
-)
+    //load provider
+    $("#ddlProvider").select2({
+        ajax: {
+            url: GET_PROVIDER,
+            dataType: JSON_DATATYPE,
+            data: function (params) {
+                var query = {
+                    search: params.term,
+                    type: 'public'
+                }
+                // Query parameters will be ?search=[term]&type=public
+                return query;
+            },
+            processResults: function (data, params) {
+                return {
+                    results: data.results
+                };
+            },
+            cache: true
+        },
+        placeholder: "Chọn nhà cung cấp",
+        language:"vi"
+    });
+
+    //Load category
+    callAjax(
+        {
+            url: GET_FOOD_CATEGORY_URI,
+            dataType: JSON_DATATYPE,
+            type: GET
+        }, "",
+        function (result) {
+            $.each(result, function (data, value) {
+                $("#NewCategory").append($("<option></option>").val(value.CategoryId).html(value.Name));
+            });
+        },
+        function (result) {
+            toastr.error(result);
+        }
+    )
+    //Load dataTable
+   
 });
 
 var farmFoodTable = $('#farm-food-mng').DataTable({
@@ -49,9 +75,10 @@ var farmFoodTable = $('#farm-food-mng').DataTable({
         complete: hideLoadingPage
     },
     'autoWidth': false,
+    ordering: false,
     columns: [
         { data: 'FoodId', width: '10%' },
-        { data: 'Category.Name', width: '20%' },
+        { data: 'CategoryName', width: '20%' },
         { data: 'Breed', width: '25%' },
         {
             data: 'CreatedDate', width: '20%',
@@ -65,7 +92,7 @@ var farmFoodTable = $('#farm-food-mng').DataTable({
             render: function (o) {
                 var btnDetail = '<button class="btn btn-grey btn-sm" data-toggle="modal" data-target="#getinfo" title="Chi tiết"><i class="icon-eye"></i ></button >\n';
                 var btnUpdate = '<button class="btn btn-info btn-sm btn-add-detail" title="Thêm thông tin"><i class="icon-pencil"></i></button>\n'
-                var btnSale = '<button class="btn btn-success btn-sm" data-toggle="modal" data-target="#addDistributor" title="Bán sản phẩm"><i class="icon-basket"></i></button> '
+                var btnSale = '<button class="btn btn-success btn-sm btn-add-provider" title="Bán sản phẩm"><i class="icon-basket"></i></button> '
                 return '<div class="col-12">' + btnDetail + btnUpdate + btnSale + '</div>';
             }
         }
@@ -102,7 +129,7 @@ $('#btnAddProduct').click(function () {
     var breed = $('input[name="Breed"]').val();
     callAjax(
         {
-            url: 'https://localhost:4201/api/Farmer/food',
+            url: CREATE_FOOD_DATA_URI,
             dataType: JSON_DATATYPE,
             type: POST
         }, JSON.stringify({
@@ -134,7 +161,7 @@ $('#farm-food-mng').on('click', 'button.btn-add-detail', function () {
     preId = id;
 
     $('#txtFoodId').val(id);
-    $('#txtFoodCategory').val(row.data().Category.Name);
+    $('#txtFoodCategory').val(row.data().CategoryName);
     $('#txtFoodBreed').val(row.data().Breed);
     $('#add-food-data').modal('show');
 });
@@ -261,7 +288,46 @@ $('#btnAddDetail').on('click', function () {
     }
 });
 
+function clearProviderModal() {
+    $('#ddlProvider').val(null).trigger("change");
+}
 
+$('#farm-food-mng').on('click', 'button.btn-add-provider', function () {
+    var tr = $(this).closest('tr');
+    var row = farmFoodTable.row(tr);
+    var id = row.data().FoodId;
+    if (preId != id) {
+        clearProviderModal();
+    }
+    preId = id;
+    $('#pro-food-id').val(id);
+    $('#addDistributor').modal('show');
+});
+
+$('#btn-addProvider').click(function () {
+    var foodId = parseInt($('#pro-food-id').val());
+    var providerId = parseInt($('#ddlProvider').val());
+    callAjax(
+        {
+            url: CREATE_TRANSACTION_URI,
+            dataType: JSON_DATATYPE,
+            type: POST
+        }, JSON.stringify({
+            FarmId: 1,
+            ProviderId: providerId,
+            FoodId: foodId
+        }),
+        function (result) {
+            toastr.success('Giao dịch thành công, vui lòng chờ bộ phận kiểm dịch và nhà cung cấp xác minh');
+            $('#addDistributor').modal('hide');
+            $('#ddlProvider').val(null);
+            $("#farm-food-mng").DataTable().ajax.reload();
+        },
+        function (result) {
+            toastr.error(result);
+        }
+    )
+});
 
 
 

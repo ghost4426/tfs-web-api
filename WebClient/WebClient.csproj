@@ -147,6 +147,7 @@
 
 
   <ItemGroup>
+    <Folder Include="Views\Transaction\" />
     <Folder Include="wwwroot\css\home\" />
     <Folder Include="wwwroot\css\distributor\" />
     <Folder Include="wwwroot\css\admin\" />

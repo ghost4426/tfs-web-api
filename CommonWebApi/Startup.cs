@@ -69,9 +69,12 @@ namespace CommonWebApi
             services.AddScoped<ICategoryRepository, CategoryRepositoryImpl>();
             services.AddScoped<IFoodRepository, FoodRepositoryImpl>();
             services.AddScoped<ITreatmentRepository, TreatmentRepositoryImpl>();
-            services.AddScoped<IPremesisRepository, PremisesRepositoryImpl>();
+            services.AddScoped<IPremisesRepository, PremisesRepositoryImpl>();
+            services.AddScoped<ITransactionRepository, TransactionRepositoryImpl>();
             services.AddScoped<IFoodDetailTypeRepository, FoodDetailTypeRepositoryImpl>();
             services.AddScoped<IDistributorFoodRepository, DistributorFoodRepositoryImpl>();
+            services.AddScoped<IProviderFoodRepository, ProviderFoodRepositoryImpl>();
+            services.AddScoped<ITransactionStatusRepository, TransactionStatusRepositoryImpl>();
             services.AddScoped<IRegisterInfoRepository, RegisterInfoRepositoryImpl>();
             services.AddScoped<IPremisesTypeRepository, PremisesTypeRepositoryImpl>();
 
@@ -80,9 +83,11 @@ namespace CommonWebApi
             services.AddScoped<IRoleBL, RoleBLImpl>();
             services.AddScoped<IFoodBL, FoodBLImpl>();
             services.AddScoped<IFoodDataBL, FoodDataBLImpl>();
+            services.AddScoped<ITransactionBL, TransactionBLImpl>();
+            services.AddScoped<IPremisesBL, PremisesBLImpl>();
+            services.AddScoped<ITreatmentBL, TreatmentBLImpl>();
             services.AddScoped<IFoodDetailBL, FoodDetailImpl>();
             services.AddScoped<IRegisterInfoBL, RegisterInfoBLImpl>();
-
 
             //Service
             services.AddScoped<IService, ServiceImpl>();

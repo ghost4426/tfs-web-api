@@ -10,6 +10,7 @@ using Entities = DTO.Entities;
 using System.Linq.Expressions;
 using DTO.Models.FoodData;
 using Common.Utils;
+using AutoMapper;
 
 namespace CommonWebApi.Controllers
 {
@@ -18,11 +19,17 @@ namespace CommonWebApi.Controllers
     public class StaffController : ControllerBase
     {
         private IFoodDataBL _foodDataBL;
+        private readonly ITransactionBL _transactionBL;
+        private readonly IMapper _mapper;
 
         public StaffController(
-            IFoodDataBL foodDataBL)
+            IFoodDataBL foodDataBL,
+            ITransactionBL transactionBL,
+            IMapper mapper)
         {
             _foodDataBL = foodDataBL;
+            _transactionBL = transactionBL;
+            _mapper = mapper;
         }
 
         [HttpGet("getFoodData")]

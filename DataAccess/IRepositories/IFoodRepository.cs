@@ -13,5 +13,7 @@ namespace DataAccess.IRepositories
         Task<int> CreateProductAsync(Food newProduct);
 
         Task<IList<Food>> FindAllProductByFarmerAsync(int farmerID);
+
+        Task<Food> GetProductByIdAsync(int foodID);
     }
 }
