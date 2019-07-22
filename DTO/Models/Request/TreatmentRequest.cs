@@ -10,4 +10,9 @@ namespace DTO.Models
 
         public List<string> TreatmentProcess { get; set; }
     }
+
+    public class CreateMoreTreatmentRequest
+    {
+        public List<string> TreatmentProcess { get; set; }
+    }
 }

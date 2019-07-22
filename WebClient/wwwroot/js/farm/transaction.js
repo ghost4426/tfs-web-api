@@ -32,7 +32,14 @@
                 }
             }
         },
-        { data: 'RejectedReason' }
+        { data: 'RejectedReason' },
+        {
+            data: null,
+            render: function (o) {
+                var btnBarcode = '<button class="btn btn-secondary btn-sm btn-barcode" title="Barcode"><i class="fa fa-barcode"></i></button> '
+                return '<div class="col-12">' + btnBarcode + '</div>';
+            }
+        }
     ],
     dom: '<"row" <"col-sm-12"Bf>>'
         + '<"row" <"col-sm-12"i>>'
@@ -48,7 +55,7 @@
 });
 $('.buttons-excel').addClass('btn btn-primary btn-sm mr-1 ');
 
-$('#farm-transaction-mng').on('click', 'tr', function () {
+$('#farm-transaction-mng').on('click', 'button.btn-barcode', function () {
     var tr = $(this).closest('tr');
     var row = farmTransactionTable.row(tr);
     var id = row.data().TransactionId;

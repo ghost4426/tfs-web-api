@@ -37,12 +37,15 @@
             data: function (data, type, dataToSet) {
                 var btnDeny = "<button class='btn btn-sm btn-danger btn-deny-trans' title='Từ chối giao dịch'><i class='fa fa-times'></i></button> ";
                 var btnAccept = "<button class='btn btn-sm btn-success btn-accept-trans' title='Xác nhận giao dịch'><i class='fa fa-check'></i></button> ";
+                var btnAcceptDis = "<button class='btn btn-sm btn-success btn-accept-trans' title='Xác nhận giao dịch' disabled><i class='fa fa-check'></i></button> ";
+                var btnDenyDis = "<button class='btn btn-sm btn-danger btn-deny-trans' title='Từ chối giao dịch' disabled><i class='fa fa-times'></i></button> ";
+                var btnBarcode = '<button class="btn btn-secondary btn-sm btn-barcode" title="Barcode"><i class="fa fa-barcode"></i></button> '
                 if (data.StatusId == 2) {
-                    return btnDeny + btnAccept;
+                    return btnDeny + btnAccept + btnBarcode;
                 } else if (data.StatusId == 4 || data.StatusId == 3) {
-                    return "";
+                    return btnDenyDis + btnAcceptDis + btnBarcode;
                 }
-                else return btnDeny;
+                else return btnDeny + btnAcceptDis + btnBarcode;
             }
         }
     ],
@@ -60,7 +63,7 @@
 });
 $('.buttons-excel').addClass('btn btn-primary btn-sm mr-1 ');
 
-$('#provider-transaction-mng').on('click', 'td:not(:last-child)', function () {
+$('#provider-transaction-mng').on('click', 'button.btn-barcode', function () {
     var tr = $(this).closest('tr');
     var row = providerTransactionTable.row(tr);
     var id = row.data().TransactionId;

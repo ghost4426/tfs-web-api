@@ -81,19 +81,20 @@ var farmFoodTable = $('#farm-food-mng').DataTable({
         { data: 'CategoryName', width: '20%' },
         { data: 'Breed', width: '25%' },
         {
-            data: 'CreatedDate', width: '20%',
+            data: 'CreatedDate', width: '18%',
             render: function (data, type, row) {
                 return $.format.date(data, "dd-MM-yyyy HH:mm")
             }
         },
         {
-            width: '15%',
+            width: '17%',
             data: null,
             render: function (o) {
                 var btnDetail = '<button class="btn btn-grey btn-sm" data-toggle="modal" data-target="#getinfo" title="Chi tiết"><i class="icon-eye"></i ></button >\n';
                 var btnUpdate = '<button class="btn btn-info btn-sm btn-add-detail" title="Thêm thông tin"><i class="icon-pencil"></i></button>\n'
-                var btnSale = '<button class="btn btn-success btn-sm btn-add-provider" title="Bán sản phẩm"><i class="icon-basket"></i></button> '
-                return '<div class="col-12">' + btnDetail + btnUpdate + btnSale + '</div>';
+                var btnSale = '<button class="btn btn-success btn-sm btn-add-provider" title="Bán sản phẩm"><i class="icon-basket"></i></button>\n'
+                var btnBarcode = '<button class="btn btn-secondary btn-sm btn-barcode" title="Barcode"><i class="fa fa-barcode"></i></button> '
+                return '<div class="col-12">' + btnDetail + btnUpdate + btnSale + btnBarcode + '</div>';
             }
         }
     ],
@@ -328,6 +329,18 @@ $('#btn-addProvider').click(function () {
         }
     )
 });
+
+$('#farm-food-mng').on('click', 'button.btn-barcode', function () {
+    var tr = $(this).closest('tr');
+    var row = farmFoodTable.row(tr);
+    var id = row.data().FoodId;
+    makeCode("Food-" + id);
+    $('#GetQRCode').modal('show');
+});
+
+function makeCode(id) {
+    JsBarcode("#barcode", "" + id);
+}
 
 
 
