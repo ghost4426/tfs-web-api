@@ -63,14 +63,6 @@
 });
 $('.buttons-excel').addClass('btn btn-primary btn-sm mr-1 ');
 
-$('#provider-transaction-mng').on('click', 'button.btn-barcode', function () {
-    var tr = $(this).closest('tr');
-    var row = providerTransactionTable.row(tr);
-    var id = row.data().TransactionId;
-    makeCode("Trans-" + id);
-    $('#GetQRCode').modal('show');
-});
-
 $('#provider-transaction-mng').on('click', 'button.btn-accept-trans', function () {
     var tr = $(this).closest('tr');
     var row = providerTransactionTable.row(tr);
@@ -137,6 +129,22 @@ $("#btnAddProviderFood").click(function () {
     )
 });
 
+// Barcode
+$('#provider-transaction-mng').on('click', 'button.btn-barcode', function () {
+    var tr = $(this).closest('tr');
+    var row = providerTransactionTable.row(tr);
+    var id = row.data().TransactionId;
+    $("#btnPrintBarcode").attr("download", "Transaction-" + id + ".jpg");
+    makeCode("Trans-" + id);
+    $('#GetQRCode').modal('show');
+});
+
 function makeCode(id) {
     JsBarcode("#barcode", "" + id);
 }
+
+download_img = function (el) {
+    var canvas = document.getElementById("barcode");
+    var image = canvas.toDataURL("image/jpg");
+    el.href = image;
+};

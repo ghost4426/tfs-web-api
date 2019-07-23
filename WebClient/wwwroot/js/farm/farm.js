@@ -330,10 +330,12 @@ $('#btn-addProvider').click(function () {
     )
 });
 
+// Barcode
 $('#farm-food-mng').on('click', 'button.btn-barcode', function () {
     var tr = $(this).closest('tr');
     var row = farmFoodTable.row(tr);
     var id = row.data().FoodId;
+    $("#btnPrintBarcode").attr("download", "Food-" + id + ".jpg");
     makeCode("Food-" + id);
     $('#GetQRCode').modal('show');
 });
@@ -342,7 +344,8 @@ function makeCode(id) {
     JsBarcode("#barcode", "" + id);
 }
 
-
-
-
-
+download_img = function (el) {
+    var canvas = document.getElementById("barcode");
+    var image = canvas.toDataURL("image/jpg");
+    el.href = image;
+};

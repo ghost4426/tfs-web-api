@@ -68,28 +68,6 @@ var providerFoodTable = $('#provider-food-mng').DataTable({
 
 $('.buttons-excel').addClass('btn btn-primary btn-sm mr-1 ');
 
-$('#provider-food-mng').on('click', 'button.btn-barcode', function () {
-    var tr = $(this).closest('tr');
-    var row = providerFoodTable.row(tr);
-    var id = row.data().FoodId;
-    makeCode("Food-" + id);
-    $('#GetQRCode').modal('show');
-});
-
-function makeCode(id) {
-    JsBarcode("#barcode", "" + id);
-}
-
-//$('#btnPrintBarcode').on('click', function () {
-//    var imageData;
-//    var newData;
-//    html2canvas(document.querySelector("#printJs-form")).then(canvas => {
-//        imgageData = canvas.toDataURL("image/png");
-//        newData = imageData.replace(/^data:image\/png/, "data:application/octet-stream");        
-//    });
-//    $("#btnPrintBarcode").attr("download", "image.png").attr("href", newData);
-//});
-
 // Show add food data modal
 var preId = 0;
 // Show add food detail modal
@@ -264,8 +242,8 @@ $('#provider-food-mng').on('click', 'button.btn-detail', function () {
     var id = row.data().FoodId;
     $('#getinfo').modal('show');
     $('input[name="txtFoodId"]').val(id);
-    $('#input[name="txtFoodCategory"]').val(row.data().Food.Category.Name);
-    $('#input[name="txtFoodBreed"]').val(row.data().Food.Breed);
+    $('input[name="txtFoodCategory"]').val(row.data().Food.Category.Name);
+    $('input[name="txtFoodBreed"]').val(row.data().Food.Breed);
     callAjax(
         {
             url: GET_FOOD_TREATMENT_URI+id,
@@ -295,3 +273,23 @@ function clearViewDetailModal() {
     $('#TreatmentName').val("");
     $('#TreatmentProcess').empty();
 }
+
+//Barcode
+$('#provider-food-mng').on('click', 'button.btn-barcode', function () {
+    var tr = $(this).closest('tr');
+    var row = providerFoodTable.row(tr);
+    var id = row.data().FoodId;
+    $("#btnPrintBarcode").attr("download", "Food-" + id+".jpg");
+    makeCode("Food-" + id);
+    $('#GetQRCode').modal('show');
+});
+
+function makeCode(id) {
+    JsBarcode("#barcode", "" + id);
+}
+
+download_img = function (el) {
+    var canvas = document.getElementById("barcode");
+    var image = canvas.toDataURL("image/jpg");
+    el.href = image;
+};
