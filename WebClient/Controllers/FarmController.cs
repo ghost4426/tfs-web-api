@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace WebClient.Controllers
 {
     [Route("nong-trai")]
-    public class FarmerController : Controller
+    public class FarmController : Controller
     {
         public IActionResult Index()
         {

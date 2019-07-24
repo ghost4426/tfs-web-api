@@ -36,12 +36,25 @@ function callAjaxAuth(callParams, dataParams, successCallback, errorCallback) {
         type: callParams.type,
         data: dataParams,
         headers: {
-            "Authorization": 'Bearer ' + sessionStorage.getItem('token')
+            'Accept': 'application/json',
+            'Content-Type': 'application/json; charset=utf-8',
+            "Authorization": 'Bearer ' + Cookies.get('token')
         },
-        beforeSend: startLoadingPage
-    }).done(function (result) {
+        crossDomain: true,
+        xhrFields: {
+            withCredentials: true,
+        },
+        beforeSend: showLoadingPage,
+        statusCode: {
+            401: function () {
+                window.location.replace("/dang-nhap");
+            },
+        },
+    }).done(function (result, textStatus) {
+        console.log(textStatus);
         successCallback(result);
     }).fail(function (result) {
+        console.log(result.status);
         errorCallback(result);
     }).always(hideLoadingPage)
 };
@@ -54,10 +67,16 @@ function callAjax(callParams, dataParams, successCallback, errorCallback) {
         data: dataParams,
         headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/json; charset=utf-8'
+            'Content-Type': 'application/json; charset=utf-8',
+
         },
+        crossDomain : true,
+        xhrFields: {
+            withCredentials: true,
+        },  
         beforeSend: showLoadingPage
-    }).done(function (result) {
+    }).done(function (result, textStatus) {
+        console.log(result.status);
         successCallback(result);
     }).fail(function (result) {
         errorCallback(result);

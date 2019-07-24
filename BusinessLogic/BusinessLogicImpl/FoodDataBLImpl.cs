@@ -1,6 +1,6 @@
 ﻿using BusinessLogic.IBusinessLogic;
 using Common.Utils;
-using ContractInteraction.Services;
+using ContractInteraction.ContractServices;
 using DataAccess.IRepositories;
 using Entities = DTO.Entities;
 using DTO.Models.FoodData;
@@ -14,13 +14,13 @@ namespace BusinessLogic.BusinessLogicImpl
 {
     public class FoodDataBLImpl : IFoodDataBL
     {
-        private IService _service;
+        private IContractServices _service;
         private ITreatmentRepository _treatmentRepository;
         private IPremesisRepository _premesisRepository;
         private ICategoryRepository _categoryRepository;
         private IMapper _mapper;
 
-        public FoodDataBLImpl(IService service,
+        public FoodDataBLImpl(IContractServices service,
             ITreatmentRepository treatmentRepository,
             IPremesisRepository premesisRepository,
             ICategoryRepository categoryRepository,

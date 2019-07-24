@@ -1,11 +1,7 @@
 ﻿using DataAccess.Context;
 using DataAccess.IRepositories;
 using DTO.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
-using System.Linq;
 
 
 namespace DataAccess.RepositoriesImpl
@@ -29,6 +25,7 @@ namespace DataAccess.RepositoriesImpl
         public Task<User> FindByUsername(string username)
         {
             return FindAsync(u => u.Username == username);
+
         }
         public async Task<User> UpdateUser(User user)
         {

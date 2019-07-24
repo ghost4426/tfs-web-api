@@ -18,9 +18,6 @@ namespace Common.Mapper
             .ForMember(dest => dest.ProviderId, opts => opts.MapFrom(src => src.PremisesId)).ReverseMap();
 
             CreateMap<Entities.Food, Models.CreateFoodRequest>()
-                //.ForMember(dest => dest.CategoriesId, opts => opts.MapFrom(src => src.CategoriesId))
-                //.ForMember(dest => dest.Breed, opts => opts.MapFrom(src => src.Breed))
-                //.ForMember(dest => dest.FarmerId, opts => opts.MapFrom(src => src.FarmerId))
                 .ReverseMap();
 
             CreateMap<Entities.Treatment, Models.CreateTreatmentRequest>().ReverseMap();

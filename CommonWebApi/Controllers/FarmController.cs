@@ -10,11 +10,13 @@ using BusinessLogic.IBusinessLogic;
 using Common.Utils;
 using AutoMapper;
 using Common.Enum;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CommonWebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Farm")]
     public class FarmController : ControllerBase
     {
 

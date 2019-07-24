@@ -10,9 +10,9 @@ using Nethereum.Web3;
 using Nethereum.Web3.Accounts;
 using Newtonsoft.Json;
 
-namespace ContractInteraction.Services
+namespace ContractInteraction.ContractServices
 {
-    public class ServiceImpl : IService
+    public class ContractServicesImpl : IContractServices
     {
 
         private FoodDataStorageService GetService()

@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using Common.Utils;
 using DTO.Models.Exception;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AdminWebApi.Controllers
 {
@@ -49,22 +50,21 @@ namespace AdminWebApi.Controllers
             try
             {
                 user = _mapper.Map<Entities.User>(rUser);
-                var password = Util.GeneratePassword(new Models.PasswordOptions()
-                {
-                    RequireDigit = true,
-                    RequiredLength = 8,
-                    RequireLowercase = true,
-                    RequireNonAlphanumeric = false,
-                    RequireUppercase = true
-                });
-                user.Password = password;
-                user.Fullname = "thaihd";
-                user.Salt = "haha";
+                //var password = Util.GeneratePassword(new Models.PasswordOptions()
+                //{
+                //    RequireDigit = true,
+                //    RequiredLength = 8,
+                //    RequireLowercase = true,
+                //    RequireNonAlphanumeric = false,
+                //    RequireUppercase = true
+                //});
+                user.Password = "admin";
+                user.Fullname = "";
                 isCreated = await _userBL.CreateUser(user);
-                if (isCreated)
-                {
-                    await _mailSender.SendEmailAsync(user.Email, "Created Account", "Your password: " + password);
-                }
+                //if (isCreated)
+                //{
+                //    await _mailSender.SendEmailAsync(user.Email, "Created Account", "Your password: " + password);
+                //}
                 return Ok(new { messsage = MessageConstant.INSERT_SUCCESS });
 
             }
@@ -90,7 +90,7 @@ namespace AdminWebApi.Controllers
         }
 
         //GET : /api/admin/profile
-        //[Authorize(Roles = RoleConstant.ADMIN)]
+        [Authorize]
         [HttpGet("profile")]
         public async Task<IActionResult> GetUserProfile()
         {
@@ -99,6 +99,7 @@ namespace AdminWebApi.Controllers
             var user = await _userBL.GetById(int.Parse(userId));
             return Ok(user);
         }
+
         [HttpGet("User/{userId}")]
         public async Task<Entities.User> Get1Users(int userId)
         {
@@ -138,9 +139,10 @@ namespace AdminWebApi.Controllers
             return reponseModel;
 
         }
-        [HttpPut("User/Role/{id}")]
-        public async Task<IActionResult> Role(int id, [FromBody] string role)
+        [HttpPut("User/Role")]
+        public async Task<IActionResult> Role([FromBody] string role)
         {
+            var id = 16;
             try
             {
                 var userRole = await _userBL.ChangeRole1User(id, int.Parse(role));

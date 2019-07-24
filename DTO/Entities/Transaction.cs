@@ -21,7 +21,7 @@ namespace DTO.Entities
         public int FoodId { get; set; }
 
         [ForeignKey("Veterinary")]
-        public int VeterinaryId { get; set; }
+        public int? VeterinaryId { get; set; }
 
         [ForeignKey("TransactionStatus")]
         public int StatusId { get; set; }
@@ -31,11 +31,15 @@ namespace DTO.Entities
         [ForeignKey("CreatedBy")]
         public int CreatedById { get; set; }
 
-        public DateTime? CertificationDate { get; set; }
+        public DateTime? VerifyDate { get; set; }
 
         public DateTime? ConfirmDate { get; set; }
 
         public string RejectedReason { get; set; }
+
+        public string VeterinaryComment { get; set; }
+
+        public string ProviderComment { get; set; }
 
         public Premises Farm { get; set; }
         public Premises Provider { get; set; }
