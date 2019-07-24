@@ -17,6 +17,21 @@ namespace BusinessLogic.BusinessLogicImpl
             _treatmentRepos = treatmentRepos;
         }
 
+        public async Task CreateMoreTreatmentDetail(int treatmentId, Treatment treatment, List<string> treatmentProcess)
+        {
+            foreach (var process in treatmentProcess)
+            {
+                await _treatmentRepos.InsertAsync(new Treatment()
+                {
+                    Name = process,
+                    TreatmentParentId = treatmentId,
+                    PremisesId = treatment.PremisesId,
+                    CreatedById = treatment.CreatedById,
+                    CreatedDate = DateTime.Now
+                });
+            }
+        }
+
         public async Task CreateTreatment(Treatment treatment, List<string> treatmentProcess)
         {
            await _treatmentRepos.InsertAsync(treatment);
@@ -24,11 +39,18 @@ namespace BusinessLogic.BusinessLogicImpl
             {
              await _treatmentRepos.InsertAsync(new Treatment()
                 {
-                    Name = process,
+                    Name = process,                    
                     TreatmentParentId = treatment.TreatmentId,
-                    PremisesId = treatment.PremisesId
+                    PremisesId = treatment.PremisesId,
+                    CreatedById = treatment.CreatedById,
+                    CreatedDate = DateTime.Now
                 });
             }   
         }
+
+        public async Task<IList<Treatment>> getAllTreatmentById(int treatmentId)
+        {
+            return await _treatmentRepos.getAllTreatmentById(treatmentId);
+        }       
     }
 }

@@ -32,7 +32,14 @@
                 }
             }
         },
-        { data: 'RejectedReason' }
+        { data: 'RejectedReason' },
+        {
+            data: null,
+            render: function (o) {
+                var btnBarcode = '<button class="btn btn-secondary btn-sm btn-barcode" title="Barcode"><i class="fa fa-barcode"></i></button> '
+                return '<div class="col-12">' + btnBarcode + '</div>';
+            }
+        }
     ],
     dom: '<"row" <"col-sm-12"Bf>>'
         + '<"row" <"col-sm-12"i>>'
@@ -48,15 +55,26 @@
 });
 $('.buttons-excel').addClass('btn btn-primary btn-sm mr-1 ');
 
-$('#farm-transaction-mng').on('click', 'tr', function () {
+// Barcode
+$('#farm-transaction-mng').on('click', 'button.btn-barcode', function () {
     var tr = $(this).closest('tr');
     var row = farmTransactionTable.row(tr);
     var id = row.data().TransactionId;
-
+    $("#btnPrintBarcode").attr("download", "Trans-" + id + ".jpg");
     makeCode("Trans-" + id);
     $('#GetQRCode').modal('show');
 });
 
 function makeCode(id) {
-    JsBarcode("#barcode", "" + id);
+    JsBarcode("#barcode", "" + id, {
+        width: 50,
+        height: 1600,
+        displayValue: false
+    });
 }
+
+download_img = function (el) {
+    var canvas = document.getElementById("barcode");
+    var image = canvas.toDataURL("image/jpg");
+    el.href = image;
+};

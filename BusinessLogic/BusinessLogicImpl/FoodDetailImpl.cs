@@ -30,7 +30,9 @@ namespace BusinessLogic.BusinessLogicImpl
                         f.TypeId == FoodDetailTypeDataConstant.ADD_CERTIFICATION_ID);
                     break;
                 case PremisesTypeDataConstant.PROVIDER:
-                    ;
+                    foodDetails = await _foodDetailTypeRepos.FindAllAsync(f =>
+                    f.TypeId == FoodDetailTypeDataConstant.ADD_TREATMENT_ID ||
+                    f.TypeId == FoodDetailTypeDataConstant.ADD_PACKAGING_ID);
                     break;
                 case PremisesTypeDataConstant.DISTRIBUTOR:
                     ;

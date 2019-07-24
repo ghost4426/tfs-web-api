@@ -25,6 +25,8 @@ namespace Common.Mapper
 
             CreateMap<Entities.Treatment, Models.CreateTreatmentRequest>().ReverseMap();
 
+            CreateMap<Entities.Treatment, Models.CreateMoreTreatmentRequest>().ReverseMap();
+
             CreateMap<Models.PackagingRequest, Models.FoodData.Packaging>().ReverseMap();
 
             CreateMap<Entities.User, Models.CreateUserRequest>().ReverseMap();
@@ -86,6 +88,8 @@ namespace Common.Mapper
                 .ReverseMap();
 
             CreateMap<Entities.ProviderFood, Models.CreateProviderFoodRequest>().ReverseMap();
+
+            CreateMap<Entities.Treatment, Models.FoodRespone.TreatmentReponse>().ReverseMap();
         }
     }
 }

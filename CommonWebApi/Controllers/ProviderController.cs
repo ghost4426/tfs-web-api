@@ -39,15 +39,34 @@ namespace CommonWebApi.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost("treatment")]
-        public async Task<IActionResult> CreateTreatment([FromBody]Models.CreateTreatmentRequest treatmentRequest)
+        [HttpPost("treatment/{foodId}")]
+        public async Task<IActionResult> CreateTreatment(int foodId,[FromBody]Models.CreateTreatmentRequest treatmentRequest)
         {
             var Treatment = _mapper.Map<Entities.Treatment>(treatmentRequest);
             var TreatmentProcess = treatmentRequest.TreatmentProcess;
             Treatment.PremisesId = 2;
+            Treatment.CreatedById = 11;
+            Treatment.CreatedDate = DateTime.Now;
+            Entities.Food food = await _foodBL.getFoodById(foodId);
             await _treatmentBL.CreateTreatment(Treatment, TreatmentProcess);
+            food.TreatmentId = Treatment.TreatmentId;
+            await _foodBL.UpdateFoodTreatment(food, foodId);
             return Ok(new { message = MessageConstant.INSERT_SUCCESS });
+        }
 
+        //More treatmentDetail
+        [HttpPost("moreTreatment/{foodId}")]
+        public async Task<IActionResult> CreateMoreTreatment(int foodId, [FromBody]Models.CreateMoreTreatmentRequest treatmentRequest)
+        {
+            var Treatment = _mapper.Map<Entities.Treatment>(treatmentRequest);
+            var TreatmentProcess = treatmentRequest.TreatmentProcess;
+            Treatment.PremisesId = 2;
+            Treatment.CreatedById = 11;
+            Treatment.CreatedDate = DateTime.Now;
+            Entities.Food food = await _foodBL.getFoodById(foodId);
+            int treatmentId = food.TreatmentId.GetValueOrDefault();
+            await _treatmentBL.CreateMoreTreatmentDetail(treatmentId,Treatment, TreatmentProcess);
+            return Ok(new { message = MessageConstant.INSERT_SUCCESS });
         }
 
         [HttpPut("food/treatment/{foodId}")]
@@ -127,6 +146,21 @@ namespace CommonWebApi.Controllers
             Entities.ProviderFood food = _mapper.Map<Entities.ProviderFood>(foodRequest);
             food.PremisesId = 2; // để tạm
             return await _foodBL.createProviderFood(food);
+        }
+
+        [HttpGet("foodTreatment/{foodId}")]
+        public async Task<IActionResult> getAllTreatmentById(int foodId)
+        {
+            try
+            {
+                Entities.Food food = await _foodBL.getFoodById(foodId);
+                int treatmentId = food.TreatmentId.GetValueOrDefault();
+                return Ok(new { data = _mapper.Map<IList<Models.FoodRespone.TreatmentReponse>>(await _treatmentBL.getAllTreatmentById(treatmentId)) });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { msg = e.Message });
+            }
         }
     }
 }
