@@ -173,9 +173,9 @@
                             <canvas id="barcode"></canvas>
                         </form>
                         <div class="row justify-content-md-center">
-                            <a id="btnPrintBarcode" download="barcode.jpg" href="" onclick="download_img(this);" class="btn btn-info col-4">Tải mã barcode</a>
+                            <button type="button" class="btn btn-secondary col-4" onclick="printJS('printJs-form', 'html')">In mã barcode</button>
                             <div class="col-2"></div>
-                            <button type="button" class="btn btn-secondary col-4" data-dismiss="modal">Đóng</button>
+                            <a id="btnPrintBarcode" href="" onclick="download_img(this)" class="btn btn-info col-4">Tải mã barcode</a>
                         </div>
                     </div>
                 </div>
@@ -183,7 +183,6 @@
         </div>
     </div>
 </div>
-<div id="test"></div>
 @section Scripts{
     <!-- BEGIN PAGE VENDOR JS-->
     <script src="~/app-assets/vendors/js/tables/datatable/datatables.min.js" type="text/javascript"></script>
@@ -205,6 +204,8 @@
     <!-- My JS-->
     <script src="~/js/provider/provider.js" type="text/javascript"></script>
     <script src="~/js/barcode/JsBarcode.all.min.js" type="text/javascript"></script>
+    <script src="~/js/printJs/print.min.js" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/jsbarcode/3.3.16/barcodes/JsBarcode.code128.min.js"></script>
 
     <style scoped>
         a.btn.btn-secondary.buttons-excel.buttons-html5 {

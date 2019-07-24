@@ -341,7 +341,11 @@ $('#farm-food-mng').on('click', 'button.btn-barcode', function () {
 });
 
 function makeCode(id) {
-    JsBarcode("#barcode", "" + id);
+    JsBarcode("#barcode", "" + id, {
+        width: 50,
+        height: 1600,
+        displayValue: false
+    });
 }
 
 download_img = function (el) {
