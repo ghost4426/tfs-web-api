@@ -155,12 +155,11 @@
 
 
   <ItemGroup>
+    <Folder Include="Views\Transaction\" />
     <Folder Include="wwwroot\css\home\" />
     <Folder Include="wwwroot\css\distributor\" />
     <Folder Include="wwwroot\css\admin\" />
     <Folder Include="wwwroot\css\provider\" />
-    <Folder Include="wwwroot\js\home\" />
-    <Folder Include="wwwroot\js\admin\" />
     <Folder Include="wwwroot\js\distributor\" />
   </ItemGroup>
 
