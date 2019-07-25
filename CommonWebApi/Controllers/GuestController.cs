@@ -26,7 +26,6 @@ namespace AdminWebApi.Controllers
     {
 
         private readonly IUserBL _userBL;
-        private readonly IRoleBL _roleBL;
         private readonly IMapper _mapper;
         private readonly IEmailSender _mailSender;
         private readonly JWTSetttings _appSettings;

@@ -137,7 +137,7 @@ function Authorization() {
     $.each(roles, function (data, value) {
         switch (value) {
             case "Farm":
-                $("#main-menu-navigation").append(' <li class="dropdown nav-item">'
+                $("#main-menu").append(' <ul class="nav navbar-nav" id="main-menu-navigation" data-menu="menu-navigation"> <li class="dropdown nav-item">'
                     + ' <a class= "nav-link" asp-controller="Farm" asp-action="Index" >'
                     + '<i class="fa fa-pied-piper-alt"></i>'
                     + ' <span data-i18n="nav.category.general">Quản lý thực phẩm</span>'
@@ -148,7 +148,7 @@ function Authorization() {
                     + '<i class="fa fa-pied-piper-alt"></i>'
                     + ' <span data-i18n="nav.category.general">Quản lý thực phẩm</span>'
                     + ' </a >'
-                    + ' </li >');
+                    + ' </li >  </ul>');
                 break;
             case "Manager":
                 break;

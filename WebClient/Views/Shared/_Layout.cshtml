@@ -90,15 +90,9 @@
     <!-- menu -->
     <div class="header-navbar navbar-expand-sm navbar navbar-horizontal navbar-fixed navbar-light navbar-without-dd-arrow navbar-shadow"
          role="navigation" data-menu="menu-wrapper">
-        <div class="navbar-container main-menu-content container center-layout" data-menu="menu-container">
+        <div class="navbar-container main-menu-content container center-layout" data-menu="menu-container" id="main-menu">
             <ul class="nav navbar-nav" id="main-menu-navigation" data-menu="menu-navigation">
-                @*<li class="dropdown nav-item">
-                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">
-                            <i class="icon-user"></i>
-                            Quản lý tài khoản
-                        </a>
-                    </li>*@
-                @*<li class="dropdown nav-item">
+                <li class="dropdown nav-item">
                     <a class="nav-link" asp-controller="Admin" asp-action="Index">
                         <i class="icon-user"></i>
                         <span data-i18n="nav.category.general">Quản lý tài khoản</span>
@@ -121,7 +115,7 @@
                         <i class="fa fa-truck"></i>
                         <span data-i18n="nav.category.general">Quản lý thực phẩm</span>
                     </a>
-                </li>*@
+                </li>
             </ul>
         </div>
     </div>
@@ -163,5 +157,6 @@
     <script src="~/js/common/common.js" type="text/javascript"></script>
     <script src="~/js/home/home.js" type="text/javascript"></script>
     <!-- END Custom JS-->
+    @RenderSection("Scripts", required: false);
 </body>
 </html>
