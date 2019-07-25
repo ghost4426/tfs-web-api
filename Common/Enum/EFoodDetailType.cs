@@ -8,7 +8,7 @@ namespace Common.Enum
     {
         FEEDING,
         VACCINATION,
-        CERTIFICATION,
+        VERIFY,
         TREATMENT,
         PACKAGING
 

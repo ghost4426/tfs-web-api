@@ -23,13 +23,13 @@ namespace BusinessLogic.BusinessLogicImpl
     {
         private IUserRepository _userRepos;
         private IRoleRepository _roleRepos;
-        private IPremesisRepository _premesisRepos;
+        private IPremisesRepository _premesisRepos;
         private readonly JWTSetttings _appSettings;
 
 
         public UserBLImpl(IUserRepository userRepos
             , IRoleRepository roleRepos
-            , IPremesisRepository premesisRepos
+            , IPremisesRepository premesisRepos
             , IOptions<JWTSetttings> appSettings)
         {
             _userRepos = userRepos;
@@ -56,6 +56,30 @@ namespace BusinessLogic.BusinessLogicImpl
                 return true;
             }
             return false;
+        }
+        public async Task ChangePassword(int id, string password, string oldPass)
+        {
+            var user = await this._userRepos.GetByIdAsync(id);
+            /*var hashedPassword = PasswordHasher.GetHashPassword(password);
+            user.Password = hashedPassword.HashedPassword;
+            user.Salt = hashedPassword.Salt;
+            await _userRepos.UpdateUser(user);*/
+            var isCorrectPassword = PasswordHasher.CheckHashedPassword(new Models.HashPassword()
+            {
+                HashedPassword = user.Password,
+                Password = oldPass,
+                Salt = user.Salt
+            });
+            if (isCorrectPassword)
+            {
+                var hashedPassword = PasswordHasher.GetHashPassword(password);
+                user.Password = hashedPassword.HashedPassword;
+                user.Salt = hashedPassword.Salt;
+                await _userRepos.UpdateUser(user);
+            }
+            else throw new Exception("Mật khẩu cũ không đúng");
+
+
         }
         public async Task<IList<User>> GetUsers()
         {
@@ -87,7 +111,7 @@ namespace BusinessLogic.BusinessLogicImpl
         }
         public Task<string> CheckLogin(Models.LoginRequest loginInfo)
         {
-            var user = _userRepos.GetAllIncluding(u => u.Role, u => u.Premises).Where(u => u.Username == loginInfo.Username).SingleOrDefault();
+            var user = _userRepos.GetAllIncluding(u => u.Role, u => u.Premises, u => u.Premises.PremisesType).Where(u => u.Username == loginInfo.Username).SingleOrDefault();
             if (user != null)
             {
                 var isCorrectPassword = PasswordHasher.CheckHashedPassword(new Models.HashPassword()
@@ -100,10 +124,9 @@ namespace BusinessLogic.BusinessLogicImpl
                 {
                     //return Task.FromResult(user);
                     var roles = new List<string>
-                {
-                    user.Role.Name,
-                    "Farm"
-                };
+                    {
+                    user.Role.Name
+                    };
                     string premesisId = null;
                     if (user.Premises != null)
                     {
@@ -115,7 +138,7 @@ namespace BusinessLogic.BusinessLogicImpl
                     subject.AddClaim(new Claim("userID", user.UserId.ToString()));
                     if (premesisId != null)
                     {
-                        subject.AddClaim(new Claim("premesisId", premesisId));
+                        subject.AddClaim(new Claim("premisesID", premesisId));
                     }
                     foreach (var role in roles)
                     {

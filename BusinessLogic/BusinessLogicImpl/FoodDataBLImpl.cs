@@ -16,13 +16,13 @@ namespace BusinessLogic.BusinessLogicImpl
     {
         private IContractServices _service;
         private ITreatmentRepository _treatmentRepository;
-        private IPremesisRepository _premesisRepository;
+        private IPremisesRepository _premesisRepository;
         private ICategoryRepository _categoryRepository;
         private IMapper _mapper;
 
         public FoodDataBLImpl(IContractServices service,
             ITreatmentRepository treatmentRepository,
-            IPremesisRepository premesisRepository,
+            IPremisesRepository premesisRepository,
             ICategoryRepository categoryRepository,
             IMapper mapper)
         {

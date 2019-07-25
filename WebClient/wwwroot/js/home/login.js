@@ -14,6 +14,7 @@
         function (result) {
             Cookies.set('token', result.token);
             window.location.replace("/");
+
         },
         function (result) {
             console.log(result);

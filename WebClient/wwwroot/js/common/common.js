@@ -26,6 +26,31 @@ var table_vi_lang = {
     }
 };
 
+var userTable_vi_lang = {
+    "decimal": "",
+    "emptyTable": "Không có người dùng",
+    "info": "Hiển thị _START_ - _END_ trong tổng số _TOTAL_ người dùng",
+    "infoEmpty": "Hiển thị 0 đến 0 trong tổng số 0 người dùng",
+    "infoFiltered": "(Lọc từ _MAX_ tổng người dùng)",
+    "infoPostFix": "",
+    "thousands": ",",
+    "loadingRecords": "Đang tải...",
+    "processing": "Đang tiến hành...",
+    "sLengthMenu": "Hiển thị _MENU_ người dùng",
+    "search": "Tìm kiếm:",
+    "zeroRecords": "Không tìm thấy người dùng phù hợp",
+    "paginate": {
+        "first": "Đầu",
+        "last": "Cuối",
+        "next": "Sau",
+        "previous": "Trước"
+    },
+    "aria": {
+        "sortAscending": ": Lọc từ thấp đến cao",
+        "sortDescending": ": Lọc từ cao đến thấp"
+    }
+};
+
 
 
 
@@ -51,10 +76,8 @@ function callAjaxAuth(callParams, dataParams, successCallback, errorCallback) {
             },
         },
     }).done(function (result, textStatus) {
-        console.log(textStatus);
         successCallback(result);
     }).fail(function (result) {
-        console.log(result.status);
         errorCallback(result);
     }).always(hideLoadingPage)
 };
@@ -70,13 +93,12 @@ function callAjax(callParams, dataParams, successCallback, errorCallback) {
             'Content-Type': 'application/json; charset=utf-8',
 
         },
-        crossDomain : true,
+        crossDomain: true,
         xhrFields: {
             withCredentials: true,
-        },  
+        },
         beforeSend: showLoadingPage
-    }).done(function (result, textStatus) {
-        console.log(result.status);
+    }).done(function (result) {
         successCallback(result);
     }).fail(function (result) {
         errorCallback(result);
@@ -102,4 +124,34 @@ function showLoadingPage() {
 
 function hideLoadingPage() {
     $.unblockUI();
+}
+
+
+function Authorization() {
+    const token = Cookies.get('token');
+    if (token == null || token == 'undefined') {
+        window.location.replace("/dang-nhap");
+    };
+    const loggerData = jwt_decode(token);
+    var roles = loggerData.role;
+    $.each(roles, function (data, value) {
+        switch (value) {
+            case "Farm":
+                $("#main-menu-navigation").append(' <li class="dropdown nav-item">'
+                    + ' <a class= "nav-link" asp-controller="Farm" asp-action="Index" >'
+                    + '<i class="fa fa-pied-piper-alt"></i>'
+                    + ' <span data-i18n="nav.category.general">Quản lý thực phẩm</span>'
+                    + ' </a >'
+                    + ' </li >'
+                    + '<li class="dropdown nav-item">'
+                    + ' <a class="nav-link" asp-controller="Farm" asp-action="Transaction" >'
+                    + '<i class="fa fa-pied-piper-alt"></i>'
+                    + ' <span data-i18n="nav.category.general">Quản lý thực phẩm</span>'
+                    + ' </a >'
+                    + ' </li >');
+                break;
+            case "Manager":
+                break;
+        }
+    });
 }

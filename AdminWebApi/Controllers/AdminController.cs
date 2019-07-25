@@ -78,17 +78,70 @@ namespace AdminWebApi.Controllers
                 {
                     await _userBL.RemoveByIdAsync(user.UserId);
                 }
-                return BadRequest(new { message = MessageConstant.UNHANDLE_ERROR, error = e.Message });
+                return BadRequest(new { message = e.Message });
             }
-
         }
 
-        [HttpGet("Users")]
+        [HttpPost("premises")]
+        public async Task<IActionResult> CreatePremises()
+        {
+            try
+            {
+                Entities.User user = new Entities.User()
+                {
+                    Username = "Farm1",
+                    Email = "Farm@test.com",
+                    Fullname = "Farm",
+                    RoleId = 2,
+                    PremisesId = 1
+
+                };
+                user.Password = "123";
+                await _userBL.CreateUser(user);
+                user = new Entities.User()
+                {
+                    Username = "Provider1",
+                    Email = "Provider@test.com",
+                    Fullname = "Provider",
+                    RoleId = 2,
+                    PremisesId = 2
+                };
+                user.Password = "123";
+                await _userBL.CreateUser(user);
+
+                return Ok(new { messsage = MessageConstant.INSERT_SUCCESS });
+
+            }
+            catch (DulicatedUsernameException e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+        }
+
+        [HttpGet("users")]
         public async Task<IActionResult> Users()
         {
             return Ok(new { data = _mapper.Map<IList<Models.User>>(await _userBL.GetUsers()) });
         }
 
+        [HttpPut("password/{userid}")]
+        public async Task<IActionResult> ChangePassword(int userid, [FromBody] Models.ChangePasswordUserRequest userInfo)
+        {
+            try
+            {
+                await _userBL.ChangePassword(userid, userInfo.newPass, userInfo.oldPass);
+                return Ok("success!");
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+
+        }
         //GET : /api/admin/profile
         [Authorize]
         [HttpGet("profile")]
@@ -99,50 +152,48 @@ namespace AdminWebApi.Controllers
             var user = await _userBL.GetById(int.Parse(userId));
             return Ok(user);
         }
-
-        [HttpGet("User/{userId}")]
-        public async Task<Entities.User> Get1Users(int userId)
+        [HttpGet("user/{userId}")]
+        public async Task<IActionResult> Get1Users(int userId)
         {
-            var user = await _userBL.GetById(userId);
-            return user;
-
+            return Ok(new { data = _mapper.Map<Entities.User>(await _userBL.GetById(userId)) });
         }
-        [HttpGet("Role")]
+        [HttpGet("role")]
         public async Task<IList<Entities.Role>> GetRole()
         {
             var roleList = await _roleBl.GetAllRole();
             return roleList;
-
         }
-        [HttpGet("Role/{roleId}")]
-        public async Task<Entities.Role> GetRoleInfo(int roleId)
+        [HttpGet("role/{roleId}")]
+        public async Task<IActionResult> GetRoleInfo(int roleId)
         {
             var role = await _roleBl.GetById(roleId);
-            return role;
+            return Ok(role);
 
         }
-        [HttpPut("Users/Update/{id}")]
-        public async Task<Models.UpdateUserReponse> UpdateUser(int id, [FromBody] Models.UpdateUserRequest userInfo)
+        [HttpPut("users/update/{id}")]
+        public async Task<IActionResult> UpdateUser(int id,[FromBody] Models.UpdateUserRequest userInfo)
         {
-            Entities.User user = new Entities.User()
+            Entities.User user = null;
+            try
             {
-                UserId = id,
-                Fullname = userInfo.fullName,
-                Email = userInfo.email,
-                PhoneNo = userInfo.phone,
-            };
-            await _userBL.UpdateUser(user, 16);
-            var reponseModel = new Models.UpdateUserReponse()
+                user = _mapper.Map<Entities.User>(userInfo);
+                user.UserId = id;
+                user.Fullname = userInfo.Fullname;
+                user.Email = userInfo.Email;
+                user.PhoneNo = userInfo.PhoneNo;
+                await _userBL.UpdateUser(user, 16);
+                return Ok("success!!");
+
+            }
+            catch (Exception e)
             {
-                UserId = user.UserId
-            };
-            return reponseModel;
+                return BadRequest(new { message = e.Message });
+            }
 
         }
-        [HttpPut("User/Role")]
-        public async Task<IActionResult> Role([FromBody] string role)
+        [HttpPut("user/role/{id}")]
+        public async Task<IActionResult> Role(int id, [FromBody] string role)
         {
-            var id = 16;
             try
             {
                 var userRole = await _userBL.ChangeRole1User(id, int.Parse(role));
@@ -155,7 +206,7 @@ namespace AdminWebApi.Controllers
             }
         }
 
-        [HttpPut("User/Deactive/{userId}")]
+        [HttpPut("user/deactive/{userId}")]
         public async Task<IActionResult> Deactive(int userId)
         {
             try

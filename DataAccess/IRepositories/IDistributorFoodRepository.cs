@@ -9,6 +9,6 @@ namespace DataAccess.IRepositories
 {
     public interface IDistributorFoodRepository : IGenericRepository<DistributorFood>
     {
-        Task<IList<DistributorFood>> GetDistributorFoods(int premisesId);
+        //Task<IList<DistributorFood>> GetDistributorFoods(int premisesId);
     }
 }

@@ -21,30 +21,52 @@ namespace CommonWebApi.Controllers
     {
         private readonly IFoodBL _foodBL;
         private readonly IFoodDataBL _foodDataBL;
+        private readonly ITransactionBL _transactionBL;
         private readonly ITreatmentBL _treatmentBL;
         private readonly IMapper _mapper;
 
         public ProviderController(
             IFoodBL foodBL,
             IFoodDataBL foodDataBL,
+            ITransactionBL transactionBL,
             ITreatmentBL treatmentBL,
             IMapper mapper)
         {
             _foodBL = foodBL;
             _foodDataBL = foodDataBL;
+            _transactionBL = transactionBL;
             _treatmentBL = treatmentBL;
             _mapper = mapper;
         }
 
-        [HttpPost("treatment")]
-        public async Task<IActionResult> CreateTreatment([FromBody]Models.CreateTreatmentRequest treatmentRequest)
+        [HttpPost("treatment/{foodId}")]
+        public async Task<IActionResult> CreateTreatment(int foodId,[FromBody]Models.CreateTreatmentRequest treatmentRequest)
         {
             var Treatment = _mapper.Map<Entities.Treatment>(treatmentRequest);
             var TreatmentProcess = treatmentRequest.TreatmentProcess;
             Treatment.PremisesId = 2;
+            Treatment.CreatedById = 11;
+            Treatment.CreatedDate = DateTime.Now;
+            Entities.Food food = await _foodBL.getFoodById(foodId);
             await _treatmentBL.CreateTreatment(Treatment, TreatmentProcess);
+            food.TreatmentId = Treatment.TreatmentId;
+            await _foodBL.UpdateFoodTreatment(food, foodId);
             return Ok(new { message = MessageConstant.INSERT_SUCCESS });
+        }
 
+        //More treatmentDetail
+        [HttpPost("moreTreatment/{foodId}")]
+        public async Task<IActionResult> CreateMoreTreatment(int foodId, [FromBody]Models.CreateMoreTreatmentRequest treatmentRequest)
+        {
+            var Treatment = _mapper.Map<Entities.Treatment>(treatmentRequest);
+            var TreatmentProcess = treatmentRequest.TreatmentProcess;
+            Treatment.PremisesId = 2;
+            Treatment.CreatedById = 11;
+            Treatment.CreatedDate = DateTime.Now;
+            Entities.Food food = await _foodBL.getFoodById(foodId);
+            int treatmentId = food.TreatmentId.GetValueOrDefault();
+            await _treatmentBL.CreateMoreTreatmentDetail(treatmentId,Treatment, TreatmentProcess);
+            return Ok(new { message = MessageConstant.INSERT_SUCCESS });
         }
 
         [HttpPut("food/treatment/{foodId}")]
@@ -62,18 +84,83 @@ namespace CommonWebApi.Controllers
             return await _foodDataBL.Packaging(foodId, Packaging);
         }
 
-        [HttpGet("testgetByProvider")]
-        public async Task<IList<Entities.Food>> TestFindAllProductByProviderAsync()
-        {
-            return await _foodBL.FindAllProductByProviderAsync(3);
+        [HttpGet("getFoodByProvider")]
+        public async Task<IActionResult> FindAllProviderFoodAsync()
+        {            
+            try
+            {
+                //int userId = Int32.Parse(User.Claims.First(c => c.Type == "UserID").Value);
+                return Ok(new { data = _mapper.Map<IList<Models.FoodProvider>>(await _foodBL.getAllFoodByProviderId(2)) });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { msg = e.Message });
+            }
         }
 
-        [HttpGet("getByProvider")]
-        public async Task<IList<Entities.Food>> FindAllProductByProviderAsync()
+        [HttpGet("countProviderTransaction")]
+        public async Task<int> CountTransaction()
         {
-            int userId = Int32.Parse(User.Claims.First(c => c.Type == "UserID").Value);
+            //int userId = Int32.Parse(User.Claims.First(c => c.Type == "UserID").Value);
+            int premisesId = 2;
+            return await _transactionBL.CountProviderTransaction(premisesId);
+        }
 
-            return await _foodBL.FindAllProductByProviderAsync(userId);
+        [HttpGet("getAllProviderTransaction")]
+        public async Task<IActionResult> getAllTransaction()
+        {
+            try
+            {
+                //int userId = Int32.Parse(User.Claims.First(c => c.Type == "UserID").Value);
+                int premisesId = 2;
+                return Ok(new { data = _mapper.Map<IList<Models.TransactionReponse.ProviderGetTransaction>>(await _transactionBL.getAllProviderTransaction(premisesId)) });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { msg = e.Message });
+            }
+        }
+
+        [HttpPut("UpdateTransaction/{transactionId}")]
+        public async Task<string> UpdateTransaction(int transactionId, [FromBody] Models.TransactionUpdateRequest trans)
+        {
+            try
+            {
+                Entities.Transaction transaction = new Entities.Transaction()
+                {
+                    TransactionId = transactionId,
+                    StatusId = trans.StatusId,
+                    RejectedReason = trans.RejectedReason,
+                };
+                await _transactionBL.UpdateTransaction(transaction, transactionId);
+                return "OK";
+            }catch(Exception e)
+            {
+                return e.ToString();
+            }
+        }
+
+        [HttpPost("providerFood")]
+        public async Task<int> CreateProviderFood([FromBody]Models.CreateProviderFoodRequest foodRequest)
+        {
+            Entities.ProviderFood food = _mapper.Map<Entities.ProviderFood>(foodRequest);
+            food.PremisesId = 2; // để tạm
+            return await _foodBL.createProviderFood(food);
+        }
+
+        [HttpGet("foodTreatment/{foodId}")]
+        public async Task<IActionResult> getAllTreatmentById(int foodId)
+        {
+            try
+            {
+                Entities.Food food = await _foodBL.getFoodById(foodId);
+                int treatmentId = food.TreatmentId.GetValueOrDefault();
+                return Ok(new { data = _mapper.Map<IList<Models.FoodRespone.TreatmentReponse>>(await _treatmentBL.getAllTreatmentById(treatmentId)) });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { msg = e.Message });
+            }
         }
     }
 }
