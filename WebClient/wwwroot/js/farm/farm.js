@@ -4,14 +4,16 @@
         ajax: {
             url: GET_FOOD_DETAIL_TYPE_URI,
             dataType: JSON_DATATYPE,
-            data: function(params) {
-                var query = {
-                    search: params.term,
-                    type: 'public'
-                }
-                // Query parameters will be ?search=[term]&type=public
-                return query;
-        },
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json; charset=utf-8',
+                "Authorization": 'Bearer ' + Cookies.get('token')
+            },
+            statusCode: {
+                401: function () {
+                    window.location.replace("/dang-nhap");
+                },
+            },
         processResults: function (data, params) {
             return {
                 results: data.results
@@ -19,7 +21,7 @@
         },
         cache: false
     },
-        //minimumResultsForSearch: Infinity,
+        minimumResultsForSearch: Infinity,
         placeholder: "Chọn thông tin",
         language: "vi"
     });
@@ -29,6 +31,11 @@
         ajax: {
             url: GET_PROVIDER,
             dataType: JSON_DATATYPE,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json; charset=utf-8',
+                "Authorization": 'Bearer ' + Cookies.get('token')
+            },
             data: function (params) {
                 var query = {
                     search: params.term,
@@ -49,7 +56,7 @@
     });
 
     //Load category
-    callAjax(
+    callAjaxAuth(
         {
             url: GET_FOOD_CATEGORY_URI,
             dataType: JSON_DATATYPE,
@@ -68,9 +75,20 @@
    
 });
 
+$.fn.dataTable.ext.errMode = 'none';
 var farmFoodTable = $('#farm-food-mng').DataTable({
     ajax: {
         url: GET_FARM_FOOD_URI,
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json; charset=utf-8',
+            "Authorization": 'Bearer ' + Cookies.get('token')
+        },
+        statusCode: {
+            401: function () {
+                window.location.replace("/dang-nhap");
+            },
+        },
         beforeSend: showLoadingPage,
         complete: hideLoadingPage
     },
@@ -89,7 +107,7 @@ var farmFoodTable = $('#farm-food-mng').DataTable({
         {
             width: '17%',
             data: null,
-            render: function (o) {
+            render: function () {
                 var btnDetail = '<button class="btn btn-grey btn-sm" data-toggle="modal" data-target="#getinfo" title="Chi tiết"><i class="icon-eye"></i ></button >\n';
                 var btnUpdate = '<button class="btn btn-info btn-sm btn-add-detail" title="Thêm thông tin"><i class="icon-pencil"></i></button>\n'
                 var btnSale = '<button class="btn btn-success btn-sm btn-add-provider" title="Bán sản phẩm"><i class="icon-basket"></i></button>\n'
@@ -105,18 +123,24 @@ var farmFoodTable = $('#farm-food-mng').DataTable({
     buttons: [
         {
             text: '<i class="fa fa-plus white"></i> Thêm mới',
-            className: 'btn-addNew',
+            attr: {
+                id: 'btnAddNewFood',
+                'data-toggle': 'modal',
+                'data-target': "#default"
+            },
+            className: 'btn btn-primary btn-sm mr-1 btnAddNewFood',
         },
         {
             extend: 'excel',
-            text: '<i class="fa fa-arrow-down white"></i> Tải báo cáo'
+            text: '<i class="fa fa-arrow-down white"></i> Tải báo cáo',
+            className: 'btn btn-primary btn-sm mr-1',
         }
     ],
     language: table_vi_lang
 });
 
-$('.buttons-excel, .btn-addNew').addClass('btn btn-primary btn-sm mr-1 ');
-$('.btn-addNew').attr({ 'data-toggle': 'modal', 'data-target': "#default" });
+//$('.buttons-excel, .btn-addNew').addClass('btn btn-primary btn-sm mr-1 ');
+$('.btnAddNewFood').attr({ 'data-toggle': 'modal', 'data-target': "#default" });
 
 function clearDetailModal() {
     $("#detailTitle").empty();
@@ -128,7 +152,7 @@ function clearDetailModal() {
 $('#btnAddProduct').click(function () {
     var cate = parseInt($('select[name="NewCategory"]').val());
     var breed = $('input[name="Breed"]').val();
-    callAjax(
+    callAjaxAuth(
         {
             url: CREATE_FOOD_DATA_URI,
             dataType: JSON_DATATYPE,
@@ -169,7 +193,7 @@ $('#farm-food-mng').on('click', 'button.btn-add-detail', function () {
 
 //Get feeding data
 function getFeedingData(foodId) {
-    callAjax(
+    callAjaxAuth(
         {
             url: GET_FOOD_FEEDING_DATA_URI + foodId,
             dataType: JSON_DATATYPE,
@@ -194,7 +218,6 @@ $('#dllFoodDetailType').on('change', function () {
         return;
     }
     var foodId = $('#txtFoodId').val();
-    console.log(foodId);
     switch (this.value) {
         case "2":
             $("#detailTitle").empty();
@@ -241,7 +264,7 @@ function loadRepeatForm(repeaterId, placeholder, nameInput) {
 
 //Call ajax add feeding data
 function callAjaxAddFeedingsData(foodId, feedingData) {
-    callAjax(
+    callAjaxAuth(
         {
             url: ADD_FOOD_FEEDING_DATA_URI + foodId,
             dataType: JSON_DATATYPE,
@@ -308,7 +331,7 @@ $('#farm-food-mng').on('click', 'button.btn-add-provider', function () {
 $('#btn-addProvider').click(function () {
     var foodId = parseInt($('#pro-food-id').val());
     var providerId = parseInt($('#ddlProvider').val());
-    callAjax(
+    callAjaxAuth(
         {
             url: CREATE_TRANSACTION_URI,
             dataType: JSON_DATATYPE,

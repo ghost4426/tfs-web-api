@@ -24,10 +24,9 @@ namespace BusinessLogic.BusinessLogicImpl
             switch (premisesType)
             {
                 case PremisesTypeDataConstant.FARM:
-                    foodDetails = await _foodDetailTypeRepos.FindAllAsync(f => 
+                    foodDetails = await _foodDetailTypeRepos.FindAllAsync(f =>
                         f.TypeId == FoodDetailTypeDataConstant.ADD_FEEDING_ID ||
-                        f.TypeId == FoodDetailTypeDataConstant.ADD_VACCINATION_ID ||
-                        f.TypeId == FoodDetailTypeDataConstant.ADD_CERTIFICATION_ID);
+                        f.TypeId == FoodDetailTypeDataConstant.ADD_VACCINATION_ID); 
                     break;
                 case PremisesTypeDataConstant.PROVIDER:
                     foodDetails = await _foodDetailTypeRepos.FindAllAsync(f =>

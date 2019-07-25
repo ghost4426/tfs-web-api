@@ -30,7 +30,6 @@ namespace DTO.Entities
 
         public string PhoneNo { get; set; }
 
-        [Required]
         public string Image { get; set; }
 
         [ForeignKey("Role")]

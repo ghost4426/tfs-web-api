@@ -83,7 +83,7 @@ namespace BusinessLogic.BusinessLogicImpl
                 case EFoodDetailType.VACCINATION:
                     food.IsVaccination = true;
                     break;
-                case EFoodDetailType.CERTIFICATION:
+                case EFoodDetailType.VERIFY:
                     food.IsCertification = true;
                     break;
                 case EFoodDetailType.TREATMENT:

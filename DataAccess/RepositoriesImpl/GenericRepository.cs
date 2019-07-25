@@ -45,6 +45,7 @@ namespace DataAccess.RepositoriesImpl
         {
             return this.DbSet.Where(match).ToList();
         }
+
         public IQueryable<TEntity> GetAllIncluding(params Expression<Func<TEntity, object>>[] includeProperties)
         {
             IQueryable<TEntity> queryable = this.DbSet;
@@ -71,11 +72,11 @@ namespace DataAccess.RepositoriesImpl
             return this.DbSet.AsQueryable<TEntity>();
         }
 
-        public virtual IList<TEntity> GetAllPaged(int pageIndex, int pageSize, out int totalCount)
-        {
-            totalCount = this.DbSet.Count();
-            return this.DbSet.Skip(pageSize * pageIndex).Take(pageSize).ToList();
-        }
+        //public virtual IList<TEntity> GetAllPaged(int pageIndex, int pageSize, out int totalCount)
+        //{
+        //    totalCount = this.DbSet.Count();
+        //    return this.DbSet.Skip(pageSize * pageIndex).Take(pageSize).ToList();
+        //}
 
         public int Count()
         {

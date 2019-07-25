@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using Common.Utils;
 using DTO.Models.Exception;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AdminWebApi.Controllers
 {
@@ -49,21 +50,21 @@ namespace AdminWebApi.Controllers
             try
             {
                 user = _mapper.Map<Entities.User>(rUser);
-                var password = Util.GeneratePassword(new Models.PasswordOptions()
-                {
-                    RequireDigit = true,
-                    RequiredLength = 8,
-                    RequireLowercase = true,
-                    RequireNonAlphanumeric = false,
-                    RequireUppercase = true
-                });
-                user.Password = password;
-                user.Fullname = "thaihd";
+                //var password = Util.GeneratePassword(new Models.PasswordOptions()
+                //{
+                //    RequireDigit = true,
+                //    RequiredLength = 8,
+                //    RequireLowercase = true,
+                //    RequireNonAlphanumeric = false,
+                //    RequireUppercase = true
+                //});
+                user.Password = "admin";
+                user.Fullname = "";
                 isCreated = await _userBL.CreateUser(user);
-                if (isCreated)
-                {
-                    await _mailSender.SendEmailAsync(user.Email, "Created Account", "Your password: " + password);
-                }
+                //if (isCreated)
+                //{
+                //    await _mailSender.SendEmailAsync(user.Email, "Created Account", "Your password: " + password);
+                //}
                 return Ok(new { messsage = MessageConstant.INSERT_SUCCESS });
 
             }
@@ -79,7 +80,46 @@ namespace AdminWebApi.Controllers
                 }
                 return BadRequest(new { message = e.Message });
             }
+        }
 
+        [HttpPost("premises")]
+        public async Task<IActionResult> CreatePremises()
+        {
+            try
+            {
+                Entities.User user = new Entities.User()
+                {
+                    Username = "Farm1",
+                    Email = "Farm@test.com",
+                    Fullname = "Farm",
+                    RoleId = 2,
+                    PremisesId = 1
+
+                };
+                user.Password = "123";
+                await _userBL.CreateUser(user);
+                user = new Entities.User()
+                {
+                    Username = "Provider1",
+                    Email = "Provider@test.com",
+                    Fullname = "Provider",
+                    RoleId = 2,
+                    PremisesId = 2
+                };
+                user.Password = "123";
+                await _userBL.CreateUser(user);
+
+                return Ok(new { messsage = MessageConstant.INSERT_SUCCESS });
+
+            }
+            catch (DulicatedUsernameException e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
         }
 
         [HttpGet("users")]
@@ -103,7 +143,7 @@ namespace AdminWebApi.Controllers
 
         }
         //GET : /api/admin/profile
-        //[Authorize(Roles = RoleConstant.ADMIN)]
+        [Authorize]
         [HttpGet("profile")]
         public async Task<IActionResult> GetUserProfile()
         {

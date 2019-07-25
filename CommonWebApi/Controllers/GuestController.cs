@@ -16,6 +16,7 @@ using AutoMapper;
 using Common.Utils;
 using DTO.Models.Exception;
 using Common.Constant;
+using Newtonsoft.Json;
 
 namespace AdminWebApi.Controllers
 {
@@ -25,7 +26,6 @@ namespace AdminWebApi.Controllers
     {
 
         private readonly IUserBL _userBL;
-        private readonly IRoleBL _roleBL;
         private readonly IMapper _mapper;
         private readonly IEmailSender _mailSender;
         private readonly JWTSetttings _appSettings;
@@ -50,21 +50,7 @@ namespace AdminWebApi.Controllers
         {
             try
             {
-                var user = await _userBL.CheckLogin(login);
-                var tokenDescriptor = new SecurityTokenDescriptor
-                {
-                    Subject = new ClaimsIdentity(new Claim[]
-                    {
-                        new Claim("UserID",user.UserId.ToString()),
-                        new Claim("roles", user.Role.Name),
-                        new Claim("premesisId", user.PremisesId.ToString())
-                    }),
-                    Expires = DateTime.UtcNow.AddMinutes(30),
-                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature)
-                };
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var securityToken = tokenHandler.CreateToken(tokenDescriptor);
-                var token = tokenHandler.WriteToken(securityToken);
+                var token = await _userBL.CheckLogin(login);
                 return Ok(new { token });
             }
             catch (Exception e)
