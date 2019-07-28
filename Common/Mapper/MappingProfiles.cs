@@ -32,6 +32,11 @@ namespace Common.Mapper
 
             CreateMap<Entities.User, Models.User>().ReverseMap();
 
+            CreateMap<Entities.User, Models.UserData>()
+                .ForMember(dest => dest.Premises, opts => opts.MapFrom(src => src.Premises.PremisesType.Name))
+                .ForMember(dest => dest.Role, opts => opts.MapFrom(src => src.Role.Name))
+                .ReverseMap();
+
             CreateMap<Entities.User, Models.UpdateUserRequest>().ReverseMap();
 
             CreateMap<Entities.Role, Models.Role>().ReverseMap();
@@ -87,6 +92,7 @@ namespace Common.Mapper
             CreateMap<Entities.ProviderFood, Models.CreateProviderFoodRequest>().ReverseMap();
 
             CreateMap<Entities.Treatment, Models.FoodRespone.TreatmentReponse>().ReverseMap();
+
         }
     }
 }
