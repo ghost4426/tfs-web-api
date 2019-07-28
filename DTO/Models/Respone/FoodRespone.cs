@@ -12,5 +12,12 @@ namespace DTO.Models
         {
             public IList<Food> Foods { get; set; }
         }
+
+        public class TreatmentReponse
+        {
+            public int TreatmentId { get; set; }
+            public string Name { get; set; }
+            public int TreatmentParentId { get; set; }
+        }
     }
 }

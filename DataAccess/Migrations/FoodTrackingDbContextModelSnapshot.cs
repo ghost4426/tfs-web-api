@@ -34,17 +34,17 @@ namespace DataAccess.Migrations
                         new
                         {
                             CategoryId = 1,
-                            Name = "Thịt Heo"
+                            Name = "Heo"
                         },
                         new
                         {
                             CategoryId = 2,
-                            Name = "Thịt Gà"
+                            Name = "Gà"
                         },
                         new
                         {
                             CategoryId = 3,
-                            Name = "Thịt Bò"
+                            Name = "Bò"
                         });
                 });
 
@@ -176,7 +176,7 @@ namespace DataAccess.Migrations
                         new
                         {
                             TypeId = 3,
-                            Name = "ac-xin"
+                            Name = "Vac-xin"
                         },
                         new
                         {
@@ -196,7 +196,7 @@ namespace DataAccess.Migrations
                         new
                         {
                             TypeId = 7,
-                            Name = "Đónng gói"
+                            Name = "Đóng gói"
                         });
                 });
 
@@ -344,8 +344,6 @@ namespace DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime?>("CertificationDate");
-
                     b.Property<DateTime?>("ConfirmDate");
 
                     b.Property<int>("CreatedById");
@@ -358,13 +356,19 @@ namespace DataAccess.Migrations
 
                     b.Property<int>("FoodId");
 
+                    b.Property<string>("ProviderComment");
+
                     b.Property<int>("ProviderId");
 
                     b.Property<string>("RejectedReason");
 
                     b.Property<int>("StatusId");
 
-                    b.Property<int>("VeterinaryId");
+                    b.Property<DateTime?>("VerifyDate");
+
+                    b.Property<string>("VeterinaryComment");
+
+                    b.Property<int?>("VeterinaryId");
 
                     b.HasKey("TransactionId");
 
@@ -464,7 +468,8 @@ namespace DataAccess.Migrations
                         .IsRequired();
 
                     b.Property<string>("Image")
-                        .IsRequired();
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue("/app-assets/images/avatar.jpg");
 
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
@@ -605,8 +610,7 @@ namespace DataAccess.Migrations
 
                     b.HasOne("DTO.Entities.User", "Veterinary")
                         .WithMany("VeterinaryTransactions")
-                        .HasForeignKey("VeterinaryId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("VeterinaryId");
                 });
 
             modelBuilder.Entity("DTO.Entities.Treatment", b =>

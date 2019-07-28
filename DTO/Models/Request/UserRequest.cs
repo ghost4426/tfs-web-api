@@ -15,10 +15,16 @@ namespace DTO.Models
     }
     public class UpdateUserRequest
     {
-        public string userId { get; set; }
-        public string fullName { get; set; }
-        public string email { get; set; }
-        public string phone { get; set; }
+        public int UserId { get; set; }
+        public string Fullname { get; set; }
+        public string Email { get; set; }
+        public string PhoneNo { get; set; }
+        
+    }
+    public class ChangePasswordUserRequest
+    {
+        public string newPass { get; set; }
+        public string oldPass { get; set; }
     }
     public class RoleUserRequest
     {

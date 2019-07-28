@@ -41,6 +41,10 @@ namespace DataAccess.Context
             builder.Entity<User>()
              .Property(f => f.IsActive)
              .HasDefaultValue(true);
+
+            builder.Entity<User>()
+             .Property(f => f.Image)
+             .HasDefaultValue("/app-assets/images/avatar.jpg");
             #endregion
 
             #region Food
@@ -190,7 +194,7 @@ namespace DataAccess.Context
             new FoodDetailType { TypeId = FoodDetailTypeDataConstant.CREATE_NEW_ID, Name = FoodDetailTypeDataConstant.CREATE_NEW },
             new FoodDetailType { TypeId = FoodDetailTypeDataConstant.ADD_FEEDING_ID, Name = FoodDetailTypeDataConstant.ADD_FEEDING },
             new FoodDetailType { TypeId = FoodDetailTypeDataConstant.ADD_VACCINATION_ID, Name = FoodDetailTypeDataConstant.ADD_VACCINATION },
-            new FoodDetailType { TypeId = FoodDetailTypeDataConstant.ADD_CERTIFICATION_ID, Name = FoodDetailTypeDataConstant.ADD_CERTIFICATION },
+            new FoodDetailType { TypeId = FoodDetailTypeDataConstant.ADD_VERIFY_ID, Name = FoodDetailTypeDataConstant.ADD_VERIFY },
             new FoodDetailType { TypeId = FoodDetailTypeDataConstant.ADD_PROVIDER_ID, Name = FoodDetailTypeDataConstant.ADD_PROVIDER },
             new FoodDetailType { TypeId = FoodDetailTypeDataConstant.ADD_TREATMENT_ID, Name = FoodDetailTypeDataConstant.ADD_TREATMENT },
             new FoodDetailType { TypeId = FoodDetailTypeDataConstant.ADD_PACKAGING_ID, Name = FoodDetailTypeDataConstant.ADD_PACKAGING }

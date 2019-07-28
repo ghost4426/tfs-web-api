@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ContractInteraction.Services
+namespace ContractInteraction.ContractServices
 {
-    public interface IService
+    public interface IContractServices
     {
 
         Task<string> SaveFoodData(FoodData Food);

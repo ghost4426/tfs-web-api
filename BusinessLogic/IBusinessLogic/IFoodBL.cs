@@ -11,7 +11,6 @@ namespace BusinessLogic.IBusinessLogic
     {
         Task<IList<Food>> GetAllProductAsync();
 
-
         Task<IList<Food>> FindAllProductByProviderAsync(int providerID);
 
         Task<int> CreateProductAsync(Food newProduct);
@@ -23,5 +22,13 @@ namespace BusinessLogic.IBusinessLogic
         Task<IList<Food>> FindAllProductByFarmerAsync(int farmerID);
 
         Task AddDetail(long foodId, EFoodDetailType type);
+
+        Task<IList<ProviderFood>> getAllFoodByProviderId(int providerId);
+
+        Task<int> createProviderFood(ProviderFood newProviderFood);
+
+        Task UpdateFoodTreatment(Food food, int foodId);
+
+        Task<Food> getFoodById(int foodId);
     }
 }

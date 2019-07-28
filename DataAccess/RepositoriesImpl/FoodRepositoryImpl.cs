@@ -35,6 +35,7 @@ namespace DataAccess.RepositoriesImpl
         public async Task<int> CreateProductAsync(Food newProduct)
         {
             newProduct.FoodId = 0;
+            newProduct.CreatedById = 11;
             newProduct.IsCertification = false;
             newProduct.IsFeeding = false;
             newProduct.IsPackaging = false;
@@ -51,5 +52,11 @@ namespace DataAccess.RepositoriesImpl
             return result.ToList();
         }
 
+
+        public async Task<Food> GetProductByIdAsync(int foodID)
+        {
+            Food product = await FindAsync(x => x.FoodId == foodID);
+            return product;
+        }
     }
 }

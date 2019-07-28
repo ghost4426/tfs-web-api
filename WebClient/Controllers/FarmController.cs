@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace WebClient.Controllers
 {
     [Route("nong-trai")]
-    public class FarmerController : Controller
+    public class FarmController : Controller
     {
         public IActionResult Index()
         {
@@ -16,6 +16,12 @@ namespace WebClient.Controllers
 
         [Route("quan-li-san-pham")]
         public IActionResult FoodManagement()
+        {
+            return View();
+        }
+
+        [Route("quan-li-giao-dich")]
+        public IActionResult FarmTransaction()
         {
             return View();
         }

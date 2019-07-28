@@ -20,5 +20,10 @@ namespace DTO.Models
         {
             public int ProductId { get; set; }
         }
+
+        public class FoodGetByFarm
+        {
+            public IList<Food> ListProduct { get; set; }
+        }
     }
 }

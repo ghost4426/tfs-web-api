@@ -135,7 +135,6 @@
         </div>
     </div>
 </div>
-
 <!-- End modal add new food info -->
 <!-- Modal view food info -->
 <div class="modal fade text-left" id="getinfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1"
@@ -149,27 +148,25 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form class="form">
-                    <div class="form-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="projectinput1">Tên</label>
-                                    <input type="text" id="Name" class="form-control" name="Name">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="projectinput1">Nội dung</label>
-                                    <textarea id="Info" class="form-control" placeholder="Ví dụ: Bón phân hữu cơ,..."
-                                              name="Info" rows="10"></textarea>
-                                </div>
+                <div class="form-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="projectinput1">Tên</label>
+                                <input type="text" id="Name" class="form-control" name="Name">
                             </div>
                         </div>
                     </div>
-                </form>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="projectinput1">Nội dung</label>
+                                <textarea id="Info" class="form-control" placeholder="Ví dụ: Bón phân hữu cơ,..."
+                                          name="Info" rows="10"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">Đóng</button>
@@ -178,13 +175,13 @@
     </div>
 </div>
 <!-- End view food info -->
-<!-- Modal addDistributor-->
-<div class="modal fade text-left" id="addDistributor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1"
+<!-- Modal addProvider-->
+<div class="modal fade text-left" id="addDistributor" role="dialog" aria-labelledby="myModalLabel1"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel1">Chuyển cho nhà phân phối</h4>
+                <h4 class="modal-title" id="myModalLabel1">Chuyển cho nhà cung cấp</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -194,18 +191,14 @@
                     <div class="form-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="projectinput1">Tên sản phẩm</label>
-                                    <input type="text" id="Name" class="form-control" name="Name">
-                                </div>
+                                <label for="projectinput2">Mã</label>
+                                <input id="pro-food-id" class="form-control" type="text" name="foodId" readonly />
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="projectinput1">Nhà cung cấp</label>
-                                    <input type="text" id="Name" class="form-control" name="Provider">
-                                </div>
+                                <label for="projectinput2">Nhà cung cấp</label>
+                                <select name="providerID" class="select2-placeholder select2-size-lg form-control" style="width:100%" id="ddlProvider"></select>
                             </div>
                         </div>
                     </div>
@@ -213,30 +206,82 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">Đóng</button>
-                <button type="button" class="btn btn-outline-primary">Xác nhận</button>
+                <button id="btn-addProvider" type="button" class="btn btn-outline-primary">Xác nhận</button>
             </div>
         </div>
     </div>
 </div>
 <!-- End addDistributor-->
+<!--BEGIN QR -->
+<div class="modal fade text-left" id="GetQRCode" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <section class="form-elegant scrollbar-light-blue">
+                <div class="card" style="width: 100%; height: 100%; margin-bottom:0 !important;">
+                    <div class="card-body mx-4">
+                        <form method="post" action="#" id="printJs-form">
+                            <canvas id="barcode"></canvas>
+                        </form>
+                        <div class="row justify-content-md-center">
+                            <button type="button" class="btn btn-secondary col-4" onclick="printJS('printJs-form', 'html')">In mã barcode</button>
+                            <div class="col-2"></div>
+                            <a id="btnPrintBarcode" href="" onclick="download_img(this)" class="btn btn-info col-4">Tải mã barcode</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
 @section Scripts{
-<!-- BEGIN PAGE VENDOR JS-->
-<script src="~/app-assets/vendors/js/tables/datatable/datatables.min.js" type="text/javascript"></script>
-<script src="~/app-assets/vendors/js/tables/datatable/dataTables.buttons.min.js" type="text/javascript"></script>
-<script src="~/app-assets/vendors/js/tables/buttons.flash.min.js" type="text/javascript"></script>
-<script src="~/app-assets/vendors/js/tables/jszip.min.js" type="text/javascript"></script>
-<script src="~/app-assets/vendors/js/tables/pdfmake.min.js" type="text/javascript"></script>
-<script src="~/app-assets/vendors/js/tables/vfs_fonts.js" type="text/javascript"></script>
-<script src="~/app-assets/vendors/js/tables/buttons.html5.min.js" type="text/javascript"></script>
-<script src="~/app-assets/vendors/js/tables/buttons.print.min.js" type="text/javascript"></script>
-<script src="~/app-assets/vendors/js/forms/select/select2.full.min.js" type="text/javascript"></script>
-<script src="~/app-assets/vendors/js/forms/select/i18n/vi.js" type="text/javascript"></script>
-<script src="~/app-assets/vendors/js/extensions/toastr.min.js" type="text/javascript"></script>
-<!-- END PAGE VENDOR JS-->
-<!-- BEGIN PAGE LEVEL JS-->
-<script src="~/app-assets/js/scripts/forms/select/form-select2.js" type="text/javascript"></script>
-<script src="~/app-assets/js/scripts/modal/components-modal.js" type="text/javascript"></script>
-<!-- END PAGE LEVEL JS-->
-<!-- My JS-->
-<script src="~/js/farm/farm.js" type="text/javascript"></script>
+    <!-- BEGIN PAGE VENDOR JS-->
+    <script src="~/app-assets/vendors/js/tables/datatable/datatables.min.js" type="text/javascript"></script>
+    <script src="~/app-assets/vendors/js/tables/datatable/dataTables.buttons.min.js" type="text/javascript"></script>
+    <script src="~/app-assets/vendors/js/tables/buttons.flash.min.js" type="text/javascript"></script>
+    <script src="~/app-assets/vendors/js/tables/jszip.min.js" type="text/javascript"></script>
+    <script src="~/app-assets/vendors/js/tables/pdfmake.min.js" type="text/javascript"></script>
+    <script src="~/app-assets/vendors/js/tables/vfs_fonts.js" type="text/javascript"></script>
+    <script src="~/app-assets/vendors/js/tables/buttons.html5.min.js" type="text/javascript"></script>
+    <script src="~/app-assets/vendors/js/tables/buttons.print.min.js" type="text/javascript"></script>
+    <script src="~/app-assets/vendors/js/forms/select/select2.full.min.js" type="text/javascript"></script>
+    <script src="~/app-assets/vendors/js/forms/select/i18n/vi.js" type="text/javascript"></script>
+    <script src="~/app-assets/vendors/js/extensions/toastr.min.js" type="text/javascript"></script>
+    <!-- END PAGE VENDOR JS-->
+    <!-- BEGIN PAGE LEVEL JS-->
+    <script src="~/app-assets/js/scripts/forms/select/form-select2.js" type="text/javascript"></script>
+    <script src="~/app-assets/js/scripts/modal/components-modal.js" type="text/javascript"></script>
+    <!-- END PAGE LEVEL JS-->
+    <!-- My JS-->
+    <script src="~/js/farm/farm.js" type="text/javascript"></script>
+    <script src="~/js/printJs/print.min.js" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/jsbarcode/3.3.16/barcodes/JsBarcode.code128.min.js"></script>
+
+    <style scoped>
+        a.btn.btn-secondary.buttons-excel.buttons-html5 {
+            z-index: -1;
+        }
+
+        .my-custom-scrollbar {
+            position: relative;
+            width: 800px;
+            height: 400px;
+            overflow: auto;
+        }
+
+        #qrcode {
+            width: 100%;
+            height: 100%;
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+
+        #barcode {
+            width: 100%;
+        }
+
+        #GetQRCode {
+            margin-top: 100px;
+        }
+    </style>
 }

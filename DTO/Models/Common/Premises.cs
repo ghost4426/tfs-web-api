@@ -4,7 +4,7 @@ using System.Text;
 
 namespace DTO.Models
 {
-    public class Premises
+    public class PremisesProvider
     {
         public int PremisesId { get; set; }
         public string Name { get; set; }

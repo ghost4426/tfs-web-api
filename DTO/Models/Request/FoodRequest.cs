@@ -19,4 +19,9 @@ namespace DTO.Models
         public DateTime EXPDate { get; set; }
 
     }
+
+    public class CreateProviderFoodRequest
+    {
+        public int FoodId { get; set; }
+    }
 }

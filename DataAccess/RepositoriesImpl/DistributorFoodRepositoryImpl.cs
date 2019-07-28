@@ -18,10 +18,10 @@ namespace DataAccess.RepositoriesImpl
         {
             foodTrackerDbContext = context;
         }
-        public async Task<IList<DistributorFood>> GetDistributorFoods(int premisesId)
-        {
-            var result = GetAllMatched(x => x.PremisesId == premisesId);
-            return result;
-        }
+        //public async Task<IList<DistributorFood>> GetDistributorFoods(int premisesId)
+        //{
+        //    var result = GetAllMatched(x => x.PremisesId == premisesId);
+        //    return result;
+        //}
     }
 }
