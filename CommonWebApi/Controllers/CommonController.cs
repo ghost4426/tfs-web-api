@@ -28,9 +28,8 @@ namespace CommonWebApi.Controllers
             _mapper = mapper;
         }
 
-        [Authorize]
-        
 
+        [Authorize]
         [HttpGet("productproviderdetailtype")]
         public async Task<IActionResult> GetProductProviderDetailType()
         {
