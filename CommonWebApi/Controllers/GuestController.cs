@@ -33,13 +33,11 @@ namespace AdminWebApi.Controllers
 
         public GuestController(
             IUserBL userBL,
-            IRoleBL roleBL,
             IMapper mapper,
             IEmailSender mailSender,
             IOptions<JWTSetttings> appSettings)
         {
             _userBL = userBL;
-            _roleBL = roleBL;
             _mapper = mapper;
             _mailSender = mailSender;
             _appSettings = appSettings.Value;
@@ -51,11 +49,21 @@ namespace AdminWebApi.Controllers
             try
             {
                 var token = await _userBL.CheckLogin(login);
-                return Ok(new { token });
+                Entities.User user = null;
+                if(token != null)
+                {
+                    user = await _userBL.FindByName(login.Username);
+                }
+                var loginReponse = new Models.UserLoginReponse()
+                {
+                    User = _mapper.Map<Models.UserData>(user),
+                    Token = token
+                };
+                return Ok(new { Data = loginReponse });
             }
             catch (Exception e)
             {
-                return BadRequest(new { message = e.Message.ToString() });
+                return BadRequest(new { Message = e.Message.ToString() });
             }
         }
 

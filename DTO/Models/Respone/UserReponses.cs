@@ -7,7 +7,17 @@ namespace DTO.Models
 {
     public class UserLoginReponse
     {
-        public User User { get; set; }
+        public UserData User { get; set; }
+        public string Token { get; set; }
+    }
+    
+    public class UserData
+    {
+        public string Username { get; set; }
+        public string Fullname { get; set; }
+        public string Role { get; set; }
+        public string Premises { get; set; }
+        public string Image { get; set; }
     }
 
     public class CreateUserReponse

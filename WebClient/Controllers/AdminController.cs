@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebClient.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [Route("quan-tri-vien")]
     public class AdminController : Controller
     {

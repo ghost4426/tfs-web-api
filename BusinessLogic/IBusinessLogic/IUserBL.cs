@@ -29,5 +29,7 @@ namespace BusinessLogic.IBusinessLogic
 
         Task ChangePassword(int id, string password, string oldPass);
 
+        Task<User> FindByName(string username);
+
     }
 }
