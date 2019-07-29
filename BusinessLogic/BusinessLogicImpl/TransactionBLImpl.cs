@@ -82,19 +82,19 @@ namespace BusinessLogic.BusinessLogicImpl
         }
         public async Task<Transaction> GetTransactionById(int id)
         {
-            var dto =  _transactionRepository.GetById(id);
-            dto.Farm = _premesisRepository.GetById(dto.FarmId);
-            dto.Provider = _premesisRepository.GetById(dto.ProviderId);
-            dto.Food = _foodRepository.GetById(dto.FoodId);
+            var dto =  _transactionRepos.GetById(id);
+            dto.Farm = _premisesRepos.GetById(dto.FarmId);
+            dto.Provider = _premisesRepos.GetById(dto.ProviderId);
+            dto.Food = _foodRepos.GetById(dto.FoodId);
             return dto;
         }
         public async Task<Transaction> UpdateTransaction(int id, int status, string reasone)
         {
         
-            var transaction = _transactionRepository.GetById(id);
+            var transaction = _transactionRepos.GetById(id);
             transaction.StatusId = status;
             transaction.RejectedReason = reasone;
-            await _transactionRepository.UpdateAsync(transaction);
+            await _transactionRepos.UpdateAsync(transaction);
             return transaction;
         }
 

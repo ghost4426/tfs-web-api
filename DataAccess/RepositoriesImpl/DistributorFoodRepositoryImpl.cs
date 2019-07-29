@@ -23,5 +23,20 @@ namespace DataAccess.RepositoriesImpl
         //    var result = GetAllMatched(x => x.PremisesId == premisesId);
         //    return result;
         //}
+
+        public async Task<int> createDistributorFood(DistributorFood newDistributorFood)
+        {
+            newDistributorFood.CreatedDate = DateTime.Now;
+            await this.InsertAsync(newDistributorFood, true);
+            return newDistributorFood.FoodId;
+        }
+
+        public async Task<IList<DistributorFood>> getAllFoodByDistributorId(int distributorId)
+        {
+            IList<DistributorFood> food = await FindAllAsync(x => x.PremisesId == distributorId);
+            IEnumerable<DistributorFood> result = food.OrderByDescending(x => x.CreatedDate).Take(500);
+            return result.ToList();
+        }
+
     }
 }

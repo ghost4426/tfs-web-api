@@ -17,38 +17,90 @@ namespace CommonWebApi.Controllers
     [ApiController]
     public class DistributorController : ControllerBase
     {
-        private readonly IFoodBL _productBL;
+        private readonly IFoodBL _foodBL;
         private readonly IMapper     _mapper;
         private readonly ITransactionBL _transactionBL;
+        private readonly IUserBL _userBL;
 
-        public DistributorController (IFoodBL productBL, IMapper mapper, ITransactionBL transactionBL)
+        public DistributorController (IFoodBL productBL, IMapper mapper, ITransactionBL transactionBL, IUserBL userBL)
         {
             _mapper = mapper;
-            _productBL = productBL;
+            _foodBL = productBL;
             _transactionBL = transactionBL;
+            _userBL = userBL;
         }
         [HttpGet("getProductMatched")]
         public async Task<IActionResult> getMatchedWithNumber()
         {
             //string disID = User.Claims.First(c => c.Type == "PremisesId").Value;
-            var disID = 4; 
-            return Ok(new { data = _mapper.Map<IList<Models.Food>>(await _productBL.getMatchedWithNumber(disID))});
+            var disID = 16; 
+            return Ok(new { data = _mapper.Map<IList<Models.Food>>(await _foodBL.getMatchedWithNumber(disID))});
         }
 
-        [HttpGet("getTransactionById")]
-        public async Task<IActionResult> getTransactionById()
+        [HttpGet("getTransactionById/{transId}")]
+        public async Task<IActionResult> getTransactionById(int transId)
         {
-            var TransID = 3;
-            return Ok(new { data = _mapper.Map<Models.Transaction>(await _transactionBL.GetTransactionById(TransID)) });
+            //var TransID = 3;
+            return Ok(new { data = _mapper.Map<Models.Transaction>(await _transactionBL.GetTransactionById(transId)) });
         }
 
-        [HttpPut("updateTransaction")]
-        public async Task<IActionResult> UpdateTransactionStatus()
+        [HttpPut("updateTransaction/{transID}/{status}/{reason}/{foodId}/{distributorId}")]
+        public async Task<IActionResult> UpdateTransactionStatus(int tranId, int status, string reason, int foodId, int distributorId)
         {
-            var TransID = 3;
-            var status = 3;
-            var reason = "NO REASON";
-            return Ok(new { data = _mapper.Map<Models.Transaction>(await _transactionBL.UpdateTransaction(TransID, status, reason)) });
+            //tranId = 3;
+            //status = 3;
+            //reason = "NO REASON";
+
+            Entities.DistributorFood distributorFood = new Entities.DistributorFood();
+            distributorFood.FoodId = foodId;
+            distributorFood.PremisesId = distributorId;
+            await _foodBL.createDistributorFood(distributorFood);
+
+            return Ok(new { data = _mapper.Map<Models.Transaction>(await _transactionBL.UpdateTransaction(tranId, status, reason)) });
+        }
+
+        [HttpGet("getProfile/{userId}")]
+        public async Task<IActionResult> GetUserProfile(int userId)
+        {
+            var user = await _userBL.GetById(userId);
+            return Ok(user);
+        }
+
+        [HttpPut("updateProfile/{id}")]
+        public async Task<IActionResult> UpdateProfile(int id, [FromBody] Models.UpdateUserRequest userInfo)
+        {
+            Entities.User user = null;
+            try
+            {
+                user = _mapper.Map<Entities.User>(userInfo);
+                user.UserId = id;
+                user.Fullname = userInfo.Fullname;
+                user.Email = userInfo.Email;
+                user.PhoneNo = userInfo.PhoneNo;
+                await _userBL.UpdateUser(user, 16);
+                return Ok("success!!");
+
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+
+        }
+
+        [HttpPut("changePassword/{userId}")]
+        public async Task<IActionResult> ChangePassword(int userId, [FromBody] Models.ChangePasswordUserRequest userInfo)
+        {
+            try
+            {
+                await _userBL.ChangePassword(userId, userInfo.newPass, userInfo.oldPass);
+                return Ok("success!");
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+
         }
     }
 }

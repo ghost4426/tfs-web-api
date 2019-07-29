@@ -124,5 +124,21 @@ namespace BusinessLogic.BusinessLogicImpl
         {
             return await _productRepos.GetByIdAsync(foodId);
         }
+
+        public async Task<int> createDistributorFood(DistributorFood newDistributorFood)
+        {
+            return await _distributorFoodRepository.createDistributorFood(newDistributorFood);
+        }
+
+        public async Task<IList<DistributorFood>> getAllFoodByDistributorId(int distributorId)
+        {
+            var food = await _distributorFoodRepository.getAllFoodByDistributorId(distributorId);
+            foreach (var i in food)
+            {
+                i.Food = _productRepos.GetById(i.FoodId);
+                i.Food.Category = _categoryRepos.GetById(i.Food.CategoryId);
+            }
+            return food;
+        }
     }
 }

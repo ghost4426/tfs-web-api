@@ -38,7 +38,7 @@ namespace Common.Mapper
 
             CreateMap<Entities.Transaction, Models.Transaction>()
                 .ReverseMap();
-           CreateMap<Entities.Premises, Models.Premises>()
+           CreateMap<Entities.Premises, Models.PremisesProvider>()
                 .ReverseMap();
            
 

@@ -44,17 +44,17 @@ namespace CommonWebApi.Controllers
             }
         }
 
-        [HttpGet("productproviderdetailtype")]
-        public async Task<IActionResult> GetProductProviderDetailType()
-        {
-            try
-            {
-                return Ok(new { results = _mapper.Map<IList<Models.Option>>(await _foodDetailBL.GetFoodDetailTypeByPremises(PremisesTypeDataConstant.PROVIDER)) });
-            }
-            catch (Exception e)
-            {
-                return BadRequest(new { msg = e.Message });
-            }
-        }
+        //[HttpGet("productproviderdetailtype")]
+        //public async Task<IActionResult> GetProductProviderDetailType()
+        //{
+        //    try
+        //    {
+        //        return Ok(new { results = _mapper.Map<IList<Models.Option>>(await _foodDetailBL.GetFoodDetailTypeByPremises(PremisesTypeDataConstant.PROVIDER)) });
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return BadRequest(new { msg = e.Message });
+        //    }
+        //}
     }
 }
