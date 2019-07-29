@@ -61,7 +61,10 @@ namespace WebClient.Controllers
                     new ClaimsPrincipal(claimsIdentity),
                     authProperties);
 
-                Response.Cookies.Append("token", data.Token);
+                Response.Cookies.Append("token", data.Token, new CookieOptions()
+                {
+                    IsEssential = true
+                });
                 return RedirectToAction("UpdateProfile", "User");
             }
 
