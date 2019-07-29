@@ -46,7 +46,48 @@
         </div>
     </div>
 </section>
-
+<!--Accept Transaction Modal-->
+<div class="modal fade text-left" id="AcceptModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel1">Đồng ý giao dịch</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="form">
+                    <div class="form-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="projectinput3">Mã giao dịch</label>
+                                    <input type="text" id="transactionId" class="form-control" readonly />
+                                    <input type="hidden" id="acFoodId" class="form-control" readonly />
+                                    <label for="projectinput3">Tên thực phẩm</label>
+                                    <input type="text" id="acFoodName" class="form-control" readonly />
+                                    <label for="projectinput3">Giống</label>
+                                    <input type="text" id="acFoodBreed" class="form-control" readonly />
+                                    <label for="projectinput3">Nông trại</label>
+                                    <input type="text" id="acFarm" class="form-control" readonly />
+                                    <label for="projectinput3">Phản hồi (nếu có)</label>
+                                    <input type="text" class="form-control" id="ProviderComment" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-outline-primary" id="btnAddProviderFood">Xác nhận</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--End-->
 <!--Deny Transaction Modal-->
 <div class="modal fade text-left" id="DenyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1"
      aria-hidden="true">
@@ -66,6 +107,12 @@
                                 <div class="form-group">
                                     <label for="projectinput3">Mã giao dịch</label>
                                     <input type="text" id="transId" class="form-control" readonly />
+                                    <label for="projectinput3">Tên thực phẩm</label>
+                                    <input type="text" id="dnFoodName" class="form-control" readonly />
+                                    <label for="projectinput3">Giống</label>
+                                    <input type="text" id="dnFoodBreed" class="form-control" readonly />
+                                    <label for="projectinput3">Nông trại</label>
+                                    <input type="text" id="dnFarm" class="form-control" readonly />
                                     <label for="projectinput3">Lý do từ chối</label>
                                     <input type="text" class="form-control" id="RejectedReason" />
                                 </div>
@@ -76,7 +123,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">Đóng</button>
-                <button type="button" class="btn btn-outline-primary" id="btnAddProviderFood">Xác nhận</button>
+                <button type="button" class="btn btn-outline-primary" id="btnDenyProviderFood">Xác nhận</button>
             </div>
         </div>
     </div>

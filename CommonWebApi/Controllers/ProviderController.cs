@@ -12,11 +12,13 @@ using Common.Utils;
 using Common.Constant;
 using AutoMapper;
 using Common.Enum;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CommonWebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Provider")]
     public class ProviderController : ControllerBase
     {
         private readonly IFoodBL _foodBL;
@@ -44,8 +46,9 @@ namespace CommonWebApi.Controllers
         {
             var Treatment = _mapper.Map<Entities.Treatment>(treatmentRequest);
             var TreatmentProcess = treatmentRequest.TreatmentProcess;
-            Treatment.PremisesId = 2;
-            Treatment.CreatedById = 11;
+            var test = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
+            Treatment.PremisesId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
+            Treatment.CreatedById = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
             Treatment.CreatedDate = DateTime.Now;
             Entities.Food food = await _foodBL.getFoodById(foodId);
             await _treatmentBL.CreateTreatment(Treatment, TreatmentProcess);
@@ -60,8 +63,8 @@ namespace CommonWebApi.Controllers
         {
             var Treatment = _mapper.Map<Entities.Treatment>(treatmentRequest);
             var TreatmentProcess = treatmentRequest.TreatmentProcess;
-            Treatment.PremisesId = 2;
-            Treatment.CreatedById = 11;
+            Treatment.PremisesId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
+            Treatment.CreatedById = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
             Treatment.CreatedDate = DateTime.Now;
             Entities.Food food = await _foodBL.getFoodById(foodId);
             int treatmentId = food.TreatmentId.GetValueOrDefault();
@@ -89,8 +92,8 @@ namespace CommonWebApi.Controllers
         {            
             try
             {
-                //int userId = Int32.Parse(User.Claims.First(c => c.Type == "UserID").Value);
-                return Ok(new { data = _mapper.Map<IList<Models.FoodProvider>>(await _foodBL.getAllFoodByProviderId(2)) });
+                int premisesId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
+                return Ok(new { data = _mapper.Map<IList<Models.FoodProvider>>(await _foodBL.getAllFoodByProviderId(premisesId)) });
             }
             catch (Exception e)
             {
@@ -101,8 +104,7 @@ namespace CommonWebApi.Controllers
         [HttpGet("countProviderTransaction")]
         public async Task<int> CountTransaction()
         {
-            //int userId = Int32.Parse(User.Claims.First(c => c.Type == "UserID").Value);
-            int premisesId = 2;
+            int premisesId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
             return await _transactionBL.CountProviderTransaction(premisesId);
         }
 
@@ -111,8 +113,7 @@ namespace CommonWebApi.Controllers
         {
             try
             {
-                //int userId = Int32.Parse(User.Claims.First(c => c.Type == "UserID").Value);
-                int premisesId = 2;
+                int premisesId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
                 return Ok(new { data = _mapper.Map<IList<Models.TransactionReponse.ProviderGetTransaction>>(await _transactionBL.getAllProviderTransaction(premisesId)) });
             }
             catch (Exception e)
@@ -131,6 +132,7 @@ namespace CommonWebApi.Controllers
                     TransactionId = transactionId,
                     StatusId = trans.StatusId,
                     RejectedReason = trans.RejectedReason,
+                    ProviderComment = trans.ProviderComment,
                 };
                 await _transactionBL.UpdateTransaction(transaction, transactionId);
                 return "OK";
@@ -144,7 +146,7 @@ namespace CommonWebApi.Controllers
         public async Task<int> CreateProviderFood([FromBody]Models.CreateProviderFoodRequest foodRequest)
         {
             Entities.ProviderFood food = _mapper.Map<Entities.ProviderFood>(foodRequest);
-            food.PremisesId = 2; // để tạm
+            food.PremisesId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
             return await _foodBL.createProviderFood(food);
         }
 

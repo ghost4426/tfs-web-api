@@ -33,13 +33,11 @@ namespace AdminWebApi.Controllers
 
         public GuestController(
             IUserBL userBL,
-            IRoleBL roleBL,
             IMapper mapper,
             IEmailSender mailSender,
             IOptions<JWTSetttings> appSettings)
         {
             _userBL = userBL;
-            _roleBL = roleBL;
             _mapper = mapper;
             _mailSender = mailSender;
             _appSettings = appSettings.Value;

@@ -4,6 +4,16 @@
         ajax: {
             url: GET_PROVIDER_FOOD_DETAIL_TYPE_URI,
             dataType: JSON_DATATYPE,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json; charset=utf-8',
+                "Authorization": 'Bearer ' + Cookies.get('token')
+            },
+            statusCode: {
+                401: function () {
+                    window.location.replace("/dang-nhap");
+                },
+            },
             data: function (params) {
                 var query = {
                     search: params.term,
@@ -28,6 +38,16 @@
 var providerFoodTable = $('#provider-food-mng').DataTable({
     ajax: {
         url: GET_FOOD_PROVIDER_URI,
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json; charset=utf-8',
+            "Authorization": 'Bearer ' + Cookies.get('token')
+        },
+        statusCode: {
+            401: function () {
+                window.location.replace("/dang-nhap");
+            },
+        },
         beforeSend: showLoadingPage,
         complete: hideLoadingPage
     },
@@ -118,7 +138,7 @@ $('#dllFoodDetailType').on('change', function () {
 });
 
 function loadTreatmentData(foodId) {
-    callAjax(
+    callAjaxAuth(
         {
             url: GET_FOOD_TREATMENT_URI + foodId,
             dataType: JSON_DATATYPE,
@@ -199,7 +219,7 @@ $('#addDetailConfirm').on('click', function () {
 });
 
 function callAjaxAddTreatmentData(foodId, treatmentName, treatmentProcess) {
-    callAjax(
+    callAjaxAuth(
         {
             url: ADD_FOOD_TREATMENT_URI + foodId,
             dataType: JSON_DATATYPE,
@@ -218,7 +238,7 @@ function callAjaxAddTreatmentData(foodId, treatmentName, treatmentProcess) {
 }
 
 function callAjaxAddMoreTreatmentData(foodId, treatmentProcess) {
-    callAjax(
+    callAjaxAuth(
         {
             url: ADD_MORE_FOOD_TREATMENT_URI + foodId,
             dataType: JSON_DATATYPE,
@@ -245,7 +265,7 @@ $('#provider-food-mng').on('click', 'button.btn-detail', function () {
     $('input[name="txtFoodId"]').val(id);
     $('input[name="txtFoodCategory"]').val(row.data().Food.Category.Name);
     $('input[name="txtFoodBreed"]').val(row.data().Food.Breed);
-    callAjax(
+    callAjaxAuth(
         {
             url: GET_FOOD_TREATMENT_URI+id,
             dataType: JSON_DATATYPE,
