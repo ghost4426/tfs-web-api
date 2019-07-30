@@ -61,7 +61,7 @@ namespace AdminWebApi
             // Repositories
             services.AddScoped<IUserRepository, UserRepositoryImpl>();
             services.AddScoped<IRoleRepository, RoleRepositoryImpl>();
-            services.AddScoped<IPremesisRepository, PremisesRepositoryImpl>();
+            services.AddScoped<IPremisesRepository, PremisesRepositoryImpl>();
             services.AddScoped<IRegisterInfoRepository, RegisterInfoRepositoryImpl>();
             services.AddScoped<IPremisesTypeRepository, PremisesTypeRepositoryImpl>();
 

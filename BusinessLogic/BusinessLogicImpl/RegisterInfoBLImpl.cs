@@ -18,14 +18,14 @@ namespace BusinessLogic.BusinessLogicImpl
     public class RegisterInfoBLImpl : IRegisterInfoBL
     {
         private IPremisesTypeRepository _premisesTypeRepos;
-        private IPremesisRepository _premisesRepos;
+        private IPremisesRepository _premisesRepos;
         private IRegisterInfoRepository _registerRepos;
         private IUserRepository _userRepository;
         private IEmailSender _mailSender;
         private IRoleRepository _roleRepos;
         public RegisterInfoBLImpl(IRegisterInfoRepository registerRepos,
             IPremisesTypeRepository premisesTypeRepos,
-            IPremesisRepository premisesRepos,
+            IPremisesRepository premisesRepos,
             IUserRepository userRepository,
             IEmailSender mailSender,
             IRoleRepository roleRepos
