@@ -24,7 +24,7 @@ namespace AdminWebApi.Controllers
     [ApiController]
     public class GuestController : ControllerBase
     {
-
+        private readonly IRoleBL _roleBL;
         private readonly IUserBL _userBL;
         private readonly IMapper _mapper;
         private readonly IEmailSender _mailSender;

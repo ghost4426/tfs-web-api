@@ -81,6 +81,7 @@ namespace CommonWebApi
             services.AddScoped<IPremisesTypeRepository, PremisesTypeRepositoryImpl>();
 
             //BusinessLogic
+            services.AddScoped<IProductBL, ProductBLImpl>();
             services.AddScoped<IUserBL, UserBLImpl>();
             services.AddScoped<IRoleBL, RoleBLImpl>();
             services.AddScoped<IFoodBL, FoodBLImpl>();

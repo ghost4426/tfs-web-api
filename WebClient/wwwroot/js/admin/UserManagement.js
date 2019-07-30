@@ -89,20 +89,7 @@ function getUserInfo(userId) {
         })
     getRole();
 }
-//Load Image
-function readURL(input) {
-    if (input.files && input.files[0]) {
-        var reader = new FileReader();
-        reader.onload = function (e) {
-            $('#avatar')
-                .attr('src', e.target.result)
-                .width(150)
-                .height(200);
-        };
 
-        reader.readAsDataURL(input.files[0]);
-    }
-}
 function getRole() {
     $("#dllRole").empty();
     $.ajax({
@@ -119,62 +106,7 @@ function getRole() {
         }
     })
 }
-//Change pass
-$('#changePassButton').click(function () {
-    var userId = parseInt($('#txtUserIdPass').val());
-    var oldPass = $('#txtOldPass').val();
-    var newPass = $('#txtNewPass').val();
-    var confirmNewPass = $('#txtConfirmNewPass').val();
-    if (confirmNewPass == newPass) {
-        callAjax(
-            {
-                url: USER_PASS_CHANGE_URI + 16,
-                dataType: JSON_DATATYPE,
-                type: PUT,
-            },
-            JSON.stringify({
-                newPass: newPass,
-                oldPass: oldPass,
-            }),
-            function (result) {
-                toastr.success('Đổi mật khẩu thành công', 'Thành Công');
-                //setTimeout("location.reload(true);", 2000);
-                $('#changePass').modal('hide');
-                /*$('#userTable').DataTable().ajax.reload();*/
-            },
-            function (result) {
-                toastr.error("Mật khẩu cũ không chính xác!");
-            })
-    } else {
-        toastr.error("Xác nhận mật khẩu không chính xác!")
-    }
-});
-//Confirm save 
-$('#confirmSaveButton').click(function () {
-    var userId = parseInt($('#userId').val());
-    var FullName = $('#FullName').val();
-    var Email = $('#Email').val();
-    var Phone = $('#Phone').val();
-    callAjax(
-        {
-            type: PUT,
-            url: USER_UPDATE_URI + 16,
-        },
-        JSON.stringify({
-            fullName: FullName,
-            Email: Email,
-            phone: Phone
-        }),
-        function (result) {
-            toastr.success('Cập nhật thông tin người dùng thành công', 'Thành Công');
-            //setTimeout("location.reload(true);", 2000);
-            $('#confirm').modal('hide');
-            /*$('#userTable').DataTable().ajax.reload();*/
-        },
-        function (result) {
-            toastr.error(result);
-        })
-});
+
 //Change Role
 function changeRole() {
     $('#changeRoleButton').click(function () {
@@ -201,22 +133,4 @@ function changeRole() {
     })
 }
 
-/*$('#changeRoleButton').click(function () {
-    var userId = parseInt($('input[name="UserId2"]').val());
-    var roleId = $('select[name="Role2"]').val();
-    callAjax({
-        type: PUT,
-        url: 'https://localhost:4200/api/Admin/User/Role/' + userId,
-        dataType: JSON_DATATYPE,
-        data: roleId,
-    }, JSON.stringify(),
-        function (result) {
-            toastr.success('Cập nhật thông tin người dùng thành công', 'Thành Công');
-            $('#changeRole').modal('hide');
-            $('#userTable').DataTable().ajax.reload();
-        },
-        function (result) {
-            toastr.error(result);
-        }
-    )
-});*/
+
