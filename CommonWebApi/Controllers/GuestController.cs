@@ -16,6 +16,7 @@ using AutoMapper;
 using Common.Utils;
 using DTO.Models.Exception;
 using Common.Constant;
+using Newtonsoft.Json;
 
 namespace AdminWebApi.Controllers
 {
@@ -25,20 +26,17 @@ namespace AdminWebApi.Controllers
     {
 
         private readonly IUserBL _userBL;
-        private readonly IRoleBL _roleBL;
         private readonly IMapper _mapper;
         private readonly IEmailSender _mailSender;
         private readonly JWTSetttings _appSettings;
 
         public GuestController(
             IUserBL userBL,
-            IRoleBL roleBL,
             IMapper mapper,
             IEmailSender mailSender,
             IOptions<JWTSetttings> appSettings)
         {
             _userBL = userBL;
-            _roleBL = roleBL;
             _mapper = mapper;
             _mailSender = mailSender;
             _appSettings = appSettings.Value;
@@ -49,26 +47,22 @@ namespace AdminWebApi.Controllers
         {
             try
             {
-                var user = await _userBL.CheckLogin(login);
-                var tokenDescriptor = new SecurityTokenDescriptor
+                var token = await _userBL.CheckLogin(login);
+                Entities.User user = null;
+                if(token != null)
                 {
-                    Subject = new ClaimsIdentity(new Claim[]
-                    {
-                        new Claim("UserID",user.UserId.ToString()),
-                        new Claim("roles", user.Role.Name),
-                        new Claim("premesisId", user.PremisesId.ToString())
-                    }),
-                    Expires = DateTime.UtcNow.AddMinutes(30),
-                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature)
+                    user = await _userBL.FindByName(login.Username);
+                }
+                var loginReponse = new Models.UserLoginReponse()
+                {
+                    User = _mapper.Map<Models.UserData>(user),
+                    Token = token
                 };
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var securityToken = tokenHandler.CreateToken(tokenDescriptor);
-                var token = tokenHandler.WriteToken(securityToken);
-                return Ok(new { token });
+                return Ok(new { Data = loginReponse });
             }
             catch (Exception e)
             {
-                return BadRequest(new { message = e.Message.ToString() });
+                return BadRequest(new { Message = e.Message.ToString() });
             }
         }
 

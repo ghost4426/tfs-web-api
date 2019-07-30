@@ -30,9 +30,9 @@ namespace Common.Constant
 
     public static class CategoryDataConstant
     {
-        public const string PORK = "Thịt Heo";
-        public const string CHICKEN = "Thịt Gà";
-        public const string BEEF = "Thịt Bò";
+        public const string PORK = "Heo";
+        public const string CHICKEN = "Gà";
+        public const string BEEF = "Bò";
 
         public const int PORK_ID = 1;
         public const int CHICKEN_ID = 2;
@@ -57,7 +57,7 @@ namespace Common.Constant
         public const string CREATE_NEW = "Tạo mới";
         public const string ADD_FEEDING = "Thức ăn";
         public const string ADD_VACCINATION = "Vac-xin";
-        public const string ADD_CERTIFICATION = "Kiểm định";
+        public const string ADD_VERIFY = "Kiểm định";
         public const string ADD_PROVIDER = "Nhà cung cấp";
         public const string ADD_TREATMENT = "Quy trình xử lý";
         public const string ADD_PACKAGING = "Đóng gói";
@@ -65,7 +65,7 @@ namespace Common.Constant
         public const int CREATE_NEW_ID = 1;
         public const int ADD_FEEDING_ID = 2;
         public const int ADD_VACCINATION_ID = 3;
-        public const int ADD_CERTIFICATION_ID = 4;
+        public const int ADD_VERIFY_ID = 4;
         public const int ADD_PROVIDER_ID = 5;
         public const int ADD_TREATMENT_ID = 6;
         public const int ADD_PACKAGING_ID = 7;

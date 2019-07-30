@@ -15,7 +15,8 @@ namespace DataAccess.IRepositories
         TEntity GetById(object id);
         TEntity Find(Expression<Func<TEntity, bool>> match);
         IQueryable<TEntity> GetIQueryable();
-        IList<TEntity> GetAllPaged(int pageIndex, int pageSize, out int totalCount);
+        //IList<TEntity> GetAllPaged(int pageIndex, int pageSize, out int totalCount);
+
         int Count();
         object Insert(TEntity entity, bool saveChanges = true);
         void Delete(object id, bool saveChanges = true);

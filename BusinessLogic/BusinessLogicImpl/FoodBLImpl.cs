@@ -83,7 +83,7 @@ namespace BusinessLogic.BusinessLogicImpl
                 case EFoodDetailType.VACCINATION:
                     food.IsVaccination = true;
                     break;
-                case EFoodDetailType.CERTIFICATION:
+                case EFoodDetailType.VERIFY:
                     food.IsCertification = true;
                     break;
                 case EFoodDetailType.TREATMENT:
@@ -111,6 +111,18 @@ namespace BusinessLogic.BusinessLogicImpl
         public async Task<int> createProviderFood(ProviderFood newProviderFood)
         {
             return await _providerFoodRepository.createProviderFood(newProviderFood);
+        }
+
+        public async Task UpdateFoodTreatment(Food food, int foodId)
+        {
+            Food result = _productRepos.GetById(food.FoodId);
+            result.TreatmentId = food.TreatmentId;
+            await _productRepos.UpdateAsync(result, foodId);
+        }
+
+        public async Task<Food> getFoodById(int foodId)
+        {
+            return await _productRepos.GetByIdAsync(foodId);
         }
     }
 }

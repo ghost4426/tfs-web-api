@@ -11,7 +11,11 @@ using System.Linq;
 using Models = DTO.Models;
 using Common.Constant;
 using Entities = DTO.Entities;
-
+using System.Security.Claims;
+using DTO.Models.Common;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace BusinessLogic.BusinessLogicImpl
 {
@@ -20,12 +24,18 @@ namespace BusinessLogic.BusinessLogicImpl
         private IUserRepository _userRepos;
         private IRoleRepository _roleRepos;
         private IPremisesRepository _premesisRepos;
+        private readonly JWTSetttings _appSettings;
 
-        public UserBLImpl(IUserRepository userRepos, IRoleRepository roleRepos, IPremisesRepository premesisRepos)
+
+        public UserBLImpl(IUserRepository userRepos
+            , IRoleRepository roleRepos
+            , IPremisesRepository premesisRepos
+            , IOptions<JWTSetttings> appSettings)
         {
             _userRepos = userRepos;
             _roleRepos = roleRepos;
             _premesisRepos = premesisRepos;
+            _appSettings = appSettings.Value;
         }
 
 
@@ -99,9 +109,9 @@ namespace BusinessLogic.BusinessLogicImpl
                 return await this._userRepos.changeRole1User(user);
             }
         }
-        public async Task<User> CheckLogin(Models.LoginRequest loginInfo)
+        public Task<string> CheckLogin(Models.LoginRequest loginInfo)
         {
-            var user = await this._userRepos.FindByUsername(loginInfo.Username);
+            var user = _userRepos.GetAllIncluding(u => u.Role, u => u.Premises, u => u.Premises.PremisesType).Where(u => u.Username == loginInfo.Username).SingleOrDefault();
             if (user != null)
             {
                 var isCorrectPassword = PasswordHasher.CheckHashedPassword(new Models.HashPassword()
@@ -112,8 +122,39 @@ namespace BusinessLogic.BusinessLogicImpl
                 });
                 if (isCorrectPassword)
                 {
-                    user.Role = _roleRepos.GetById(user.RoleId);
-                    return user;
+                    var roles = new List<string>
+                    {
+                    user.Role.Name
+                    };
+                    string premesisId = null;
+                    if (user.Premises != null)
+                    {
+                        roles.Add(user.Premises.PremisesType.Name);
+                        premesisId = user.Premises.PremisesId.ToString();
+                    }
+
+                    ClaimsIdentity subject = new ClaimsIdentity();
+                    subject.AddClaim(new Claim("userID", user.UserId.ToString()));
+                    if (premesisId != null)
+                    {
+                        subject.AddClaim(new Claim("premisesID", premesisId));
+                    }
+                    foreach (var role in roles)
+                    {
+                        subject.AddClaim(new Claim(ClaimTypes.Role, role));
+                    }
+
+                    var tokenDescriptor = new SecurityTokenDescriptor
+                    {
+
+                        Subject = subject,
+                        Expires = DateTime.UtcNow.AddMinutes(30),
+                        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature)
+                    };
+                    var tokenHandler = new JwtSecurityTokenHandler();
+                    var securityToken = tokenHandler.CreateToken(tokenDescriptor);
+                    var token = tokenHandler.WriteToken(securityToken);
+                    return Task.FromResult(token);
                 }
             }
             throw new InvalidUsernameOrPasswordException(msg: MessageConstant.WRONG_PASS_OR_USERNAME);
@@ -166,11 +207,12 @@ namespace BusinessLogic.BusinessLogicImpl
             throw new NotImplementedException();
         }
 
-        //public Task Register(User user, Premises premises)
-        //{
-        //    _userRepos.Insert(user);
-        //    _premesisRepos.Insert(premises);
-        //}
+        public Task<User> FindByName(string username)
+        {
+            var user = _userRepos.GetAllIncluding(u => u.Role, u => u.Premises, u => u.Premises.PremisesType).Where(u => u.Username == username).SingleOrDefault();
+            return Task.FromResult(user);
+        }
+
     }
 }
 

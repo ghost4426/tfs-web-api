@@ -85,10 +85,21 @@ function callAjaxAuth(callParams, dataParams, successCallback, errorCallback) {
         type: callParams.type,
         data: dataParams,
         headers: {
-            "Authorization": 'Bearer ' + sessionStorage.getItem('token')
+            'Accept': 'application/json',
+            'Content-Type': 'application/json; charset=utf-8',
+            "Authorization": 'Bearer ' + Cookies.get('token')
         },
-        beforeSend: startLoadingPage
-    }).done(function (result) {
+        crossDomain: true,
+        xhrFields: {
+            withCredentials: true,
+        },
+        beforeSend: showLoadingPage,
+        statusCode: {
+            401: function () {
+                window.location.replace("/dang-nhap");
+            },
+        },
+    }).done(function (result, textStatus) {
         successCallback(result);
     }).fail(function (result) {
         errorCallback(result);
@@ -103,7 +114,12 @@ function callAjax(callParams, dataParams, successCallback, errorCallback) {
         data: dataParams,
         headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/json; charset=utf-8'
+            'Content-Type': 'application/json; charset=utf-8',
+
+        },
+        crossDomain: true,
+        xhrFields: {
+            withCredentials: true,
         },
         beforeSend: showLoadingPage
     }).done(function (result) {
@@ -132,4 +148,34 @@ function showLoadingPage() {
 
 function hideLoadingPage() {
     $.unblockUI();
+}
+
+
+function Authorization() {
+    const token = Cookies.get('token');
+    if (token == null || token == 'undefined') {
+        window.location.replace("/dang-nhap");
+    };
+    const loggerData = jwt_decode(token);
+    var roles = loggerData.role;
+    $.each(roles, function (data, value) {
+        switch (value) {
+            case "Farm":
+                $("#main-menu").append(' <ul class="nav navbar-nav" id="main-menu-navigation" data-menu="menu-navigation"> <li class="dropdown nav-item">'
+                    + ' <a class= "nav-link" asp-controller="Farm" asp-action="Index" >'
+                    + '<i class="fa fa-pied-piper-alt"></i>'
+                    + ' <span data-i18n="nav.category.general">Quản lý thực phẩm</span>'
+                    + ' </a >'
+                    + ' </li >'
+                    + '<li class="dropdown nav-item">'
+                    + ' <a class="nav-link" asp-controller="Farm" asp-action="Transaction" >'
+                    + '<i class="fa fa-pied-piper-alt"></i>'
+                    + ' <span data-i18n="nav.category.general">Quản lý thực phẩm</span>'
+                    + ' </a >'
+                    + ' </li >  </ul>');
+                break;
+            case "Manager":
+                break;
+        }
+    });
 }

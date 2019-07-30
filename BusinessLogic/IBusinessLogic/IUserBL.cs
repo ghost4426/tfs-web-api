@@ -11,7 +11,7 @@ namespace BusinessLogic.IBusinessLogic
     {
         Task<bool> CreateUser(User newUser);
 
-        Task<User> CheckLogin(Models.LoginRequest loginInfo);
+        Task<string> CheckLogin(Models.LoginRequest loginInfo);
 
         Task<User> GetById(int id);
 
@@ -28,6 +28,8 @@ namespace BusinessLogic.IBusinessLogic
         Task Register(User user, Premises premises);
 
         Task ChangePassword(int id, string password, string oldPass);
+
+        Task<User> FindByName(string username);
 
     }
 }

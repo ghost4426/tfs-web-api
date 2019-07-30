@@ -23,7 +23,7 @@ using Swashbuckle.AspNetCore.Swagger;
 using Common.Constant;
 using Swashbuckle.AspNetCore.Filters;
 using Microsoft.IdentityModel.Tokens;
-using ContractInteraction.Services;
+using ContractInteraction.ContractServices;
 using Common.Utils;
 using AutoMapper;
 using Common.Mapper;
@@ -41,11 +41,13 @@ namespace CommonWebApi
 
         public IConfiguration Configuration { get; }
 
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddJsonOptions(opt =>
                 {
                     var resolver = opt.SerializerSettings.ContractResolver;
@@ -88,9 +90,10 @@ namespace CommonWebApi
             services.AddScoped<ITreatmentBL, TreatmentBLImpl>();
             services.AddScoped<IFoodDetailBL, FoodDetailImpl>();
             services.AddScoped<IRegisterInfoBL, RegisterInfoBLImpl>();
+            services.AddSingleton<IEmailSender, EmailSender>();
 
             //Service
-            services.AddScoped<IService, ServiceImpl>();
+            services.AddScoped<IContractServices, ContractServicesImpl>();
 
             #endregion
             services.Configure<AuthMessageSenderOptions>(Configuration.GetSection("AuthMessageSenderOptions"));
@@ -142,6 +145,17 @@ namespace CommonWebApi
                 };
             });
 
+            services.AddCors(option =>
+            {
+            option.AddPolicy(MyAllowSpecificOrigins,
+                buidder => {
+                    buidder.WithOrigins("https://localhost:5000")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials();
+                });
+            });
+
             //Inject AppSettings
             services.Configure<JWTSetttings>(Configuration.GetSection("JWTSetttings"));
 
@@ -173,13 +187,7 @@ namespace CommonWebApi
             });
 
             app.UseAuthentication();
-            //Configuration["JWTSetttings:Client_URL"].ToString()
-            app.UseCors(builder =>
-            builder.AllowAnyOrigin()
-            .AllowAnyHeader()
-            .AllowAnyMethod()
-            );
-
+            app.UseCors(MyAllowSpecificOrigins);
             app.UseMvc();
         }
     }

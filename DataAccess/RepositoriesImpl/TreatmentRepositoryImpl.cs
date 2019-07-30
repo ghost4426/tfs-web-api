@@ -4,6 +4,7 @@ using DTO.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace DataAccess.RepositoriesImpl
 {
@@ -15,6 +16,11 @@ namespace DataAccess.RepositoriesImpl
            : base(dbContext)
         {
             _dbContext = dbContext;
+        }
+
+        public async Task<IList<Treatment>> getAllTreatmentById(int treatmentId)
+        {
+            return await FindAllAsync(x => x.TreatmentId == treatmentId | x.TreatmentParentId == treatmentId);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿$(document).ready(function () {
     // count farm transaction
-    var count = callAjax(
+    var count = callAjaxAuth(
         {
             url: COUNT_FARM_TRANSACTION_URI,
             dataType: JSON_DATATYPE,
@@ -12,7 +12,7 @@
     ) 
 
     // count provider transaction
-    var count = callAjax(
+    var count = callAjaxAuth(
         {
             url: COUNT_PROVIDER_TRANSACTION_URI,
             dataType: JSON_DATATYPE,
@@ -22,6 +22,8 @@
             $("#count-provider-trans").html(result);
         }
     )
+
+    Authorization();
 });
 
 $("#view-farm-trans").click(function () {

@@ -1,122 +1,105 @@
 ﻿
 @{
-    ViewData["Title"] = "Đăng Nhập";
     Layout = null;
 }
 
 <!DOCTYPE html>
-<html class="loading" lang="en" data-textdirection="ltr">
+<html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
-    <meta name="description" content="Robust admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template.">
-    <meta name="keywords" content="admin template, robust admin template, dashboard template, flat admin template, responsive admin template, web app, crypto dashboard, bitcoin dashboard">
-    <meta name="author" content="PIXINVENT">
-    <title>@ViewData["Title"]</title>
-    <link rel="apple-touch-icon" href="~/app-assets/images/ico/apple-icon-120.png">
-    <link rel="shortcut icon" type="image/x-icon" href="~/app-assets/images/ico/favicon.ico">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Muli:300,400,500,700"
-          rel="stylesheet">
-    <!-- BEGIN VENDOR CSS-->
-    <link rel="stylesheet" type="text/css" href="~/app-assets/css/vendors.css">
-    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/forms/icheck/icheck.css">
-    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/forms/icheck/custom.css">
-    <!-- END VENDOR CSS-->                      
-    <!-- BEGIN ROBUST CSS-->                    
-    <link rel="stylesheet" type="text/css" href="~/app-assets/css/app.css">
-    <!-- END ROBUST CSS-->                      
-    <!-- BEGIN Page Level CSS-->                
-    <link rel="stylesheet" type="text/css" href="~/app-assets/css/core/menu/menu-types/horizontal-menu.css">
-    <link rel="stylesheet" type="text/css" href="~/app-assets/css/core/colors/palette-gradient.css">
-    <link rel="stylesheet" type="text/css" href="~/app-assets/css/pages/login-register.css">
-    <!-- END Page Level CSS-->                  
-    <!-- BEGIN Custom CSS-->                    
-    <link rel="stylesheet" type="text/css" href="~/assets/css/style.css">
-    <!-- END Custom CSS-->
+    <title>Login - Food Tracking</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--===============================================================================================-->
+    <link rel="icon" type="image/png" href="~/app-assets/images/icons/favicon.ico" />
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/app-assets/vendor/bootstrap/css/bootstrap.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/app-assets/fonts/font-awesome/css/font-awesome.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/app-assets/vendor/animate/animate.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/app-assets/vendor/css-hamburgers/hamburgers.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/app-assets/vendor/select2/select2.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/css/home/util.css">
+    <link rel="stylesheet" type="text/css" href="~/css/home/login.css">
+    <!--===============================================================================================-->
 </head>
-<body class="horizontal-layout horizontal-menu horizontal-menu-padding 1-column   menu-expanded blank-page blank-page"
-      data-open="hover" data-menu="horizontal-menu" data-col="1-column">
-    <!-- ////////////////////////////////////////////////////////////////////////////-->
-    <div class="app-content container center-layout mt-2">
-        <div class="content-wrapper">
-            <div class="content-header row">
-            </div>
-            <div class="content-body">
-                <section class="flexbox-container">
-                    <div class="col-12 d-flex align-items-center justify-content-center">
-                        <div class="col-md-4 col-10 box-shadow-2 p-0">
-                            <div class="card border-grey border-lighten-3 m-0">
-                                <div class="card-header border-0">
-                                    <div class="card-title text-center">
-                                        <div class="p-1">
-                                            <img src="./app-assets/images/logo/logo-dark.png" alt="branding logo">
-                                        </div>
-                                    </div>
-                                    <h6 class="card-subtitle line-on-side text-muted text-center font-small-3 pt-2">
-                                        <span>Đăng nhập</span>
-                                    </h6>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-body">
-                                        <form class="form-horizontal form-simple" action="./trang-chu" novalidate>
-                                            <fieldset class="form-group position-relative has-icon-left mb-0">
-                                                <input type="text" class="form-control form-control-lg input-lg" id="user-name" placeholder="Username"
-                                                       required>
-                                                <div class="form-control-position">
-                                                    <i class="ft-user"></i>
-                                                </div>
-                                            </fieldset>
-                                            <fieldset class="form-group position-relative has-icon-left">
-                                                <input type="password" class="form-control form-control-lg input-lg" id="user-password"
-                                                       placeholder="Mật Khẩu" required>
-                                                <div class="form-control-position">
-                                                    <i class="fa fa-key"></i>
-                                                </div>
-                                            </fieldset>
-                                            <div class="form-group row">
-                                                <div class="col-md-6 col-12 text-center text-md-left">
-                                                    <fieldset>
-                                                        <input type="checkbox" id="remember-me" class="chk-remember">
-                                                        <label for="remember-me"> Nhớ tài khoản</label>
-                                                    </fieldset>
-                                                </div>
-                                                <div class="col-md-6 col-12 text-center text-md-right"><a asp-controller="Home" asp-action="RecoverPassword" class="card-link">Quên mật khẩu?</a></div>
-                                            </div>
-                                            <button type="submit" class="btn btn-info btn-lg btn-block"><i class="ft-unlock"></i> Đăng Nhập</button>
-                                        </form>
-                                    </div>
-                                </div>
-                                <div class="card-footer">
-                                    <div class="">
-                                        <p class="float-sm-left text-center m-0"><a asp-controller="Home" asp-action="RecoverPassword"class="card-link">Đặt lại mật khẩu</a></p>
-                                        @*<p class="float-sm-right text-center m-0">New to Moden Admin? <a href="register-simple.html" class="card-link">Sign Up</a></p>*@
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+<body>
+
+    <div class="limiter">
+        <div class="container-login100">
+            <div class="wrap-login100">
+                <div class="login100-pic js-tilt" data-tilt>
+                    <img src="~/app-assets/images/img-01.png" alt="IMG">
+                </div>
+
+                <form class="login100-form validate-form" method="post">
+                    <span class="login100-form-title">
+                        <b>Đăng Nhập</b>
+                    </span>
+                    <div class="wrap-input100 validate-input" data-validate="Vui lòng nhập tài khoản">
+                        <input class="input100" type="text" name="username" placeholder="Tài Khoản">
+                        <span class="focus-input100"></span>
+                        <span class="symbol-input100">
+                            <i class="fa fa-user" aria-hidden="true"></i>
+                        </span>
                     </div>
-                </section>
+
+                    <div class="wrap-input100 validate-input" data-validate="Vui lòng nhập mật khẩu">
+                        <input class="input100" type="password" name="password" placeholder="Mật Khẩu">
+                        <span class="focus-input100"></span>
+                        <span class="symbol-input100">
+                            <i class="fa fa-lock" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="container-login100-form-btn">
+                        <button class="login100-form-btn">
+                            Đăng Nhập
+                        </button>
+                    </div>
+
+                    <div class="text-center p-t-12">
+                        <span class="txt1">
+                            Quên
+                        </span>
+                        <a class="txt2" asp-controller="Home" asp-action="RecoverPassword">
+                            Tài Khoản / Mật khẩu ?
+                        </a>
+                    </div>
+
+                    <div class="text-center p-t-136">
+                        <a class="txt2" href="#">
+                            Tạo tài khoản
+                            <i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-    <!-- ////////////////////////////////////////////////////////////////////////////-->
-    <!-- BEGIN VENDOR JS-->
-    <script src="~/app-assets/vendors/js/vendors.min.js" type="text/javascript"></script>
-    <!-- BEGIN VENDOR JS-->
-    <!-- BEGIN PAGE VENDOR JS-->
-    <script type="text/javascript" src="~/app-assets/vendors/js/ui/jquery.sticky.js"></script>
-    <script src="~/app-assets/vendors/js/forms/icheck/icheck.min.js" type="text/javascript"></script>
-    <script src="~/app-assets/vendors/js/forms/validation/jqBootstrapValidation.js"
-            type="text/javascript"></script>
-    <!-- END PAGE VENDOR JS-->
-    <!-- BEGIN ROBUST JS-->
-    <script src="~/app-assets/js/core/app-menu.js" type="text/javascript"></script>
-    <script src="~/app-assets/js/core/app.js" type="text/javascript"></script>
-    <!-- END ROBUST JS-->
-    <!-- BEGIN PAGE LEVEL JS-->
-    <script src="~/app-assets/js/scripts/forms/form-login-register.min.js" type="text/javascript"></script>
-    <!-- END PAGE LEVEL JS-->
+
+
+
+
+    <!--===============================================================================================-->
+    <script src="~/app-assets/vendor/jquery/jquery-3.2.1.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/app-assets/vendor/bootstrap/js/popper.js"></script>
+    <script src="~/app-assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/app-assets/vendor/select2/select2.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/app-assets/vendor/tilt/tilt.jquery.min.js"></script>
+    <script>
+		$('.js-tilt').tilt({
+			scale: 1.1
+		})
+    </script>
+    <!--===============================================================================================-->
+    <script src="~/js/home/login.js"></script>
+
 </body>
 </html>
-
