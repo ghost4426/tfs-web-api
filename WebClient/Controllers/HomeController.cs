@@ -17,6 +17,12 @@ namespace WebClient.Controllers
     {
         public IActionResult Index()
         {
+            return RedirectToAction("Dashboard");
+        }
+
+        [Route("trang-chu")]
+        public IActionResult Dashboard()
+        {
             return View();
         }
 
@@ -61,11 +67,8 @@ namespace WebClient.Controllers
                     new ClaimsPrincipal(claimsIdentity),
                     authProperties);
 
-                Response.Cookies.Append("token", data.Token, new CookieOptions()
-                {
-                    IsEssential = true
-                });
-                return RedirectToAction("UpdateProfile", "User");
+                Response.Cookies.Append("token", data.Token);
+                return RedirectToAction("Dashboard");
             }
 
             ModelState.AddModelError(string.Empty, result.Message);
