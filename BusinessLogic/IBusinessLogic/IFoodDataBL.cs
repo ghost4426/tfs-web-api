@@ -16,7 +16,7 @@ namespace BusinessLogic.IBusinessLogic
 
         Task<string> AddFeedings(long foodId, List<string> feedings);
 
-        Task<string> AddVaccination(long foodId, string vaccinationType);
+        Task<string> AddVaccination(long foodId, List<string> vaccinationType);
 
         Task<string> AddCertification(long foodId, string certificationNumber);
 
@@ -28,7 +28,9 @@ namespace BusinessLogic.IBusinessLogic
 
         Task<FoodData> GetFoodDataByID(long id);
 
-        Task<IList<string>> GetFeedingsByIdAsync(int foodId);
+        Task<IList<string>> GetFeedingsById(int foodId);
+
+        Task<IList<Vaccination>> GetVaccinsById(int foodId);
 
     }
 }

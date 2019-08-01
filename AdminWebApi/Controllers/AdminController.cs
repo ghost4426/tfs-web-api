@@ -93,25 +93,25 @@ namespace AdminWebApi.Controllers
             {
                 Entities.User user = new Entities.User()
                 {
-                    Username = "Farm1",
-                    Email = "Farm@test.com",
-                    Fullname = "Farm",
+                    Username = "Dist1",
+                    Email = "Distributor@test.com",
+                    Fullname = "Distributor",
                     RoleId = 2,
-                    PremisesId = 1
+                    PremisesId = 3
 
                 };
                 user.Password = "123";
                 await _userBL.CreateUser(user);
-                user = new Entities.User()
-                {
-                    Username = "Provider1",
-                    Email = "Provider@test.com",
-                    Fullname = "Provider",
-                    RoleId = 2,
-                    PremisesId = 2
-                };
-                user.Password = "123";
-                await _userBL.CreateUser(user);
+                //user = new Entities.User()
+                //{
+                //    Username = "Provider1",
+                //    Email = "Provider@test.com",
+                //    Fullname = "Provider",
+                //    RoleId = 2,
+                //    PremisesId = 1
+                //};
+                //user.Password = "123";
+                //await _userBL.CreateUser(user);
 
                 return Ok(new { messsage = MessageConstant.INSERT_SUCCESS });
 

@@ -17,6 +17,12 @@ namespace WebClient.Controllers
     {
         public IActionResult Index()
         {
+            return RedirectToAction("Dashboard");
+        }
+
+        [Route("trang-chu")]
+        public IActionResult Dashboard()
+        {
             return View();
         }
 

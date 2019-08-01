@@ -88,21 +88,24 @@ namespace BusinessLogic.BusinessLogicImpl
             return await SaveFoodData(FoodData);
         }
 
-        public async Task<string> AddVaccination(long foodId, string vaccinationType)
+        public async Task<string> AddVaccination(long foodId, List<string> vaccinationType)
         {
             var FoodData = await GetFoodDataByID(foodId);
-            var vaccin = new Vaccination()
+            for (int i = 0; i < vaccinationType.Count; i++)
             {
-                VaccinationType = vaccinationType,
-                VaccinationDate = DateTime.Now
-            };
+                var vaccin = new Vaccination()
+                {
+                    VaccinationType = vaccinationType[i],
+                    VaccinationDate = DateTime.Now
+                };
+                if (FoodData.Farm.Vaccinations == null)
+                {
+                    FoodData.Farm.Vaccinations = new List<Vaccination>();
+                }
 
-            if(FoodData.Farm.Vaccinations == null)
-            {
-                FoodData.Farm.Vaccinations = new List<Vaccination>();
+                FoodData.Farm.Vaccinations.Add(vaccin);
             }
-
-            FoodData.Farm.Vaccinations.Add(vaccin);
+          
 
             return await SaveFoodData(FoodData);
         }
@@ -137,10 +140,16 @@ namespace BusinessLogic.BusinessLogicImpl
             return await SaveFoodData(FoodData);
         }
 
-        public async Task<IList<string>> GetFeedingsByIdAsync(int foodId)
+        public async Task<IList<string>> GetFeedingsById(int foodId)
         {
             var FoodData = await GetFoodDataByID(foodId);
             return FoodData.Farm.Feedings;
+        }
+
+        public async Task<IList<Vaccination>> GetVaccinsById(int foodId)
+        {
+            var FoodData =  await GetFoodDataByID(foodId);
+            return FoodData.Farm.Vaccinations;
         }
     }
 }
