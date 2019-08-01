@@ -40,7 +40,8 @@ namespace Common.Mapper
                 .ReverseMap();
            CreateMap<Entities.Premises, Models.PremisesProvider>()
                 .ReverseMap();
-           
+            CreateMap<Entities.Premises, Models.Premises>()
+                 .ReverseMap();
 
             CreateMap<Entities.Premises, Models.RegisterRequest>()
                 .ForMember(dest => dest.PremisesName, opts => opts.MapFrom(src => src.Name))
@@ -52,8 +53,6 @@ namespace Common.Mapper
                 .ForMember(dest => dest.CategoryName, opts => opts.MapFrom(src => src.Category.Name))
                 .ForMember(dest => dest.CategoryId, opts => opts.MapFrom(src => src.Category.CategoryId))
                 .ReverseMap();
-
-            CreateMap<Entities.Premises, Models.PremisesProvider>().ReverseMap();
 
             CreateMap<Entities.Transaction, Models.TransactionRequest>().ReverseMap();
 

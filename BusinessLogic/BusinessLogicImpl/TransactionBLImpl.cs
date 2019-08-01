@@ -4,6 +4,7 @@ using DTO.Entities;
 using DTO.Models.Exception;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -80,20 +81,28 @@ namespace BusinessLogic.BusinessLogicImpl
             trans.RejectedReason = transaction.RejectedReason;
             await _transactionRepos.UpdateAsync(trans, transId);
         }
-        public async Task<Transaction> GetTransactionById(int id)
+        public Task<Transaction> GetTransactionById(int id)
         {
-            var dto =  _transactionRepos.GetById(id);
-            dto.Farm = _premisesRepos.GetById(dto.FarmId);
-            dto.Provider = _premisesRepos.GetById(dto.ProviderId);
-            dto.Food = _foodRepos.GetById(dto.FoodId);
-            return dto;
+            var tran =  _transactionRepos.GetAllIncluding(t => t.Farm, t => t.Provider, t => t.Food).Where(t => t.TransactionId == id).SingleOrDefault();
+            return Task.FromResult(tran);
+            //dto.Farm = _premisesRepos.GetById(dto.FarmId);
+            //dto.Provider = _premisesRepos.GetById(dto.ProviderId);
+            //dto.Food = _foodRepos.GetById(dto.FoodId);
+            //return dto;
         }
-        public async Task<Transaction> UpdateTransaction(int id, int status, string reasone)
+        public async Task<Transaction> UpdateTransaction(int id, int status, string reason)
         {
         
             var transaction = _transactionRepos.GetById(id);
             transaction.StatusId = status;
-            transaction.RejectedReason = reasone;
+            if(status == 3)
+            {
+                transaction.VeterinaryComment = reason;
+            } else
+            {
+                transaction.RejectedReason = reason;
+            }
+            
             await _transactionRepos.UpdateAsync(transaction);
             return transaction;
         }
