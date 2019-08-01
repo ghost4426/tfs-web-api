@@ -113,10 +113,10 @@ namespace BusinessLogic.BusinessLogicImpl
             return await _providerFoodRepository.createProviderFood(newProviderFood);
         }
 
-        public async Task UpdateFoodTreatment(Food food, int foodId)
+        public async Task UpdateFoodTreatment(Food food, int foodId, int treatmentId)
         {
             Food result = _productRepos.GetById(food.FoodId);
-            result.TreatmentId = food.TreatmentId;
+            result.TreatmentId = treatmentId;
             await _productRepos.UpdateAsync(result, foodId);
         }
 

@@ -60,6 +60,7 @@ namespace Common.Mapper
                .ReverseMap();
 
             CreateMap<Entities.ProviderFood, Models.FoodProvider>()
+                .ForMember(dest => dest.TreatmentId, opts => opts.MapFrom(src => src.Food.TreatmentId))
                 .ReverseMap();
 
             CreateMap<Entities.Food, Models.Food>()
@@ -92,6 +93,11 @@ namespace Common.Mapper
             CreateMap<Entities.ProviderFood, Models.CreateProviderFoodRequest>().ReverseMap();
 
             CreateMap<Entities.Treatment, Models.FoodRespone.TreatmentReponse>().ReverseMap();
+
+            CreateMap<Entities.Treatment, Models.Option>()
+                 .ForMember(dest => dest.id, opts => opts.MapFrom(src => src.TreatmentId))
+                 .ForMember(dest => dest.text, opts => opts.MapFrom(src => src.Name))
+               .ReverseMap();
 
         }
     }

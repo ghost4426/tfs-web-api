@@ -19,5 +19,11 @@ namespace DTO.Models
             public string Name { get; set; }
             public int TreatmentParentId { get; set; }
         }
+
+        public class TreatmentPremises
+        {
+            public int TreatmentId { get; set; }
+            public string Name { get; set; }
+        }
     }
 }

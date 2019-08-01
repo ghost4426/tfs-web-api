@@ -32,11 +32,12 @@ namespace DTO.Models
         public DateTime CreatedDate { get; set; }
     }
 
-    public  class FoodProvider
+    public class FoodProvider
     {
         public int FoodId { get; set; }
-        public int PremisesId { get; set; }           
+        public int PremisesId { get; set; }
         public DateTime CreatedDate { get; set; }
         public Food Food { get; set; }
+        public int? TreatmentId {get;set;}
     }
 }

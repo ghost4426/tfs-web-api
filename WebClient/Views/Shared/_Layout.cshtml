@@ -64,7 +64,7 @@
                     </ul>
                     <ul class="nav navbar-nav float-right">
 
-                        <li id="view-farm-trans" class="dropdown dropdown-notification nav-item">
+                        @*<li id="view-farm-trans" class="dropdown dropdown-notification nav-item">
                             <a class="nav-link nav-link-label" data-toggle="dropdown">
                                 <i class="ficon ft-bell"></i>
                                 <span id="count-farm-trans" class="badge badge-pill badge-default badge-danger badge-default badge-up">0</span>
@@ -75,7 +75,7 @@
                                 <i class="ficon ft-bell"></i>
                                 <span id="count-provider-trans" class="badge badge-pill badge-default badge-danger badge-default badge-up">0</span>
                             </a>
-                        </li>
+                        </li>*@
                         <li class="dropdown dropdown-user nav-item">
                             <a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
                                 <span class="avatar avatar-online">
@@ -120,6 +120,12 @@
                                 <span data-i18n="nav.category.general">Quản lý thực phẩm</span>
                             </a>
                         </li>
+                        <li class="dropdown nav-item">
+                            <a class="nav-link" asp-controller="Farm" asp-action="FarmTransaction">
+                                <i class="fa fa-exchange"></i>
+                                <span data-i18n="nav.category.general">Quản lý giao dịch</span>
+                            </a>
+                        </li>
                     }
                     else if (role.Value == "Provider")
                     {
@@ -129,15 +135,21 @@
                                 <span data-i18n="nav.category.general">Quản lý thực phẩm</span>
                             </a>
                         </li>
+                        <li class="dropdown nav-item">
+                            <a class="nav-link" asp-controller="Provider" asp-action="ProviderTransaction">
+                                <i class="fa fa-exchange"></i>
+                                <span data-i18n="nav.category.general">Quản lý giao dịch</span>
+                            </a>
+                        </li>
                     }
                 }
 
                 @*<li class="dropdown nav-item">
-                        <a class="nav-link" asp-controller="Distributor" asp-action="Index">
-                            <i class="fa fa-truck"></i>
-                            <span data-i18n="nav.category.general">Quản lý thực phẩm</span>
-                        </a>
-                    </li>*@
+            <a class="nav-link" asp-controller="Distributor" asp-action="Index">
+                <i class="fa fa-truck"></i>
+                <span data-i18n="nav.category.general">Quản lý thực phẩm</span>
+            </a>
+        </li>*@
             </ul>
         </div>
     </div>
@@ -178,7 +190,7 @@
     <!-- BEGIN Custom JS-->
     <script src="~/js/constant/app-constant.js" type="text/javascript"></script>
     <script src="~/js/common/common.js" type="text/javascript"></script>
-    <script src="~/js/home/home.js" type="text/javascript"></script>
+    @*<script src="~/js/home/home.js" type="text/javascript"></script>*@
     <!-- END Custom JS-->
     @RenderSection("Scripts", required: false);
 </body>

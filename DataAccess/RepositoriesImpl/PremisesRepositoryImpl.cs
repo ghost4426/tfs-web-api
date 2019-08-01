@@ -16,6 +16,14 @@ namespace DataAccess.RepositoriesImpl
         {
             foodTrackerDbContext = context;
         }
+
+        public async Task<IList<Premises>> getAllDistributorAsync(string keyword)
+        {
+            IList<Premises> distribur = await FindAllAsync(x => x.TypeId == 3);
+            IEnumerable<Premises> result = distribur.Where(x => x.Name.ToLower().Contains(keyword));
+            return result.ToList();
+        }
+
         public async Task<IList<Premises>> getAllProviderAsync(string keyword)
         {
             IList<Premises> provider = await FindAllAsync(x => x.TypeId == 2);
