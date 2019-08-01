@@ -63,7 +63,7 @@ namespace CommonWebApi.Controllers
         [HttpGet("food/feedings/{foodId}")]
         public async Task<IList<string>> GetFeedingsById(int foodId)
         {
-            return await _foodDataBL.GetFeedingsByIdAsync(foodId);
+            return await _foodDataBL.GetFeedingsById(foodId);
         }
 
         [HttpPut("food/feedings/{foodId}")]
@@ -73,8 +73,15 @@ namespace CommonWebApi.Controllers
             return await _foodDataBL.AddFeedings(foodId, feedings);
         }
 
-        [HttpPut("food/vaccination/{foodId}")]
-        public async Task<string> AddVaccination(long foodId, [FromBody]string vaccinationType)
+
+        [HttpGet("food/vaccinations/{foodId}")]
+        public async Task<IList<Models.FoodData.Vaccination>> GetVaccinsById(int foodId)
+        {
+            return await _foodDataBL.GetVaccinsById(foodId);
+        }
+
+        [HttpPut("food/vaccinations/{foodId}")]
+        public async Task<string> AddVaccination(long foodId, [FromBody]List<string> vaccinationType)
         {
             await _foodBL.AddDetail(foodId, EFoodDetailType.VACCINATION);
             return await _foodDataBL.AddVaccination(foodId, vaccinationType);
