@@ -111,6 +111,12 @@
                                 <span data-i18n="nav.category.general">Quản lý tài khoản</span>
                             </a>
                         </li>
+                        <li class="dropdown nav-item">
+                            <a class="nav-link" asp-controller="Admin" asp-action="RegisterInfoManagement">
+                                <i class="fa fa-file-text-o"></i>
+                                <span data-i18n="nav.category.general">Quản lý thông tin cơ sở</span>
+                            </a>
+                        </li>
                     }
                     else if (role.Value == "Farm")
                     {
@@ -133,17 +139,12 @@
                 }
 
                 @*<li class="dropdown nav-item">
-                        <a class="nav-link" asp-controller="Distributor" asp-action="Index">
-                            <i class="fa fa-truck"></i>
-                            <span data-i18n="nav.category.general">Quản lý thực phẩm</span>
-                        </a>
-                    </li>*@
-                <li class="dropdown nav-item">
-                    <a class="nav-link" asp-controller="Admin" asp-action="RegisterInfoManagement">
-                        <i class="fa fa-file-text-o"></i>
-                        <span data-i18n="nav.category.general">Quản lý thông tin cơ sở</span>
-                    </a>
-                </li>
+            <a class="nav-link" asp-controller="Distributor" asp-action="Index">
+                <i class="fa fa-truck"></i>
+                <span data-i18n="nav.category.general">Quản lý thực phẩm</span>
+            </a>
+        </li>*@
+
             </ul>
         </div>
     </div>

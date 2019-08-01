@@ -11,6 +11,7 @@ using Common.Utils;
 using DTO.Models.Exception;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using DTO.Models;
 
 namespace AdminWebApi.Controllers
 {
@@ -151,9 +152,12 @@ namespace AdminWebApi.Controllers
         public async Task<IActionResult> GetUserProfile()
         {
             var claim = User.Claims;
-            string userId = User.Claims.First(c => c.Type == "UserID").Value;
+            string userId = User.Claims.First(c => c.Type == "userID").Value;
             var user = await _userBL.GetById(int.Parse(userId));
-            return Ok(user);
+            var role = await _roleBl.GetById(user.RoleId);
+            user.Role = role;
+            //return user;
+            return Ok(new {data = _mapper.Map<Models.User>(user) });
         }
         [HttpGet("user/{userId}")]
         public async Task<IActionResult> Get1Users(int userId)

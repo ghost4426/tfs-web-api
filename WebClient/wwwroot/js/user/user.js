@@ -2,26 +2,36 @@
     getProfile();
 });
 
-function getProfile(userId) {
-    callAjax(
+function getProfile() {
+    callAjaxAuth(
         {
             type: GET,
             url: GET_PROFILE_URI,
             dataType: JSON_DATATYPE,
-
         },
-        JSON.stringify({
-        }),
-        function (user, result) {
-            $('#userId').val(user.data.UserId);
-            $('#FullName').val(user.data.Fullname);
-            $('#Email').val(user.data.Email);
-            $('#Phone').val(user.data.PhoneNo);
-            $('#txtRole').val(user.data.Role.Name);
-            $('#txtPremises').val(user.data.Premises.Name);
+        JSON.stringify({}),
+        function (result) {
+            $('#userId').text(result.data.UserId);
+            $('#UserName').text(result.data.Username);
+            $('#FullName').text(result.data.Fullname);
+            $('#Email').text(result.data.Email);
+            $('#Phone').text(result.data.PhoneNo);
+            $('#txtRole').text(result.data.Role.Name);
+            if (result.data.IsActive==true) {
+                $('#txtStatus').append('<span class="btn btn-success btn-sm mr-1 mb-1 ladda-button"><b>Hiệu lực</b></span>');
+                
+            } else {
+                $('#txtStatus').append('<span class="btn btn-danger btn-sm mr-1 mb-1 ladda-button"><b>Vô Hiệu lực</b></span>');
+            }
+            if (result.data.Premises != null) {
+                $('#txtPremises').text(result.data.Premises.Name);
+            } else {
+                $('#txtPremises').text("Chưa có thông tin cơ sở");
+            }
+            
         },
         function (result) {
-            toastr.error(result);
+            toastr.error(result.UserId);
         })
 }
 //Change pass

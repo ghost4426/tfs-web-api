@@ -34,7 +34,7 @@ namespace AdminWebApi
         }
 
         public IConfiguration Configuration { get; }
-
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -119,7 +119,16 @@ namespace AdminWebApi
                     ValidAudience = Configuration["JWTSetttings:Client_URL"],
                 };
             });
-
+            services.AddCors(option =>
+            {
+                option.AddPolicy(MyAllowSpecificOrigins,
+                    buidder => {
+                        buidder.WithOrigins("https://localhost:5000")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials();
+                    });
+            });
             //Inject AppSettings
             services.Configure<JWTSetttings>(Configuration.GetSection("JWTSetttings"));
 
@@ -153,11 +162,7 @@ namespace AdminWebApi
             // Authentication
             app.UseAuthentication();
 
-            app.UseCors(builder =>
-            builder.AllowAnyOrigin()
-            .AllowAnyHeader()
-            .AllowAnyMethod()
-            );
+            app.UseCors(MyAllowSpecificOrigins);
 
             app.UseMvc();
 

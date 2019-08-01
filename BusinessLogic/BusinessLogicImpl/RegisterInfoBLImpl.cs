@@ -80,12 +80,10 @@ namespace BusinessLogic.BusinessLogicImpl
             }
             else {
                 regInfo.IsConfirm = false;
-                
             }
 
             if (regInfo.IsConfirm == true)
             {
-                try {
                     var newPremises = new Premises();
                     newPremises.Name = regInfo.PremisesName;
                     newPremises.Address = regInfo.PremisesAddress;
@@ -107,20 +105,14 @@ namespace BusinessLogic.BusinessLogicImpl
                     user.Role = role;
                     user.Username = regInfo.Username;
                     user.Email = regInfo.Email;
-                    user.Image = "test";
+                    user.Image = "/app-assets/images/avatar.jpg";
+                    user.Premises = newPremises;
                     _userRepository.Insert(user, true);
-                    _premisesRepos.Insert(newPremises, true);
                     await _mailSender.SendEmailAsync(user.Email, "Thông tin cơ sở của bạn đã dc duyệt", "Mật khẩu tài khoản: " + password);
                     return true;
-                } catch (Exception e)
-                {
-                    throw new Exception(e.Message);
-                }
-                
             }
             await _registerRepos.UpdateAsync(regInfo, true);
             return false;
-            
         }
     }
 }
