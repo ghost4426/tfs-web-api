@@ -18,6 +18,8 @@ const BASE_GUEST_URI = "api/guest/";
 //Guest
 const LOGIN_URI = BASE_COMMON_API_URI + BASE_GUEST_URI + "login";
 
+//Farm + Provider
+const GET_FOOD_DATA_URI = BASE_COMMON_API_URI + BASE_STAFF_URI + "getFoodData";
 
 //Farm
 const GET_FOOD_DETAIL_TYPE_URI      = BASE_FAMR_URI + "productdetailtype";

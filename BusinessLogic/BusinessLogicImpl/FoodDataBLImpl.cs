@@ -53,15 +53,19 @@ namespace BusinessLogic.BusinessLogicImpl
         public async Task<string> AddTreatment(long foodId, int treamentId)
         {
             var Treament = await _treatmentRepository.FindAllAsync(t => t.TreatmentParentId == treamentId);
+            
             var FoodData = await GetFoodDataByID(foodId);
             List<string> TreatmentProcess = new List<string>();
             for (int i = 0; i < Treament.Count; i++)
             {
                 TreatmentProcess.Add(Treament[i].Name);
             }
+            
+            FoodData.Provider.Treatment = new Treatments() {
+            TreatmentProcess =  new List<string>(),
+                TreatmentDate = DateTime.Now
+            };
             FoodData.Provider.Treatment.TreatmentProcess = TreatmentProcess;
-            FoodData.Provider.Treatment.TreatmentDate = DateTime.Now;
-
             return await SaveFoodData(FoodData);
         }
 

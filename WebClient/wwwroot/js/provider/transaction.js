@@ -85,14 +85,29 @@ $('#provider-transaction-mng').on('click', 'button.btn-accept-trans', function (
     $('#transactionId').val(transId);
     $('#acFoodId').val(foodId);
     $('#acFoodName').val(foodName);
-    $('#acFoodBreed').val(foodBreed);  
-    $('#acFarm').val(farm);  
+    $('#acFoodBreed').val(foodBreed);
+    $('#acFarm').val(farm);
 });
 
 $('#btnAddProviderFood').click(function () {
     var transId = $('#transactionId').val();
     var comment = $('#ProviderComment').val();
     var foodId = $('#acFoodId').val();
+    callAjaxAuth(
+        {
+            url: CREATE_PROVIDER_FOOD_URI,
+            dataType: JSON_DATATYPE,
+            type: POST,
+        }, JSON.stringify({
+            FoodId: foodId
+        }),
+        function (result) {
+            toastr.success('Giao dịch thành công');
+            $('#AcceptModal').modal('hide');
+            $('#ProviderComment').val("");
+            $("#provider-transaction-mng").DataTable().ajax.reload();
+        }
+    );
     callAjaxAuth(
         {
             url: UPDATE_TRANSACTION_URI + transId,
@@ -104,25 +119,12 @@ $('#btnAddProviderFood').click(function () {
             ProviderComment: comment
         }),
         function (result) {
-            callAjaxAuth(
-                {
-                    url: CREATE_PROVIDER_FOOD_URI,
-                    dataType: JSON_DATATYPE,
-                    type: POST,
-                }, JSON.stringify({
-                    FoodId: foodId
-                }),
-                function (result) {
-                    toastr.success('Giao dịch thành công');
-                    $('#AcceptModal').modal('hide');
-                    $('#ProviderComment').val("");
-                    $("#provider-transaction-mng").DataTable().ajax.reload();
-                });            
+            toastr.success(result.message);
         },
         function (result) {
             toastr.error(result);
         }
-    )
+    );    
 });
 
 $('#provider-transaction-mng').on('click', 'button.btn-deny-trans', function () {
@@ -136,7 +138,7 @@ $('#provider-transaction-mng').on('click', 'button.btn-deny-trans', function () 
     $('#transId').val(transId);
     $('#dnFoodName').val(foodName);
     $('#dnFoodBreed').val(foodBreed);
-    $('#dnFarm').val(farm); 
+    $('#dnFarm').val(farm);
 });
 
 $("#btnDenyProviderFood").click(function () {

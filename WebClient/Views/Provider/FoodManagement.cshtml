@@ -131,27 +131,40 @@
                                 <input class="form-control" type="text" name="txtFoodBreed" readonly />
                             </div>
                         </div>
+                        <h4 class="form-section"><i class="ft-info"></i> Thông tin thức ăn</h4>
+                        <div class="row form-group">
+                            <div class="col-md-12" id="FeedingInfo">
+
+                            </div>
+                        </div>
+                        <h4 class="form-section"><i class="ft-info"></i> Thông tin vắc-xin</h4>
+                        <div class="row form-group">
+                            <div class="col-md-12" id="VacxinInfo">
+
+                            </div>
+                        </div>
                         <h4 class="form-section"><i class="ft-info"></i> Quy Trình Xử Lý</h4>
                         <div class="row form-group">
-                            <label class="col-md-2 label-control" for="txtFoodId">Tên quy trình</label>
-                            <div class="col-md-10">
-                                <input class="form-control" type="text" name="" id="TreatmentName" readonly />
+                            <div class="row col-md-12 " id="TreatmentInfo">
+                                
                             </div>
                         </div>
                         <div id="TreatmentProcess">
                         </div>
-                    </div>
-                    <h4 class="form-section"><i class="ft-info"></i> Thông Tin Đóng Gói</h4>
-                    <div class="row form-group">
-                        <label class="col-md-2 label-control">Ngày sản xuất</label>
-                        <div class="col-md-10">
-                            <input class="form-control" type="text" name="txtNSX" readonly />
-                        </div>
-                    </div>
-                    <div class="row form-group">
-                        <label class="col-md-2 label-control">Hạn sử dụng</label>
-                        <div class="col-md-10">
-                            <input class="form-control" type="text" name="txtHSD" readonly />
+                        <h4 class="form-section"><i class="ft-info"></i> Thông Tin Đóng Gói</h4>
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label class="">Ngày sản xuất</label>
+                                <div class="">
+                                    <input class="form-control" type="text" id="txtMFG" readonly />
+                                </div>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label class="">Hạn sử dụng</label>
+                                <div class="">
+                                    <input class="form-control" type="text" id="txtEXP" readonly />
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -213,9 +226,9 @@
                            aria-expanded="false">Cập nhật</a>
                     </li>
                     @*<li class="nav-item">
-                        <a class="nav-link" id="base-tab13" data-toggle="tab" aria-controls="tab13" href="#tab13"
-                           aria-expanded="false">Cập nhật</a>
-                    </li>*@
+                            <a class="nav-link" id="base-tab13" data-toggle="tab" aria-controls="tab13" href="#tab13"
+                               aria-expanded="false">Cập nhật</a>
+                        </li>*@
                 </ul>
                 <div class="tab-content px-1 pt-1">
                     <div role="tabpanel" class="tab-pane active" id="tab11" aria-expanded="true" aria-labelledby="base-tab11">
@@ -238,15 +251,15 @@
                         </div>
                     </div>
                     @*<div class="tab-pane" id="tab13" aria-labelledby="base-tab13">
-                        <div class="row form-group">
-                            <div class="col-md-12">
-                                <label for="projectinput2">Quy trình</label>
-                                <select class="select2-placeholder select2-size-lg form-control" style="width:100%" id="ddlFixTreatment"></select>
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                    <label for="projectinput2">Quy trình</label>
+                                    <select class="select2-placeholder select2-size-lg form-control" style="width:100%" id="ddlFixTreatment"></select>
+                                </div>
+                                <div id="FixTreatmentProcessData" class="row form-group mt-2">
+                                </div>
                             </div>
-                            <div id="FixTreatmentProcessData" class="row form-group mt-2">
-                            </div>
-                        </div>
-                    </div>*@
+                        </div>*@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">Đóng</button>

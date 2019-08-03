@@ -59,30 +59,38 @@ namespace CommonWebApi.Controllers
 
         //More treatmentDetail
         [HttpPost("moreTreatment/{treatmentId}")]
-        public async Task<IActionResult> CreateMoreTreatment(int treatmentId,[FromBody]Models.CreateMoreTreatmentRequest treatmentRequest)
+        public async Task<IActionResult> CreateMoreTreatment(int treatmentId, [FromBody]Models.CreateMoreTreatmentRequest treatmentRequest)
         {
             var Treatment = _mapper.Map<Entities.Treatment>(treatmentRequest);
             var TreatmentProcess = treatmentRequest.TreatmentProcess;
             IList<int> treatment = await _treatmentBL.getTreatmentIdByParent(treatmentId);
-            foreach(var id in treatment)
+            foreach (var id in treatment)
             {
                 await _treatmentBL.deleteTreatment(id);
             }
             Treatment.PremisesId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
             Treatment.CreatedById = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
             Treatment.CreatedDate = DateTime.Now;
-            await _treatmentBL.CreateMoreTreatmentDetail(treatmentId,Treatment, TreatmentProcess);
+            await _treatmentBL.CreateMoreTreatmentDetail(treatmentId, Treatment, TreatmentProcess);
             return Ok(new { message = MessageConstant.INSERT_SUCCESS });
         }
 
         [HttpPut("food/treatment/{foodId}")]
-        public async Task<string> AddTreatment(long foodId, [FromBody]string treatmentId)
+        public async Task<IActionResult> AddTreatment(long foodId, [FromBody]string treatmentId)
         {
-            await _foodBL.AddDetail(foodId, EFoodDetailType.TREATMENT);
-            Entities.Food food = await _foodBL.getFoodById((int)foodId);
-            await _foodBL.UpdateFoodTreatment(food, (int)foodId,int.Parse(treatmentId));
-            //return await _foodDataBL.AddTreatment(foodId, int.Parse(treatmentId));
-            return "OK";
+
+            try
+            {
+                await _foodBL.AddDetail(foodId, EFoodDetailType.TREATMENT);
+                Entities.Food food = await _foodBL.getFoodById((int)foodId);
+                await _foodBL.UpdateFoodTreatment(food, (int)foodId, int.Parse(treatmentId));
+                return Ok(new { message = await _foodDataBL.AddTreatment(foodId, int.Parse(treatmentId)) });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = ex.Message, Error = ex.ToString() });
+            }
+
         }
 
         [HttpPut("food/packaging/{foodId}")]
@@ -95,7 +103,7 @@ namespace CommonWebApi.Controllers
 
         [HttpGet("getFoodByProvider")]
         public async Task<IActionResult> FindAllProviderFoodAsync()
-        {            
+        {
             try
             {
                 int premisesId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
@@ -129,7 +137,7 @@ namespace CommonWebApi.Controllers
         }
 
         [HttpPut("UpdateTransaction/{transactionId}")]
-        public async Task<string> UpdateTransaction(int transactionId, [FromBody] Models.TransactionUpdateRequest trans)
+        public IActionResult UpdateTransaction(int transactionId, [FromBody] Models.TransactionUpdateRequest trans)
         {
             try
             {
@@ -139,21 +147,32 @@ namespace CommonWebApi.Controllers
                     StatusId = trans.StatusId,
                     RejectedReason = trans.RejectedReason,
                     ProviderComment = trans.ProviderComment,
-                };
-                await _transactionBL.UpdateTransaction(transaction, transactionId);
-                return "OK";
-            }catch(Exception e)
+                };                
+                _transactionBL.UpdateTransaction(transaction, transactionId);
+                return Ok(new { message = MessageConstant.UPDATE_SUCCESS });
+            }
+            catch (Exception e)
             {
-                return e.ToString();
+                return BadRequest(new { msg = e.Message });
             }
         }
 
         [HttpPost("providerFood")]
-        public async Task<int> CreateProviderFood([FromBody]Models.CreateProviderFoodRequest foodRequest)
+        public async Task<IActionResult> CreateProviderFood([FromBody]Models.CreateProviderFoodRequest foodRequest)
         {
-            Entities.ProviderFood food = _mapper.Map<Entities.ProviderFood>(foodRequest);
-            food.PremisesId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
-            return await _foodBL.createProviderFood(food);
+            try
+            {
+                Entities.ProviderFood food = _mapper.Map<Entities.ProviderFood>(foodRequest);
+                food.PremisesId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
+                await _foodDataBL.AddProvider(food.FoodId, int.Parse(User.Claims.First(c => c.Type == "premisesID").Value));
+                await _foodBL.createProviderFood(food);
+                return Ok(new { message = MessageConstant.INSERT_SUCCESS });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { msg = e.Message });
+            }
+            
         }
 
         [HttpGet("foodTreatment/{treatmentId}")]
@@ -189,8 +208,9 @@ namespace CommonWebApi.Controllers
             try
             {
                 await _treatmentBL.deleteTreatment(treatmentId);
-                return Ok(new { message = "Xóa thành công"});
-            }catch(Exception e)
+                return Ok(new { message = "Xóa thành công" });
+            }
+            catch (Exception e)
             {
                 return BadRequest(new { msg = e.Message });
             }
