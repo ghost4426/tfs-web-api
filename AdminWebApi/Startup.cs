@@ -64,6 +64,8 @@ namespace AdminWebApi
             services.AddScoped<IPremisesRepository, PremisesRepositoryImpl>();
             services.AddScoped<IRegisterInfoRepository, RegisterInfoRepositoryImpl>();
             services.AddScoped<IPremisesTypeRepository, PremisesTypeRepositoryImpl>();
+            services.AddScoped<IPremisesBL, PremisesBLImpl>();
+            services.AddScoped<IPremisesTypeBL, PremisesTypeBLImpl>();
 
             //BusinessLogic
             services.AddScoped<IUserBL, UserBLImpl>();

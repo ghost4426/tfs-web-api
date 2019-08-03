@@ -15,7 +15,6 @@ namespace DTO.Models
     }
     public class UpdateUserRequest
     {
-        public int UserId { get; set; }
         public string Fullname { get; set; }
         public string Email { get; set; }
         public string PhoneNo { get; set; }

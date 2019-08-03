@@ -71,7 +71,7 @@ namespace WebClient.Controllers
                 {
                     IsEssential = true
                 });
-                return RedirectToAction("UpdateProfile", "User");
+                return RedirectToAction("UserProfile", "User");
             }
 
             ModelState.AddModelError(string.Empty, result.Message);

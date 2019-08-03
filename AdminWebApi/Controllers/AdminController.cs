@@ -25,12 +25,15 @@ namespace AdminWebApi.Controllers
         private readonly IRoleBL _roleBl;
         private IMapper _mapper;
         private IEmailSender _mailSender;
-
+        private readonly IPremisesBL _premisesBL;
+        private readonly IPremisesTypeBL _premisesTypeBL;
         public AdminController(IUserBL UserBL,
             IRoleBL RoleBL,
             IMapper mapper,
             IEmailSender mailSender,
-            IRegisterInfoBL regBl
+            IRegisterInfoBL regBl,
+            IPremisesBL premisesBL,
+            IPremisesTypeBL premisesTypeBL
             )
         {
             _regBl = regBl;
@@ -38,6 +41,8 @@ namespace AdminWebApi.Controllers
             _userBL = UserBL;
             _mapper = mapper;
             _mailSender = mailSender;
+            _premisesBL = premisesBL;
+            _premisesTypeBL = premisesTypeBL;
         }
         /// <summary>
         /// create new user
@@ -156,8 +161,21 @@ namespace AdminWebApi.Controllers
             var user = await _userBL.GetById(int.Parse(userId));
             var role = await _roleBl.GetById(user.RoleId);
             user.Role = role;
+            UserDetails userData = _mapper.Map<Models.UserDetails>(user);
+            try
+            {
+                int premisesId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
+                var premises = await _premisesBL.GetById(premisesId);
+                userData.PremisesName = premises.Name;
+                var premisesType = await _premisesTypeBL.GetById(premises.TypeId);
+                userData.PremisesType = premisesType.Name;
+            }
+            catch(Exception e)
+            {
+                return Ok(new { data = userData });
+            }
             //return user;
-            return Ok(new {data = _mapper.Map<Models.User>(user) });
+            return Ok(new { data = userData } );
         }
         [HttpGet("user/{userId}")]
         public async Task<IActionResult> Get1Users(int userId)
@@ -188,7 +206,7 @@ namespace AdminWebApi.Controllers
                 user.Fullname = userInfo.Fullname;
                 user.Email = userInfo.Email;
                 user.PhoneNo = userInfo.PhoneNo;
-                await _userBL.UpdateUser(user, 16);
+                await _userBL.UpdateUser(user, id);
                 return Ok("success!!");
 
             }

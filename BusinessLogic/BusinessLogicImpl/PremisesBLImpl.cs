@@ -24,5 +24,10 @@ namespace BusinessLogic.BusinessLogicImpl
             }
             return this._premisesRepository.getAllProviderAsync(keyword.ToLower());
         }
+        public async Task<Premises> GetById(int premisesId)
+        {
+            return await this._premisesRepository.GetByIdAsync(premisesId);
+        }
+
     }
 }
