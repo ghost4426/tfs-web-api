@@ -9,5 +9,7 @@ namespace DataAccess.IRepositories
     public interface IPremisesRepository: IGenericRepository<Premises>
     {
         Task<IList<Premises>> getAllProviderAsync(string keyword);
+
+        Task<IList<Premises>> getAllDistributorAsync(string keyword);
     }
 }

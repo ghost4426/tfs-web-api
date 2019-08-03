@@ -78,6 +78,7 @@ namespace BusinessLogic.BusinessLogicImpl
             Transaction trans = _transactionRepos.GetById(transaction.TransactionId);
             trans.StatusId = transaction.StatusId;
             trans.RejectedReason = transaction.RejectedReason;
+            trans.ProviderComment = transaction.ProviderComment;
             await _transactionRepos.UpdateAsync(trans, transId);
         }
     }

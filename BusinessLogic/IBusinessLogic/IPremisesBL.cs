@@ -9,5 +9,7 @@ namespace BusinessLogic.IBusinessLogic
     public interface IPremisesBL
     {
         Task<IList<Premises>> getAllProviderAsync(string keyword);
+
+        Task<IList<Premises>> getAllDistriburtorAsync(string keyword);
     }
 }

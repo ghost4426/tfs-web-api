@@ -48,9 +48,24 @@ namespace BusinessLogic.BusinessLogicImpl
             }   
         }
 
+        public async Task deleteTreatment(int treatmentId)
+        {
+            await _treatmentRepos.DeleteAsync(treatmentId, true);
+        }
+
         public async Task<IList<Treatment>> getAllTreatmentById(int treatmentId)
         {
             return await _treatmentRepos.getAllTreatmentById(treatmentId);
-        }       
+        }
+
+        public async Task<IList<Treatment>> getAllTreatmentByPremisesId(int premisesId)
+        {
+            return await _treatmentRepos.getAllTreatmentByPremisesId(premisesId);
+        }
+
+        public async Task<IList<int>> getTreatmentIdByParent(int treatmentId)
+        {
+            return await _treatmentRepos.getTreatmentIdByParent(treatmentId);
+        }
     }
 }

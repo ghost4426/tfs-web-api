@@ -15,5 +15,6 @@ namespace DTO.Models
     {
         public int StatusId { get; set; }
         public string RejectedReason { get; set; }
+        public string ProviderComment { get; set; }
     }
 }
