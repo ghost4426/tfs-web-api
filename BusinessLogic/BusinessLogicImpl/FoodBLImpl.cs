@@ -75,25 +75,25 @@ namespace BusinessLogic.BusinessLogicImpl
         public async Task AddDetail(long foodId, EFoodDetailType type)
         {
             var food = _productRepos.GetById((int)foodId);
-            switch (type)
-            {
-                case EFoodDetailType.FEEDING:
-                    food.IsFeeding = true;
-                    break;
-                case EFoodDetailType.VACCINATION:
-                    food.IsVaccination = true;
-                    break;
-                case EFoodDetailType.VERIFY:
-                    food.IsCertification = true;
-                    break;
-                case EFoodDetailType.TREATMENT:
-                    food.IsTreatment = true;
-                    break;
-                case EFoodDetailType.PACKAGING:
-                    food.IsPackaging = true;
-                    break;
-                default: break;
-            }
+            //switch (type)
+            //{
+            //    case EFoodDetailType.FEEDING:
+            //        food.IsFeeding = true;
+            //        break;
+            //    case EFoodDetailType.VACCINATION:
+            //        food.IsVaccination = true;
+            //        break;
+            //    case EFoodDetailType.VERIFY:
+            //        food.IsCertification = true;
+            //        break;
+            //    case EFoodDetailType.TREATMENT:
+            //        food.IsTreatment = true;
+            //        break;
+            //    case EFoodDetailType.PACKAGING:
+            //        food.IsPackaging = true;
+            //        break;
+            //    default: break;
+            //}
             await _productRepos.UpdateAsync(food);
         }
 
@@ -113,16 +113,16 @@ namespace BusinessLogic.BusinessLogicImpl
             return await _providerFoodRepository.createProviderFood(newProviderFood);
         }
 
-        public async Task UpdateFoodTreatment(Food food, int foodId, int treatmentId)
+        public async Task UpdateFoodTreatment(ProviderFood food, int foodId, int treatmentId, int premisesId)
         {
-            Food result = _productRepos.GetById(food.FoodId);
+            ProviderFood result = await _providerFoodRepository.FindAsync(x => x.FoodId == foodId & x.PremisesId == premisesId);
             result.TreatmentId = treatmentId;
-            await _productRepos.UpdateAsync(result, foodId);
+            await _providerFoodRepository.UpdateAsync(result);
         }
 
-        public async Task<Food> getFoodById(int foodId)
+        public async Task<ProviderFood> getFoodById(int foodId, int premisesId)
         {
-            return await _productRepos.GetByIdAsync(foodId);
+            return await _providerFoodRepository.FindAsync(x => x.FoodId == foodId & x.PremisesId == premisesId);
         }
     }
 }

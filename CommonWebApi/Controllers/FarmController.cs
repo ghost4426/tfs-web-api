@@ -44,20 +44,38 @@ namespace CommonWebApi.Controllers
         }
 
         [HttpGet("foods")]
-        public async Task<IActionResult> GetAllProduct()
+        public async Task<IActionResult> GetAllFood()
         {
-            var farmId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
-            return Ok(new { data = _mapper.Map<IList<Models.FoodFarm>>(await _foodBL.FindAllProductByFarmerAsync(farmId)) });
+            try
+            {
+                var farmId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
+                return Ok(new { data = _mapper.Map<IList<Models.FoodFarm>>(await _foodBL.FindAllProductByFarmerAsync(farmId)) });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = MessageConstant.UNHANDLE_ERROR , error = ex.StackTrace });
+            }
+           
         }
 
         [HttpPost("food")]
-        public async Task<string> CreateFood([FromBody]Models.CreateFoodRequest foodRequest)
+        public async Task<IActionResult> CreateFood([FromBody]Models.CreateFoodRequest foodRequest)
         {
-            Entities.Food food = _mapper.Map<Entities.Food>(foodRequest);
-            food.FarmId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value); 
-            food.CreatedById = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
-            await _foodBL.CreateProductAsync(food);
-            return await _foodDataBL.CreateFood(food, food.FarmId);
+            try
+            {
+                Entities.Food food = _mapper.Map<Entities.Food>(foodRequest);
+                food.FarmId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
+                food.CreateById = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
+                await _foodBL.CreateProductAsync(food);
+                await _foodDataBL.CreateFood(food, food.FarmId);
+                return Ok(new { messeage = MessageConstant.INSERT_SUCCESS});
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(new { message = MessageConstant.UNHANDLE_ERROR, error = ex.StackTrace });
+            }
+            
         }
 
         [HttpGet("food/feedings/{foodId}")]
@@ -117,7 +135,9 @@ namespace CommonWebApi.Controllers
         [HttpPost("createTransaction")]
         public async Task<Models.TransactionReponse.CreateTransactionReponse> CreateTransaction([FromBody]Models.TransactionRequest transactionRequest)
         {
-            Entities.Transaction transaction = _mapper.Map<Entities.Transaction>(transactionRequest);
+            Entities.Transaction transaction = _mapper.Map<Entities.Transaction>(transactionRequest);      
+            transaction.SenderId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
+            transaction.CreateById = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
             await _transactionBL.CreateSellFoodTransactionAsync(transaction);
             var reponseModel = new Models.TransactionReponse.CreateTransactionReponse()
             {

@@ -16,6 +16,6 @@ namespace DTO.Entities
         public string Name { get; set; }
 
         public ICollection<Premises> Premises { get; set; }
-        public ICollection<RegisterInfo> RegisterInfos { get; set; }
+        //public ICollection<RegisterInfo> RegisterInfos { get; set; }
     }
 }

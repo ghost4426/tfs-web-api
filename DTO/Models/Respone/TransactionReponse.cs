@@ -18,7 +18,7 @@ namespace DTO.Models
             public int FoodId { get; set; }
             public string FoodName { get; set; }
             public string FoodBreed { get; set; }
-            public DateTime CreatedDate { get; set; }
+            public DateTime CreateDate { get; set; }
             public int StatusId { get; set; }
             public string Status { get; set; }
             public string RejectedReason { get; set; }
@@ -31,10 +31,23 @@ namespace DTO.Models
             public int FoodId { get; set; }
             public string FoodName { get; set; }
             public string FoodBreed { get; set; }
-            public DateTime CreatedDate { get; set; }
+            public DateTime CreateDate { get; set; }
             public int StatusId { get; set; }
             public string Status { get; set; }
-            public string RejectedReason { get; set; }
+            public string RejectReason { get; set; }
+        }
+
+        public class ProviderGetSendTransaction
+        {
+            public int TransactionId { get; set; }
+            public string Distributor { get; set; }
+            public int FoodId { get; set; }
+            public string FoodName { get; set; }
+            public string FoodBreed { get; set; }
+            public DateTime CreateDate { get; set; }
+            public int StatusId { get; set; }
+            public string Status { get; set; }
+            public string RejectReason { get; set; }
         }
     }
 }

@@ -22,7 +22,7 @@
         { data: 'FoodBreed' },
         { data: 'Farm' },
         {
-            data: 'CreatedDate',
+            data: 'CreateDate',
             render: function (data, type, row) {
                 return $.format.date(data, "dd-MM-yyyy HH:mm")
             }
@@ -42,7 +42,7 @@
                 }
             }
         },
-        { data: 'RejectedReason' },
+        { data: 'RejectReason' },
         {
             data: function (data, type, dataToSet) {
                 var btnDeny = "<button class='btn btn-sm btn-danger btn-deny-trans' title='Từ chối giao dịch'><i class='fa fa-times'></i></button> ";

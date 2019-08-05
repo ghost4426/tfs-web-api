@@ -126,7 +126,7 @@ var providerFoodTable = $('#provider-food-mng').DataTable({
         { data: 'Food.Category.Name', width: '20%' },
         { data: 'Food.Breed', width: '25%' },
         {
-            data: 'CreatedDate', width: '20%',
+            data: 'CreateDate', width: '20%',
             render: function (data, type, row) {
                 return $.format.date(data, "dd-MM-yyyy HH:mm")
             }
@@ -637,6 +637,10 @@ $('#provider-food-mng').on('click', 'button.btn-barcode', function () {
     var tr = $(this).closest('tr');
     var row = providerFoodTable.row(tr);
     var foodId = row.data().FoodId;
+    $('#foodId-trans').val(foodId);
+    $('#category-trans').val(row.data().Food.Category.Name);
+    $('#breed-trans').val(row.data().Food.Breed);
+    makeCode("Food-0-0-0");
     $('#ddlDistributor').on("change", function () {
         if (this.value == null) {
             return;
@@ -648,6 +652,28 @@ $('#provider-food-mng').on('click', 'button.btn-barcode', function () {
     });
     $("#btnPrintBarcode").attr("download", "Food-" + foodId + ".jpg");
     $('#GetQRCode').modal('show');
+});
+
+$('#btn-transaction').on('click', function () {
+    var foodId = $('#foodId-trans').val();
+    var distributorId = $('#ddlDistributor').val();
+    callAjaxAuth(
+        {
+            url: PROVIDER_CREATE_TRANSACTION_URI,
+            dataType: JSON_DATATYPE,
+            type: POST
+        }, JSON.stringify({
+            ReceiverId: distributorId,
+            FoodId: foodId
+        }),
+        function (result) {
+            toastr.success("Tạo giao dịch thành công, vui lòng chờ nhà phân phối xác nhận");
+            $('#GetQRCode').modal('hide');
+        },
+        function (result) {
+            toastr.error(result);
+        }
+    )
 });
 
 function makeCode(id) {

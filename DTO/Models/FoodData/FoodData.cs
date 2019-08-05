@@ -9,6 +9,7 @@ namespace DTO.Models.FoodData
         public int FoodId { get; set; }
 
         public string Breed { get; set; }
+
         //Pork, Chicken, Beef
         public string Category { get; set; }
 

@@ -51,8 +51,8 @@ namespace CommonWebApi.Controllers
             var TreatmentProcess = treatmentRequest.TreatmentProcess;
             var test = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
             Treatment.PremisesId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
-            Treatment.CreatedById = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
-            Treatment.CreatedDate = DateTime.Now;
+            Treatment.CreateById = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
+            Treatment.CreateDate = DateTime.Now;
             await _treatmentBL.CreateTreatment(Treatment, TreatmentProcess);
             return Ok(new { message = MessageConstant.INSERT_SUCCESS });
         }
@@ -69,8 +69,8 @@ namespace CommonWebApi.Controllers
                 await _treatmentBL.deleteTreatment(id);
             }
             Treatment.PremisesId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
-            Treatment.CreatedById = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
-            Treatment.CreatedDate = DateTime.Now;
+            Treatment.CreateById = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
+            Treatment.CreateDate = DateTime.Now;
             await _treatmentBL.CreateMoreTreatmentDetail(treatmentId, Treatment, TreatmentProcess);
             return Ok(new { message = MessageConstant.INSERT_SUCCESS });
         }
@@ -83,8 +83,8 @@ namespace CommonWebApi.Controllers
             {
                 int providerId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
                 await _foodBL.AddDetail(foodId, EFoodDetailType.TREATMENT);
-                Entities.Food food = await _foodBL.getFoodById((int)foodId);
-                await _foodBL.UpdateFoodTreatment(food, (int)foodId, int.Parse(treatmentId));
+                Entities.ProviderFood food = await _foodBL.getFoodById((int)foodId, providerId);
+                await _foodBL.UpdateFoodTreatment(food, (int)foodId, int.Parse(treatmentId),providerId);
                 return Ok(new { message = await _foodDataBL.AddTreatment(foodId, int.Parse(treatmentId), providerId) });
             }
             catch (Exception ex)
@@ -124,13 +124,27 @@ namespace CommonWebApi.Controllers
             return await _transactionBL.CountProviderTransaction(premisesId);
         }
 
-        [HttpGet("getAllProviderTransaction")]
-        public async Task<IActionResult> getAllTransaction()
+        [HttpGet("getAllProviderReceiveTransaction")]
+        public async Task<IActionResult> getAllReceiveTransaction()
         {
             try
             {
                 int premisesId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
-                return Ok(new { data = _mapper.Map<IList<Models.TransactionReponse.ProviderGetTransaction>>(await _transactionBL.getAllProviderTransaction(premisesId)) });
+                return Ok(new { data = _mapper.Map<IList<Models.TransactionReponse.ProviderGetTransaction>>(await _transactionBL.getAllProviderReceiveTransaction(premisesId)) });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { msg = e.Message });
+            }
+        }
+
+        [HttpGet("getAllProviderSendTransaction")]
+        public async Task<IActionResult> getAllSendTransaction()
+        {
+            try
+            {
+                int premisesId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
+                return Ok(new { data = _mapper.Map<IList<Models.TransactionReponse.ProviderGetSendTransaction>>(await _transactionBL.getAllProviderSendTransaction(premisesId)) });
             }
             catch (Exception e)
             {
@@ -147,8 +161,8 @@ namespace CommonWebApi.Controllers
                 {
                     TransactionId = transactionId,
                     StatusId = trans.StatusId,
-                    RejectedReason = trans.RejectedReason,
-                    ProviderComment = trans.ProviderComment,
+                    RejectReason = trans.RejectedReason,
+                    ReceiverComment = trans.ProviderComment,
                 };                
                 _transactionBL.UpdateTransaction(transaction, transactionId);
                 return Ok(new { message = MessageConstant.UPDATE_SUCCESS });
@@ -243,6 +257,20 @@ namespace CommonWebApi.Controllers
             {
                 return BadRequest(new { msg = e.Message });
             }
+        }
+
+        [HttpPost("createTransaction")]
+        public async Task<Models.TransactionReponse.CreateTransactionReponse> CreateTransaction([FromBody]Models.TransactionRequest transactionRequest)
+        {
+            Entities.Transaction transaction = _mapper.Map<Entities.Transaction>(transactionRequest);
+            transaction.SenderId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
+            transaction.CreateById = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
+            await _transactionBL.CreateSellFoodTransactionAsync(transaction);
+            var reponseModel = new Models.TransactionReponse.CreateTransactionReponse()
+            {
+                TransactionId = transaction.TransactionId
+            };
+            return reponseModel;
         }
     }
 }

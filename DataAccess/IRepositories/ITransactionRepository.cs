@@ -16,8 +16,10 @@ namespace DataAccess.IRepositories
 
         Task<IList<Transaction>> getAllFarmTransaction(int premisesId);
 
-        Task<IList<Transaction>> getAllProviderTransaction(int premisesId);
+        Task<IList<Transaction>> getAllProviderReceiveTransaction(int premisesId);
 
         Task<Transaction> UpdateTransaction(Transaction transaction);
+
+        Task<IList<Transaction>> getAllProviderSendTransaction(int premisesId);
     }
 }

@@ -43,9 +43,10 @@ namespace ContractInteraction.ContractServices
             string Data = JsonConvert.SerializeObject(FoodData, setting);
             var result = await service.SaveDataRequestAndWaitForReceiptAsync(
                     new SaveDataFunction { Data = Data, Id = FoodData.FoodId, Gas = 1000000 });
-            var BlockNumber = (int)result.BlockNumber.Value; ;
+            var BlockNumber = (int)result.BlockNumber.Value; 
             return result.TransactionHash;
 
         }
+       
     }
 }

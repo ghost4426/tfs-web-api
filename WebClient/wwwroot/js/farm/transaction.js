@@ -22,7 +22,7 @@
         { data: 'FoodBreed' },
         { data: 'Provider' },
         {
-            data: 'CreatedDate',
+            data: 'CreateDate',
             render: function (data, type, row) {
                 return $.format.date(data, "dd-MM-yyyy HH:mm")
             }
