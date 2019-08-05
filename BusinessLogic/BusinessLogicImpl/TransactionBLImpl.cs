@@ -90,19 +90,19 @@ namespace BusinessLogic.BusinessLogicImpl
             //dto.Food = _foodRepos.GetById(dto.FoodId);
             //return dto;
         }
-        public async Task<Transaction> UpdateTransaction(int id, int status, string reason)
+        public async Task<Transaction> UpdateTransaction(int id, int status, string reason, int verId)
         {
         
             var transaction = _transactionRepos.GetById(id);
             transaction.StatusId = status;
-            if(status == 3)
+            if(status == 2)
             {
                 transaction.VeterinaryComment = reason;
             } else
             {
                 transaction.RejectedReason = reason;
             }
-            
+            transaction.VeterinaryId = verId;
             await _transactionRepos.UpdateAsync(transaction);
             return transaction;
         }

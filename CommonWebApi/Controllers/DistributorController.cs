@@ -10,6 +10,7 @@ using BusinessLogic.IBusinessLogic;
 using Common.Utils;
 using AutoMapper;
 using Common.Enum;
+using DTO.Models.FoodData;
 using Microsoft.AspNetCore.Authorization;
 
 
@@ -23,11 +24,13 @@ namespace CommonWebApi.Controllers
         private readonly IFoodBL _foodBL;
         private readonly IMapper     _mapper;
         private readonly IUserBL _userBL;
+        private IFoodDataBL _foodDataBL;
 
-        public DistributorController (IFoodBL productBL, IMapper mapper, IUserBL userBL)
+        public DistributorController (IFoodBL productBL, IMapper mapper, IUserBL userBL, IFoodDataBL foodDataBL)
         {
             _mapper = mapper;
             _foodBL = productBL;
+            _foodDataBL = foodDataBL;
             _userBL = userBL;
         }
         [HttpGet("getProductMatched")]
@@ -96,5 +99,7 @@ namespace CommonWebApi.Controllers
         {
             return await _foodBL.getFoodById(foodID);
         }
+
+     
     }
 }

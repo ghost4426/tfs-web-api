@@ -13,5 +13,7 @@ namespace DTO.Models {
         public int FoodId { get; set; }
         public int ProviderId { get; set; }
         public int FarmId { get; set; }
+        public int VeterinaryId { get; set; }
+
     }
 }
