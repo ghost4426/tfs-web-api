@@ -146,7 +146,7 @@
                         <h4 class="form-section"><i class="ft-info"></i> Quy Trình Xử Lý</h4>
                         <div class="row form-group">
                             <div class="row col-md-12 " id="TreatmentInfo">
-                                
+
                             </div>
                         </div>
                         <div id="TreatmentProcess">
@@ -225,16 +225,14 @@
                         <a class="nav-link" id="base-tab12" data-toggle="tab" aria-controls="tab12" href="#tab12"
                            aria-expanded="false">Cập nhật</a>
                     </li>
-                    @*<li class="nav-item">
-                            <a class="nav-link" id="base-tab13" data-toggle="tab" aria-controls="tab13" href="#tab13"
-                               aria-expanded="false">Cập nhật</a>
-                        </li>*@
                 </ul>
                 <div class="tab-content px-1 pt-1">
                     <div role="tabpanel" class="tab-pane active" id="tab11" aria-expanded="true" aria-labelledby="base-tab11">
-                        <div class="row form-group" id="add-treatment-form">
+                        <form id="form-add-treatment">
+                            <div class="row form-group" id="add-treatment-form">
 
-                        </div>
+                            </div>
+                        </form>
                     </div>
                     <div class="tab-pane" id="tab12" aria-labelledby="base-tab12">
                         <div class="row form-group">
@@ -250,20 +248,10 @@
 
                         </div>
                     </div>
-                    @*<div class="tab-pane" id="tab13" aria-labelledby="base-tab13">
-                            <div class="row form-group">
-                                <div class="col-md-12">
-                                    <label for="projectinput2">Quy trình</label>
-                                    <select class="select2-placeholder select2-size-lg form-control" style="width:100%" id="ddlFixTreatment"></select>
-                                </div>
-                                <div id="FixTreatmentProcessData" class="row form-group mt-2">
-                                </div>
-                            </div>
-                        </div>*@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">Đóng</button>
-                    <button type="button" class="btn btn-outline-primary" id="btn-confirm">Xác nhận</button>
+                    <button type="submit" class="btn btn-outline-primary" id="btn-confirm">Xác nhận</button>
                 </div>
             </div>
         </div>

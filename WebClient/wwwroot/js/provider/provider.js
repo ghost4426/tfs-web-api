@@ -69,41 +69,6 @@
         language: "vi"
     });
 
-    //Fix treatment
-    //$("#ddlFixTreatment").select2({
-    //    ajax: {
-    //        url: GET_TREATMENT_URI,
-    //        dataType: JSON_DATATYPE,
-    //        headers: {
-    //            'Accept': 'application/json',
-    //            'Content-Type': 'application/json; charset=utf-8',
-    //            "Authorization": 'Bearer ' + Cookies.get('token')
-    //        },
-    //        statusCode: {
-    //            401: function () {
-    //                window.location.replace("/dang-nhap");
-    //            },
-    //        },
-    //        data: function (params) {
-    //            var query = {
-    //                search: params.term,
-    //                type: 'public'
-    //            }
-    //            // Query parameters will be ?search=[term]&type=public
-    //            return query;
-    //        },
-    //        processResults: function (data, params) {
-    //            return {
-    //                results: data.results
-    //            };
-    //        },
-    //        cache: false
-    //    },
-    //    minimumResultsForSearch: Infinity,
-    //    placeholder: "Chọn thông tin",
-    //    language: "vi"
-    //});
-
     //List distributor
     $("#ddlDistributor").select2({
         ajax: {
@@ -113,11 +78,6 @@
                 'Accept': 'application/json',
                 'Content-Type': 'application/json; charset=utf-8',
                 "Authorization": 'Bearer ' + Cookies.get('token')
-            },
-            statusCode: {
-                401: function () {
-                    window.location.replace("/dang-nhap");
-                },
             },
             data: function (params) {
                 var query = {
@@ -134,9 +94,12 @@
             },
             cache: false
         },
-        placeholder: "Chọn thông tin",
+        placeholder: "Chọn nhà phân phối",
         language: "vi"
     });
+
+    //Validation Add Treatment Form
+    
 });
 
 $.fn.dataTable.ext.errMode = 'none';
@@ -261,7 +224,7 @@ function loadTreatmentData(treatmentId) {
                     $('#TreatmentProcessData').append('<div class="row form-group">'
                         + '<label class="col-md-2 label-control" for="txtFoodId">Bước ' + (i + 1) + '</label>'
                         + '<div class="col-md-8">'
-                        + '<input class="form-control" name="treatment-process" type="text" value="' + result.data[i].Name + '"/>'                        
+                        + '<input class="form-control" name="treatment-process" type="text" value="' + result.data[i].Name + '"/>'
                         + '</div>'
                         + '<button type="button" class="btn btn-danger col-md-1 btn-delete-treatment"><i class="ft-x"></i></button>'
                         + '</div>');
@@ -276,52 +239,6 @@ function loadTreatmentData(treatmentId) {
         }
     )
 }
-
-// Fix Treatment
-//load Fix Treatment form
-//function loadFixTreatmentData(treatmentId) {
-//    callAjaxAuth(
-//        {
-//            url: GET_FOOD_TREATMENT_URI + treatmentId,
-//            dataType: JSON_DATATYPE,
-//            type: GET
-//        }, "",
-//        function (result) {
-//            if (result.data.length != 0) {
-//                for (var i = 0; i < result.data.length; i++) {
-//                    $('#FixTreatmentProcessData').append('<div class="row col-md-12 ml-5 mt-2"'
-//                        + '<label class="col-md-2 label-control" for="txtFoodId">Bước ' + (i + 1) + '</label>'
-//                        + '<div class="col-md-8">'
-//                        + '<input class="form-control" type="text" value="' + result.data[i].Name + '"/>'
-//                        + '</div>'
-//                        + '<button class="btn btn-danger btn-delete-treatment" value="' + result.data[i].TreatmentId + '"><i class="ft-x"></i></button>'
-//                        + '</div>');
-//                }
-//                $('.btn-delete-treatment').on('click', function () {
-//                    var treatmentDeleteId = this.value;
-//                    callAjaxAuth(
-//                        {
-//                            url: DELETE_TREATMENT_URI + treatmentDeleteId,
-//                            dataType: JSON_DATATYPE,
-//                            type: DELETE
-//                        }, "",
-//                        function (result) {
-//                            toastr.success("Xoá thành công");
-//                            $('#FixTreatmentProcessData').empty();
-//                            $('ddlFixTreatment').val(treatmentId).trigger("change");
-//                        },
-//                        function (result) {
-//                            toastr.error(result);
-//                        }
-//                    )
-//                });
-//            }
-//        },
-//        function (result) {
-//            toastr.error(result);
-//        }
-//    )
-//}
 
 $('.btnTreatment').on('click', function () {
     $("#add-treatment-form").empty();
@@ -342,6 +259,7 @@ $('#btn-confirm').on('click', function () {
                 treatmentData.push(value);
             }
         });
+        console.log(treatmentName + "-" + treatmentData);
         callAjaxAddTreatmentData(treatmentName, treatmentData);
         $('#treatmentModal').modal('hide');
     } else if (choose == 'Cập nhật') {
@@ -357,7 +275,7 @@ $('#btn-confirm').on('click', function () {
             } else {
                 treatmentData.push(value);
             }
-        });        
+        });
         callAjaxAddMoreTreatmentData(treatmentId, treatmentData);
         $('#TreatmentProcessData').empty();
         $('#MoreTreatment').empty();
@@ -386,7 +304,7 @@ $('#ddlTreatment').on('change', function () {
 //});
 
 function loadRepeatForm(repeaterId, placeholder, nameInput) {
-    $("#add-treatment-form").append('<div class="col-md-12 form-group"><input type="text" placeholder="Nhập tên quy trình" class="form-control" id="txtTreatmentName" required/></div>'
+    $("#add-treatment-form").append('<div class="col-md-12 form-group"><input type="text" name="TreatmentName" placeholder="Nhập tên quy trình" class="form-control" id="txtTreatmentName" required/></div>'
         + '<div id = "TreatmentProcessForm" class="col-md-12 form-group"></div > '
         + '<div class="col-md-12 contact-repeater" id="' + repeaterId + '">'
         + '<div data-repeater-list="' + nameInput + '" >'
@@ -482,7 +400,7 @@ function loadTreatmentForm() {
         callAjaxAuth({
             url: GET_FOOD_TREATMENT_URI + treatmentId,
             dataType: JSON_DATATYPE,
-            type:GET
+            type: GET
         }, "",
             function (result) {
                 if (result.data.length != 0) {
@@ -527,22 +445,47 @@ function loadTreatmentForm() {
 
 $('#addDetailConfirm').on('click', function () {
     var foodId = $('#txtFoodId').val();
-    var treatmentId = $('#ddlChooseTreatment').val();
-    callAjaxAuth(
-        {
-            url: UPDATE_FOOD_TREATMENT_URI  + foodId,
-            dataType: JSON_DATATYPE,
-            type: PUT
-        }, JSON.stringify(treatmentId),
-        function (result) {
-            toastr.success("Thêm thông tin thành công");
-            clearDetailModal();
-            $('#addinfo').modal('hide');
-        },
-        function (result) {
-            toastr.error(result);
-        }
-    )
+    var choose = $('#dllFoodDetailType').val();
+    if (choose == 6) {
+        var treatmentId = $('#ddlChooseTreatment').val();
+        callAjaxAuth(
+            {
+                url: UPDATE_FOOD_TREATMENT_URI + foodId,
+                dataType: JSON_DATATYPE,
+                type: PUT
+            }, JSON.stringify(treatmentId),
+            function (result) {
+                toastr.success("Thêm thông tin thành công");
+                clearDetailModal();
+                $('#addinfo').modal('hide');
+            },
+            function (result) {
+                toastr.error(result);
+            }
+        );
+    } else if (choose == 7) {
+        var mfg = $('#txtMFGDate').val();
+        var exp = $('#EXPDate').val();
+        callAjaxAuth(
+            {
+                url: ADD_FOOD_PACKAGING_URI + foodId,
+                dataType: JSON_DATATYPE,
+                type: PUT
+            }, JSON.stringify({
+                MFGDate: mfg,
+                EXPDate: exp
+            }),
+            function (result) {
+                toastr.success("Thêm thông tin thành công");
+                clearDetailModal();
+                $('#addinfo').modal('hide');
+            },
+            function (result) {
+                toastr.error(result);
+            }
+        );
+    }
+
 });
 
 function callAjaxAddTreatmentData(treatmentName, treatmentProcess) {
@@ -583,10 +526,33 @@ function callAjaxAddMoreTreatmentData(treatmentId, treatmentProcess) {
 }
 
 function loadPackingForm() {
-    $("#add-detail-form").append('<label class="col-md-4 label-control">Ngày sản xuất</label>'
-        + '<input class="col-md-6 form-control" type="date" id="txtMFGDate"/>'
-        + '<label class="col-md-4 label-control">Hạn sử dụng</label>'
-        + '<input class="col-md-6 form-control" type="date" id="EXPDate"/>');
+    var id = $('#txtFoodId').val();
+    callAjaxAuth(
+        {
+            url: PROVIDER_GET_FOOD_DATA_URI,
+            dataType: JSON_DATATYPE,
+            type: GET
+        },
+        {
+            id: id
+        }, function (result) {
+            var packaging = result.data.Providers[0].Packaging;
+            if (packaging != null) {
+                $("#add-detail-form").append('<label class="col-md-4 label-control">Ngày sản xuất</label>'
+                    + '<input class="col-md-6 mb-1 form-control" type="date" id="txtMFGDate" value="' + $.format.date(packaging.PackagingDate, "yyyy-MM-dd") + '" readonly/>'
+                    + '<label class="col-md-4 label-control">Hạn sử dụng</label>'
+                    + '<input class="col-md-6 mb-1 form-control" type="date" id="EXPDate" value="' + $.format.date(packaging.EXPDate, "yyyy-MM-dd") + '" readonly/>');
+            } else {
+                $("#add-detail-form").append('<label class="col-md-4 label-control">Ngày sản xuất</label>'
+                    + '<input class="col-md-6 mb-1 form-control" type="date" id="txtMFGDate"/>'
+                    + '<label class="col-md-4 label-control">Hạn sử dụng</label>'
+                    + '<input class="col-md-6 mb-1 form-control" type="date" id="EXPDate"/>');
+            }
+        },
+        function (result) {
+            toastr.error(result);
+        }
+    );
 };
 
 // show detail modal
@@ -601,25 +567,25 @@ $('#provider-food-mng').on('click', 'button.btn-detail', function () {
     $('input[name="txtFoodBreed"]').val(row.data().Food.Breed);
     callAjaxAuth(
         {
-            url: GET_FOOD_DATA_URI,
+            url: PROVIDER_GET_FOOD_DATA_URI,
             dataType: JSON_DATATYPE,
             type: GET
         },
         {
             id: id
         }, function (result) {
-            var feeding = result.Farm.Feedings;
-            var vacxin = result.Farm.Vaccinations;
-            var treatment = result.Provider.Treatment;
-            var packaging = result.Provider.Packaging;
-            if (feeding != null || typeof feeding != 'undefined') {
+            var feeding = result.data.Farm.Feedings;
+            var vacxin = result.data.Farm.Vaccinations;
+            var treatment = result.data.Providers[0].Treatment;
+            var packaging = result.data.Providers[0].Packaging;
+            if (feeding != null) {
                 $.each(feeding, function (data, value) {
                     $('#FeedingInfo').append('<div class="input-group mb-1"">'
                         + '<input type="text" readonly class="form-control" value="' + value + '" >'
                         + '</div > ');
                 });
             }
-            if (vacxin != null || typeof vacxin != 'undefined') {
+            if (vacxin != null) {
                 $.each(vacxin, function (data, value) {
                     $('#VacxinInfo').append('<div class="input-group mb-1"">'
                         + '<div class="col-6">'
@@ -637,7 +603,7 @@ $('#provider-food-mng').on('click', 'button.btn-detail', function () {
                         + '</div > ');
                 });
             }
-            if (treatment != null) {                 
+            if (treatment != null) {
                 $.each(treatment.TreatmentProcess, function (data, value) {
                     $('#TreatmentInfo').append('<label class="col-md-2 mb-1 label-control" for="txtFoodId">Bước ' + (data + 1) + '</label>'
                         + '<div class="col-md-10 mb-1">'

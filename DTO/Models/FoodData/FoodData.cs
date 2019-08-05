@@ -13,7 +13,6 @@ namespace DTO.Models.FoodData
         public string Category { get; set; }
 
         public Farm Farm { get; set; }
-        public Provider Provider { get; set; }
 
         public Distributor Distributor { get; set; }
 

@@ -22,15 +22,17 @@ namespace BusinessLogic.IBusinessLogic
 
         Task<string> AddProvider(long foodId, int providerId);
 
-        Task<string> AddTreatment(long foodId, int treamentId);
+        Task<string> AddTreatment(long foodId, int treamentId, int providerId);
 
-        Task<string> Packaging(long foodId, Packaging packaging);
+        Task<string> Packaging(long foodId, Packaging packaging, int providerId);
 
         Task<FoodData> GetFoodDataByID(long id);
 
         Task<IList<string>> GetFeedingsById(int foodId);
 
         Task<IList<Vaccination>> GetVaccinsById(int foodId);
+
+        Task<FoodData> GetFoodDataByIDAndProviderID(long foodId, int providerId);
 
     }
 }

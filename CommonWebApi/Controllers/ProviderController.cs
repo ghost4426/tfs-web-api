@@ -81,10 +81,11 @@ namespace CommonWebApi.Controllers
 
             try
             {
+                int providerId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
                 await _foodBL.AddDetail(foodId, EFoodDetailType.TREATMENT);
                 Entities.Food food = await _foodBL.getFoodById((int)foodId);
                 await _foodBL.UpdateFoodTreatment(food, (int)foodId, int.Parse(treatmentId));
-                return Ok(new { message = await _foodDataBL.AddTreatment(foodId, int.Parse(treatmentId)) });
+                return Ok(new { message = await _foodDataBL.AddTreatment(foodId, int.Parse(treatmentId), providerId) });
             }
             catch (Exception ex)
             {
@@ -96,9 +97,10 @@ namespace CommonWebApi.Controllers
         [HttpPut("food/packaging/{foodId}")]
         public async Task<string> Packaging(long foodId, [FromBody]Models.PackagingRequest packagingRequest)
         {
+            int premisesId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
             await _foodBL.AddDetail(foodId, EFoodDetailType.PACKAGING);
             var Packaging = _mapper.Map<Models.FoodData.Packaging>(packagingRequest);
-            return await _foodDataBL.Packaging(foodId, Packaging);
+            return await _foodDataBL.Packaging(foodId, Packaging, premisesId);
         }
 
         [HttpGet("getFoodByProvider")]
@@ -217,11 +219,25 @@ namespace CommonWebApi.Controllers
         }
 
         [HttpGet("getAllDistributor")]
-        public async Task<IActionResult> getAllDistributorAsync(string keyword)
+        public async Task<IActionResult> getAllDistributorAsync(string search)
         {
             try
             {
-                return Ok(new { results = _mapper.Map<IList<Models.Option>>(await _premisesBL.getAllDistriburtorAsync(keyword)) });
+                return Ok(new { results = _mapper.Map<IList<Models.Option>>(await _premisesBL.getAllDistriburtorAsync(search)) });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { msg = e.Message });
+            }
+        }
+
+        [HttpGet("getFoodDataByProvider")]
+        public async Task<IActionResult> GetFoodDataByIDAndProviderID(long id)
+        {
+            try
+            {
+                int providerId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
+                return Ok(new { data = await _foodDataBL.GetFoodDataByIDAndProviderID(id, providerId) });
             }
             catch (Exception e)
             {

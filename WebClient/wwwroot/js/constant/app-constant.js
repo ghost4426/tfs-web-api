@@ -18,9 +18,6 @@ const BASE_GUEST_URI = "api/guest/";
 //Guest
 const LOGIN_URI = BASE_COMMON_API_URI + BASE_GUEST_URI + "login";
 
-//Farm + Provider
-const GET_FOOD_DATA_URI = BASE_COMMON_API_URI + BASE_STAFF_URI + "getFoodData";
-
 //Farm
 const GET_FOOD_DETAIL_TYPE_URI      = BASE_FAMR_URI + "productdetailtype";
 const GET_FOOD_CATEGORY_URI         = BASE_FAMR_URI + "category";
@@ -59,3 +56,5 @@ const GET_TREATMENT_URI = BASE_COMMON_API_URI + BASE_PROVIDER_URI + "treatment";
 const UPDATE_FOOD_TREATMENT_URI = BASE_COMMON_API_URI + BASE_PROVIDER_URI + "food/treatment/";
 const DELETE_TREATMENT_URI = BASE_COMMON_API_URI + BASE_PROVIDER_URI + "deleteTreatment/"
 const GET_DISTRIBUTOR_URI = BASE_COMMON_API_URI + BASE_PROVIDER_URI + "getAllDistributor";
+const ADD_FOOD_PACKAGING_URI = BASE_COMMON_API_URI + BASE_PROVIDER_URI + "food/packaging/";
+const PROVIDER_GET_FOOD_DATA_URI = BASE_COMMON_API_URI + BASE_PROVIDER_URI + "getFoodDataByProvider";
