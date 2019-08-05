@@ -4,14 +4,16 @@ using DataAccess.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(FoodTrackingDbContext))]
-    partial class FoodTrackingDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190805105949_giantt-v7")]
+    partial class gianttv7
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -351,7 +353,7 @@ namespace DataAccess.Migrations
 
                     b.Property<int?>("RejectById");
 
-                    b.Property<string>("RejectReason");
+                    b.Property<string>("RejectedReason");
 
                     b.Property<int>("SenderId");
 
