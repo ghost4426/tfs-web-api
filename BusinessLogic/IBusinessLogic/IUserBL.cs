@@ -23,6 +23,8 @@ namespace BusinessLogic.IBusinessLogic
 
         Task<User> UpdateUser(User user, int ssId);
 
+        Task ChangeAvatar(int userId, string avaUrl);
+
         Task updateUserStatus(int userId);
 
         Task Register(User user, Premises premises);

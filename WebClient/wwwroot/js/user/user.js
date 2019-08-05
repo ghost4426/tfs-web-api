@@ -12,6 +12,7 @@ function getProfile() {
         },
         JSON.stringify({}),
         function (result) {
+            $('span.avatar > img').attr({ src: result.data.Image });
             $('#profile-ava').attr({src:result.data.Image});
             $('#userId').text(result.data.UserId);
             $('#txtUserId').val(result.data.UserId);
@@ -80,30 +81,74 @@ $('#changePassButton').click(function () {
     }
 });
 //Load Image
-$(".file-upload").on('change', function () {
-    readURL(this);
-});
+
 
 $(".upload-button").on('click', function () {
     $(".file-upload").click();
 });
 
-var readURL = function (input) {
-    if (input.files && input.files[0]) {
-        var reader = new FileReader();
-
-        reader.onload = function (e) {
-            $('.profile-pic').attr('src', e.target.result);
-        }
-
-        reader.readAsDataURL(input.files[0]);
-    }
-}
 $('#loadModal').click(function () {
     $('#txtFullName').val($('#FullName').text());
     $('#txtEmail').val($('#Email').text());
     $('#txtPhone').val($('#Phone').text());
 });
+
+//api imgur
+$(".file-upload").on("change", function (event) {
+    var img = this.files[0];
+    var reader = new FileReader();
+
+    reader.onload = function (e) {
+        $('.profile-pic').attr('src', e.target.result);
+    }
+    reader.readAsDataURL(img);
+    console.log(img);
+    var form = new FormData();
+    form.append("image", img);
+
+    var settings = {
+        "url": "https://api.imgur.com/3/image",
+        "method": "POST",
+        "dataType": JSON_DATATYPE,
+        "timeout": 0,
+        "headers": {
+            "Authorization": "Client-ID 527d3d0ae851a83"
+        },
+        "beforeSend": showLoadingPage,
+        "processData": false,
+        "mimeType": "multipart/form-data",
+        "contentType": false,
+        "data": form
+    };
+
+    $.ajax(settings).done(function (response) {
+        console.log(response.data.link);
+        saveImg(response.data.link);
+    });
+});
+//save img link to db
+function saveImg(imgDetails) {
+    var userId = $('#userId').text();
+    callAjax(
+        {
+            url: CHANGE_AVA_URI + userId,
+            dataType: JSON_DATATYPE,
+            type: PUT,
+        },
+        JSON.stringify({
+            avaUrl: imgDetails,
+        }),
+        function (result) {
+            toastr.success('Đổi ảnh đại diện thành công', 'Thành Công');
+            //setTimeout("location.reload(true);", 2000);
+            getProfile();
+            /*$('#userTable').DataTable().ajax.reload();*/
+        },
+        function (result) {
+            toastr.error("Đã có lỗi xảy ra!");
+        })
+
+}
 //Confirm save 
 $('#confirmSaveButton').click(function () {
     var userId = parseInt($('#txtUserId').val());

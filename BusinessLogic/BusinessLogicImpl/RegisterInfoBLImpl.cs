@@ -12,7 +12,6 @@ using Models = DTO.Models;
 using Common.Constant;
 using Entities = DTO.Entities;
 
-
 namespace BusinessLogic.BusinessLogicImpl
 {
     public class RegisterInfoBLImpl : IRegisterInfoBL
@@ -39,24 +38,58 @@ namespace BusinessLogic.BusinessLogicImpl
             _registerRepos = registerRepos;
         }
 
-        public async Task CreateRegisterInfo(RegisterInfo newRegInfo)
+        public async Task CreateRegisterInfo(RegisterInfo newRegInfo,string Password)
         {
-            var regInfo = await _registerRepos.FindByName(newRegInfo.PremisesName);
+            var isExistPremises = await _premisesRepos.FindByName(newRegInfo.PremisesName);
             var isExistUser = await _userRepository.FindByUsername(newRegInfo.Username);
-            if (regInfo != null)
+            if (isExistPremises != null)
             {   
                 throw new DuplicatedPremisesNameException("Tên cơ sở đã tồn tại");
             }else if(isExistUser!= null)
             {
                 throw new DuplicatedUsernameException("Tài khoản đã tồn tại");
             }
-            //còn user manager nữa
+            
             else {
+                //tạo premises mới
+                var newPremises = new Premises();
+                newPremises.Name = newRegInfo.PremisesName;
+                newPremises.Address = newRegInfo.PremisesAddress;
+                newPremises.PremisesType = _premisesTypeRepos.GetById(newRegInfo.PremisesTypeId);
+                //tạo user mới
+                var user = new User();
+                var hashedPassword = PasswordHasher.GetHashPassword(Password);//Get hashedpassword
+                var role = _roleRepos.GetById(2);//Get manager Role
+                user.Password = hashedPassword.HashedPassword;
+                user.Fullname = newRegInfo.Fullname;
+                user.Salt = hashedPassword.Salt;
+                user.Role = role;
+                user.Username = newRegInfo.Username;
+                user.Email = newRegInfo.Email;
+                user.Image = "/app-assets/images/avatar.jpg";
+                user.Premises = newPremises;
+                _userRepository.Insert(user, true);
+                //tạo reginfo
                 newRegInfo.RegisterId = 0;
                 newRegInfo.IsConfirm = null;
                 _registerRepos.Insert(newRegInfo, true);
+                //Code 
+
+                var activateCode = Util.GeneratePassword(new Models.PasswordOptions()
+                {
+                    RequireDigit = true,
+                    RequiredLength = 12,
+                    RequireLowercase = false,
+                    RequireNonAlphanumeric = false,
+                    RequireUppercase = true
+                });
+
+                //Send email
+                await _mailSender.SendEmailAsync(user.Email, "[TFS] Kích Hoạt tài khoản", "Vui lòng nhấn vào để kích hoạt tài khoản"
+                                                            +"localhost:");
             }
         }
+
         public async Task<IList<Entities.RegisterInfo>> GetAllRegisterInfo()
         {
             var regInfos = await _registerRepos.FindAllAsync(p => p.RegisterId > 0);
@@ -84,31 +117,9 @@ namespace BusinessLogic.BusinessLogicImpl
 
             if (regInfo.IsConfirm == true)
             {
-                    var newPremises = new Premises();
-                    newPremises.Name = regInfo.PremisesName;
-                    newPremises.Address = regInfo.PremisesAddress;
-                    newPremises.PremisesType = _premisesTypeRepos.GetById(regInfo.PremisesTypeId);
-                    var user = new User();
-                    var password = Util.GeneratePassword(new Models.PasswordOptions()
-                    {
-                        RequireDigit = true,
-                        RequiredLength = 8,
-                        RequireLowercase = true,
-                        RequireNonAlphanumeric = false,
-                        RequireUppercase = true
-                    });
-                    var hashedPassword = PasswordHasher.GetHashPassword(password);//Get hashedpassword
-                    var role = _roleRepos.GetById(2);//Get manager Role
-                    user.Password = hashedPassword.HashedPassword;
-                    user.Fullname = regInfo.Fullname;
-                    user.Salt = hashedPassword.Salt;
-                    user.Role = role;
-                    user.Username = regInfo.Username;
-                    user.Email = regInfo.Email;
-                    user.Image = "/app-assets/images/avatar.jpg";
-                    user.Premises = newPremises;
-                    _userRepository.Insert(user, true);
-                    await _mailSender.SendEmailAsync(user.Email, "Thông tin cơ sở của bạn đã dc duyệt", "Mật khẩu tài khoản: " + password);
+                    
+                    
+                    //await _mailSender.SendEmailAsync(user.Email, "Thông tin cơ sở của bạn đã dc duyệt", "Mật khẩu tài khoản: " + password);
                     return true;
             }
             await _registerRepos.UpdateAsync(regInfo, true);

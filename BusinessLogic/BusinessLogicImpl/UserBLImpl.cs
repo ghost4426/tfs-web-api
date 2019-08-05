@@ -169,7 +169,12 @@ namespace BusinessLogic.BusinessLogicImpl
         {
             await _userRepos.DeleteAsync(id, true);
         }
-
+        public async Task ChangeAvatar(int userId, string avaUrl)
+        {
+            var user = _userRepos.GetById(userId);
+            user.Image = avaUrl;
+            await _userRepos.UpdateAsync(user);
+        }
         public async Task<User> UpdateUser(User user, int ssId)
         {
             User dbUser = await this.GetById(user.UserId);

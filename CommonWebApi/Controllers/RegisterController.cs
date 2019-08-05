@@ -43,7 +43,7 @@ namespace CommonWebApi.Controllers
             try
             {
                 var newReg = _mapper.Map<Entities.RegisterInfo>(regInfo);
-                await _regBl.CreateRegisterInfo(newReg);
+                await _regBl.CreateRegisterInfo(newReg, regInfo.Password);
                 return Ok(new { messsage = MessageConstant.INSERT_SUCCESS });
             }
             catch (DuplicatedUsernameException e)

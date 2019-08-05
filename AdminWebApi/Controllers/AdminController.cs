@@ -230,6 +230,20 @@ namespace AdminWebApi.Controllers
 
             }
         }
+        [HttpPut("user/avatar/{userId}")]
+        public async Task<IActionResult> ChangeAvatar(int userId, [FromBody] Models.ChangeAvatar ava)
+        {
+            
+            try {
+                await _userBL.ChangeAvatar(userId,ava.avaUrl);
+                return Ok("Success!");
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = e.Message.ToString() });
+            }
+            
+        }
 
         [HttpPut("user/deactive/{userId}")]
         public async Task<IActionResult> Deactive(int userId)

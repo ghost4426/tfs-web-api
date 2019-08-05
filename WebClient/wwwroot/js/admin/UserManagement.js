@@ -42,7 +42,7 @@ $('#confirmButton').click(function () {
     var userId = parseInt($('#txtUserIdActive').val());
     callAjax(
         {
-            url: DEACTIVE_USER_URI + 16,
+            url: DEACTIVE_USER_URI + userId,
             dataType: JSON_DATATYPE,
             type: PUT,
         }, JSON.stringify(),
@@ -62,7 +62,7 @@ function getUserInfo(userId) {
     callAjax(
         {
             type: GET,
-            url: GET_USER_DETAILS_URI + 16,
+            url: GET_USER_DETAILS_URI + userId,
             dataType: JSON_DATATYPE,
 
         },
@@ -78,9 +78,17 @@ function getUserInfo(userId) {
             $('div#RoleOption select').val(user.data.RoleId).change();
             $('#txtUserIdActive').val(user.data.UserId);
             if (user.data.IsActive == true) {
-                document.getElementById("statusLabel").innerHTML = "Bạn có muốn thay đổi trạng thái sang Vô hiệu lực không?";
+                document.getElementById("statusLabel").innerHTML = "Bạn có muốn thay đổi trạng thái của tài khoản <font style='color:blue;font-weight:bold'>" +
+                    user.data.Username +
+                    "</font> sang" +
+                    "<font style='color:red'> Vô hiệu lực</font> " +
+                    " không?";
             } else {
-                document.getElementById("statusLabel").innerHTML = "Bạn có muốn thay đổi trạng thái sang Hiệu lực không?";
+                document.getElementById("statusLabel").innerHTML = "Bạn có muốn thay đổi trạng thái của tài khoản <font style='color:blue;font-weight:bold'>" +
+                    user.data.Username +
+                    "</font> sang" +
+                    "<font style='color:Green'> Hiệu lực</font>" +
+                    " không?";
             }
             $('#status').val(user.data.IsActive);
         },
@@ -114,7 +122,7 @@ function changeRole() {
         var roleId = $('select[id="dllRole"]').val();
         $.ajax({
             type: 'PUT',
-            url: CHANGE_ROLE_URI + 16,
+            url: CHANGE_ROLE_URI + userId,
             contentType: 'json',
             headers: {
                 //'Accept': 'application/json',

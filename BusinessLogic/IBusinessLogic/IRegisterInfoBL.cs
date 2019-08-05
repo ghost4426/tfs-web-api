@@ -9,7 +9,7 @@ namespace BusinessLogic.IBusinessLogic
 {
    public interface IRegisterInfoBL
     {
-        Task CreateRegisterInfo(RegisterInfo newRegInfo);
+        Task CreateRegisterInfo(RegisterInfo newRegInfo,string Passwornd);
         Task<IList<Entities.RegisterInfo>> GetAllRegisterInfo();
         Task<bool> ChangeStatusRegisterInfo(int regId, int isConfirm);
     }

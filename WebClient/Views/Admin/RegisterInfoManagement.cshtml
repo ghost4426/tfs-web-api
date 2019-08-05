@@ -85,11 +85,11 @@
     </div>
 </div>
 <!-- Modal View Reg Info -->
-<div class="modal fade text-left" id="view-reg-data" role="dialog" aria-labelledby="add-food-data" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable" role="document">
+<div class="modal fade text-left" id="view-reg-data" role="dialog" aria-labelledby="view-reg-data" aria-hidden="true">
+    <div class="modal-dialog modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="addDetailDataTitle">Xem thông tin Cơ sở</h4>
+                <h4 class="modal-title" id="addDetailDataTitle"><i class="ft-info"></i> Xem thông tin Cơ sở</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -97,22 +97,23 @@
             <div class="modal-body">
                 <form class="form form-horizontal" novalidate id="formAddDetail">
                     <div class="form-body">
-                        <h4 class="form-section"><i class="ft-info"></i> Thông Tin Đăng Ký</h4>
+                        @*<h4 class="form-section"> Thông Tin Đăng Ký</h4>*@
+                        <br />
                         <div class="row form-group">
-                            <label class="col-md-2 label-control" for="txtPreAddress">Địa chỉ cơ sở</label>
-                            <div class="col-md-10">
+                            <label class="col-md-3 label-control" for="txtPreAddress">Địa chỉ cơ sở</label>
+                            <div class="col-md-9">
                                 <input class="form-control" type="text" name="txtPreAddress" id="txtPreAddress" readonly />
                             </div>
                         </div>
                         <div class="row form-group">
-                            <label class="col-md-2 label-control" for="txtFullname">Họ và Tên</label>
-                            <div class="col-md-10">
+                            <label class="col-md-3 label-control" for="txtFullname">Họ và Tên</label>
+                            <div class="col-md-9">
                                 <input class="form-control" type="text" name="txtFullname" id="txtFullname" readonly />
                             </div>
                         </div>
                         <div class="row form-group">
-                            <label class="col-md-2 label-control" for="txtFoodId">Số điện thoại</label>
-                            <div class="col-md-10">
+                            <label class="col-md-3 label-control" for="txtFoodId">Số điện thoại</label>
+                            <div class="col-md-9">
                                 <input class="form-control" type="text" name="txtPhone" id="txtPhone" readonly />
                             </div>
                         </div>

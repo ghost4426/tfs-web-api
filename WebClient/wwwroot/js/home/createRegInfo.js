@@ -4,6 +4,7 @@
 
 $('#createNewRegisterInfoBtn').click(function () {
     var username = $('#txtUsername').val();
+    var password = $('#txtPassword').val();
     var fullName = $('#txtFullname').val();
     var email = $('#txtEmail').val();
     var phone = $('#txtPhone').val();
@@ -20,6 +21,7 @@ $('#createNewRegisterInfoBtn').click(function () {
             PremisesAddress: premisesAddress,
             PremisesTypeId: preTypeId,
             Username: username,
+            Password: password,
             Fullname: fullName,
             Email: email,
             Phone: phone,

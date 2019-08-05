@@ -29,5 +29,9 @@ namespace DTO.Models
     {
         public int RoleId { get; set; }
     }
+    public class ChangeAvatar
+    {
+        public string avaUrl { get; set; }
+    }
 
 }
