@@ -84,7 +84,7 @@ namespace BusinessLogic.BusinessLogicImpl
         }
         public Task<Transaction> GetTransactionById(int id)
         {
-            var tran =  _transactionRepos.GetAllIncluding(t => t.Farm, t => t.Provider, t => t.Food).Where(t => t.TransactionId == id).SingleOrDefault();
+            var tran =  _transactionRepos.GetAllIncluding(t => t.Sender, t => t.Receiver, t => t.Food).Where(t => t.TransactionId == id).SingleOrDefault();
             return Task.FromResult(tran);
             //dto.Farm = _premisesRepos.GetById(dto.FarmId);
             //dto.Provider = _premisesRepos.GetById(dto.ProviderId);
@@ -101,7 +101,7 @@ namespace BusinessLogic.BusinessLogicImpl
                 transaction.VeterinaryComment = reason;
             } else
             {
-                transaction.RejectedReason = reason;
+                transaction.RejectReason = reason;
             }
             transaction.VeterinaryId = verId;
             await _transactionRepos.UpdateAsync(transaction);
