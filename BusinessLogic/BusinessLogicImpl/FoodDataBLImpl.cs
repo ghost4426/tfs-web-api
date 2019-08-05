@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using System.Linq;
 
 namespace BusinessLogic.BusinessLogicImpl
 {
@@ -50,18 +51,29 @@ namespace BusinessLogic.BusinessLogicImpl
         }
 
 
-        public async Task<string> AddTreatment(long foodId, int treamentId)
+        public async Task<string> AddTreatment(long foodId, int treamentId, int providerId)
         {
             var Treament = await _treatmentRepository.FindAllAsync(t => t.TreatmentParentId == treamentId);
+
             var FoodData = await GetFoodDataByID(foodId);
             List<string> TreatmentProcess = new List<string>();
             for (int i = 0; i < Treament.Count; i++)
             {
                 TreatmentProcess.Add(Treament[i].Name);
             }
-            FoodData.Provider.Treatment.TreatmentProcess = TreatmentProcess;
-            FoodData.Provider.Treatment.TreatmentDate = DateTime.Now;
-
+            foreach(var p in FoodData.Providers)
+            {
+                if(p.ProviderId == providerId)
+                {
+                    p.Treatment = new Treatments()
+                    {
+                        TreatmentDate = DateTime.Now,
+                        TreatmentProcess = new List<string>()
+                    };
+                    p.Treatment.TreatmentProcess = TreatmentProcess;
+                }
+            }
+            FoodData.Providers[0].Treatment.TreatmentProcess = TreatmentProcess;
             return await SaveFoodData(FoodData);
         }
 
@@ -69,7 +81,7 @@ namespace BusinessLogic.BusinessLogicImpl
         public Task<FoodData> GetFoodDataByID(long Id)
         {
             return _service.GetFoodDataByID(Id);
-        }
+        }       
 
         public async Task<string> SaveFoodData(FoodData Food)
         {
@@ -120,13 +132,18 @@ namespace BusinessLogic.BusinessLogicImpl
             return await SaveFoodData(FoodData);
         }
 
-        public async Task<string> Packaging(long foodId, Packaging packaging)
+        public async Task<string> Packaging(long foodId, Packaging packaging, int providerId)
         {
             packaging.PackagingDate = DateTime.Now;
 
             var FoodData = await GetFoodDataByID(foodId);
-            FoodData.Provider.Packaging = packaging;
-
+            foreach (var p in FoodData.Providers)
+            {
+                if (p.ProviderId == providerId)
+                {
+                    p.Packaging = packaging;
+                }
+            }
             return await SaveFoodData(FoodData);
         }
 
@@ -135,7 +152,12 @@ namespace BusinessLogic.BusinessLogicImpl
             var Premises = _premesisRepository.GetById(providerId);
             var FoodData = await GetFoodDataByID(foodId);
 
-            FoodData.Provider = _mapper.Map<Provider>(Premises);
+            //FoodData.Provider = _mapper.Map<Provider>(Premises);
+            if(FoodData.Providers == null)
+            {
+                FoodData.Providers = new List<Provider>();
+            }            
+            FoodData.Providers.Add(_mapper.Map<Provider>(Premises));
 
             return await SaveFoodData(FoodData);
         }
@@ -150,6 +172,13 @@ namespace BusinessLogic.BusinessLogicImpl
         {
             var FoodData =  await GetFoodDataByID(foodId);
             return FoodData.Farm.Vaccinations;
+        }
+
+        public async Task<FoodData> GetFoodDataByIDAndProviderID(long foodId, int providerId)
+        {
+            FoodData food = await _service.GetFoodDataByID(foodId);
+            food.Providers = food.Providers.Where(x => x.ProviderId == providerId).ToList();
+            return food;
         }
     }
 }

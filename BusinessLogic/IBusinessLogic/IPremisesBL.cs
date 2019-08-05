@@ -11,5 +11,7 @@ namespace BusinessLogic.IBusinessLogic
         Task<IList<Premises>> getAllProviderAsync(string keyword);
         Task<Premises> GetById(int premisesId);
 
+
+        Task<IList<Premises>> getAllDistriburtorAsync(string keyword);
     }
 }

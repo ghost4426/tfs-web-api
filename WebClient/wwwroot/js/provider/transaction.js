@@ -1,6 +1,16 @@
 ﻿var providerTransactionTable = $('#provider-transaction-mng').DataTable({
     ajax: {
         url: GET_PROVIDER_TRANSACTION_URI,
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json; charset=utf-8',
+            "Authorization": 'Bearer ' + Cookies.get('token')
+        },
+        statusCode: {
+            401: function () {
+                window.location.replace("/dang-nhap");
+            },
+        },
         beforeSend: showLoadingPage,
         complete: hideLoadingPage
     },
@@ -67,55 +77,82 @@ $('#provider-transaction-mng').on('click', 'button.btn-accept-trans', function (
     var tr = $(this).closest('tr');
     var row = providerTransactionTable.row(tr);
     var transId = row.data().TransactionId;
+    var foodName = row.data().FoodName;
+    var foodBreed = row.data().FoodBreed;
     var foodId = row.data().FoodId;
-    callAjax(
+    var farm = row.data().Farm;
+    $('#AcceptModal').modal('show');
+    $('#transactionId').val(transId);
+    $('#acFoodId').val(foodId);
+    $('#acFoodName').val(foodName);
+    $('#acFoodBreed').val(foodBreed);
+    $('#acFarm').val(farm);
+});
+
+$('#btnAddProviderFood').click(function () {
+    var transId = $('#transactionId').val();
+    var comment = $('#ProviderComment').val();
+    var foodId = $('#acFoodId').val();
+    callAjaxAuth(
+        {
+            url: CREATE_PROVIDER_FOOD_URI,
+            dataType: JSON_DATATYPE,
+            type: POST,
+        }, JSON.stringify({
+            FoodId: foodId
+        }),
+        function (result) {
+            toastr.success('Giao dịch thành công');
+            $('#AcceptModal').modal('hide');
+            $('#ProviderComment').val("");
+            $("#provider-transaction-mng").DataTable().ajax.reload();
+        }
+    );
+    callAjaxAuth(
         {
             url: UPDATE_TRANSACTION_URI + transId,
             dataType: JSON_DATATYPE,
             type: PUT,
         }, JSON.stringify({
             StatusId: 3,
-            RejectedReason: ""
+            RejectedReason: "",
+            ProviderComment: comment
         }),
         function (result) {
-            callAjax(
-                {
-                    url: CREATE_PROVIDER_FOOD_URI,
-                    dataType: JSON_DATATYPE,
-                    type: POST,
-                }, JSON.stringify({
-                    FoodId: foodId
-                }),
-                function (result) {
-                    toastr.success('Giao dịch thành công');
-                });
-            $("#provider-transaction-mng").DataTable().ajax.reload();
+            toastr.success(result.message);
         },
         function (result) {
             toastr.error(result);
         }
-    )
+    );    
 });
 
 $('#provider-transaction-mng').on('click', 'button.btn-deny-trans', function () {
     var tr = $(this).closest('tr');
     var row = providerTransactionTable.row(tr);
     var transId = row.data().TransactionId;
+    var foodName = row.data().FoodName;
+    var foodBreed = row.data().FoodBreed;
+    var farm = row.data().Farm;
     $('#DenyModal').modal('show');
     $('#transId').val(transId);
+    $('#dnFoodName').val(foodName);
+    $('#dnFoodBreed').val(foodBreed);
+    $('#dnFarm').val(farm);
 });
 
-$("#btnAddProviderFood").click(function () {
+$("#btnDenyProviderFood").click(function () {
     var transId = $('#transId').val();
     var reason = $('#RejectedReason').val();
-    callAjax(
+    callAjaxAuth(
         {
             url: UPDATE_TRANSACTION_URI + transId,
             dataType: JSON_DATATYPE,
             type: PUT,
         }, JSON.stringify({
             StatusId: 4,
-            RejectedReason: reason
+            RejectedReason: reason,
+            ProviderComment: ""
         }),
         function (result) {
             toastr.success('Từ chối giao dịch thành công');

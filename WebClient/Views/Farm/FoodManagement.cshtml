@@ -1,16 +1,18 @@
 ﻿@{
     ViewData["Title"] = "Nông trại";
 }
-<head>
-    <!-- BEGIN VENDOR CSS-->
-    @*<link rel="stylesheet" type="text/css" href="~/app-assets/css/vendors.css">*@
-    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/tables/datatable/datatables.min.css">
-    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/tables/extensions/buttons.dataTables.min.css">
-    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/tables/datatable/buttons.bootstrap4.min.css">
-    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/forms/selects/select2.min.css">
-    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/extensions/toastr.css">
-    <!-- END VENDOR CSS-->
-</head>
+    <head>
+        <!-- BEGIN VENDOR CSS-->
+        <link rel="stylesheet" type="text/css" href="~/app-assets/css/vendors.css">
+        <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/tables/datatable/datatables.min.css">
+        <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/tables/extensions/buttons.dataTables.min.css">
+        <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/tables/datatable/buttons.bootstrap4.min.css">
+        <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/forms/selects/select2.min.css">
+        <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/extensions/toastr.css">
+        <link rel="stylesheet" type="text/css" href="~/css/home/print.min.css">
+        <link rel="stylesheet" type="text/css" href="~/css/home/barcode.css">
+        <!-- END VENDOR CSS-->
+    </head>
 <!-- Excel - Cell background table -->
 <div class="content-wrapper">
     <div class="content-header row">
@@ -273,34 +275,6 @@
     <!-- END PAGE LEVEL JS-->
     <!-- My JS-->
     <script src="~/js/farm/farm.js" type="text/javascript"></script>
-    <script src="~/js/printJs/print.min.js" type="text/javascript"></script>
+    <script src="~/lib/print.min.js" type="text/javascript"></script>
     <script src="https://cdn.jsdelivr.net/jsbarcode/3.3.16/barcodes/JsBarcode.code128.min.js"></script>
-
-    <style scoped>
-        a.btn.btn-secondary.buttons-excel.buttons-html5 {
-            z-index: -1;
-        }
-
-        .my-custom-scrollbar {
-            position: relative;
-            width: 800px;
-            height: 400px;
-            overflow: auto;
-        }
-
-        #qrcode {
-            width: 100%;
-            height: 100%;
-            margin-top: 15px;
-            margin-bottom: 15px;
-        }
-
-        #barcode {
-            width: 100%;
-        }
-
-        #GetQRCode {
-            margin-top: 100px;
-        }
-    </style>
 }

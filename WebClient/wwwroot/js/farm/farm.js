@@ -141,6 +141,7 @@ var farmFoodTable = $('#farm-food-mng').DataTable({
 
 //$('.buttons-excel, .btn-addNew').addClass('btn btn-primary btn-sm mr-1 ');
 $('.btnAddNewFood').attr({ 'data-toggle': 'modal', 'data-target': "#default" });
+$('.buttons-excel').removeClass('btn-secondary');
 
 function clearDetailModal() {
     $("#detailTitle").empty();

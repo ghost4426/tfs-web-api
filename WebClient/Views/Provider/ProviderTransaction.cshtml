@@ -1,17 +1,18 @@
 ﻿@{
     ViewData["Title"] = "Quản lý giao dịch";
 }
-<head>
-    <!-- BEGIN VENDOR CSS-->
-    <link rel="stylesheet" type="text/css" href="~/app-assets/css/vendors.css">
-    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/tables/datatable/datatables.min.css">
-    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/tables/extensions/buttons.dataTables.min.css">
-    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/tables/datatable/buttons.bootstrap4.min.css">
-    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/forms/selects/select2.min.css">
-    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/extensions/toastr.css">
-    <link rel="stylesheet" type="text/css" href="~/js/printJs/print.min.css">
-    <!-- END VENDOR CSS-->
-</head>
+    <head>
+        <!-- BEGIN VENDOR CSS-->
+        <link rel="stylesheet" type="text/css" href="~/app-assets/css/vendors.css">
+        <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/tables/datatable/datatables.min.css">
+        <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/tables/extensions/buttons.dataTables.min.css">
+        <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/tables/datatable/buttons.bootstrap4.min.css">
+        <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/forms/selects/select2.min.css">
+        <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/extensions/toastr.css">
+        <link rel="stylesheet" type="text/css" href="~/css/home/print.min.css">
+        <link rel="stylesheet" type="text/css" href="~/css/home/barcode.css">
+        <!-- END VENDOR CSS-->
+    </head>
 <!-- Excel - Cell background table -->
 <section id="file-export">
     <div class="row">
@@ -46,7 +47,48 @@
         </div>
     </div>
 </section>
-
+<!--Accept Transaction Modal-->
+<div class="modal fade text-left" id="AcceptModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel1">Đồng ý giao dịch</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="form">
+                    <div class="form-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="projectinput3">Mã giao dịch</label>
+                                    <input type="text" id="transactionId" class="form-control" readonly />
+                                    <input type="hidden" id="acFoodId" class="form-control" readonly />
+                                    <label for="projectinput3">Tên thực phẩm</label>
+                                    <input type="text" id="acFoodName" class="form-control" readonly />
+                                    <label for="projectinput3">Giống</label>
+                                    <input type="text" id="acFoodBreed" class="form-control" readonly />
+                                    <label for="projectinput3">Nông trại</label>
+                                    <input type="text" id="acFarm" class="form-control" readonly />
+                                    <label for="projectinput3">Phản hồi (nếu có)</label>
+                                    <input type="text" class="form-control" id="ProviderComment" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-outline-primary" id="btnAddProviderFood">Xác nhận</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--End-->
 <!--Deny Transaction Modal-->
 <div class="modal fade text-left" id="DenyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1"
      aria-hidden="true">
@@ -66,6 +108,12 @@
                                 <div class="form-group">
                                     <label for="projectinput3">Mã giao dịch</label>
                                     <input type="text" id="transId" class="form-control" readonly />
+                                    <label for="projectinput3">Tên thực phẩm</label>
+                                    <input type="text" id="dnFoodName" class="form-control" readonly />
+                                    <label for="projectinput3">Giống</label>
+                                    <input type="text" id="dnFoodBreed" class="form-control" readonly />
+                                    <label for="projectinput3">Nông trại</label>
+                                    <input type="text" id="dnFarm" class="form-control" readonly />
                                     <label for="projectinput3">Lý do từ chối</label>
                                     <input type="text" class="form-control" id="RejectedReason" />
                                 </div>
@@ -76,7 +124,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">Đóng</button>
-                <button type="button" class="btn btn-outline-primary" id="btnAddProviderFood">Xác nhận</button>
+                <button type="button" class="btn btn-outline-primary" id="btnDenyProviderFood">Xác nhận</button>
             </div>
         </div>
     </div>
@@ -124,35 +172,7 @@
     <!-- END PAGE LEVEL JS-->
     <!-- My JS-->
     <script src="~/js/provider/transaction.js" type="text/javascript"></script>
-    <script src="~/js/barcode/JsBarcode.all.min.js" type="text/javascript"></script>
-    <script src="~/js/printJs/print.min.js" type="text/javascript"></script>
+    <script src="~/lib/JsBarcode.all.min.js" type="text/javascript"></script>
+    <script src="~/lib/print.min.js" type="text/javascript"></script>
     <script src="https://cdn.jsdelivr.net/jsbarcode/3.3.16/barcodes/JsBarcode.code128.min.js"></script>
 }
-
-<style scoped>
-    a.btn.btn-secondary.buttons-excel.buttons-html5 {
-        z-index: -1;
-    }
-
-    .my-custom-scrollbar {
-        position: relative;
-        width: 800px;
-        height: 400px;
-        overflow: auto;
-    }
-
-    #qrcode {
-        width: 100%;
-        height: 100%;
-        margin-top: 15px;
-        margin-bottom: 15px;
-    }
-
-    #barcode {
-        width: 100%;
-    }
-
-    #GetQRCode {
-        margin-top: 100px;
-    }
-</style>

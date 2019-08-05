@@ -13,5 +13,7 @@ namespace DataAccess.IRepositories
         Task<Premises> FindByName(string premisesName);
 
         Task<IList<Premises>> getAllProviderAsync(string keyword);
+
+        Task<IList<Premises>> getAllDistributorAsync(string keyword);
     }
 }

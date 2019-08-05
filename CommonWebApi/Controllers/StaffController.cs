@@ -62,5 +62,10 @@ namespace CommonWebApi.Controllers
         //    return await _foodDataBL.SaveFoodData(foodData);
         //}
 
+        [HttpGet("getFoodDataByProvider")]
+        public async Task<FoodData> GetFoodDataByIDAndProviderID(long id, int providerId)
+        {
+            return await _foodDataBL.GetFoodDataByIDAndProviderID(id, providerId);
+        }
     }
 }
