@@ -75,25 +75,25 @@ namespace BusinessLogic.BusinessLogicImpl
         public async Task AddDetail(long foodId, EFoodDetailType type)
         {
             var food = _productRepos.GetById((int)foodId);
-            switch (type)
-            {
-                case EFoodDetailType.FEEDING:
-                    food.IsFeeding = true;
-                    break;
-                case EFoodDetailType.VACCINATION:
-                    food.IsVaccination = true;
-                    break;
-                case EFoodDetailType.VERIFY:
-                    food.IsCertification = true;
-                    break;
-                case EFoodDetailType.TREATMENT:
-                    food.IsTreatment = true;
-                    break;
-                case EFoodDetailType.PACKAGING:
-                    food.IsPackaging = true;
-                    break;
-                default: break;
-            }
+            //switch (type)
+            //{
+            //    case EFoodDetailType.FEEDING:
+            //        food.IsFeeding = true;
+            //        break;
+            //    case EFoodDetailType.VACCINATION:
+            //        food.IsVaccination = true;
+            //        break;
+            //    case EFoodDetailType.VERIFY:
+            //        food.IsCertification = true;
+            //        break;
+            //    case EFoodDetailType.TREATMENT:
+            //        food.IsTreatment = true;
+            //        break;
+            //    case EFoodDetailType.PACKAGING:
+            //        food.IsPackaging = true;
+            //        break;
+            //    default: break;
+            //}
             await _productRepos.UpdateAsync(food);
         }
 
@@ -116,7 +116,7 @@ namespace BusinessLogic.BusinessLogicImpl
         public async Task UpdateFoodTreatment(Food food, int foodId, int treatmentId)
         {
             Food result = _productRepos.GetById(food.FoodId);
-            result.TreatmentId = treatmentId;
+            //result.TreatmentId = treatmentId;
             await _productRepos.UpdateAsync(result, foodId);
         }
 

@@ -26,8 +26,12 @@ namespace DataAccess.Context
         public DbSet<DistributorFood> DistributorFood { get; set; }
         public DbSet<Transaction> Transaction { get; set; }
         public DbSet<TransactionStatus> TransactionStatus { get; set; }
-        public DbSet<RegisterInfo> RegisterInfo { get; set; }
+        //public DbSet<RegisterInfo> RegisterInfo { get; set; }
         public DbSet<ProviderFood> ProviderFood { get; set; }
+        public DbSet<Feeding> Feeding { get; set; }
+        public DbSet<Vaccin> Vaccin { get; set; }
+        public DbSet<FeedingFood> FeedingFood { get; set; }
+        public DbSet<VaccinFood> VaccinFood { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -35,7 +39,7 @@ namespace DataAccess.Context
 
             #region User
             builder.Entity<User>()
-             .Property(f => f.CreatedDate)
+             .Property(f => f.CreateDate)
              .HasDefaultValueSql("getdate()");
 
             builder.Entity<User>()
@@ -60,40 +64,40 @@ namespace DataAccess.Context
             ////    .HasForeignKey(df => df.ProviderId)
             ////    .OnDelete(DeleteBehavior.SetNull);
 
-            builder.Entity<Food>()
-               .Property(f => f.IsCertification)
-               .HasDefaultValue(false);
+            //builder.Entity<Food>()
+            //   .Property(f => f.IsCertification)
+            //   .HasDefaultValue(false);
+
+            //builder.Entity<Food>()
+            //   .Property(f => f.IsFeeding)
+            //   .HasDefaultValue(false);
+
+            //builder.Entity<Food>()
+            //   .Property(f => f.IsPackaging)
+            //   .HasDefaultValue(false);
+
+            //builder.Entity<Food>()
+            //   .Property(f => f.IsTreatment)
+            //   .HasDefaultValue(false);
+
+            //builder.Entity<Food>()
+            //   .Property(f => f.IsVaccination)
+            //   .HasDefaultValue(false);
 
             builder.Entity<Food>()
-               .Property(f => f.IsFeeding)
-               .HasDefaultValue(false);
-
-            builder.Entity<Food>()
-               .Property(f => f.IsPackaging)
-               .HasDefaultValue(false);
-
-            builder.Entity<Food>()
-               .Property(f => f.IsTreatment)
-               .HasDefaultValue(false);
-
-            builder.Entity<Food>()
-               .Property(f => f.IsVaccination)
-               .HasDefaultValue(false);
-
-            builder.Entity<Food>()
-              .Property(f => f.CreatedDate)
+              .Property(f => f.CreateDate)
               .HasDefaultValueSql("getdate()");
             #endregion
 
             #region Food Detail
             builder.Entity<FoodDetail>()
-             .Property(f => f.CreatedDate)
+             .Property(f => f.CreateDate)
              .HasDefaultValueSql("getdate()");
             #endregion
 
             #region Premises
             builder.Entity<Premises>()
-             .Property(f => f.CreatedDate)
+             .Property(f => f.CreateDate)
              .HasDefaultValueSql("getdate()");
             #endregion
 
@@ -109,7 +113,7 @@ namespace DataAccess.Context
                 .WithMany(f => f.DistributorFoods)
                 .HasForeignKey(df => df.FoodId);
             builder.Entity<DistributorFood>()
-            .Property(f => f.CreatedDate)
+            .Property(f => f.CreateDate)
             .HasDefaultValueSql("getdate()");
             #endregion
 
@@ -125,43 +129,122 @@ namespace DataAccess.Context
                 .WithMany(f => f.ProviderFoods)
                 .HasForeignKey(df => df.FoodId);
             builder.Entity<ProviderFood>()
-            .Property(f => f.CreatedDate)
+            .Property(f => f.CreateDate)
             .HasDefaultValueSql("getdate()");
             #endregion
 
             #region Transaction
             builder.Entity<Transaction>()
-                .HasOne(df => df.Farm)
-                .WithMany(f => f.FarmTransactions)
-                .HasForeignKey(df => df.FarmId)
+                .HasOne(df => df.Sender)
+                .WithMany(f => f.SenderTransactions)
+                .HasForeignKey(df => df.SenderId)
                 .OnDelete(DeleteBehavior.SetNull);
 
             builder.Entity<Transaction>()
-                .HasOne(df => df.Provider)
-                .WithMany(f => f.ProviderTransactions)
-                .HasForeignKey(df => df.ProviderId)
+                .HasOne(df => df.Receiver)
+                .WithMany(f => f.ReceiverTransactions)
+                .HasForeignKey(df => df.ReceiverId)
                 .OnDelete(DeleteBehavior.SetNull);
 
             builder.Entity<Transaction>()
-               .Property(f => f.CreatedDate)
+               .Property(f => f.CreateDate)
                .HasDefaultValueSql("getdate()");
 
             builder.Entity<Transaction>()
-                .HasOne(df => df.CreatedBy)
-                .WithMany(f => f.UserCreatedTransactions)
-                .HasForeignKey(df => df.CreatedById);
+                .HasOne(df => df.CreateBy)
+                .WithMany(f => f.UserCreateTransactions)
+                .HasForeignKey(df => df.CreateById);
 
             builder.Entity<Transaction>()
                 .HasOne(df => df.Veterinary)
                 .WithMany(f => f.VeterinaryTransactions)
                 .HasForeignKey(df => df.VeterinaryId);
 
+            builder.Entity<Transaction>()
+               .HasOne(df => df.RejectBy)
+               .WithMany(f => f.RejectByTransactions)
+               .HasForeignKey(df => df.RejectById);
+
             #endregion RegisterInfo
 
-            #region RegisterInfo
-            builder.Entity<RegisterInfo>()
-              .Property(f => f.CreatedDate)
-              .HasDefaultValueSql("getdate()");
+            //#region RegisterInfo
+            //builder.Entity<RegisterInfo>()
+            //  .Property(f => f.CreatedDate)
+            //  .HasDefaultValueSql("getdate()");
+            //#endregion
+
+            #region Treatment
+            builder.Entity<Treatment>()
+                .HasOne(df => df.CreateBy)
+                .WithMany(f => f.UserCreatedTreatments)
+                .HasForeignKey(df => df.CreateById);
+            builder.Entity<Treatment>()
+                .HasOne(df => df.UpdateBy)
+                .WithMany(f => f.UserUpdateTreatments)
+                .HasForeignKey(df => df.UpdateById);
+            builder.Entity<Treatment>()
+             .Property(f => f.CreateDate)
+             .HasDefaultValueSql("getdate()");
+            #endregion
+
+            #region Feeding
+            builder.Entity<Feeding>()
+                .HasOne(df => df.CreateBy)
+                .WithMany(f => f.UserCreatedFeedings)
+                .HasForeignKey(df => df.CreateById);
+            builder.Entity<Feeding>()
+                .HasOne(df => df.UpdateBy)
+                .WithMany(f => f.UserUpdateFeedings)
+                .HasForeignKey(df => df.UpdateById);
+            builder.Entity<Feeding>()
+             .Property(f => f.CreateDate)
+             .HasDefaultValueSql("getdate()");
+            #endregion
+
+            #region Vaccin
+            builder.Entity<Vaccin>()
+               .HasOne(df => df.CreateBy)
+               .WithMany(f => f.UserCreatedVaccins)
+               .HasForeignKey(df => df.CreateById);
+            builder.Entity<Vaccin>()
+                .HasOne(df => df.UpdateBy)
+                .WithMany(f => f.UserUpdateVaccins)
+                .HasForeignKey(df => df.UpdateById);
+            builder.Entity<Vaccin>()
+             .Property(f => f.CreateDate)
+             .HasDefaultValueSql("getdate()");
+            #endregion
+
+            #region FeedingFood
+            builder.Entity<FeedingFood>()
+                .HasKey(df => new { df.FoodId, df.FeedingId });
+            builder.Entity<FeedingFood>()
+                .HasOne(df => df.Feeding)
+                .WithMany(d => d.FeedingFoods)
+                .HasForeignKey(df => df.FeedingId);
+            builder.Entity<FeedingFood>()
+                .HasOne(df => df.Food)
+                .WithMany(f => f.FeedingFoods)
+                .HasForeignKey(df => df.FoodId);
+            builder.Entity<FeedingFood>()
+            .Property(f => f.CreateDate)
+            .HasDefaultValueSql("getdate()");
+            #endregion
+
+            #region VaccinFood
+            builder.Entity<VaccinFood>()
+                .HasKey(df => new { df.FoodId, df.VaccinId });
+            builder.Entity<VaccinFood>()
+                .HasOne(df => df.Vaccin)
+                .WithMany(d => d.VaccinFoods)
+                .HasForeignKey(df => df.VaccinId);
+            builder.Entity<VaccinFood>()
+                .HasOne(df => df.Food)
+                .WithMany(f => f.VaccinFoods)
+                .HasForeignKey(df => df.FoodId);
+            builder.Entity<VaccinFood>()
+            .Property(f => f.CreateDate)
+            .HasDefaultValueSql("getdate()");
             #endregion
 
             #region Init Data

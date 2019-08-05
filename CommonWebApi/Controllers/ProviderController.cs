@@ -51,27 +51,27 @@ namespace CommonWebApi.Controllers
             var TreatmentProcess = treatmentRequest.TreatmentProcess;
             var test = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
             Treatment.PremisesId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
-            Treatment.CreatedById = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
-            Treatment.CreatedDate = DateTime.Now;
+            Treatment.CreateById = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
+            Treatment.CreateDate = DateTime.Now;
             await _treatmentBL.CreateTreatment(Treatment, TreatmentProcess);
             return Ok(new { message = MessageConstant.INSERT_SUCCESS });
         }
 
         //More treatmentDetail
         [HttpPost("moreTreatment/{treatmentId}")]
-        public async Task<IActionResult> CreateMoreTreatment(int treatmentId,[FromBody]Models.CreateMoreTreatmentRequest treatmentRequest)
+        public async Task<IActionResult> CreateMoreTreatment(int treatmentId, [FromBody]Models.CreateMoreTreatmentRequest treatmentRequest)
         {
             var Treatment = _mapper.Map<Entities.Treatment>(treatmentRequest);
             var TreatmentProcess = treatmentRequest.TreatmentProcess;
             IList<int> treatment = await _treatmentBL.getTreatmentIdByParent(treatmentId);
-            foreach(var id in treatment)
+            foreach (var id in treatment)
             {
                 await _treatmentBL.deleteTreatment(id);
             }
             Treatment.PremisesId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
-            Treatment.CreatedById = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
-            Treatment.CreatedDate = DateTime.Now;
-            await _treatmentBL.CreateMoreTreatmentDetail(treatmentId,Treatment, TreatmentProcess);
+            Treatment.CreateById = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
+            Treatment.CreateDate = DateTime.Now;
+            await _treatmentBL.CreateMoreTreatmentDetail(treatmentId, Treatment, TreatmentProcess);
             return Ok(new { message = MessageConstant.INSERT_SUCCESS });
         }
 
@@ -80,7 +80,7 @@ namespace CommonWebApi.Controllers
         {
             await _foodBL.AddDetail(foodId, EFoodDetailType.TREATMENT);
             Entities.Food food = await _foodBL.getFoodById((int)foodId);
-            await _foodBL.UpdateFoodTreatment(food, (int)foodId,int.Parse(treatmentId));
+            await _foodBL.UpdateFoodTreatment(food, (int)foodId, int.Parse(treatmentId));
             //return await _foodDataBL.AddTreatment(foodId, int.Parse(treatmentId));
             return "OK";
         }
@@ -95,7 +95,7 @@ namespace CommonWebApi.Controllers
 
         [HttpGet("getFoodByProvider")]
         public async Task<IActionResult> FindAllProviderFoodAsync()
-        {            
+        {
             try
             {
                 int premisesId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
@@ -137,12 +137,13 @@ namespace CommonWebApi.Controllers
                 {
                     TransactionId = transactionId,
                     StatusId = trans.StatusId,
-                    RejectedReason = trans.RejectedReason,
-                    ProviderComment = trans.ProviderComment,
+                    RejectReason = trans.RejectedReason,
+                    ReceiverComment = trans.ProviderComment,
                 };
                 await _transactionBL.UpdateTransaction(transaction, transactionId);
                 return "OK";
-            }catch(Exception e)
+            }
+            catch (Exception e)
             {
                 return e.ToString();
             }
@@ -189,8 +190,9 @@ namespace CommonWebApi.Controllers
             try
             {
                 await _treatmentBL.deleteTreatment(treatmentId);
-                return Ok(new { message = "Xóa thành công"});
-            }catch(Exception e)
+                return Ok(new { message = "Xóa thành công" });
+            }
+            catch (Exception e)
             {
                 return BadRequest(new { msg = e.Message });
             }
