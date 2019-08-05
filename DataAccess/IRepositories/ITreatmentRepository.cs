@@ -9,5 +9,9 @@ namespace DataAccess.IRepositories
    public interface ITreatmentRepository: IGenericRepository<Treatment>
     {
         Task<IList<Treatment>> getAllTreatmentById(int treatmentId);
+
+        Task<IList<Treatment>> getAllTreatmentByPremisesId(int premisesId);
+
+        Task<IList<int>> getTreatmentIdByParent(int treatmentId);
     }
 }

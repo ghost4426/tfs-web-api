@@ -13,5 +13,11 @@ namespace BusinessLogic.IBusinessLogic
         Task<IList<Treatment>> getAllTreatmentById(int treatmentId);
 
         Task CreateMoreTreatmentDetail(int treatmentId,Treatment treatment, List<string> treatmentProcess);
+
+        Task<IList<Treatment>> getAllTreatmentByPremisesId(int premisesId);
+
+        Task deleteTreatment(int treatmentId);
+
+        Task<IList<int>> getTreatmentIdByParent(int treatmentId);
     }
 }

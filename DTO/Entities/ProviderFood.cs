@@ -13,9 +13,13 @@ namespace DTO.Entities
         [ForeignKey("Food")]
         public int FoodId { get; set; }
 
-        public DateTime CreatedDate { get; set; }
+        [ForeignKey("Treatment")]
+        public int? TreatmentId { get; set; }
+
+        public DateTime CreateDate { get; set; }
 
         public Premises Premises { get; set; }
         public Food Food { get; set; }
+        public Treatment Treatment { get; set; }
     }
 }

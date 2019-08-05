@@ -28,6 +28,10 @@ namespace DTO.Entities
         [Required]
         public string Email { get; set; }
 
+        public string ActivationCode { get; set; }
+
+        public bool? IsConfirmEmail { get; set; }
+
         public string PhoneNo { get; set; }
 
         public string Image { get; set; }
@@ -40,15 +44,21 @@ namespace DTO.Entities
 
         public bool IsActive { get; set; }
 
-        public DateTime CreatedDate { get; set; }
+        public DateTime CreateDate { get; set; }
 
         public Role Role { get; set; }
         public Premises Premises { get; set; }
 
-        public ICollection<FoodDetail> UserCreatedFoodDetails { get; set; }
-        public ICollection<Transaction> UserCreatedTransactions { get; set; }
+        public ICollection<FoodDetail> UserCreateFoodDetails { get; set; }
+        public ICollection<Transaction> UserCreateTransactions { get; set; }
         public ICollection<Transaction> VeterinaryTransactions { get; set; }
+        public ICollection<Transaction> RejectByTransactions { get; set; }
         public ICollection<Food> UserCreatedFoods { get; set; }
         public ICollection<Treatment> UserCreatedTreatments { get; set; }
+        public ICollection<Feeding> UserCreatedFeedings { get; set; }
+        public ICollection<Vaccin> UserCreatedVaccins { get; set; }
+        public ICollection<Treatment> UserUpdateTreatments { get; set; }
+        public ICollection<Feeding> UserUpdateFeedings { get; set; }
+        public ICollection<Vaccin> UserUpdateVaccins { get; set; }
     }
 }

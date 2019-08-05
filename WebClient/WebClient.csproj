@@ -52,115 +52,63 @@
     <Content Update="wwwroot\css\site.css">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-    <Content Update="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css.map">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css.map">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css.map">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\bootstrap\dist\css\bootstrap.css">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\bootstrap\dist\css\bootstrap.css.map">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js.map">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js.map">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\bootstrap\dist\js\bootstrap.js">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\bootstrap\dist\js\bootstrap.js.map">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\bootstrap\LICENSE">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\jquery-validation-unobtrusive\LICENSE.txt">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\jquery-validation\dist\additional-methods.js">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\jquery-validation\dist\additional-methods.min.js">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\jquery-validation\dist\jquery.validate.js">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\jquery-validation\dist\jquery.validate.min.js">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\jquery-validation\LICENSE.md">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\jquery\dist\jquery.js">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\jquery\dist\jquery.min.js">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\jquery\dist\jquery.min.map">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Update="wwwroot\lib\jquery\LICENSE.txt">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
   </ItemGroup>
 
 
   <ItemGroup>
-    <Folder Include="Views\Transaction\" />
-    <Folder Include="wwwroot\css\home\" />
     <Folder Include="wwwroot\css\distributor\" />
     <Folder Include="wwwroot\css\admin\" />
     <Folder Include="wwwroot\css\provider\" />
+    <Folder Include="wwwroot\js\barcode\" />
     <Folder Include="wwwroot\js\distributor\" />
+    <Folder Include="wwwroot\js\printJs\" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <None Include="wwwroot\app-assets\fonts\font-awesome\less\animated.less" />
+    <None Include="wwwroot\app-assets\fonts\font-awesome\less\bordered-pulled.less" />
+    <None Include="wwwroot\app-assets\fonts\font-awesome\less\core.less" />
+    <None Include="wwwroot\app-assets\fonts\font-awesome\less\fixed-width.less" />
+    <None Include="wwwroot\app-assets\fonts\font-awesome\less\font-awesome.less" />
+    <None Include="wwwroot\app-assets\fonts\font-awesome\less\icons.less" />
+    <None Include="wwwroot\app-assets\fonts\font-awesome\less\larger.less" />
+    <None Include="wwwroot\app-assets\fonts\font-awesome\less\list.less" />
+    <None Include="wwwroot\app-assets\fonts\font-awesome\less\mixins.less" />
+    <None Include="wwwroot\app-assets\fonts\font-awesome\less\path.less" />
+    <None Include="wwwroot\app-assets\fonts\font-awesome\less\rotated-flipped.less" />
+    <None Include="wwwroot\app-assets\fonts\font-awesome\less\screen-reader.less" />
+    <None Include="wwwroot\app-assets\fonts\font-awesome\less\stacked.less" />
+    <None Include="wwwroot\app-assets\fonts\font-awesome\less\variables.less" />
+    <None Include="wwwroot\app-assets\fonts\font-awesome\scss\font-awesome.scss" />
+    <None Include="wwwroot\app-assets\fonts\font-awesome\scss\_animated.scss" />
+    <None Include="wwwroot\app-assets\fonts\font-awesome\scss\_bordered-pulled.scss" />
+    <None Include="wwwroot\app-assets\fonts\font-awesome\scss\_core.scss" />
+    <None Include="wwwroot\app-assets\fonts\font-awesome\scss\_fixed-width.scss" />
+    <None Include="wwwroot\app-assets\fonts\font-awesome\scss\_icons.scss" />
+    <None Include="wwwroot\app-assets\fonts\font-awesome\scss\_larger.scss" />
+    <None Include="wwwroot\app-assets\fonts\font-awesome\scss\_list.scss" />
+    <None Include="wwwroot\app-assets\fonts\font-awesome\scss\_mixins.scss" />
+    <None Include="wwwroot\app-assets\fonts\font-awesome\scss\_path.scss" />
+    <None Include="wwwroot\app-assets\fonts\font-awesome\scss\_rotated-flipped.scss" />
+    <None Include="wwwroot\app-assets\fonts\font-awesome\scss\_screen-reader.scss" />
+    <None Include="wwwroot\app-assets\fonts\font-awesome\scss\_stacked.scss" />
+    <None Include="wwwroot\app-assets\fonts\font-awesome\scss\_variables.scss" />
+    <None Include="wwwroot\app-assets\vendor\bootstrap\css\bootstrap-grid.css.map" />
+    <None Include="wwwroot\app-assets\vendor\bootstrap\css\bootstrap-grid.min.css.map" />
+    <None Include="wwwroot\app-assets\vendor\bootstrap\css\bootstrap-reboot.css.map" />
+    <None Include="wwwroot\app-assets\vendor\bootstrap\css\bootstrap-reboot.min.css.map" />
+    <None Include="wwwroot\app-assets\vendor\bootstrap\css\bootstrap.css.map" />
+    <None Include="wwwroot\app-assets\vendor\bootstrap\css\bootstrap.min.css.map" />
+    <None Include="wwwroot\app-assets\vendor\bootstrap\js\bootstrap.js" />
+    <None Include="wwwroot\app-assets\vendor\bootstrap\js\bootstrap.min.js" />
+    <None Include="wwwroot\app-assets\vendor\bootstrap\js\popper.js" />
+    <None Include="wwwroot\app-assets\vendor\bootstrap\js\popper.min.js" />
+    <None Include="wwwroot\app-assets\vendor\bootstrap\js\tooltip.js" />
+    <None Include="wwwroot\app-assets\vendor\jquery\jquery-3.2.1.min.js" />
+    <None Include="wwwroot\app-assets\vendor\select2\select2.js" />
+    <None Include="wwwroot\app-assets\vendor\select2\select2.min.js" />
+    <None Include="wwwroot\app-assets\vendor\tilt\tilt.jquery.min.js" />
   </ItemGroup>
 
 </Project>

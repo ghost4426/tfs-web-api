@@ -19,34 +19,35 @@ namespace DTO.Entities
         [ForeignKey("Farm")]
         public int FarmId { get; set; }
 
-        [ForeignKey("Treatment")]
-        public int? TreatmentId { get; set; }
+        //[ForeignKey("Treatment")]
+        //public int? TreatmentId { get; set; }
 
-        public bool IsFeeding { get; set; }
+        //public bool IsFeeding { get; set; }
 
-        public bool IsVaccination { get; set; }
+        //public bool IsVaccination { get; set; }
 
-        public bool IsCertification { get; set; }
+        //public bool IsVerify { get; set; }
 
-        public bool IsTreatment { get; set; }
+        //public bool IsTreatment { get; set; }
 
-        public bool IsPackaging { get; set; }
+        //public bool IsPackaging { get; set; }
 
-        public DateTime CreatedDate { get; set; }
+        public DateTime CreateDate { get; set; }
 
-        [ForeignKey("CreatedBy")]
-        public int CreatedById { get; set; }
-
+        [ForeignKey("CreateBy")]
+        public int CreateById { get; set; }
 
         public Category Category { get; set; }
         public Premises Farm { get; set; }
-        public Treatment Treatment { get; set; }
-        public User CreatedBy { get; set; }
-        
+        //public Treatment Treatment { get; set; }
+        public User CreateBy { get; set; }
+
         public ICollection<DistributorFood> DistributorFoods { get; set; }
         public ICollection<ProviderFood> ProviderFoods { get; set; }
         public ICollection<FoodDetail> FoodDetails { get; set; }
         public ICollection<Transaction> Transactions { get; set; }
+        public ICollection<FeedingFood> FeedingFoods { get; set; }
+        public ICollection<VaccinFood> VaccinFoods { get; set; }
 
     }
 }

@@ -18,7 +18,7 @@ namespace DataAccess.RepositoriesImpl
 
         public async Task<int> createProviderFood(ProviderFood newProviderFood)
         {
-            newProviderFood.CreatedDate = DateTime.Now;
+            newProviderFood.CreateDate = DateTime.Now;
             await this.InsertAsync(newProviderFood, true);
             return newProviderFood.FoodId;
         }
@@ -26,7 +26,7 @@ namespace DataAccess.RepositoriesImpl
         public async Task<IList<ProviderFood>> getAllFoodByProviderId(int providerId)
         {
             IList<ProviderFood> food = await FindAllAsync(x => x.PremisesId == providerId);
-            IEnumerable<ProviderFood> result = food.OrderByDescending(x => x.CreatedDate).Take(500);
+            IEnumerable<ProviderFood> result = food.OrderByDescending(x => x.CreateDate).Take(500);
             return result.ToList();
         }
 

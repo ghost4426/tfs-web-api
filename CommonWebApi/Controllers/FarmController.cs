@@ -44,26 +44,44 @@ namespace CommonWebApi.Controllers
         }
 
         [HttpGet("foods")]
-        public async Task<IActionResult> GetAllProduct()
+        public async Task<IActionResult> GetAllFood()
         {
-            var farmId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
-            return Ok(new { data = _mapper.Map<IList<Models.FoodFarm>>(await _foodBL.FindAllProductByFarmerAsync(farmId)) });
+            try
+            {
+                var farmId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
+                return Ok(new { data = _mapper.Map<IList<Models.FoodFarm>>(await _foodBL.FindAllProductByFarmerAsync(farmId)) });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = MessageConstant.UNHANDLE_ERROR , error = ex.StackTrace });
+            }
+           
         }
 
         [HttpPost("food")]
-        public async Task<string> CreateFood([FromBody]Models.CreateFoodRequest foodRequest)
+        public async Task<IActionResult> CreateFood([FromBody]Models.CreateFoodRequest foodRequest)
         {
-            Entities.Food food = _mapper.Map<Entities.Food>(foodRequest);
-            food.FarmId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value); 
-            food.CreatedById = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
-            await _foodBL.CreateProductAsync(food);
-            return await _foodDataBL.CreateFood(food, food.FarmId);
+            try
+            {
+                Entities.Food food = _mapper.Map<Entities.Food>(foodRequest);
+                food.FarmId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
+                food.CreateById = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
+                await _foodBL.CreateProductAsync(food);
+                await _foodDataBL.CreateFood(food, food.FarmId);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(new { message = MessageConstant.UNHANDLE_ERROR, error = ex.StackTrace });
+            }
+            
         }
 
         [HttpGet("food/feedings/{foodId}")]
         public async Task<IList<string>> GetFeedingsById(int foodId)
         {
-            return await _foodDataBL.GetFeedingsByIdAsync(foodId);
+            return await _foodDataBL.GetFeedingsById(foodId);
         }
 
         [HttpPut("food/feedings/{foodId}")]
@@ -73,8 +91,15 @@ namespace CommonWebApi.Controllers
             return await _foodDataBL.AddFeedings(foodId, feedings);
         }
 
-        [HttpPut("food/vaccination/{foodId}")]
-        public async Task<string> AddVaccination(long foodId, [FromBody]string vaccinationType)
+
+        [HttpGet("food/vaccinations/{foodId}")]
+        public async Task<IList<Models.FoodData.Vaccination>> GetVaccinsById(int foodId)
+        {
+            return await _foodDataBL.GetVaccinsById(foodId);
+        }
+
+        [HttpPut("food/vaccinations/{foodId}")]
+        public async Task<string> AddVaccination(long foodId, [FromBody]List<string> vaccinationType)
         {
             await _foodBL.AddDetail(foodId, EFoodDetailType.VACCINATION);
             return await _foodDataBL.AddVaccination(foodId, vaccinationType);

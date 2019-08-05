@@ -122,7 +122,6 @@ namespace BusinessLogic.BusinessLogicImpl
                 });
                 if (isCorrectPassword)
                 {
-                    //return Task.FromResult(user);
                     var roles = new List<string>
                     {
                     user.Role.Name
@@ -208,11 +207,12 @@ namespace BusinessLogic.BusinessLogicImpl
             throw new NotImplementedException();
         }
 
-        //public Task Register(User user, Premises premises)
-        //{
-        //    _userRepos.Insert(user);
-        //    _premesisRepos.Insert(premises);
-        //}
+        public Task<User> FindByName(string username)
+        {
+            var user = _userRepos.GetAllIncluding(u => u.Role, u => u.Premises, u => u.Premises.PremisesType).Where(u => u.Username == username).SingleOrDefault();
+            return Task.FromResult(user);
+        }
+
     }
 }
 

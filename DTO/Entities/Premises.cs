@@ -20,15 +20,15 @@ namespace DTO.Entities
         [ForeignKey("PremisesType")]
         public int TypeId { get; set; }
 
-        public DateTime CreatedDate { get; set; }
+        public DateTime CreateDate { get; set; }
 
         public PremisesType PremisesType { get; set; }
 
         public ICollection<DistributorFood> DistributorFoods { get; set; }
         public ICollection<ProviderFood> ProviderFoods { get; set; }
         public ICollection<Food> FarmFoods { get; set; }
-        public ICollection<Transaction> ProviderTransactions { get; set; }
-        public ICollection<Transaction> FarmTransactions { get; set; }
+        public ICollection<Transaction> ReceiverTransactions { get; set; }
+        public ICollection<Transaction> SenderTransactions { get; set; }
         public ICollection<User> Users { get; set; }
     }
 }

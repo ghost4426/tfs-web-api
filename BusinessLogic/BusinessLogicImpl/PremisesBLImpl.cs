@@ -16,6 +16,16 @@ namespace BusinessLogic.BusinessLogicImpl
         {
             _premisesRepository = premisesRepository;
         }
+
+        public Task<IList<Premises>> getAllDistriburtorAsync(string keyword)
+        {
+            if(keyword == null)
+            {
+                keyword = "";
+            }
+            return this._premisesRepository.getAllDistributorAsync(keyword.ToLower());
+        }
+
         public Task<IList<Premises>> getAllProviderAsync(string keyword)
         {
             if(keyword == null)

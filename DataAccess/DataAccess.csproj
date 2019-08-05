@@ -7,6 +7,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20190724212433_giantt-v4.cs" />
     <Compile Remove="Migrations\20190724212433_giantt-v4.Designer.cs" />
+    <Compile Remove="Migrations\20190805071120_giantt-v5.cs" />
+    <Compile Remove="Migrations\20190805071120_giantt-v5.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
