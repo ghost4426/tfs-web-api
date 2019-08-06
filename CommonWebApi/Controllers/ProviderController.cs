@@ -153,7 +153,7 @@ namespace CommonWebApi.Controllers
         }
 
         [HttpPut("UpdateTransaction/{transactionId}")]
-        public IActionResult UpdateTransaction(int transactionId, [FromBody] Models.TransactionUpdateRequest trans)
+        public async Task<IActionResult> UpdateTransaction(int transactionId, [FromBody] Models.TransactionUpdateRequest trans)
         {
             try
             {
@@ -164,7 +164,7 @@ namespace CommonWebApi.Controllers
                     RejectReason = trans.RejectedReason,
                     ReceiverComment = trans.ProviderComment,
                 };                
-                _transactionBL.UpdateTransaction(transaction, transactionId);
+                await _transactionBL.UpdateTransaction(transaction, transactionId);
                 return Ok(new { message = MessageConstant.UPDATE_SUCCESS });
             }
             catch (Exception e)

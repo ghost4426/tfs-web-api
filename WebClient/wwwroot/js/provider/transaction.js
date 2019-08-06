@@ -102,29 +102,29 @@ $('#btnAddProviderFood').click(function () {
             FoodId: foodId
         }),
         function (result) {
+            callAjaxAuth(
+                {
+                    url: UPDATE_TRANSACTION_URI + transId,
+                    dataType: JSON_DATATYPE,
+                    type: PUT,
+                }, JSON.stringify({
+                    StatusId: 3,
+                    RejectedReason: "",
+                    ProviderComment: comment
+                }),
+                function (result) {
+                    toastr.success(result.message);
+                    $("#provider-transaction-mng").DataTable().ajax.reload();
+                    $('#AcceptModal').modal('hide');
+                },
+                function (result) {
+                    toastr.error(result);
+                }
+            );
             toastr.success('Giao dịch thành công');
-            $('#AcceptModal').modal('hide');
             $('#ProviderComment').val("");
-            $("#provider-transaction-mng").DataTable().ajax.reload();
         }
     );
-    callAjaxAuth(
-        {
-            url: UPDATE_TRANSACTION_URI + transId,
-            dataType: JSON_DATATYPE,
-            type: PUT,
-        }, JSON.stringify({
-            StatusId: 3,
-            RejectedReason: "",
-            ProviderComment: comment
-        }),
-        function (result) {
-            toastr.success(result.message);
-        },
-        function (result) {
-            toastr.error(result);
-        }
-    );    
 });
 
 $('#provider-transaction-mng').on('click', 'button.btn-deny-trans', function () {
