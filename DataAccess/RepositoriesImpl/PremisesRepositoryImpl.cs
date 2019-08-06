@@ -23,9 +23,9 @@ namespace DataAccess.RepositoriesImpl
             return result.ToList();
         }
 
-        public async Task<Premises> FindByName(string premisesName)
+        public Task<Premises> FindByName(string premisesName)
         {
-            return await FindAsync(p => p.Name == premisesName);
+            return FindAsync(p => p.Name.Trim().ToLower() == premisesName.Trim().ToLower());
         }
 
         public async Task<IList<Premises>> getAllProviderAsync(string keyword)

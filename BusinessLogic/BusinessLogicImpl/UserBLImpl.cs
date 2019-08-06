@@ -57,6 +57,13 @@ namespace BusinessLogic.BusinessLogicImpl
             }
             return false;
         }
+        public async Task ActivateAccount(string activateCode)
+        {
+            User user;
+            user = await _userRepos.FindAsync(u => u.ActivationCode == activateCode);
+            user.IsConfirmEmail = true;
+            await _userRepos.UpdateAsync(user);
+        }
         public async Task ChangePassword(int id, string password, string oldPass)
         {
             var user = await this._userRepos.GetByIdAsync(id);

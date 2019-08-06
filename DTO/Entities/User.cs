@@ -40,10 +40,12 @@ namespace DTO.Entities
 
         public bool IsActive { get; set; }
 
-        public DateTime CreatedDate { get; set; }
+        public DateTime CreateDate { get; set; }
 
         public Role Role { get; set; }
         public Premises Premises { get; set; }
+        public string ActivationCode { get; set; }
+        public bool IsConfirmEmail { get; set; }
 
         public ICollection<FoodDetail> UserCreatedFoodDetails { get; set; }
         public ICollection<Transaction> UserCreatedTransactions { get; set; }

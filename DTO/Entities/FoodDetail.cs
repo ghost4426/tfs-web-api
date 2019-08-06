@@ -25,7 +25,7 @@ namespace DTO.Entities
         [ForeignKey("CreatedBy")]
         public int CreatedById { get; set; }
 
-        public DateTime CreatedDate { get; set; }
+        public DateTime CreateDate { get; set; }
 
         public FoodDetailType Type { get; set; }
         public Food Food { get; set; }

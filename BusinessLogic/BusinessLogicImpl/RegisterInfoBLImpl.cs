@@ -68,25 +68,29 @@ namespace BusinessLogic.BusinessLogicImpl
                 user.Email = newRegInfo.Email;
                 user.Image = "/app-assets/images/avatar.jpg";
                 user.Premises = newPremises;
-                _userRepository.Insert(user, true);
-                //tạo reginfo
-                newRegInfo.RegisterId = 0;
-                newRegInfo.IsConfirm = null;
-                _registerRepos.Insert(newRegInfo, true);
-                //Code 
+                //Code for activation
 
                 var activateCode = Util.GeneratePassword(new Models.PasswordOptions()
                 {
                     RequireDigit = true,
                     RequiredLength = 12,
-                    RequireLowercase = false,
+                    RequireLowercase = true,
                     RequireNonAlphanumeric = false,
                     RequireUppercase = true
                 });
 
+                user.ActivationCode = activateCode; 
+                user.IsConfirmEmail = false;
+                _userRepository.Insert(user, true);
+                //tạo register info
+                /*newRegInfo.RegisterId = 0;
+                newRegInfo.IsConfirm = null;
+                _registerRepos.Insert(newRegInfo, true);*/
+                
+
                 //Send email
-                await _mailSender.SendEmailAsync(user.Email, "[TFS] Kích Hoạt tài khoản", "Vui lòng nhấn vào để kích hoạt tài khoản"
-                                                            +"localhost:");
+                await _mailSender.SendEmailAsync(user.Email, "[TFS] Kích Hoạt tài khoản", "Vui lòng nhấn vào để kích hoạt tài khoản \n"
+                                                            + " https://localhost:5000/kich-hoat-tai-khoan/?ActivationCode=" + activateCode);
             }
         }
 

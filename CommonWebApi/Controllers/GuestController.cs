@@ -95,5 +95,19 @@ namespace AdminWebApi.Controllers
                 return BadRequest(new { message = MessageConstant.UNHANDLE_ERROR });
             }
         }
+        [HttpPut("account/activate/{activateCode}")]
+        public async Task<IActionResult> ActivateAccount(string activateCode)
+        {
+            try
+            {
+                await _userBL.ActivateAccount(activateCode);
+                return Ok();
+            }
+            catch(Exception e)
+            {
+                return BadRequest(new { message = MessageConstant.UNHANDLE_ERROR });
+            }
+            
+        }
     }
 }

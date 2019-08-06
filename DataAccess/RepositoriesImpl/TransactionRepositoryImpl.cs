@@ -33,7 +33,7 @@ namespace DataAccess.RepositoriesImpl
         public async Task<int> CreateSellFoodTransactionAsync(Transaction newTransaction)
         {
             newTransaction.TransactionId = 0;
-            newTransaction.CreatedDate = DateTime.Now;
+            newTransaction.CreateDate = DateTime.Now;
             newTransaction.CreatedById = 11; // sẽ đổi
             newTransaction.VeterinaryId = 11; // sẽ đổi
             newTransaction.StatusId = 1;
@@ -44,14 +44,14 @@ namespace DataAccess.RepositoriesImpl
         public async Task<IList<Transaction>> getAllFarmTransaction(int premisesId)
         {
             IList<Transaction> list = await FindAllAsync(x => x.FarmId == premisesId);
-            IEnumerable <Transaction> result = list.OrderByDescending(x => x.CreatedDate).Take(500);
+            IEnumerable <Transaction> result = list.OrderByDescending(x => x.CreateDate).Take(500);
             return result.ToList();
         }
 
         public async Task<IList<Transaction>> getAllProviderTransaction(int premisesId)
         {
             IList<Transaction> list = await FindAllAsync(x => x.ProviderId == premisesId);
-            IEnumerable<Transaction> result = list.OrderByDescending(x => x.CreatedDate).Take(500);
+            IEnumerable<Transaction> result = list.OrderByDescending(x => x.CreateDate).Take(500);
             return result.ToList();
         }
 

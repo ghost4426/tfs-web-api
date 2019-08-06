@@ -20,7 +20,7 @@ namespace DTO.Entities
         [ForeignKey("PremisesType")]
         public int TypeId { get; set; }
 
-        public DateTime CreatedDate { get; set; }
+        public DateTime CreateDate { get; set; }
 
         public PremisesType PremisesType { get; set; }
 

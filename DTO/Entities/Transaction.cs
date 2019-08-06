@@ -26,7 +26,7 @@ namespace DTO.Entities
         [ForeignKey("TransactionStatus")]
         public int StatusId { get; set; }
 
-        public DateTime CreatedDate { get; set; }
+        public DateTime CreateDate { get; set; }
 
         [ForeignKey("CreatedBy")]
         public int CreatedById { get; set; }

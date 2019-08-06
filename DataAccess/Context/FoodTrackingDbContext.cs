@@ -35,7 +35,7 @@ namespace DataAccess.Context
 
             #region User
             builder.Entity<User>()
-             .Property(f => f.CreatedDate)
+             .Property(f => f.CreateDate)
              .HasDefaultValueSql("getdate()");
 
             builder.Entity<User>()
@@ -87,13 +87,13 @@ namespace DataAccess.Context
 
             #region Food Detail
             builder.Entity<FoodDetail>()
-             .Property(f => f.CreatedDate)
+             .Property(f => f.CreateDate)
              .HasDefaultValueSql("getdate()");
             #endregion
 
             #region Premises
             builder.Entity<Premises>()
-             .Property(f => f.CreatedDate)
+             .Property(f => f.CreateDate)
              .HasDefaultValueSql("getdate()");
             #endregion
 
@@ -109,7 +109,7 @@ namespace DataAccess.Context
                 .WithMany(f => f.DistributorFoods)
                 .HasForeignKey(df => df.FoodId);
             builder.Entity<DistributorFood>()
-            .Property(f => f.CreatedDate)
+            .Property(f => f.CreateDate)
             .HasDefaultValueSql("getdate()");
             #endregion
 
@@ -125,7 +125,7 @@ namespace DataAccess.Context
                 .WithMany(f => f.ProviderFoods)
                 .HasForeignKey(df => df.FoodId);
             builder.Entity<ProviderFood>()
-            .Property(f => f.CreatedDate)
+            .Property(f => f.CreateDate)
             .HasDefaultValueSql("getdate()");
             #endregion
 
@@ -143,7 +143,7 @@ namespace DataAccess.Context
                 .OnDelete(DeleteBehavior.SetNull);
 
             builder.Entity<Transaction>()
-               .Property(f => f.CreatedDate)
+               .Property(f => f.CreateDate)
                .HasDefaultValueSql("getdate()");
 
             builder.Entity<Transaction>()

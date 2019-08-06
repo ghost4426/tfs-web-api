@@ -18,6 +18,7 @@ const BASE_COMMON_URI = "api/common/";
 
 //Guest
 const LOGIN_URI = BASE_COMMON_API_URI + BASE_GUEST_URI + "login";
+const ACTIVATE_URI = BASE_COMMON_API_URI + BASE_GUEST_URI + "account/activate/";
 
 //Farm
 const GET_FOOD_DETAIL_TYPE_URI      = BASE_FAMR_URI + "productdetailtype";

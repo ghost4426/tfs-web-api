@@ -95,6 +95,13 @@ namespace WebClient.Controllers
             return View();
         }
 
+        [Route("kich-hoat-tai-khoan")]
+        public IActionResult ActivationSuccess()
+        {
+            return View();
+        }
+
+
 
         [Authorize]
         [Route("dang-xuat")]

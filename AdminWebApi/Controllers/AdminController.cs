@@ -12,6 +12,7 @@ using DTO.Models.Exception;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using DTO.Models;
+using System.Text;
 
 namespace AdminWebApi.Controllers
 {
@@ -124,6 +125,7 @@ namespace AdminWebApi.Controllers
                 return BadRequest(new { message = e.Message });
             }
         }
+        
 
         [HttpGet("users")]
         public async Task<IActionResult> Users()
@@ -179,6 +181,7 @@ namespace AdminWebApi.Controllers
         [HttpGet("role")]
         public async Task<IList<Entities.Role>> GetRole()
         {
+
             var roleList = await _roleBl.GetAllRole();
             return roleList;
         }
@@ -278,6 +281,37 @@ namespace AdminWebApi.Controllers
                 return BadRequest(new { message = e.Message });
             }
         }
+       /* [HttpGet("test")]
+        public async Task<IActionResult> test()
+        {
+            StringBuilder activateCode = new StringBuilder();
+            Random random = new Random();
+            int i = 0;
+            *//*while (i < 12)
+            {
+                char c = (char)random.Next(10, 100);
+                if (!char.IsLetterOrDigit(c))
+                activateCode.Append(c);
+                i++;
+            }*//*
+            const string valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+            StringBuilder res = new StringBuilder();
+            Random rnd = new Random();
+            while (i < 12)
+            {
+                res.Append(valid[rnd.Next(valid.Length)]);
+                i++;
+            }
+            *//*var activateCode = Util.GeneratePassword(new Models.PasswordOptions()
+            {
+                RequireDigit = false,
+                RequiredLength = 12,
+                RequireLowercase = false,
+                RequireNonAlphanumeric = false,
+                RequireUppercase = false
+            });*//*
+            return Ok(res.ToString());
+        }*/
     }
 }
 
