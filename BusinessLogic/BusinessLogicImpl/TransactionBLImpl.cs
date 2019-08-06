@@ -50,8 +50,8 @@ namespace BusinessLogic.BusinessLogicImpl
             var transaction = await _transactionRepos.getAllFarmTransaction(userId);
             foreach(var i in transaction)
             {
-                i.Farm = _premisesRepos.GetById(i.FarmId);
-                i.Provider = _premisesRepos.GetById(i.ProviderId);
+                i.Sender = _premisesRepos.GetById(i.SenderId);
+                i.Receiver = _premisesRepos.GetById(i.ReceiverId);
                 i.TransactionStatus = _transactionStatusRepos.GetById(i.StatusId);
                 i.Food = _foodRepos.GetById(i.FoodId);
                 i.Food.Category = _categoryRepos.GetById(i.Food.CategoryId);
@@ -64,8 +64,8 @@ namespace BusinessLogic.BusinessLogicImpl
             var transaction = await _transactionRepos.getAllProviderTransaction(userId);
             foreach (var i in transaction)
             {
-                i.Farm = _premisesRepos.GetById(i.FarmId);
-                i.Provider = _premisesRepos.GetById(i.ProviderId);
+                i.Sender = _premisesRepos.GetById(i.SenderId);
+                i.Receiver = _premisesRepos.GetById(i.ReceiverId);
                 i.TransactionStatus = _transactionStatusRepos.GetById(i.StatusId);
                 i.Food = _foodRepos.GetById(i.FoodId);
                 i.Food.Category = _categoryRepos.GetById(i.Food.CategoryId);
@@ -77,8 +77,8 @@ namespace BusinessLogic.BusinessLogicImpl
         {
             Transaction trans = _transactionRepos.GetById(transaction.TransactionId);
             trans.StatusId = transaction.StatusId;
-            trans.RejectedReason = transaction.RejectedReason;
-            trans.ProviderComment = transaction.ProviderComment;
+            trans.RejectReason = transaction.RejectReason;
+            trans.ReceiverComment = transaction.ReceiverComment;
             await _transactionRepos.UpdateAsync(trans, transId);
         }
     }

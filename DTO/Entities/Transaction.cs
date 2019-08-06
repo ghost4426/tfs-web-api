@@ -11,12 +11,12 @@ namespace DTO.Entities
         [Key]
         public int TransactionId { get; set; }
 
-        [ForeignKey("Farm")]
-        public int FarmId { get; set; }
+        [ForeignKey("Sender")]
+        public int SenderId { get; set; }
 
-        [ForeignKey("Provider")]
-        public int ProviderId { get; set; }
-
+        [ForeignKey("Receiver")]
+        public int ReceiverId { get; set; }
+        
         [ForeignKey("Food")]
         public int FoodId { get; set; }
 
@@ -28,24 +28,28 @@ namespace DTO.Entities
 
         public DateTime CreateDate { get; set; }
 
-        [ForeignKey("CreatedBy")]
-        public int CreatedById { get; set; }
+        [ForeignKey("CreateBy")]
+        public int? CreateById { get; set; }
 
         public DateTime? VerifyDate { get; set; }
 
         public DateTime? ConfirmDate { get; set; }
 
-        public string RejectedReason { get; set; }
+        [ForeignKey("RejectBy")]
+        public int? RejectById { get; set; }
+
+        public string RejectReason { get; set; }
 
         public string VeterinaryComment { get; set; }
 
-        public string ProviderComment { get; set; }
+        public string ReceiverComment { get; set; }
 
-        public Premises Farm { get; set; }
-        public Premises Provider { get; set; }
+        public Premises Sender { get; set; }
+        public Premises Receiver { get; set; }
         public User Veterinary { get; set; }
         public Food Food { get; set; }
-        public User CreatedBy { get; set; }
+        public User CreateBy { get; set; }
+        public User RejectBy { get; set; }
         public TransactionStatus TransactionStatus { get; set; }
     }
 }

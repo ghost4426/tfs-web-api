@@ -70,7 +70,7 @@ namespace BusinessLogic.BusinessLogicImpl
                 user.Premises = newPremises;
                 //Code for activation
 
-                var activateCode = Util.GeneratePassword(new Models.PasswordOptions()
+                string activateCode = Util.GeneratePassword(new Models.PasswordOptions()
                 {
                     RequireDigit = true,
                     RequiredLength = 12,
@@ -79,7 +79,7 @@ namespace BusinessLogic.BusinessLogicImpl
                     RequireUppercase = true
                 });
 
-                user.ActivationCode = activateCode; 
+                user.ActivationCode = activateCode;
                 user.IsConfirmEmail = false;
                 _userRepository.Insert(user, true);
                 //tạo register info

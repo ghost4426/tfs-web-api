@@ -4,14 +4,16 @@ using DataAccess.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(FoodTrackingDbContext))]
-    partial class FoodTrackingDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190805071636_giantt-v5")]
+    partial class gianttv5
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -125,13 +127,17 @@ namespace DataAccess.Migrations
 
                     b.Property<int>("CategoryId");
 
-                    b.Property<int>("CreateById");
+                    b.Property<int?>("CreateById");
 
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("getdate()");
 
                     b.Property<int>("FarmId");
+
+                    b.Property<int>("FeedingId");
+
+                    b.Property<int?>("TreatmentId");
 
                     b.HasKey("FoodId");
 
@@ -140,6 +146,8 @@ namespace DataAccess.Migrations
                     b.HasIndex("CreateById");
 
                     b.HasIndex("FarmId");
+
+                    b.HasIndex("TreatmentId");
 
                     b.ToTable("Food");
                 });
@@ -343,17 +351,15 @@ namespace DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("getdate()");
 
+                    b.Property<int>("FarmId");
+
                     b.Property<int>("FoodId");
 
-                    b.Property<string>("ReceiverComment");
+                    b.Property<string>("ProviderComment");
 
-                    b.Property<int>("ReceiverId");
+                    b.Property<int>("ProviderId");
 
-                    b.Property<int?>("RejectById");
-
-                    b.Property<string>("RejectReason");
-
-                    b.Property<int>("SenderId");
+                    b.Property<string>("RejectedReason");
 
                     b.Property<int>("StatusId");
 
@@ -367,13 +373,11 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("CreateById");
 
+                    b.HasIndex("FarmId");
+
                     b.HasIndex("FoodId");
 
-                    b.HasIndex("ReceiverId");
-
-                    b.HasIndex("RejectById");
-
-                    b.HasIndex("SenderId");
+                    b.HasIndex("ProviderId");
 
                     b.HasIndex("StatusId");
 
@@ -422,7 +426,7 @@ namespace DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CreateById");
+                    b.Property<int?>("CreateById");
 
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
@@ -480,7 +484,7 @@ namespace DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(true);
 
-                    b.Property<bool?>("IsConfirmEmail");
+                    b.Property<string>("IsConfirmEmail");
 
                     b.Property<string>("Password")
                         .IsRequired();
@@ -608,19 +612,22 @@ namespace DataAccess.Migrations
 
                     b.HasOne("DTO.Entities.User", "CreateBy")
                         .WithMany("UserCreatedFoods")
-                        .HasForeignKey("CreateById")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("CreateById");
 
                     b.HasOne("DTO.Entities.Premises", "Farm")
                         .WithMany("FarmFoods")
                         .HasForeignKey("FarmId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("DTO.Entities.Treatment", "Treatment")
+                        .WithMany()
+                        .HasForeignKey("TreatmentId");
                 });
 
             modelBuilder.Entity("DTO.Entities.FoodDetail", b =>
                 {
                     b.HasOne("DTO.Entities.User", "CreateBy")
-                        .WithMany("UserCreateFoodDetails")
+                        .WithMany("UserCreatedFoodDetails")
                         .HasForeignKey("CreateById")
                         .OnDelete(DeleteBehavior.Cascade);
 
@@ -663,26 +670,22 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("DTO.Entities.Transaction", b =>
                 {
                     b.HasOne("DTO.Entities.User", "CreateBy")
-                        .WithMany("UserCreateTransactions")
+                        .WithMany("UserCreatedTransactions")
                         .HasForeignKey("CreateById");
+
+                    b.HasOne("DTO.Entities.Premises", "Farm")
+                        .WithMany("FarmTransactions")
+                        .HasForeignKey("FarmId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("DTO.Entities.Food", "Food")
                         .WithMany("Transactions")
                         .HasForeignKey("FoodId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("DTO.Entities.Premises", "Receiver")
-                        .WithMany("ReceiverTransactions")
-                        .HasForeignKey("ReceiverId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.HasOne("DTO.Entities.User", "RejectBy")
-                        .WithMany("RejectByTransactions")
-                        .HasForeignKey("RejectById");
-
-                    b.HasOne("DTO.Entities.Premises", "Sender")
-                        .WithMany("SenderTransactions")
-                        .HasForeignKey("SenderId")
+                    b.HasOne("DTO.Entities.Premises", "Provider")
+                        .WithMany("ProviderTransactions")
+                        .HasForeignKey("ProviderId")
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("DTO.Entities.TransactionStatus", "TransactionStatus")
@@ -699,8 +702,7 @@ namespace DataAccess.Migrations
                 {
                     b.HasOne("DTO.Entities.User", "CreateBy")
                         .WithMany("UserCreatedTreatments")
-                        .HasForeignKey("CreateById")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("CreateById");
 
                     b.HasOne("DTO.Entities.Premises", "Premises")
                         .WithMany()

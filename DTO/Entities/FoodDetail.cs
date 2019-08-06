@@ -22,13 +22,13 @@ namespace DTO.Entities
         [ForeignKey("Food")]
         public int FoodId { get; set; }
 
-        [ForeignKey("CreatedBy")]
-        public int CreatedById { get; set; }
+        [ForeignKey("CreateBy")]
+        public int CreateById { get; set; }
 
         public DateTime CreateDate { get; set; }
 
         public FoodDetailType Type { get; set; }
         public Food Food { get; set; }
-        public User CreatedBy { get; set; }
+        public User CreateBy { get; set; }
     }
 }

@@ -35,20 +35,20 @@ namespace DataAccess.RepositoriesImpl
         public async Task<int> CreateProductAsync(Food newProduct)
         {
             newProduct.FoodId = 0;
-            newProduct.CreatedById = 11;
-            newProduct.IsCertification = false;
-            newProduct.IsFeeding = false;
-            newProduct.IsPackaging = false;
-            newProduct.IsTreatment = false;
-            newProduct.IsVaccination = false;
-            newProduct.CreatedDate = DateTime.Now;
+            newProduct.CreateById = 11;
+            //newProduct.IsCertification = false;
+            //newProduct.IsFeeding = false;
+            //newProduct.IsPackaging = false;
+            //newProduct.IsTreatment = false;
+            //newProduct.IsVaccination = false;
+            //newProduct.CreatedDate = DateTime.Now;
             await this.InsertAsync(newProduct, true);
             return newProduct.FoodId;
         }
         public async Task<IList<Food>> FindAllProductByFarmerAsync(int farmerID)
         {
             IList<Food> products = await FindAllAsync(x => x.FarmId == farmerID);
-            IEnumerable<Food> result = products.OrderByDescending(x => x.CreatedDate).Take(500);
+            IEnumerable<Food> result = products.OrderByDescending(x => x.CreateDate).Take(500);
             return result.ToList();
         }
 

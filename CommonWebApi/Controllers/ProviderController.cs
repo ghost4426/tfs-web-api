@@ -51,8 +51,8 @@ namespace CommonWebApi.Controllers
             var TreatmentProcess = treatmentRequest.TreatmentProcess;
             var test = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
             Treatment.PremisesId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
-            Treatment.CreatedById = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
-            Treatment.CreatedDate = DateTime.Now;
+            Treatment.CreateById = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
+            Treatment.CreateDate = DateTime.Now;
             await _treatmentBL.CreateTreatment(Treatment, TreatmentProcess);
             return Ok(new { message = MessageConstant.INSERT_SUCCESS });
         }
@@ -69,29 +69,23 @@ namespace CommonWebApi.Controllers
                 await _treatmentBL.deleteTreatment(id);
             }
             Treatment.PremisesId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
-            Treatment.CreatedById = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
-            Treatment.CreatedDate = DateTime.Now;
+
+            Treatment.CreateById = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
+            Treatment.CreateDate = DateTime.Now;
+
             await _treatmentBL.CreateMoreTreatmentDetail(treatmentId, Treatment, TreatmentProcess);
             return Ok(new { message = MessageConstant.INSERT_SUCCESS });
         }
 
         [HttpPut("food/treatment/{foodId}")]
-        public async Task<IActionResult> AddTreatment(long foodId, [FromBody]string treatmentId)
+        public async Task<string> AddTreatment(long foodId, [FromBody]string treatmentId)
         {
 
-            try
-            {
-                int providerId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
-                await _foodBL.AddDetail(foodId, EFoodDetailType.TREATMENT);
-                Entities.Food food = await _foodBL.getFoodById((int)foodId);
-                await _foodBL.UpdateFoodTreatment(food, (int)foodId, int.Parse(treatmentId));
-                return Ok(new { message = await _foodDataBL.AddTreatment(foodId, int.Parse(treatmentId), providerId) });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { Message = ex.Message, Error = ex.ToString() });
-            }
-
+            await _foodBL.AddDetail(foodId, EFoodDetailType.TREATMENT);
+            Entities.Food food = await _foodBL.getFoodById((int)foodId);
+            await _foodBL.UpdateFoodTreatment(food, (int)foodId, int.Parse(treatmentId));
+            //return await _foodDataBL.AddTreatment(foodId, int.Parse(treatmentId));
+            return "OK";
         }
 
         [HttpPut("food/packaging/{foodId}")]
@@ -139,7 +133,7 @@ namespace CommonWebApi.Controllers
         }
 
         [HttpPut("UpdateTransaction/{transactionId}")]
-        public IActionResult UpdateTransaction(int transactionId, [FromBody] Models.TransactionUpdateRequest trans)
+        public async Task<string> UpdateTransaction(int transactionId, [FromBody] Models.TransactionUpdateRequest trans)
         {
             try
             {
@@ -147,15 +141,16 @@ namespace CommonWebApi.Controllers
                 {
                     TransactionId = transactionId,
                     StatusId = trans.StatusId,
-                    RejectedReason = trans.RejectedReason,
-                    ProviderComment = trans.ProviderComment,
+                    RejectReason = trans.RejectedReason,
+                    ReceiverComment = trans.ProviderComment,
                 };                
-                _transactionBL.UpdateTransaction(transaction, transactionId);
-                return Ok(new { message = MessageConstant.UPDATE_SUCCESS });
+
+                await _transactionBL.UpdateTransaction(transaction, transactionId);
+                return "OK";
             }
             catch (Exception e)
             {
-                return BadRequest(new { msg = e.Message });
+                return e.ToString();
             }
         }
 

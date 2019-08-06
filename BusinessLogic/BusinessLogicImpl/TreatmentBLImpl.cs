@@ -26,8 +26,8 @@ namespace BusinessLogic.BusinessLogicImpl
                     Name = process,
                     TreatmentParentId = treatmentId,
                     PremisesId = treatment.PremisesId,
-                    CreatedById = treatment.CreatedById,
-                    CreatedDate = DateTime.Now
+                    CreateById = treatment.CreateById,
+                    //CreateDate = DateTime.Now
                 });
             }
         }
@@ -42,8 +42,8 @@ namespace BusinessLogic.BusinessLogicImpl
                     Name = process,                    
                     TreatmentParentId = treatment.TreatmentId,
                     PremisesId = treatment.PremisesId,
-                    CreatedById = treatment.CreatedById,
-                    CreatedDate = DateTime.Now
+                    CreateById = treatment.CreateById,
+                    //CreatedDate = DateTime.Now
                 });
             }   
         }

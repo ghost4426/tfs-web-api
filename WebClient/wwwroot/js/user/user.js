@@ -55,30 +55,35 @@ $('#changePassButton').click(function () {
     var oldPass = $('#txtOldPass').val();
     var newPass = $('#txtNewPass').val();
     var confirmNewPass = $('#txtConfirmNewPass').val();
-    if (confirmNewPass == newPass) {
-        callAjax(
-            {
-                url: USER_PASS_CHANGE_URI + userId,
-                dataType: JSON_DATATYPE,
-                type: PUT,
-            },
-            JSON.stringify({
-                newPass: newPass,
-                oldPass: oldPass,
-            }),
-            function (result) {
-                toastr.success('Đổi mật khẩu thành công', 'Thành Công');
-                //setTimeout("location.reload(true);", 2000);
-                $('#changePassModal').modal('hide');
-                getProfile();
-                /*$('#userTable').DataTable().ajax.reload();*/
-            },
-            function (result) {
-                toastr.error("Mật khẩu cũ không chính xác!");
-            })
+    if (newPass != "" && oldPass != "" && confirmNewPass != "") {
+        if (confirmNewPass == newPass) {
+            callAjax(
+                {
+                    url: USER_PASS_CHANGE_URI + userId,
+                    dataType: JSON_DATATYPE,
+                    type: PUT,
+                },
+                JSON.stringify({
+                    newPass: newPass,
+                    oldPass: oldPass,
+                }),
+                function (result) {
+                    toastr.success('Đổi mật khẩu thành công', 'Thành Công');
+                    //setTimeout("location.reload(true);", 2000);
+                    $('#changePassModal').modal('hide');
+                    getProfile();
+                    /*$('#userTable').DataTable().ajax.reload();*/
+                },
+                function (result) {
+                    toastr.error("Mật khẩu cũ không chính xác!");
+                })
+        } else {
+            toastr.error("Xác nhận mật khẩu không chính xác!")
+        }
     } else {
-        toastr.error("Xác nhận mật khẩu không chính xác!")
+        toastr.error("Vui lòng điền đầy đủ thông tin!")
     }
+    
 });
 //Load Image
 
@@ -149,31 +154,63 @@ function saveImg(imgDetails) {
         })
 
 }
+//validate
+function validate(input) {
+    if ($(input).attr('type') == 'email' || $(input).attr('name') == 'email') {
+        if ($(input).val().trim().match(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{1,5}|[0-9]{1,3})(\]?)$/) == null) {
+            return false;
+        }
+    } else if ($(input).attr('name') == 'Phone') {
+        if ($(input).val().trim().match(/^\d{10}/) == null) {
+            return false;
+        }
+    }
+    else {
+        if ($(input).val() == '') {
+            return false;
+        }
+    }
+}
 //Confirm save 
 $('#confirmSaveButton').click(function () {
-    var userId = parseInt($('#txtUserId').val());
-    var FullName = $('#txtFullName').val();
-    var Email = $('#txtEmail').val();
-    var Phone = $('#txtPhone').val();
-    callAjax(
-        {
-            type: PUT,
-            url: USER_UPDATE_URI + userId,
-            dataType: JSON_DATATYPE,
-        },
-        JSON.stringify({
-            Fullname: FullName,
-            Email: Email,
-            PhoneNo: Phone
-        }),
-        function (result) {
-            toastr.success('Cập nhật thông tin người dùng thành công', 'Thành Công');
-            //setTimeout("location.reload(true);", 2000);
-            $('#confirm').modal('hide');
-            getProfile();
-            /*$('#userTable').DataTable().ajax.reload();*/
-        },
-        function (result) {
-            toastr.error(result);
-        })
+    var isValidated = true;
+    var txtUserId = parseInt($('#txtUserId').val());
+    var txtFullName = $('#txtFullName').val();
+    var txtEmail = $('#txtEmail').val();
+    var txtPhone = $('#txtPhone').val();
+
+    if (validate('txtFullName') == false) {
+        toastr.error('Vui lòng kiểm tra lại Tên');
+        isValidated = false;
+    } else if (validate('txtEmail') == false) {
+        toastr.error('Vui lòng kiểm tra lại Email');
+        isValidated = false;
+    } else if (validate('txtPhone') == false) {
+        toastr.error('Vui lòng kiểm tra lại Số điện thoại');
+        isValidated = false;
+    }else
+    if (isValidated == true) {
+        callAjax(
+            {
+                type: PUT,
+                url: USER_UPDATE_URI + txtUserId,
+                dataType: JSON_DATATYPE,
+            },
+            JSON.stringify({
+                Fullname: txtFullName,
+                Email: txtEmail,
+                PhoneNo: txtPhone
+            }),
+            function (result) {
+                toastr.success('Cập nhật thông tin người dùng thành công', 'Thành Công');
+                //setTimeout("location.reload(true);", 2000);
+                $('#confirm').modal('hide');
+                getProfile();
+                /*$('#userTable').DataTable().ajax.reload();*/
+            },
+            function (result) {
+                toastr.error('Đã có lỗi xảy ra!');
+            })
+    }
+    
 });

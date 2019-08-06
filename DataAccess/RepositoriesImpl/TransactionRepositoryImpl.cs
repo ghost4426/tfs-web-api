@@ -20,13 +20,13 @@ namespace DataAccess.RepositoriesImpl
 
         public async Task<int> CountFarmTransaction(int premisesId)
         {
-            var transaction = await FindAllAsync(x => x.FarmId == premisesId & x.StatusId < 3);
+            var transaction = await FindAllAsync(x => x.SenderId == premisesId & x.StatusId < 3);
             return transaction.Count;
         }
 
         public async Task<int> CountProviderTransaction(int premisesId)
         {
-            var transaction = await FindAllAsync(x => x.ProviderId == premisesId & x.StatusId < 3);
+            var transaction = await FindAllAsync(x => x.ReceiverId == premisesId & x.StatusId < 3);
             return transaction.Count;
         }
 
@@ -34,7 +34,11 @@ namespace DataAccess.RepositoriesImpl
         {
             newTransaction.TransactionId = 0;
             newTransaction.CreateDate = DateTime.Now;
-            newTransaction.CreatedById = 11; // sẽ đổi
+
+            //newTransaction.CreatedById = 11; // sẽ đổi
+
+            newTransaction.CreateById = 11; // sẽ đổi
+
             newTransaction.VeterinaryId = 11; // sẽ đổi
             newTransaction.StatusId = 1;
             await this.InsertAsync(newTransaction, true);
@@ -43,14 +47,16 @@ namespace DataAccess.RepositoriesImpl
 
         public async Task<IList<Transaction>> getAllFarmTransaction(int premisesId)
         {
-            IList<Transaction> list = await FindAllAsync(x => x.FarmId == premisesId);
+
+            IList<Transaction> list = await FindAllAsync(x => x.SenderId == premisesId);
             IEnumerable <Transaction> result = list.OrderByDescending(x => x.CreateDate).Take(500);
             return result.ToList();
         }
 
         public async Task<IList<Transaction>> getAllProviderTransaction(int premisesId)
         {
-            IList<Transaction> list = await FindAllAsync(x => x.ProviderId == premisesId);
+
+            IList<Transaction> list = await FindAllAsync(x => x.ReceiverId == premisesId);
             IEnumerable<Transaction> result = list.OrderByDescending(x => x.CreateDate).Take(500);
             return result.ToList();
         }
