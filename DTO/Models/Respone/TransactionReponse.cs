@@ -15,6 +15,7 @@ namespace DTO.Models
         {
             public int TransactionId { get; set; }
             public string Provider { get; set; }
+            public int ProviderId { get; set; }
             public int FoodId { get; set; }
             public string FoodName { get; set; }
             public string FoodBreed { get; set; }

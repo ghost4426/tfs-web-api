@@ -172,8 +172,10 @@ $('#provider-transaction-mng').on('click', 'button.btn-barcode', function () {
     var tr = $(this).closest('tr');
     var row = providerTransactionTable.row(tr);
     var id = row.data().TransactionId;
+    var token = Cookies.get('token');
+    var providerId = jwt_decode(token).premisesID;
     $("#btnPrintBarcode").attr("download", "Transaction-" + id + ".jpg");
-    makeCode("Trans-" + id);
+    makeCode("Trans-" + id + "-" + providerId);
     $('#GetQRCode').modal('show');
 });
 
@@ -261,9 +263,10 @@ $('#provider-send-transaction-mng').on('click', 'button.btn-barcode-send', funct
     var tr = $(this).closest('tr');
     var row = providerSendTransactionTable.row(tr);
     var id = row.data().TransactionId;
-    console.log(id);
+    var token = Cookies.get('token');
+    var providerId = jwt_decode(token).premisesID;
     $("#btnPrintBarcode").attr("download", "Transaction-" + id + ".jpg");
-    makeCode("Trans-" + id);
+    makeCode("Trans-" + id + "-" + providerId);
     $('#GetQRCode').modal('show');
 });
 
