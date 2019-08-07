@@ -99,6 +99,13 @@ namespace Common.Mapper
                 .ForMember(dest => dest.Status, opts => opts.MapFrom(src => src.TransactionStatus.Status))
                 .ReverseMap();
 
+            CreateMap<Entities.Transaction, Models.TransactionReponse.ProviderGetSendTransaction>()
+                .ForMember(dest => dest.Distributor, opts => opts.MapFrom(src => src.Receiver.Name))
+                .ForMember(dest => dest.FoodName, opts => opts.MapFrom(src => src.Food.Category.Name))
+                .ForMember(dest => dest.FoodBreed, opts => opts.MapFrom(src => src.Food.Breed))
+                .ForMember(dest => dest.Status, opts => opts.MapFrom(src => src.TransactionStatus.Status))
+                .ReverseMap();
+
             CreateMap<Entities.ProviderFood, Models.CreateProviderFoodRequest>().ReverseMap();
 
             CreateMap<Entities.Treatment, Models.FoodRespone.TreatmentReponse>().ReverseMap();

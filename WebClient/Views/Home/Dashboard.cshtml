@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Home Page";
     var roles = HttpContextAccessor.HttpContext.User.Claims.Where(c => c.Type == ClaimTypes.Role).ToList();
-
+    var manager = HttpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
 }
 
 <head>
@@ -41,21 +41,25 @@
                     </div>
                 }
                 else if (role.Value == "Farm")
-                {<div class="row">
-                        <div class="col-md-4 col-sm-6">
-                            <div class="wrimagecard wrimagecard-topimage">
-                                <a href="#">
-                                    <div class="wrimagecard-topimage_header" style="background-color:rgba(36, 82, 187, 0.78)">
-                                        <center><i class="icon-user text-white font-large-3" style="color:#0094ff"></i></center>
-                                    </div>
-                                    <div class="wrimagecard-topimage_title">
-                                        <h3>
-                                            Quản lí tài khoản
-                                        </h3>
-                                    </div>
-                                </a>
+                {
+                    <div class="row">
+                        @if (manager == "Manager")
+                        {
+                            <div class="col-md-4 col-sm-6">
+                                <div class="wrimagecard wrimagecard-topimage">
+                                    <a asp-controller="Farm" asp-action="AccountManagement">
+                                        <div class="wrimagecard-topimage_header" style="background-color:rgba(36, 82, 187, 0.78)">
+                                            <center><i class="icon-user text-white font-large-3" style="color:#0094ff"></i></center>
+                                        </div>
+                                        <div class="wrimagecard-topimage_title">
+                                            <h3>
+                                                Quản lí tài khoản
+                                            </h3>
+                                        </div>
+                                    </a>
+                                </div>
                             </div>
-                        </div>
+                        }
                         <div class="col-md-4 col-sm-6">
                             <div class="wrimagecard wrimagecard-topimage">
                                 <a asp-controller="Farm" asp-action="FoodManagement">
@@ -89,20 +93,23 @@
                 else if (role.Value == "Provider")
                 {
                     <div class="row">
-                        <div class="col-md-4 col-sm-6">
-                            <div class="wrimagecard wrimagecard-topimage">
-                                <a href="#">
-                                    <div class="wrimagecard-topimage_header" style="background-color:rgba(36, 82, 187, 0.78)">
-                                        <center><i class="icon-user text-white font-large-3" style="color:#0094ff"></i></center>
-                                    </div>
-                                    <div class="wrimagecard-topimage_title">
-                                        <h3>
-                                            Quản lí tài khoản
-                                        </h3>
-                                    </div>
-                                </a>
+                        @if (manager == "Manager")
+                        {
+                            <div class="col-md-4 col-sm-6">
+                                <div class="wrimagecard wrimagecard-topimage">
+                                    <a asp-controller="Provider" asp-action="AccountManagement">
+                                        <div class="wrimagecard-topimage_header" style="background-color:rgba(36, 82, 187, 0.78)">
+                                            <center><i class="icon-user text-white font-large-3" style="color:#0094ff"></i></center>
+                                        </div>
+                                        <div class="wrimagecard-topimage_title">
+                                            <h3>
+                                                Quản lí tài khoản
+                                            </h3>
+                                        </div>
+                                    </a>
+                                </div>
                             </div>
-                        </div>
+                        }
                         <div class="col-md-4 col-sm-6">
                             <div class="wrimagecard wrimagecard-topimage">
                                 <a asp-controller="Provider" asp-action="FoodManagement">

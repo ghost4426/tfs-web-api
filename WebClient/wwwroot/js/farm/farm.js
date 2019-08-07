@@ -99,7 +99,7 @@ var farmFoodTable = $('#farm-food-mng').DataTable({
         { data: 'CategoryName', width: '20%' },
         { data: 'Breed', width: '25%' },
         {
-            data: 'CreatedDate', width: '15%',
+            data: 'CreateDate', width: '15%',
             render: function (data, type, row) {
                 return $.format.date(data, "dd-MM-yyyy HH:mm")
             }
@@ -160,8 +160,7 @@ $('#btnAddProduct').click(function () {
             type: POST
         }, JSON.stringify({
             CategoryId: cate,
-            Breed: breed,
-            FarmerId: 1
+            Breed: breed
         }),
         function (result) {
             toastr.success('Thêm thành công');
@@ -436,8 +435,7 @@ $('#btn-addProvider').click(function () {
             dataType: JSON_DATATYPE,
             type: POST
         }, JSON.stringify({
-            FarmId: 1,
-            ProviderId: providerId,
+            ReceiverId: providerId,
             FoodId: foodId
         }),
         function (result) {

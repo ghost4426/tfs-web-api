@@ -68,7 +68,7 @@ namespace CommonWebApi.Controllers
                 food.CreateById = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
                 await _foodBL.CreateProductAsync(food);
                 await _foodDataBL.CreateFood(food, food.FarmId);
-                return Ok();
+                return Ok(new { messeage = MessageConstant.INSERT_SUCCESS});
             }
             catch (Exception ex)
             {
@@ -135,7 +135,9 @@ namespace CommonWebApi.Controllers
         [HttpPost("createTransaction")]
         public async Task<Models.TransactionReponse.CreateTransactionReponse> CreateTransaction([FromBody]Models.TransactionRequest transactionRequest)
         {
-            Entities.Transaction transaction = _mapper.Map<Entities.Transaction>(transactionRequest);
+            Entities.Transaction transaction = _mapper.Map<Entities.Transaction>(transactionRequest);      
+            transaction.SenderId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
+            transaction.CreateById = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
             await _transactionBL.CreateSellFoodTransactionAsync(transaction);
             var reponseModel = new Models.TransactionReponse.CreateTransactionReponse()
             {

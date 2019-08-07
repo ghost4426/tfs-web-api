@@ -15,8 +15,6 @@ namespace DTO.Models.FoodData
 
         public Farm Farm { get; set; }
 
-        public Provider Provider { get; set; }
-
         public Distributor Distributor { get; set; }
 
         public List<Provider> Providers { get; set; }

@@ -2,7 +2,7 @@
 @using System.Security.Claims;
 @{
     var roles = HttpContextAccessor.HttpContext.User.Claims.Where(c => c.Type == ClaimTypes.Role).ToList();
-
+    var manager = HttpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
 }
 <!DOCTYPE html>
 <html>
@@ -64,17 +64,17 @@
                     <ul class="nav navbar-nav float-right">
 
                         @*<li id="view-farm-trans" class="dropdown dropdown-notification nav-item">
-                            <a class="nav-link nav-link-label" data-toggle="dropdown">
-                                <i class="ficon ft-bell"></i>
-                                <span id="count-farm-trans" class="badge badge-pill badge-default badge-danger badge-default badge-up">0</span>
-                            </a>
-                        </li>
-                        <li id="view-provider-trans" class="dropdown dropdown-notification nav-item">
-                            <a class="nav-link nav-link-label" data-toggle="dropdown">
-                                <i class="ficon ft-bell"></i>
-                                <span id="count-provider-trans" class="badge badge-pill badge-default badge-danger badge-default badge-up">0</span>
-                            </a>
-                        </li>*@
+                                <a class="nav-link nav-link-label" data-toggle="dropdown">
+                                    <i class="ficon ft-bell"></i>
+                                    <span id="count-farm-trans" class="badge badge-pill badge-default badge-danger badge-default badge-up">0</span>
+                                </a>
+                            </li>
+                            <li id="view-provider-trans" class="dropdown dropdown-notification nav-item">
+                                <a class="nav-link nav-link-label" data-toggle="dropdown">
+                                    <i class="ficon ft-bell"></i>
+                                    <span id="count-provider-trans" class="badge badge-pill badge-default badge-danger badge-default badge-up">0</span>
+                                </a>
+                            </li>*@
                         <li class="dropdown dropdown-user nav-item">
                             <a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
                                 <span class="avatar avatar-online">
@@ -125,13 +125,15 @@
                     }
                     else if (role.Value == "Farm")
                     {
-
-                        <li class="dropdown nav-item">
-                            <a class="nav-link" href="#">
-                                <i class="icon-user"></i>
-                                <span data-i18n="nav.category.general">Quản lý tài khoản</span>
-                            </a>
-                        </li>
+                        if (manager == "Manager")
+                        {
+                            <li class="dropdown nav-item">
+                                <a class="nav-link" asp-controller="Farm" asp-action="AccountManagement">
+                                    <i class="icon-user"></i>
+                                    <span data-i18n="nav.category.general">Quản lý tài khoản</span>
+                                </a>
+                            </li>
+                        }
                         <li class="dropdown nav-item">
                             <a class="nav-link" asp-controller="Farm" asp-action="Index">
                                 <i class="icon-grid"></i>
@@ -147,12 +149,15 @@
                     }
                     else if (role.Value == "Provider")
                     {
-                        <li class="dropdown nav-item">
-                            <a class="nav-link" href="#">
-                                <i class="icon-user"></i>
-                                <span data-i18n="nav.category.general">Quản lý tài khoản</span>
-                            </a>
-                        </li>
+                        if (manager == "Manager")
+                        {
+                            <li class="dropdown nav-item">
+                                <a class="nav-link" asp-controller="Provider" asp-action="AccountManagement">
+                                    <i class="icon-user"></i>
+                                    <span data-i18n="nav.category.general">Quản lý tài khoản</span>
+                                </a>
+                            </li>
+                        }
                         <li class="dropdown nav-item">
                             <a class="nav-link" asp-controller="Provider" asp-action="Index">
                                 <i class="icon-grid"></i>
@@ -169,12 +174,11 @@
                 }
 
                 @*<li class="dropdown nav-item">
-            <a class="nav-link" asp-controller="Distributor" asp-action="Index">
-                <i class="fa fa-truck"></i>
-                <span data-i18n="nav.category.general">Quản lý thực phẩm</span>
-            </a>
-        </li>*@
-
+                        <a class="nav-link" asp-controller="Distributor" asp-action="Index">
+                            <i class="fa fa-truck"></i>
+                            <span data-i18n="nav.category.general">Quản lý thực phẩm</span>
+                        </a>
+                    </li>*@
             </ul>
         </div>
     </div>
