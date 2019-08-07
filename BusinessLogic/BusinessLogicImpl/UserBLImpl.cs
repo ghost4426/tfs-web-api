@@ -213,6 +213,16 @@ namespace BusinessLogic.BusinessLogicImpl
             return Task.FromResult(user);
         }
 
+        public async Task<IList<User>> getUsersByPremises(int premisesId)
+        {
+            var users = await this._userRepos.FindAllAsync(u => u.PremisesId == premisesId & u.RoleId == 3);
+            foreach (var user in users)
+            {
+                var role = _roleRepos.GetById(user.RoleId);
+                user.Role = role;
+            }
+            return users.Take(500).ToList();
+        }
     }
 }
 

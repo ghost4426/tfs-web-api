@@ -31,5 +31,6 @@ namespace BusinessLogic.IBusinessLogic
 
         Task<User> FindByName(string username);
 
+        Task<IList<User>> getUsersByPremises(int premisesId);
     }
 }

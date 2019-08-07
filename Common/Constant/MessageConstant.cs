@@ -14,6 +14,6 @@ namespace Common.Constant
 
         public const string WRONG_PASS_OR_USERNAME = "Tên đăng nhập hoặc mật khẩu không đúng";
 
-
+        public const string UPDATE_SUCCESS = "Cập nhật thành công";
     }
 }

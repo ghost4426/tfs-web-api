@@ -16,8 +16,10 @@ namespace BusinessLogic.IBusinessLogic
 
         Task<IList<Transaction>> getAllFarmTransaction(int premisesId);
 
-        Task<IList<Transaction>> getAllProviderTransaction(int premisesId);
+        Task<IList<Transaction>> getAllProviderReceiveTransaction(int premisesId);
 
         Task UpdateTransaction(Transaction transaction, int transId);
+
+        Task<IList<Transaction>> getAllProviderSendTransaction(int premisesId);
     }
 }
