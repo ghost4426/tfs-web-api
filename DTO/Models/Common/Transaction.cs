@@ -7,13 +7,14 @@ namespace DTO.Models {
     public class Transaction
     {
         public int TransactionId { get; set; }
-        public Premises Farm { get; set; }
-        public Premises Provider { get; set; }
+        public Premises Sender { get; set; }
+        public Premises Receiver { get; set; }
         public Food Food { get; set; }
         public int FoodId { get; set; }
-        public int ProviderId { get; set; }
-        public int FarmId { get; set; }
+        public int ReceiverId { get; set; }
+        public int SenderId { get; set; }
         public int VeterinaryId { get; set; }
+        public int StatusId { get; set; }
 
     }
 }

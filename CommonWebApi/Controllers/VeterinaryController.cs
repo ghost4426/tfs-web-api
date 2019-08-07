@@ -34,7 +34,7 @@ namespace CommonWebApi.Controllers
         [HttpPut("transaction/{transID}")]
         public async Task<IActionResult> UpdateTransactionStatus(int tranId, [FromBody] Models.TransactionVerterinaryUpdateRequest trans)
         {
-            return Ok(new { data = _mapper.Map<Models.Transaction>(await _transactionBL.UpdateTransaction(tranId, trans.StatusId, trans.RejectedReason, trans.VeterinaryId)) });
+            return Ok(new { data = _mapper.Map<Models.Transaction>(await _transactionBL.UpdateVerterinaryTransaction(tranId, trans.StatusId, trans.RejectedReason, trans.RejectById)) });
         }
 
         [HttpGet("transaction/{id}")]

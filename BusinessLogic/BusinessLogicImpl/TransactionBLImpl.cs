@@ -91,7 +91,7 @@ namespace BusinessLogic.BusinessLogicImpl
             //dto.Food = _foodRepos.GetById(dto.FoodId);
             //return dto;
         }
-        public async Task<Transaction> UpdateTransaction(int id, int status, string reason, int verId)
+        public async Task<Transaction> UpdateVerterinaryTransaction(int id, int status, string reason, int verId)
         {
         
             var transaction = _transactionRepos.GetById(id);
@@ -102,8 +102,24 @@ namespace BusinessLogic.BusinessLogicImpl
             } else
             {
                 transaction.RejectReason = reason;
+                transaction.RejectById = verId;
             }
-            transaction.VeterinaryId = verId;
+            await _transactionRepos.UpdateAsync(transaction);
+            return transaction;
+        }
+
+        public async Task<Transaction> UpdateDistributorTransaction(int id, int status, string reasone, int distributorId)
+        {
+            var transaction = _transactionRepos.GetById(id);
+            transaction.StatusId = status;
+            if(status == 3)
+            {
+                transaction.ReceiverComment = reasone;
+            } else
+            {
+                transaction.RejectReason = reasone;
+                transaction.RejectById = distributorId;
+            }
             await _transactionRepos.UpdateAsync(transaction);
             return transaction;
         }

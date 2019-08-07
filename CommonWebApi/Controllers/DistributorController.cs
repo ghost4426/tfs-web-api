@@ -25,12 +25,14 @@ namespace CommonWebApi.Controllers
         private readonly IMapper     _mapper;
         private readonly IUserBL _userBL;
         private IFoodDataBL _foodDataBL;
+        private readonly ITransactionBL _transactionBL;
 
-        public DistributorController (IFoodBL productBL, IMapper mapper, IUserBL userBL, IFoodDataBL foodDataBL)
+        public DistributorController (IFoodBL productBL, IMapper mapper, IUserBL userBL, IFoodDataBL foodDataBL, ITransactionBL transactionBL)
         {
             _mapper = mapper;
             _foodBL = productBL;
             _foodDataBL = foodDataBL;
+            _transactionBL = transactionBL;
             _userBL = userBL;
         }
         [HttpGet("getProductMatched")]
@@ -100,6 +102,18 @@ namespace CommonWebApi.Controllers
             return await _foodBL.getFoodById(foodID);
         }
 
-     
+        [HttpGet("transaction/{id}")]
+        public async Task<IActionResult> getTransactionById(int id)
+        {
+            //var TransID = 3;
+            return Ok(new { data = _mapper.Map<Models.Transaction>(await _transactionBL.GetTransactionById(id)) });
+        }
+
+        [HttpPut("transaction/{transID}")]
+        public async Task<IActionResult> UpdateTransactionStatus(int tranId, [FromBody] Models.TransactionDistributorUpdateRequest trans)
+        {
+            return Ok(new { data = _mapper.Map<Models.Transaction>(await _transactionBL.UpdateDistributorTransaction(tranId, trans.StatusId, trans.RejectedReason, trans.RejectById)) });
+        }
+
     }
 }

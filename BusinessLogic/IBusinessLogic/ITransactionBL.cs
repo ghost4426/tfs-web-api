@@ -19,7 +19,9 @@ namespace BusinessLogic.IBusinessLogic
         Task<IList<Transaction>> getAllProviderTransaction(int premisesId);
 
         Task UpdateTransaction(Transaction transaction, int transId);
-        Task<Transaction> UpdateTransaction(int id, int status, string reasone, int verId);
+        Task<Transaction> UpdateVerterinaryTransaction(int id, int status, string reasone, int verId);
+
+        Task<Transaction> UpdateDistributorTransaction(int id, int status, string reasone, int verId);
 
         Task<Transaction> GetTransactionById(int id);
     }
