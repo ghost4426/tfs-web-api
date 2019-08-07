@@ -49,7 +49,6 @@ namespace CommonWebApi.Controllers
         {
             var Treatment = _mapper.Map<Entities.Treatment>(treatmentRequest);
             var TreatmentProcess = treatmentRequest.TreatmentProcess;
-            var test = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
             Treatment.PremisesId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
             Treatment.CreateById = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
             Treatment.CreateDate = DateTime.Now;
@@ -78,7 +77,6 @@ namespace CommonWebApi.Controllers
         [HttpPut("food/treatment/{foodId}")]
         public async Task<IActionResult> AddTreatment(long foodId, [FromBody]string treatmentId)
         {
-
             try
             {
                 int providerId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
@@ -91,7 +89,6 @@ namespace CommonWebApi.Controllers
             {
                 return BadRequest(new { Message = ex.Message, Error = ex.ToString() });
             }
-
         }
 
         [HttpPut("food/packaging/{foodId}")]
