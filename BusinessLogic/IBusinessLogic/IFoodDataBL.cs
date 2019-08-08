@@ -33,6 +33,7 @@ namespace BusinessLogic.IBusinessLogic
         Task<IList<Vaccination>> GetVaccinsById(int foodId);
 
         Task<FoodData> GetFoodDataByIDAndProviderID(long foodId, int providerId);
+        Task<FoodData> GetFoodDataByIDAndProviderIDAndDistributorID(long foodId, int providerId,int distributorId);
 
     }
 }

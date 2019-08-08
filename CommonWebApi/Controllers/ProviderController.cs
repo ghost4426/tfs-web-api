@@ -75,7 +75,7 @@ namespace CommonWebApi.Controllers
         }
 
         [HttpPut("food/treatment/{foodId}")]
-        public async Task<string> AddTreatment(long foodId, [FromBody]string treatmentId)
+        public async Task<IActionResult> AddTreatment(long foodId, [FromBody]string treatmentId)
         {
             try
             {
@@ -166,7 +166,7 @@ namespace CommonWebApi.Controllers
             }
             catch (Exception e)
             {
-                return e.ToString();
+                return BadRequest(new { msg = e.Message });
             }
         }
 
