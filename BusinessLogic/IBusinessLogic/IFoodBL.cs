@@ -30,5 +30,11 @@ namespace BusinessLogic.IBusinessLogic
         Task UpdateFoodTreatment(ProviderFood food, int foodId, int treatmentId, int premisesId);
 
         Task<ProviderFood> getFoodById(int foodId, int premisesId);
+        Task<Food> getFoodById(int foodId);
+
+        Task<IList<DistributorFood>> getAllFoodByDistributorId(int distributorId);
+
+        Task<int> createDistributorFood(DistributorFood newDistributorFood);
+
     }
 }

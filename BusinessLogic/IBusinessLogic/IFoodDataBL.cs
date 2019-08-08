@@ -22,6 +22,8 @@ namespace BusinessLogic.IBusinessLogic
 
         Task<string> AddProvider(long foodId, int providerId);
 
+        Task<string> AddDistributor(long foodId, int distributorId);
+
         Task<string> AddTreatment(long foodId, int treamentId, int providerId);
 
         Task<string> Packaging(long foodId, Packaging packaging, int providerId);
