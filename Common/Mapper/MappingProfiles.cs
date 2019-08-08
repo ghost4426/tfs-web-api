@@ -87,6 +87,7 @@ namespace Common.Mapper
 
             CreateMap<Entities.Transaction, Models.TransactionReponse.FarmGetTransaction>()
                 .ForMember(dest => dest.Provider, opts => opts.MapFrom(src => src.Receiver.Name))
+                .ForMember(dest => dest.ProviderId, opts => opts.MapFrom(src => src.Receiver.PremisesId))
                 .ForMember(dest => dest.FoodName, opts => opts.MapFrom(src => src.Food.Category.Name))
                 .ForMember(dest => dest.FoodBreed, opts => opts.MapFrom(src => src.Food.Breed))
                 .ForMember(dest => dest.Status, opts => opts.MapFrom(src => src.TransactionStatus.Status))
