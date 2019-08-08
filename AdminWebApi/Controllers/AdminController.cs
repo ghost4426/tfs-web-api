@@ -125,7 +125,26 @@ namespace AdminWebApi.Controllers
                 return BadRequest(new { message = e.Message });
             }
         }
-        
+        [HttpPost("veterinary")]
+        public async Task<IActionResult> CreateVeterinary([FromBody] Models.CreateVeterinaryRequest veterinary)
+        {
+            try
+            {
+                Entities.User veterinaryAccount = new Entities.User()
+                {
+                    Username = veterinary.Username,
+                    Fullname = veterinary.Fullname,
+                    Email = veterinary.Email,
+                    PhoneNo = veterinary.Phone
+                };
+                await _userBL.CreateVeterinary(veterinaryAccount);
+                return Ok("Thêm thành công");
+            }
+            catch(Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+        }
 
         [HttpGet("users")]
         public async Task<IActionResult> Users()
@@ -147,6 +166,8 @@ namespace AdminWebApi.Controllers
             }
 
         }
+
+
         //GET : /api/admin/profile
         [Authorize]
         [HttpGet("profile")]

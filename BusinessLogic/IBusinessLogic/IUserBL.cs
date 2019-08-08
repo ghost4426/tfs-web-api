@@ -17,6 +17,8 @@ namespace BusinessLogic.IBusinessLogic
 
         Task<IList<User>> GetUsers();
 
+        Task CreateVeterinary(User newVeterinary);
+
         Task RemoveByIdAsync(int id);
 
         Task<string> ChangeRole1User(int id, int role);

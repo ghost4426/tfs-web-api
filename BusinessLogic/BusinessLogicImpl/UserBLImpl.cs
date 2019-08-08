@@ -22,16 +22,19 @@ namespace BusinessLogic.BusinessLogicImpl
     public class UserBLImpl : IUserBL
     {
         private IUserRepository _userRepos;
+        private IEmailSender _mailSender;
         private IRoleRepository _roleRepos;
         private IPremisesRepository _premesisRepos;
         private readonly JWTSetttings _appSettings;
 
 
         public UserBLImpl(IUserRepository userRepos
+            , IEmailSender mailSender
             , IRoleRepository roleRepos
             , IPremisesRepository premesisRepos
             , IOptions<JWTSetttings> appSettings)
         {
+            _mailSender = mailSender;
             _userRepos = userRepos;
             _roleRepos = roleRepos;
             _premesisRepos = premesisRepos;
@@ -56,6 +59,35 @@ namespace BusinessLogic.BusinessLogicImpl
                 return true;
             }
             return false;
+        }
+        public async Task CreateVeterinary(User veterinary)
+        {
+            var password = Util.GeneratePassword(new Models.PasswordOptions()
+            {
+                RequireDigit = false,
+                RequiredLength = 12,
+                RequireLowercase = false,
+                RequireNonAlphanumeric = false,
+                RequireUppercase = false
+            });
+            var hashedPassword = PasswordHasher.GetHashPassword(password);
+            var account = await _userRepos.FindByUsername(veterinary.Username);
+            if (account != null)
+            {
+                throw new DuplicatedUsernameException(msg: MessageConstant.DUPLICATED_USERNAME);
+            }
+            else
+            {
+                veterinary.Password = hashedPassword.HashedPassword;
+                veterinary.Salt = hashedPassword.Salt;
+                var role = _roleRepos.GetById(4); // get veterinary Role
+                veterinary.Role = role;
+                _userRepos.Insert(veterinary, true);
+                //Send email
+                await _mailSender.SendEmailAsync(veterinary.Email, "[TFS] Tạo tài khoản thành công",
+                                                "Tài khoản Thú Y của bạn đã được tạo thành công \n"
+                                                +"Mật khẩu của bạn là: "+ password);
+            }
         }
         public async Task ActivateAccount(string activateCode)
         {

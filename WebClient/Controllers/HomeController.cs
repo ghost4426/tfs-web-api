@@ -84,7 +84,7 @@ namespace WebClient.Controllers
             return View();
         }
         [Route("dang-ky-co-so")]
-        public IActionResult CreateRegisterInfo()
+        public IActionResult CreatePremises()
         {
             return View();
         }
@@ -100,8 +100,6 @@ namespace WebClient.Controllers
         {
             return View();
         }
-
-
 
         [Authorize]
         [Route("dang-xuat")]

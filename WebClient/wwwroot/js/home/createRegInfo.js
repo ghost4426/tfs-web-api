@@ -27,7 +27,7 @@ $('#createNewRegisterInfoBtn').click(function () {
             Phone: phone,
         }),
         function (result) {
-            toastr.success('Bạn tạo mới cơ sở thành công. Vui lòng chờ kiểm duyệt', 'Tạo cơ sở thành công');
+            toastr.success('Bạn tạo mới cơ sở thành công.', 'Tạo cơ sở thành công');
         },
         function (result) {
             toastr.error();

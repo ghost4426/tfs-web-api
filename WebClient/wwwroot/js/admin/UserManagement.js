@@ -30,14 +30,34 @@ var userTable = $('#userTable').DataTable({
         {
             data: null,
             render: function (data, type, row) {
-                return '<button onclick="getUserInfo(' + data.UserId + ')" class="btn btn-grey" data-toggle="modal" data-target="#confirm" tittle="Đổi trạng thái"><i class="fa fa-repeat"></i ></button >';
+                if (data.IsActive == true) {
+                    return '<button onclick="getUserInfo(' + data.UserId + ')" class="btn btn-danger" data-toggle="modal" data-target="#confirm" tittle="Đổi trạng thái"><i class="fa fa-times"></i ></button >';
+                }
+                else {
+                    return '<button onclick="getUserInfo(' + data.UserId + ')" class="btn btn-success" data-toggle="modal" data-target="#confirm" tittle="Đổi trạng thái"><i class="fa fa-check"></i ></button >';
+
+                };
 
             }
         },
     ],
+    dom: '<"row" <"col-sm-12"Bf>>'
+        + '<"row" <"col-sm-12"i>>'
+        + '<"row" <"col-sm-12"tr>>'
+        + '<"row"<"col-sm-5"l><"col-sm-7"p>>',
+    buttons: [
+        {
+            text: '<i class="fa fa-plus white"></i> Thêm mới Kiểm Duyệt viên',
+            
+            className: 'btn btn-primary btn-sm mr-1 btnAddNewVeterinary',
+        },
+    ],
     language: userTable_vi_lang
 });
-
+$('.btnAddNewVeterinary').on('click', function () {
+    $('#addVeterinary').modal('show');
+    
+});
 $('#confirmButton').click(function () {
     var userId = parseInt($('#txtUserIdActive').val());
     callAjax(
@@ -56,6 +76,69 @@ $('#confirmButton').click(function () {
         }
     )
 });
+
+$('#addNewVeterinaryButton').click(function () {
+    var isValidated = true;
+    var username = $('#txtVeterinaryName').val();
+    var fullname = $('#txtVeterinaryFullname').val();
+    var email = $('#txtVeterinaryEmail').val();
+    var phone = $('#txtVeterinaryPhone').val();
+    if (!validate(username)) {
+        $('#userValidate').text("*Vui lòng nhập tài khoản*");
+        isValidated = false;
+    } else {
+        $('#userValidate').text("");
+    }
+    if (!validate(fullname)) {
+        $('#fullnameValidate').text("*Vui lòng nhập Họ và tên*");
+        isValidated = false;
+    } else {
+        $('#fullnameValidate').text("");
+    }
+    if (!validate(email)) {
+        $('#emailValidate').text("*Vui lòng nhập đúng Email*");
+        isValidated = false;
+    } else {
+        $('#emailValidate').text("");
+    }
+    if (!validate(phone)) {
+        $('#phoneValidate').text("*Vui lòng nhập đúng Số điện thoại*");
+        isValidated = false;
+    } else {
+        $('#phoneValidate').text("");
+    }
+    if (isValidated) {
+        Create(username, fullname, email, phone);
+    }
+});
+function validate(input) {
+    if (input == null || input == "") {
+        return false;
+    }
+    return true;
+};
+function Create(username, fullname, email, phone) {
+    callAjax(
+        {
+            url: CREATE_VETERINARY_URI,
+            dataType: JSON_DATATYPE,
+            type: POST,
+        }, JSON.stringify({
+            Username: username,
+            Fullname: fullname,
+            Email: email,
+            Phone: phone
+        }),
+        function (result) {
+            toastr.success('Tạo mới Kiểm Duyệt Viên thành Công', 'Tạo mới thành công');
+            $('#addVeterinary').modal('hide');
+            $('#userTable').DataTable().ajax.reload();
+        },
+        function (result) {
+            toastr.error(result.message());
+        }
+    )
+};
 
 function getUserInfo(userId) {
 

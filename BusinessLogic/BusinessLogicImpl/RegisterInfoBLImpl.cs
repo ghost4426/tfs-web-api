@@ -12,6 +12,7 @@ using Models = DTO.Models;
 using Common.Constant;
 using Entities = DTO.Entities;
 
+
 namespace BusinessLogic.BusinessLogicImpl
 {
     public class RegisterInfoBLImpl : IRegisterInfoBL

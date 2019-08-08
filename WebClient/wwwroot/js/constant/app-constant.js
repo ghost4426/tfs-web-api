@@ -6,7 +6,7 @@ const JSON_DATATYPE = "JSON";
 
 
 const BASE_ADMIN_API_URI = "https://localhost:4200/";
-const BASE_COMMON_API_URI = "https://localhost:4201/";
+const BASE_COMMON_API_URI = "http://localhost:4201/";
 
 const BASE_ADMIN_URI = "api/admin/";
 const BASE_PROVIDER_URI = "api/provider/";
@@ -49,6 +49,7 @@ const UPDATE_PREMISES_STATUS_URI = BASE_ADMIN_API_URI + BASE_ADMIN_URI + "premis
 const CREATE_NEW_PREMISES_URI = BASE_COMMON_API_URI + BASE_REGISTER_URI + "premises";
 const GET_PROFILE_URI = BASE_ADMIN_API_URI + BASE_ADMIN_URI + "profile";
 const CHANGE_AVA_URI = BASE_ADMIN_API_URI + BASE_ADMIN_URI + "user/avatar/";
+const CREATE_VETERINARY_URI = BASE_ADMIN_API_URI + BASE_ADMIN_URI + "veterinary";
 
 // Provider
 const GET_FOOD_PROVIDER_URI = BASE_COMMON_API_URI + BASE_PROVIDER_URI + "getFoodByProvider";
