@@ -146,7 +146,7 @@ namespace CommonWebApi
             {
             option.AddPolicy(MyAllowSpecificOrigins,
                 buidder => {
-                    buidder.WithOrigins("https://localhost:5000")
+                    buidder.WithOrigins("http://localhost:5000")
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials();

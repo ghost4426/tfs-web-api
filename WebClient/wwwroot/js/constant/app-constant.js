@@ -5,8 +5,8 @@ const DELETE = "DELETE";
 const JSON_DATATYPE = "JSON";
 
 
-const BASE_ADMIN_API_URI = "https://localhost:4200/";
-const BASE_COMMON_API_URI = "https://localhost:4201/";
+const BASE_ADMIN_API_URI = "http://localhost:4200/";
+const BASE_COMMON_API_URI = "http://localhost:4201/";
 
 const BASE_ADMIN_URI = "api/admin/";
 const BASE_PROVIDER_URI = "api/provider/";
