@@ -13,7 +13,7 @@ namespace DTO.Models
 
         public int CategoryId { get; set; }
 
-        public DateTime CreatedDate { get; set; }
+        public DateTime CreateDate { get; set; }
 
         public Category Category { get; set; }
         //public virtual Premises Provider { get; set; }
@@ -29,14 +29,14 @@ namespace DTO.Models
         public string Breed { get; set; }
         public int CategoryId { get; set; }
         public int FarmId { get; set; }
-        public DateTime CreatedDate { get; set; }
+        public DateTime CreateDate { get; set; }
     }
 
     public class FoodProvider
     {
         public int FoodId { get; set; }
         public int PremisesId { get; set; }
-        public DateTime CreatedDate { get; set; }
+        public DateTime CreateDate { get; set; }
         public Food Food { get; set; }
         public int? TreatmentId {get;set;}
     }

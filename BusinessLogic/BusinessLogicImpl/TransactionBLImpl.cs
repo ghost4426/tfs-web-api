@@ -60,9 +60,23 @@ namespace BusinessLogic.BusinessLogicImpl
             return transaction;
         }
 
-        public async Task<IList<Transaction>> getAllProviderTransaction(int userId)
+        public async Task<IList<Transaction>> getAllProviderReceiveTransaction(int userId)
         {
-            var transaction = await _transactionRepos.getAllProviderTransaction(userId);
+            var transaction = await _transactionRepos.getAllProviderReceiveTransaction(userId);
+            foreach (var i in transaction)
+            {
+                i.Sender = _premisesRepos.GetById(i.SenderId);
+                i.Receiver = _premisesRepos.GetById(i.ReceiverId);
+                i.TransactionStatus = _transactionStatusRepos.GetById(i.StatusId);
+                i.Food = _foodRepos.GetById(i.FoodId);
+                i.Food.Category = _categoryRepos.GetById(i.Food.CategoryId);
+            }
+            return transaction;
+        }
+
+        public async Task<IList<Transaction>> getAllProviderSendTransaction(int premisesId)
+        {
+            var transaction = await _transactionRepos.getAllProviderSendTransaction(premisesId);
             foreach (var i in transaction)
             {
                 i.Sender = _premisesRepos.GetById(i.SenderId);

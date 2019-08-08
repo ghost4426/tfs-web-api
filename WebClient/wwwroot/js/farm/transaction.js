@@ -22,7 +22,7 @@
         { data: 'FoodBreed' },
         { data: 'Provider' },
         {
-            data: 'CreatedDate',
+            data: 'CreateDate',
             render: function (data, type, row) {
                 return $.format.date(data, "dd-MM-yyyy HH:mm")
             }
@@ -70,8 +70,10 @@ $('#farm-transaction-mng').on('click', 'button.btn-barcode', function () {
     var tr = $(this).closest('tr');
     var row = farmTransactionTable.row(tr);
     var id = row.data().TransactionId;
+    var providerId = row.data().ProviderId;
+    console.log(providerId);
     $("#btnPrintBarcode").attr("download", "Trans-" + id + ".jpg");
-    makeCode("Trans-" + id);
+    makeCode("Trans-" + id + "-" + providerId);
     $('#GetQRCode').modal('show');
 });
 

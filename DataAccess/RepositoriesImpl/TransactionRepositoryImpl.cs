@@ -34,8 +34,6 @@ namespace DataAccess.RepositoriesImpl
         {
             newTransaction.TransactionId = 0;
             newTransaction.CreateDate = DateTime.Now;
-            newTransaction.CreateById = 11; // sẽ đổi
-            newTransaction.VeterinaryId = 11; // sẽ đổi
             newTransaction.StatusId = 1;
             await this.InsertAsync(newTransaction, true);
             return newTransaction.TransactionId;
@@ -48,9 +46,16 @@ namespace DataAccess.RepositoriesImpl
             return result.ToList();
         }
 
-        public async Task<IList<Transaction>> getAllProviderTransaction(int premisesId)
+        public async Task<IList<Transaction>> getAllProviderReceiveTransaction(int premisesId)
         {
             IList<Transaction> list = await FindAllAsync(x => x.ReceiverId == premisesId);
+            IEnumerable<Transaction> result = list.OrderByDescending(x => x.CreateDate).Take(500);
+            return result.ToList();
+        }
+
+        public async Task<IList<Transaction>> getAllProviderSendTransaction(int premisesId)
+        {
+            IList<Transaction> list = await FindAllAsync(x => x.SenderId == premisesId);
             IEnumerable<Transaction> result = list.OrderByDescending(x => x.CreateDate).Take(500);
             return result.ToList();
         }

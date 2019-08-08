@@ -6,8 +6,7 @@ namespace DTO.Models
 {
     public class TransactionRequest
     {
-        public int FarmId { get; set; }
-        public int ProviderId { get; set; }
+        public int ReceiverId { get; set; }
         public int FoodId { get; set; }
     }
 
