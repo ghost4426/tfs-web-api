@@ -35,5 +35,6 @@ namespace BusinessLogic.IBusinessLogic
         Task<IList<DistributorFood>> getAllFoodByDistributorId(int distributorId);
 
         Task<int> createDistributorFood(DistributorFood newDistributorFood);
+
     }
 }

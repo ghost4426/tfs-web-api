@@ -140,5 +140,10 @@ namespace BusinessLogic.BusinessLogicImpl
             }
             return food;
         }
+
+        public Task<Food> getFoodById(int foodId)
+        {
+            return null;
+        }
     }
 }

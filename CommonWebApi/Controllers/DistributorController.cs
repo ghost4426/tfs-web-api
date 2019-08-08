@@ -12,7 +12,7 @@ using AutoMapper;
 using Common.Enum;
 using DTO.Models.FoodData;
 using Microsoft.AspNetCore.Authorization;
-
+using Common.Constant;
 
 namespace CommonWebApi.Controllers
 {
@@ -43,14 +43,6 @@ namespace CommonWebApi.Controllers
             return Ok(new { data = _mapper.Map<IList<Models.Food>>(await _foodBL.getMatchedWithNumber(disID))});
         }
 
-        [HttpPut("distributorFood/{foodId}/{distributorId}")]
-        public async Task<int> UpdateTransactionStatus( int foodId, int distributorId)
-        {
-            Entities.DistributorFood distributorFood = new Entities.DistributorFood();
-            distributorFood.FoodId = foodId;
-            distributorFood.PremisesId = distributorId;
-            return await _foodBL.createDistributorFood(distributorFood);
-        }
 
         [HttpGet("getProfile/{userId}")]
         public async Task<IActionResult> GetUserProfile(int userId)
@@ -114,6 +106,24 @@ namespace CommonWebApi.Controllers
         {
             return Ok(new { data = _mapper.Map<Models.Transaction>(await _transactionBL.UpdateDistributorTransaction(tranId, trans.StatusId, trans.RejectedReason, trans.RejectById)) });
         }
+        [HttpPost("distributorFood/{id}")]
+        public async Task<IActionResult> CreateDistributorFood(int id, [FromBody]Models.CreateDistributorFoodRequest foodRequest)
+        {
+            try
+            {
+                Entities.DistributorFood distributorFood = new Entities.DistributorFood();
+                distributorFood.FoodId = foodRequest.FoodId;
+                distributorFood.PremisesId = id;
 
+                await _foodDataBL.AddDistributor(distributorFood.FoodId, id);
+                await _foodBL.createDistributorFood(distributorFood);
+                return Ok(new { message = MessageConstant.INSERT_SUCCESS });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { msg = e.Message });
+            }
+
+        }
     }
 }

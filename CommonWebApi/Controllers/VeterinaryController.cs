@@ -43,5 +43,49 @@ namespace CommonWebApi.Controllers
             //var TransID = 3;
             return Ok(new { data = _mapper.Map<Models.Transaction>(await _transactionBL.GetTransactionById(id)) });
         }
+
+        [HttpGet("getProfile/{userId}")]
+        public async Task<IActionResult> GetUserProfile(int userId)
+        {
+            var user = await _userBL.GetById(userId);
+            return Ok(user);
+        }
+
+        [HttpPut("account/{id}")]
+        public async Task<IActionResult> UpdateProfile(int id, [FromBody] Models.UpdateUserRequest userInfo)
+        {
+            Entities.User user = null;
+            try
+            {
+                user = _mapper.Map<Entities.User>(userInfo);
+                user.UserId = id;
+                user.Fullname = userInfo.Fullname;
+                user.Email = userInfo.Email;
+                user.PhoneNo = userInfo.PhoneNo;
+                await _userBL.UpdateUser(user, id);
+                return Ok("success!!");
+
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+
+        }
+
+        [HttpPut("changePassword/{userId}")]
+        public async Task<IActionResult> ChangePassword(int userId, [FromBody] Models.ChangePasswordUserRequest userInfo)
+        {
+            try
+            {
+                await _userBL.ChangePassword(userId, userInfo.newPass, userInfo.oldPass);
+                return Ok("success!");
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+
+        }
     }
 }
