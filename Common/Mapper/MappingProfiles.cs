@@ -116,6 +116,7 @@ namespace Common.Mapper
                  .ForMember(dest => dest.text, opts => opts.MapFrom(src => src.Name))
                .ReverseMap();
 
+            CreateMap<Entities.User, Models.CreateUserPremises>().ReverseMap();
         }
     }
 }

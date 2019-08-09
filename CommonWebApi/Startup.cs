@@ -95,6 +95,9 @@ namespace CommonWebApi
 
             #endregion
 
+            services.Configure<AuthMessageSenderOptions>(Configuration.GetSection("AuthMessageSenderOptions"));
+            services.AddSingleton<IEmailSender, EmailSender>();
+
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
             {

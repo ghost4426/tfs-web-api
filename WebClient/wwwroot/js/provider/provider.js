@@ -98,8 +98,120 @@
         language: "vi"
     });
 
-    //Validation Add Treatment Form
-    
+    //Validation
+    $("#formAddDetail").validate({
+        rules: {
+            dllFoodDetailType: {
+                required: true
+            },
+            ddlChooseTreatment: "required",
+            txtMFGDate: {
+                required: true,
+                smallerThan: true
+            },
+            EXPDate: {
+                required: true,
+                greaterThan: function () { return $('#txtMFGDate').val(); }
+            }
+        },
+        messages: {
+            dllFoodDetailType: {
+                required: "Vui lòng chọn một thông tin"
+            },
+            ddlChooseTreatment: "Vui lòng chọn một quy trình",
+            txtMFGDate: {
+                required: "Vui lòng chọn ngày sản xuất",
+                smallerThan: "Vui lòng không chọn ngày lớn hơn ngày hiện tại"
+            },
+            EXPDate: {
+                required: "Vui lòng chọn hạn sử dụng",
+                greaterThan: "Vui lòng chọn hạn sử dụng lớn hơn ngày sản xuất"
+            }
+        },
+        submitHandler: function (form) {
+            var option = $('#dllFoodDetailType').val();
+            var foodId = $('#txtFoodId').val();
+            if (option == 6) {
+                var treatmentId = $('#ddlChooseTreatment').val();
+                callAjaxAuth(
+                    {
+                        url: UPDATE_FOOD_TREATMENT_URI + foodId,
+                        dataType: JSON_DATATYPE,
+                        type: PUT
+                    }, JSON.stringify(treatmentId),
+                    function (result) {
+                        toastr.success("Thêm thông tin thành công");
+                        clearDetailModal();
+                        $('#addinfo').modal('hide');
+                    },
+                    function (result) {
+                        toastr.error(result);
+                    }
+                );
+            } else if (option == 7) {
+                var mfg = $('#txtMFGDate').val();
+                var exp = $('#EXPDate').val();
+                callAjaxAuth(
+                    {
+                        url: ADD_FOOD_PACKAGING_URI + foodId,
+                        dataType: JSON_DATATYPE,
+                        type: PUT
+                    }, JSON.stringify({
+                        MFGDate: mfg,
+                        EXPDate: exp
+                    }),
+                    function (result) {
+                        toastr.success("Thêm thông tin thành công");
+                        clearDetailModal();
+                        $('#addinfo').modal('hide');
+                    },
+                    function (result) {
+                        toastr.error(result);
+                    }
+                );
+            }
+        }
+    });
+
+    $("#printJs-form").validate({
+        rules: {
+            Distributor: {
+                required: true,
+                checkTreatment: function () { return $('#checkTreatment').val(); } ,
+                checkPackaging: function () { return $('#checkPackaging').val(); },
+                checkEXPDate: function () { return $('#checkPackaging').val(); }
+            }
+        },
+        messages: {
+            Distributor: {
+                required: "Vui lòng chọn một nhà phân phối",
+                checkTreatment: "Thực phẩm chưa có thông tin quy trình xử lý",
+                checkPackaging: "Thực phẩm chưa có thông tin đóng gói",
+                checkEXPDate: "Thực phẩm đã quá hạn sử dụng"
+            }
+        },
+        submitHandler: function (form) {
+            var foodId = $('#foodId-trans').val();
+            var distributorId = $('#ddlDistributor').val();
+            callAjaxAuth(
+                {
+                    url: PROVIDER_CREATE_TRANSACTION_URI,
+                    dataType: JSON_DATATYPE,
+                    type: POST
+                }, JSON.stringify({
+                    ReceiverId: distributorId,
+                    FoodId: foodId
+                }),
+                function (result) {
+                    toastr.success("Tạo giao dịch thành công, vui lòng chờ nhà phân phối xác nhận");
+                    $('#GetQRCode').modal('hide');
+                },
+                function (result) {
+                    toastr.error(result);
+                }
+            );
+        }
+    });
 });
 
 $.fn.dataTable.ext.errMode = 'none';
@@ -637,6 +749,24 @@ $('#provider-food-mng').on('click', 'button.btn-barcode', function () {
     var tr = $(this).closest('tr');
     var row = providerFoodTable.row(tr);
     var foodId = row.data().FoodId;
+    callAjaxAuth(
+        {
+            url: PROVIDER_GET_FOOD_DATA_URI,
+            dataType: JSON_DATATYPE,
+            type: GET
+        },
+        {
+            id: foodId
+        }, function (result) {
+            var treatment = result.data.Providers[0].Treatment;
+            var packaging = result.data.Providers[0].Packaging.EXPDate;
+            $('#checkTreatment').val(treatment);
+            $('#checkPackaging').val($.format.date(packaging, "dd-MM-yyyy"));
+        },
+        function (result) {
+            toastr.error(result);
+        }
+    );
     $('#foodId-trans').val(foodId);
     $('#category-trans').val(row.data().Food.Category.Name);
     $('#breed-trans').val(row.data().Food.Breed);
@@ -652,28 +782,6 @@ $('#provider-food-mng').on('click', 'button.btn-barcode', function () {
     });
     $("#btnPrintBarcode").attr("download", "Food-" + foodId + ".jpg");
     $('#GetQRCode').modal('show');
-});
-
-$('#btn-transaction').on('click', function () {
-    var foodId = $('#foodId-trans').val();
-    var distributorId = $('#ddlDistributor').val();
-    callAjaxAuth(
-        {
-            url: PROVIDER_CREATE_TRANSACTION_URI,
-            dataType: JSON_DATATYPE,
-            type: POST
-        }, JSON.stringify({
-            ReceiverId: distributorId,
-            FoodId: foodId
-        }),
-        function (result) {
-            toastr.success("Tạo giao dịch thành công, vui lòng chờ nhà phân phối xác nhận");
-            $('#GetQRCode').modal('hide');
-        },
-        function (result) {
-            toastr.error(result);
-        }
-    )
 });
 
 function makeCode(id) {

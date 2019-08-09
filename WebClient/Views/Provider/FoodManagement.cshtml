@@ -203,10 +203,14 @@
                                 <input class="form-control" type="text" id="breed-trans" readonly />
                             </div>
                         </div>
-                        <div class="row form-group">
-                            <div class="col-md-12">
-                                <label for="projectinput2">Chọn nhà phân phối</label>
-                                <select name="Treatment" class="select2-placeholder select2-size-lg form-control" style="width:100%" id="ddlDistributor"></select>
+                        <form id="printJs-form" role="form">
+                            <input type="hidden" id="checkTreatment" readonly/>
+                            <input type="hidden" id="checkPackaging" readonly/>
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                    <label class="col-md-12" for="projectinput2">Chọn nhà phân phối</label>
+                                    <select name="Distributor" class="select2-placeholder select2-size-lg form-control" style="width:100%" id="ddlDistributor" required></select>
+                                </div>
                             </div>
                         </div>
                         <form method="post" action="#" id="printJs-form">
