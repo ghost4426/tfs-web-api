@@ -54,7 +54,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form class="form form-horizontal" id="formAddDetail" role="form">
+                <form class="form form-horizontal" novalidate id="formAddDetail">
                     <div class="form-body">
                         <h4 class="form-section"><i class="ft-info"></i> Thông Tin Thực Phẩm</h4>
                         <input type="hidden" id="txtTreatment" readonly />
@@ -79,7 +79,7 @@
                         <div class="row form-group">
                             <label class="col-md-2 label-control" for="txtFoodId">Thông Tin</label>
                             <div class="col-md-10">
-                                <select class="select2" name="dllFoodDetailType" style="width: 100%" id="dllFoodDetailType" required></select>
+                                <select class="select2" name="dllFoodDetailType" style="width: 100%" id="dllFoodDetailType"></select>
                             </div>
                         </div>
                         <div id="detailTitle">
@@ -87,15 +87,12 @@
                         <div class="row form-group" id="add-detail-form">
 
                         </div>
-                        <div class="row form-group" id="add-detail-treatment-process">
-
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">Đóng</button>
-                        <button type="submit" class="btn btn-outline-primary" id="addDetailConfirm">Xác nhận</button>
                     </div>
                 </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-outline-primary" id="addDetailConfirm">Xác nhận</button>
             </div>
         </div>
     </div>
@@ -206,25 +203,25 @@
                                 <input class="form-control" type="text" id="breed-trans" readonly />
                             </div>
                         </div>
-                        <form id="printJs-form" role="form">
-                            <div class="row form-group">
-                                <div class="col-md-12">
-                                    <label class="col-md-12" for="projectinput2">Chọn nhà phân phối</label>
-                                    <select name="Treatment" class="select2-placeholder select2-size-lg form-control" style="width:100%" id="ddlDistributor" required></select>
-                                </div>
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <label for="projectinput2">Chọn nhà phân phối</label>
+                                <select name="Treatment" class="select2-placeholder select2-size-lg form-control" style="width:100%" id="ddlDistributor"></select>
                             </div>
+                        </div>
+                        <form method="post" action="#" id="printJs-form">
                             <canvas id="barcode"></canvas>
-                            <div class="row justify-content-md-center">
-                                <button type="button" class="btn btn-secondary col-4" onclick="printJS('barcode', 'html')">In mã barcode</button>
-                                <div class="col-2"></div>
-                                <a id="btnPrintBarcode" href="" onclick="download_img(this)" class="btn btn-info col-4">Tải mã barcode</a>
-                            </div>
-                            <div class="row justify-content-md-center mt-2">
-                                <button type="submit" id="btn-transaction" class="btn btn-success col-4">Tạo giao dịch</button>
-                                <div class="col-2"></div>
-                                <button class="btn btn-danger col-4" data-dismiss="modal">Đóng</button>
-                            </div>
                         </form>
+                        <div class="row justify-content-md-center">
+                            <button type="button" class="btn btn-secondary col-4" onclick="printJS('printJs-form', 'html')">In mã barcode</button>
+                            <div class="col-2"></div>
+                            <a id="btnPrintBarcode" href="" onclick="download_img(this)" class="btn btn-info col-4">Tải mã barcode</a>
+                        </div>
+                        <div class="row justify-content-md-center mt-2">
+                            <button id="btn-transaction" class="btn btn-success col-4">Tạo giao dịch</button>
+                            <div class="col-2"></div>
+                            <button class="btn btn-danger col-4" data-dismiss="modal">Đóng</button>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -259,9 +256,6 @@
                             <div class="row form-group" id="add-treatment-form">
 
                             </div>
-                            <div id="add-treatment-error">
-
-                            </div>
                         </form>
                     </div>
                     <div class="tab-pane" id="tab12" aria-labelledby="base-tab12">
@@ -269,15 +263,9 @@
                             <div class="col-md-12">
                                 <label for="projectinput2">Quy trình</label>
                                 <select name="Treatment" class="select2-placeholder select2-size-lg form-control" style="width:100%" id="ddlTreatment"></select>
-                                <div id="update-treatment-error">
-
-                                </div>
                             </div>
                         </div>
                         <div id="TreatmentProcessData">
-
-                        </div>
-                        <div id="update-treatment-process-error">
 
                         </div>
                         <div id="MoreTreatment">

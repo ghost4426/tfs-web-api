@@ -27,7 +27,6 @@ namespace BusinessLogic.BusinessLogicImpl
                     TreatmentParentId = treatmentId,
                     PremisesId = treatment.PremisesId,
                     CreateById = treatment.CreateById,
-                    UpdateById = treatment.UpdateById
                     //CreateDate = DateTime.Now
                 });
             }
@@ -44,7 +43,7 @@ namespace BusinessLogic.BusinessLogicImpl
                     TreatmentParentId = treatment.TreatmentId,
                     PremisesId = treatment.PremisesId,
                     CreateById = treatment.CreateById,
-                    UpdateById = treatment.UpdateById
+                    //CreatedDate = DateTime.Now
                 });
             }   
         }
