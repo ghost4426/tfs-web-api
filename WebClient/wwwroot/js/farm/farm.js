@@ -176,16 +176,62 @@ $('#btnAddProduct').click(function () {
 });
 var preId = 0;
 
+function clearViewDetailModel() {
+    $("#feedding-info").empty();
+    $("#feedding-info").append('<div class="form-control col-12"><h5>Không có thông tin</h5></div>');
+    $("#vaccine-info").empty();
+    $("#vaccine-info").append('<div class="form-control col-12"><h5>Không có thông tin</h5></div>');
+}
 
 // Show view food detail modal
 $('#farm-food-mng').on('click', 'button.btn-view-detail', function () {
+    clearViewDetailModel()
     var tr = $(this).closest('tr');
     var row = farmFoodTable.row(tr);
     var id = row.data().FoodId;
-    //if (preId != id) {
-    //    //clearDetailModal();
-    //}
-    //preId = id;
+    callAjaxAuth(
+        {
+            url: GET_FOODDATA_BY_ID_URI,
+            dataType: JSON_DATATYPE,
+            type: GET
+        },
+        {
+            id: id
+        }, function (result) {
+            var feeding = result.data.Farm.Feedings;
+            var vacxin = result.data.Farm.Vaccinations;
+            if (feeding != null) {
+                $("#feedding-info").empty();
+                $.each(feeding, function (data, value) {
+                    $('#feedding-info').append('<div class="input-group mb-1"">'
+                        + '<input type="text" readonly class="form-control" value="' + value + '" >'
+                        + '</div > ');
+                });
+            }
+            if (vacxin != null) {
+                $("#vaccine-info").empty();
+                $.each(vacxin, function (data, value) {
+                    $('#vaccine-info').append('<div class="input-group mb-1"">'
+                        + '<div class="col-6">'
+                        + '<div class="form-group">'
+                        + '<label for= "userinput1" >Ngày tiêm:</label >'
+                        + '<input type="text" readonly class="form-control" value="' + $.format.date(value.VaccinationDate, "dd-MM-yyyy") + '" >'
+                        + '</div > '
+                        + '</div > '
+                        + '<div class="col-6">'
+                        + '<div class="form-group">'
+                        + '<label for= "userinput1" >Loại vac-xin:</label >'
+                        + '<input type="text" readonly class="form-control" value="' + value.VaccinationType + '" >'
+                        + '</div > '
+                        + '</div > '
+                        + '</div > ');
+                });
+            }
+        },
+        function (result) {
+            toastr.error(result);
+        }
+    );
 
     $('#txtFoodIdView').val(id);
     $('#txtFoodCategoryView').val(row.data().CategoryName);

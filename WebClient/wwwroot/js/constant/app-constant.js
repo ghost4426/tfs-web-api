@@ -13,23 +13,23 @@ const BASE_PROVIDER_URI = "api/provider/";
 const BASE_FAMR_URI = BASE_COMMON_API_URI + "api/farm/";
 const BASE_STAFF_URI = "api/staff/";
 const BASE_COMMON_URI = BASE_COMMON_API_URI + "api/common/";
-const BASE_GUEST_URI = "api/guest/";
+const BASE_GUEST_URI = BASE_COMMON_API_URI + "api/guest/";
 const BASE_MANAGER_URI = "api/manager/";
 
 //Guest
-const LOGIN_URI = BASE_COMMON_API_URI + BASE_GUEST_URI + "login";
+const GET_FOODDATA_BY_ID_URI = BASE_GUEST_URI + "foodData";
 
 //Farm
-const GET_FOOD_DETAIL_TYPE_URI      = BASE_FAMR_URI + "productdetailtype";
-const GET_FOOD_CATEGORY_URI         = BASE_FAMR_URI + "category";
-const GET_FARM_FOOD_URI             = BASE_FAMR_URI + "foods";
-const CREATE_FOOD_DATA_URI          = BASE_FAMR_URI + "food";
-const GET_FOOD_FEEDING_DATA_URI     = BASE_FAMR_URI + "food/feedings/";
+const GET_FOOD_DETAIL_TYPE_URI = BASE_FAMR_URI + "productdetailtype";
+const GET_FOOD_CATEGORY_URI = BASE_FAMR_URI + "category";
+const GET_FARM_FOOD_URI = BASE_FAMR_URI + "foods";
+const CREATE_FOOD_DATA_URI = BASE_FAMR_URI + "food";
+const GET_FOOD_FEEDING_DATA_URI = BASE_FAMR_URI + "food/feedings/";
 const ADD_FOOD_FEEDING_DATA_URI = BASE_FAMR_URI + "food/feedings/";
 const GET_FOOD_VACCIN_DATA_URI = BASE_FAMR_URI + "food/vaccinations/";
 const ADD_FOOD_VACCIN_DATA_URI = BASE_FAMR_URI + "food/vaccinations/";
-const COUNT_FARM_TRANSACTION_URI    = BASE_FAMR_URI + "countFarmTransaction"
-const GET_FARM_TRANSACTION_URI      = BASE_FAMR_URI + "getAllFarmTransaction";
+const COUNT_FARM_TRANSACTION_URI = BASE_FAMR_URI + "countFarmTransaction"
+const GET_FARM_TRANSACTION_URI = BASE_FAMR_URI + "getAllFarmTransaction";
 const CREATE_TRANSACTION_URI = BASE_FAMR_URI + "createTransaction";
 const GET_PROVIDER = BASE_FAMR_URI + "getAllProvider";
 
@@ -49,7 +49,7 @@ const COUNT_PROVIDER_TRANSACTION_URI = BASE_COMMON_API_URI + BASE_PROVIDER_URI +
 const GET_PROVIDER_TRANSACTION_URI = BASE_COMMON_API_URI + BASE_PROVIDER_URI + "getAllProviderReceiveTransaction";
 const UPDATE_TRANSACTION_URI = BASE_COMMON_API_URI + BASE_PROVIDER_URI + "UpdateTransaction/";
 const CREATE_PROVIDER_FOOD_URI = BASE_COMMON_API_URI + BASE_PROVIDER_URI + "providerFood";
-const GET_PROVIDER_FOOD_DETAIL_TYPE_URI =  BASE_COMMON_URI + "productproviderdetailtype";
+const GET_PROVIDER_FOOD_DETAIL_TYPE_URI = BASE_COMMON_URI + "productproviderdetailtype";
 const ADD_FOOD_TREATMENT_URI = BASE_COMMON_API_URI + BASE_PROVIDER_URI + "treatment";
 const GET_FOOD_TREATMENT_URI = BASE_COMMON_API_URI + BASE_PROVIDER_URI + "foodTreatment/"
 const ADD_MORE_FOOD_TREATMENT_URI = BASE_COMMON_API_URI + BASE_PROVIDER_URI + "moreTreatment/";
