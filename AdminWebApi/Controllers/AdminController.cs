@@ -16,7 +16,7 @@ namespace AdminWebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    //[Authorize(Roles = RoleConstant.ADMIN)]
+    [Authorize(Roles = RoleDataConstant.ADMIN)]
     public class AdminController : ControllerBase
     {
         private readonly IUserBL _userBL;
