@@ -180,5 +180,20 @@ namespace BusinessLogic.BusinessLogicImpl
             food.Providers = food.Providers.Where(x => x.ProviderId == providerId).ToList();
             return food;
         }
+
+        public async Task<string> AddDistributor(long foodId, int distributorId)
+        {
+            var Premises = _premesisRepository.GetById(distributorId);
+            var FoodData = await GetFoodDataByID(foodId);
+
+            //FoodData.Provider = _mapper.Map<Provider>(Premises);
+            if (FoodData.Distributors == null)
+            {
+                FoodData.Distributors = new List<Distributor>();
+            }
+            FoodData.Distributors.Add(_mapper.Map<Distributor>(Premises));
+
+            return await SaveFoodData(FoodData);
+        }
     }
 }

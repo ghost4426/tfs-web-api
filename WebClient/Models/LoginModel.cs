@@ -24,7 +24,7 @@ namespace WebClient
         {
             HttpClient client = new HttpClient
             {
-                BaseAddress = new Uri("https://localhost:4201/")
+                BaseAddress = new Uri("http://localhost:4201/")
             };
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(

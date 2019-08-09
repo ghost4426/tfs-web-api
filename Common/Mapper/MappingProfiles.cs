@@ -17,6 +17,9 @@ namespace Common.Mapper
             CreateMap<Entities.Premises, Models.FoodData.Provider>()
             .ForMember(dest => dest.ProviderId, opts => opts.MapFrom(src => src.PremisesId)).ReverseMap();
 
+            CreateMap<Entities.Premises, Models.FoodData.Distributor>()
+            .ForMember(dest => dest.DistributorId, opts => opts.MapFrom(src => src.PremisesId)).ReverseMap();
+
             CreateMap<Entities.Food, Models.CreateFoodRequest>()
                 .ReverseMap();
 
@@ -41,6 +44,14 @@ namespace Common.Mapper
 
             CreateMap<Entities.Role, Models.Role>().ReverseMap();
 
+            CreateMap<Entities.Transaction, Models.Transaction>()
+              
+                .ReverseMap();
+           CreateMap<Entities.Premises, Models.PremisesProvider>()
+                .ReverseMap();
+            CreateMap<Entities.Premises, Models.Premises>()
+                 .ReverseMap();
+
             CreateMap<Entities.Premises, Models.RegisterRequest>()
                 .ForMember(dest => dest.PremisesName, opts => opts.MapFrom(src => src.Name))
                 .ForMember(dest => dest.PremisesAddress, opts => opts.MapFrom(src => src.Address))
@@ -51,8 +62,6 @@ namespace Common.Mapper
                 .ForMember(dest => dest.CategoryName, opts => opts.MapFrom(src => src.Category.Name))
                 .ForMember(dest => dest.CategoryId, opts => opts.MapFrom(src => src.Category.CategoryId))
                 .ReverseMap();
-
-            CreateMap<Entities.Premises, Models.PremisesProvider>().ReverseMap();
 
             CreateMap<Entities.Transaction, Models.TransactionRequest>().ReverseMap();
 
