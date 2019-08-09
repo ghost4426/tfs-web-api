@@ -98,8 +98,114 @@
         language: "vi"
     });
 
-    //Validation Add Treatment Form
-    
+    //Validation
+    $("#formAddDetail").validate({
+        rules: {
+            dllFoodDetailType: {
+                required: true
+            },
+            ddlChooseTreatment: "required",
+            txtMFGDate: {
+                required: true,
+                smallerThan: true
+            },
+            EXPDate: {
+                required: true,
+                greaterThan: function () { return $('#txtMFGDate').val(); }
+            }
+        },
+        messages: {
+            dllFoodDetailType: {
+                required: "Vui lòng chọn một thông tin"
+            },
+            ddlChooseTreatment: "Vui lòng chọn một quy trình",
+            txtMFGDate: {
+                required: "Vui lòng chọn ngày sản xuất",
+                smallerThan: "Vui lòng không chọn ngày lớn hơn ngày hiện tại"
+            },
+            EXPDate: {
+                required: "Vui lòng chọn hạn sử dụng",
+                greaterThan: "Vui lòng chọn hạn sử dụng lớn hơn ngày sản xuất"
+            }
+        },
+        submitHandler: function (form) {
+            var option = $('#dllFoodDetailType').val();
+            var foodId = $('#txtFoodId').val();
+            if (option == 6) {
+                var treatmentId = $('#ddlChooseTreatment').val();
+                callAjaxAuth(
+                    {
+                        url: UPDATE_FOOD_TREATMENT_URI + foodId,
+                        dataType: JSON_DATATYPE,
+                        type: PUT
+                    }, JSON.stringify(treatmentId),
+                    function (result) {
+                        toastr.success("Thêm thông tin thành công");
+                        clearDetailModal();
+                        $('#addinfo').modal('hide');
+                    },
+                    function (result) {
+                        toastr.error(result);
+                    }
+                );
+            } else if (option == 7) {
+                var mfg = $('#txtMFGDate').val();
+                var exp = $('#EXPDate').val();
+                callAjaxAuth(
+                    {
+                        url: ADD_FOOD_PACKAGING_URI + foodId,
+                        dataType: JSON_DATATYPE,
+                        type: PUT
+                    }, JSON.stringify({
+                        MFGDate: mfg,
+                        EXPDate: exp
+                    }),
+                    function (result) {
+                        toastr.success("Thêm thông tin thành công");
+                        clearDetailModal();
+                        $('#addinfo').modal('hide');
+                    },
+                    function (result) {
+                        toastr.error(result);
+                    }
+                );
+            }
+        }
+    });
+
+    $("#printJs-form").validate({
+        rules: {
+            Treatment: {
+                required: true
+            }
+        },
+        messages: {
+            Treatment: {
+                required: "Vui lòng chọn một nhà phân phối"
+            }
+        },
+        submitHandler: function (form) {
+            var foodId = $('#foodId-trans').val();
+            var distributorId = $('#ddlDistributor').val();
+            callAjaxAuth(
+                {
+                    url: PROVIDER_CREATE_TRANSACTION_URI,
+                    dataType: JSON_DATATYPE,
+                    type: POST
+                }, JSON.stringify({
+                    ReceiverId: distributorId,
+                    FoodId: foodId
+                }),
+                function (result) {
+                    toastr.success("Tạo giao dịch thành công, vui lòng chờ nhà phân phối xác nhận");
+                    $('#GetQRCode').modal('hide');
+                },
+                function (result) {
+                    toastr.error(result);
+                }
+            );
+        }
+    });
 });
 
 $.fn.dataTable.ext.errMode = 'none';
@@ -174,7 +280,6 @@ $('#provider-food-mng').on('click', 'button.btn-add-detail', function () {
         clearDetailModal();
     }
     preId = id;
-
     $('#txtFoodId').val(id);
     $('#txtFoodCategory').val(row.data().Food.Category.Name);
     $('#txtFoodBreed').val(row.data().Food.Breed);
@@ -190,6 +295,7 @@ function clearDetailModal() {
 
 // Choose detail type option
 $('#dllFoodDetailType').on('change', function () {
+    $('#add-detail-treatment-process').empty();
     if (this.value == null) {
         return;
     }
@@ -241,13 +347,17 @@ function loadTreatmentData(treatmentId) {
 }
 
 $('.btnTreatment').on('click', function () {
+    clearTreatmentUpdate();
     $("#add-treatment-form").empty();
     $('#treatmentModal').modal('show');
     loadRepeatForm("add-treatment-form", "bước", "treatment");
 });
 
 $('#btn-confirm').on('click', function () {
+    clearTreatmentUpdate();
     var choose = $('a[data-toggle="tab"].active').text();
+    var error = 0;
+    var reTreatment = new RegExp("^[0-9a-z A-Z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+$");
     if (choose == 'Thêm mới') {
         var treatmentData = [];
         var treatmentName = $('#txtTreatmentName').val();
@@ -259,31 +369,66 @@ $('#btn-confirm').on('click', function () {
                 treatmentData.push(value);
             }
         });
-        console.log(treatmentName + "-" + treatmentData);
-        callAjaxAddTreatmentData(treatmentName, treatmentData);
-        $('#treatmentModal').modal('hide');
+        if (treatmentName == null || treatmentName == "") {
+            error = 1;
+        } else if (!reTreatment.test(treatmentName)) {
+            error = 2;
+        }
+        $.each(treatmentData, function (data, value) {
+            if (value == null || value == "") {
+                error = 1;
+            } else if (!reTreatment.test(value)) {
+                error = 2;
+            }
+        });
+        if (error == 1) {
+            $('#add-treatment-error').append('<label class="error">Vui lòng nhập các trường</label>');
+        } else if (error == 2) {
+            $('#add-treatment-error').append('<label class="error">Vui lòng chỉ nhập chữ (Không có kỹ tự đặc biệt)</label>');
+        } else if (error == 0) {
+            callAjaxAddTreatmentData(treatmentName, treatmentData);
+            $('#treatmentModal').modal('hide');
+        }
     } else if (choose == 'Cập nhật') {
         var treatmentData = [];
         var treatmentId = parseInt($('#ddlTreatment').val());
-        $('input[name="treatment-process"').each(function () {
-            treatmentData.push($(this).val());
-        });
-        var value = $('#add-more-treatment-form').repeaterVal();
-        $.each(value.treatment, function (data, value) {
-            if ($.isArray(value)) {
-                treatmentData.push(value[0]);
-            } else {
-                treatmentData.push(value);
+        if ($('#ddlTreatment').val() == null || $('#ddlTreatment').val() == "") {
+            $('#update-treatment-error').append('<label class="error">Vui lòng chọn một quy trình</label>');
+        } else {
+            $('input[name="treatment-process"').each(function () {
+                treatmentData.push($(this).val());
+            });
+            $.each(treatmentData, function (data, value) {
+                if (value == null || value == "") {
+                    error = 1;
+                } else if (!reTreatment.test(value)) {
+                    error = 2;
+                }
+            });
+            var value = $('#add-more-treatment-form').repeaterVal();
+            $.each(value.treatment, function (data, value) {
+                if ($.isArray(value)) {
+                    treatmentData.push(value[0]);
+                } else {
+                    treatmentData.push(value);
+                }
+            });
+            if (error == 0) {
+                callAjaxAddMoreTreatmentData(treatmentId, treatmentData);
+                $('#TreatmentProcessData').empty();
+                $('#MoreTreatment').empty();
+                $('#treatmentModal').modal('hide');
+            } else if (error == 1) {
+                $('#update-treatment-process-error').append('<label class="error">Vui lòng không để trống các bước</label>');
+            } else if (error == 2) {
+                $('#update-treatment-process-error').append('<label class="error">Vui lòng không nhập các ký tự đặc biệt vào các bước</label>');
             }
-        });
-        callAjaxAddMoreTreatmentData(treatmentId, treatmentData);
-        $('#TreatmentProcessData').empty();
-        $('#MoreTreatment').empty();
-        $('#treatmentModal').modal('hide');
+        }
     }
 });
 
 $('#ddlTreatment').on('change', function () {
+    clearTreatmentUpdate();
     if (this.value == null) {
         return;
     }
@@ -294,14 +439,11 @@ $('#ddlTreatment').on('change', function () {
     loadRepeatFormAddMoreTreatment("add-more-treatment-form", "bước", "treatment");
 });
 
-//$('#ddlFixTreatment').on('change', function () {
-//    if (this.value == null) {
-//        return;
-//    }
-//    var treatmentId = parseInt($('#ddlFixTreatment').val());
-//    $('#FixTreatmentProcessData').empty();
-//    loadFixTreatmentData(treatmentId);
-//});
+function clearTreatmentUpdate() {
+    $('#add-treatment-error').empty();
+    $('#update-treatment-error').empty();
+    $('#update-treatment-process-error').empty();
+}
 
 function loadRepeatForm(repeaterId, placeholder, nameInput) {
     $("#add-treatment-form").append('<div class="col-md-12 form-group"><input type="text" name="TreatmentName" placeholder="Nhập tên quy trình" class="form-control" id="txtTreatmentName" required/></div>'
@@ -358,7 +500,7 @@ function loadTreatmentForm() {
     var treatmentId = $('#txtTreatment').val();
     $("#add-detail-form").append('<label class="col-md-4 label-control">Chọn quy trình xử lý</label>'
         + '<div class="col-md-12">'
-        + '<select class="select2" style="width: 100%" id="ddlChooseTreatment"></select>'
+        + '<select class="select2" style="width: 100%" id="ddlChooseTreatment" name="ddlChooseTreatment" required></select>'
         + '</div>');
     //provider choose treatment
     $("#ddlChooseTreatment").select2({
@@ -396,6 +538,7 @@ function loadTreatmentForm() {
     });
 
     $('#ddlChooseTreatment').on("change", function () {
+        $('#add-detail-treatment-process').empty();
         var treatmentId = parseInt($('#ddlChooseTreatment').val());
         callAjaxAuth({
             url: GET_FOOD_TREATMENT_URI + treatmentId,
@@ -405,7 +548,7 @@ function loadTreatmentForm() {
             function (result) {
                 if (result.data.length != 0) {
                     for (var i = 0; i < result.data.length; i++) {
-                        $('#add-detail-form').append('<label class="col-md-2 mb-1 mt-1 label-control" for="txtFoodId">Bước ' + (i + 1) + '</label>'
+                        $('#add-detail-treatment-process').append('<label class="col-md-2 mb-1 mt-1 label-control" for="txtFoodId">Bước ' + (i + 1) + '</label>'
                             + '<div class="col-md-10 mb-1 mt-1">'
                             + '<input class="form-control" type="text" value="' + result.data[i].Name + '" readonly />'
                             + '</div>');
@@ -443,50 +586,49 @@ function loadTreatmentForm() {
     }
 }
 
-$('#addDetailConfirm').on('click', function () {
-    var foodId = $('#txtFoodId').val();
-    var choose = $('#dllFoodDetailType').val();
-    if (choose == 6) {
-        var treatmentId = $('#ddlChooseTreatment').val();
-        callAjaxAuth(
-            {
-                url: UPDATE_FOOD_TREATMENT_URI + foodId,
-                dataType: JSON_DATATYPE,
-                type: PUT
-            }, JSON.stringify(treatmentId),
-            function (result) {
-                toastr.success("Thêm thông tin thành công");
-                clearDetailModal();
-                $('#addinfo').modal('hide');
-            },
-            function (result) {
-                toastr.error(result);
-            }
-        );
-    } else if (choose == 7) {
-        var mfg = $('#txtMFGDate').val();
-        var exp = $('#EXPDate').val();
-        callAjaxAuth(
-            {
-                url: ADD_FOOD_PACKAGING_URI + foodId,
-                dataType: JSON_DATATYPE,
-                type: PUT
-            }, JSON.stringify({
-                MFGDate: mfg,
-                EXPDate: exp
-            }),
-            function (result) {
-                toastr.success("Thêm thông tin thành công");
-                clearDetailModal();
-                $('#addinfo').modal('hide');
-            },
-            function (result) {
-                toastr.error(result);
-            }
-        );
-    }
-
-});
+//$('#addDetailConfirm').on('click', function () {
+//    var foodId = $('#txtFoodId').val();
+//    var choose = $('#dllFoodDetailType').val();
+//    if (choose == 6) {
+//        var treatmentId = $('#ddlChooseTreatment').val();
+//        callAjaxAuth(
+//            {
+//                url: UPDATE_FOOD_TREATMENT_URI + foodId,
+//                dataType: JSON_DATATYPE,
+//                type: PUT
+//            }, JSON.stringify(treatmentId),
+//            function (result) {
+//                toastr.success("Thêm thông tin thành công");
+//                clearDetailModal();
+//                $('#addinfo').modal('hide');
+//            },
+//            function (result) {
+//                toastr.error(result);
+//            }
+//        );
+//    } else if (choose == 7) {
+//        var mfg = $('#txtMFGDate').val();
+//        var exp = $('#EXPDate').val();
+//        callAjaxAuth(
+//            {
+//                url: ADD_FOOD_PACKAGING_URI + foodId,
+//                dataType: JSON_DATATYPE,
+//                type: PUT
+//            }, JSON.stringify({
+//                MFGDate: mfg,
+//                EXPDate: exp
+//            }),
+//            function (result) {
+//                toastr.success("Thêm thông tin thành công");
+//                clearDetailModal();
+//                $('#addinfo').modal('hide');
+//            },
+//            function (result) {
+//                toastr.error(result);
+//            }
+//        );
+//    }
+//});
 
 function callAjaxAddTreatmentData(treatmentName, treatmentProcess) {
     callAjaxAuth(
@@ -543,10 +685,10 @@ function loadPackingForm() {
                     + '<label class="col-md-4 label-control">Hạn sử dụng</label>'
                     + '<input class="col-md-6 mb-1 form-control" type="date" id="EXPDate" value="' + $.format.date(packaging.EXPDate, "yyyy-MM-dd") + '" readonly/>');
             } else {
-                $("#add-detail-form").append('<label class="col-md-4 label-control">Ngày sản xuất</label>'
-                    + '<input class="col-md-6 mb-1 form-control" type="date" id="txtMFGDate"/>'
-                    + '<label class="col-md-4 label-control">Hạn sử dụng</label>'
-                    + '<input class="col-md-6 mb-1 form-control" type="date" id="EXPDate"/>');
+                $("#add-detail-form").append('<div class="row col-md-12 txtdate"><label class="col-md-4 label-control">Ngày sản xuất</label>'
+                    + '<input class="col-md-6 mb-1 form-control" type="date" id="txtMFGDate" name="txtMFGDate" required/></div>'
+                    + '<div class="row col-md-12 txtdate"><label class="col-md-4 label-control">Hạn sử dụng</label>'
+                    + '<input class="col-md-6 mb-1 form-control" type="date" id="EXPDate" name="EXPDate" required/></div>');
             }
         },
         function (result) {
@@ -654,27 +796,27 @@ $('#provider-food-mng').on('click', 'button.btn-barcode', function () {
     $('#GetQRCode').modal('show');
 });
 
-$('#btn-transaction').on('click', function () {
-    var foodId = $('#foodId-trans').val();
-    var distributorId = $('#ddlDistributor').val();
-    callAjaxAuth(
-        {
-            url: PROVIDER_CREATE_TRANSACTION_URI,
-            dataType: JSON_DATATYPE,
-            type: POST
-        }, JSON.stringify({
-            ReceiverId: distributorId,
-            FoodId: foodId
-        }),
-        function (result) {
-            toastr.success("Tạo giao dịch thành công, vui lòng chờ nhà phân phối xác nhận");
-            $('#GetQRCode').modal('hide');
-        },
-        function (result) {
-            toastr.error(result);
-        }
-    )
-});
+//$('#btn-transaction').on('click', function () {
+//    var foodId = $('#foodId-trans').val();
+//    var distributorId = $('#ddlDistributor').val();
+//    callAjaxAuth(
+//        {
+//            url: PROVIDER_CREATE_TRANSACTION_URI,
+//            dataType: JSON_DATATYPE,
+//            type: POST
+//        }, JSON.stringify({
+//            ReceiverId: distributorId,
+//            FoodId: foodId
+//        }),
+//        function (result) {
+//            toastr.success("Tạo giao dịch thành công, vui lòng chờ nhà phân phối xác nhận");
+//            $('#GetQRCode').modal('hide');
+//        },
+//        function (result) {
+//            toastr.error(result);
+//        }
+//    )
+//});
 
 function makeCode(id) {
     JsBarcode("#barcode", "" + id, {

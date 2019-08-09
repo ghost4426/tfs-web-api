@@ -47,13 +47,22 @@ namespace CommonWebApi.Controllers
         [HttpPost("treatment")]
         public async Task<IActionResult> CreateTreatment([FromBody]Models.CreateTreatmentRequest treatmentRequest)
         {
-            var Treatment = _mapper.Map<Entities.Treatment>(treatmentRequest);
-            var TreatmentProcess = treatmentRequest.TreatmentProcess;
-            Treatment.PremisesId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
-            Treatment.CreateById = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
-            Treatment.CreateDate = DateTime.Now;
-            await _treatmentBL.CreateTreatment(Treatment, TreatmentProcess);
-            return Ok(new { message = MessageConstant.INSERT_SUCCESS });
+            try
+            {
+                var Treatment = _mapper.Map<Entities.Treatment>(treatmentRequest);
+                var TreatmentProcess = treatmentRequest.TreatmentProcess;
+                Treatment.PremisesId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
+                Treatment.CreateById = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
+                Treatment.UpdateById = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
+                Treatment.CreateDate = DateTime.Now;
+                await _treatmentBL.CreateTreatment(Treatment, TreatmentProcess);
+                return Ok(new { message = MessageConstant.INSERT_SUCCESS });
+            }
+            catch(Exception e)
+            {
+                return BadRequest(new { Message = e.Message, Error = e.ToString() });
+            }
+            
         }
 
         //More treatmentDetail
@@ -69,6 +78,7 @@ namespace CommonWebApi.Controllers
             }
             Treatment.PremisesId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
             Treatment.CreateById = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
+            Treatment.UpdateById = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
             Treatment.CreateDate = DateTime.Now;
             await _treatmentBL.CreateMoreTreatmentDetail(treatmentId, Treatment, TreatmentProcess);
             return Ok(new { message = MessageConstant.INSERT_SUCCESS });
