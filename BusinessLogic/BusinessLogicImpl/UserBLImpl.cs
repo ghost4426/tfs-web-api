@@ -221,7 +221,7 @@ namespace BusinessLogic.BusinessLogicImpl
                 var role = _roleRepos.GetById(user.RoleId);
                 user.Role = role;
             }
-            return users.Take(500).ToList();
+            return users.OrderByDescending(x => x.UserId).Take(500).ToList();
         }
     }
 }

@@ -160,6 +160,10 @@ jQuery.validator.addMethod("lettersonly", function (value, element) {
     return this.optional(element) || /^[a-zA-Z\s\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+$/i.test(value);
 }, "Letters only please"); 
 
+jQuery.validator.addMethod("username", function (value, element) {
+    return this.optional(element) || /^[0-9a-zA-Z]+$/i.test(value);
+}, "Letters only please"); 
+
 jQuery.validator.addMethod("smallerThan",
     function (value, element, params) {
         if (!/Invalid|NaN/.test(new Date(value))) {
@@ -204,4 +208,6 @@ jQuery.validator.addMethod("checkEXPDate",
     }, 'expired date');
 
 var requiredError = "Vui lòng nhập trường này";
-var letterOnlyError = "Vui lòng chỉ nhập chữ (Không có kỹ tự đặc biệt)";
+var letterOnlyError = "Vui lòng chỉ nhập chữ (Không có ký tự đặc biệt)";
+var userError = "Vui lòng không nhập ký tự đặc biệt";
+var emailError = "Vui lòng nhập đúng email (vidu@gmail.com.vn)";
