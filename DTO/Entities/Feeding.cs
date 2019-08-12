@@ -31,6 +31,8 @@ namespace DTO.Entities
         public User CreateBy { get; set; }
         public User UpdateBy { get; set; }
 
+        public bool IsDelete { get; set; }
+
         public ICollection<FeedingFood> FeedingFoods { get; set; }
     }
 }

@@ -454,34 +454,34 @@
                     return;
                 }
 
-                tense = diff < 0 ? 'from now' : 'ago';
+                tense = diff < 0 ? 'từ bây giờ' : 'trước';
 
                 if (abs_diff < 60) {
                     if (diff >= 0)
-                        return 'just now';
+                        return 'Vừa xong';
                     else
-                        return 'in a moment';
+                        return 'Vài giây nữa';
                 } else if (abs_diff < 120) {
-                    return '1 minute ' + tense;
+                    return '1 phút ' + tense;
                 } else if (abs_diff < 3600) {
-                    return Math.floor(abs_diff / 60) + ' minutes ' + tense;
+                    return Math.floor(abs_diff / 60) + ' phút ' + tense;
                 } else if (abs_diff < 7200) {
-                    return '1 hour ' + tense;
+                    return '1 giờ ' + tense;
                 } else if (abs_diff < 86400) {
-                    return Math.floor(abs_diff / 3600) + ' hours ' + tense;
+                    return Math.floor(abs_diff / 3600) + ' giờ ' + tense;
                 } else if (abs_day_diff === 1) {
                     if (diff >= 0)
-                        return 'Yesterday';
+                        return 'Hôm qua';
                     else
-                        return 'Tomorrow';
+                        return 'Ngày mai';
                 } else if (abs_day_diff < 7) {
-                    return abs_day_diff + ' days ' + tense;
+                    return abs_day_diff + ' ngày ' + tense;
                 } else if (abs_day_diff === 7) {
-                    return '1 week ' + tense;
+                    return '1 tuần ' + tense;
                 } else if (abs_day_diff < 31) {
-                    return Math.ceil(abs_day_diff / 7) + ' weeks ' + tense;
+                    return Math.ceil(abs_day_diff / 7) + ' tuần ' + tense;
                 } else {
-                    return 'more than 5 weeks ' + tense;
+                    return 'hơn 5 tuần ' + tense;
                 }
             },
             toBrowserTimeZone: function (value, format) {

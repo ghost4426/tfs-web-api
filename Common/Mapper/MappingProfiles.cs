@@ -116,6 +116,27 @@ namespace Common.Mapper
                  .ForMember(dest => dest.text, opts => opts.MapFrom(src => src.Name))
                .ReverseMap();
 
+            CreateMap<Entities.Feeding, Models.Option>()
+                 .ForMember(dest => dest.id, opts => opts.MapFrom(src => src.FeedingId))
+                 .ForMember(dest => dest.text, opts => opts.MapFrom(src => src.Name))
+               .ReverseMap();
+
+            CreateMap<Entities.Feeding, Models.Feedingm>()
+                .ForMember(dest => dest.FeedingId, opts => opts.MapFrom(src => src.FeedingId))
+                .ForMember(dest => dest.FeedingName, opts => opts.MapFrom(src => src.Name))
+              .ReverseMap();
+
+            CreateMap<Entities.Vaccine, Models.Option>()
+                .ForMember(dest => dest.id, opts => opts.MapFrom(src => src.VaccineId))
+                .ForMember(dest => dest.text, opts => opts.MapFrom(src => src.Name))
+              .ReverseMap();
+
+            CreateMap<Entities.Vaccine, Models.Vaccinem>()
+                .ForMember(dest => dest.VaccineId, opts => opts.MapFrom(src => src.VaccineId))
+                .ForMember(dest => dest.VaccineName, opts => opts.MapFrom(src => src.Name))
+              .ReverseMap();
+
+
             CreateMap<Entities.User, Models.CreateUserPremises>().ReverseMap();
         }
     }
