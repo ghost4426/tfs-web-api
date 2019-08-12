@@ -17,6 +17,7 @@ using Common.Utils;
 using DTO.Models.Exception;
 using Common.Constant;
 using Newtonsoft.Json;
+using DTO.Models.FoodData;
 
 namespace AdminWebApi.Controllers
 {
@@ -26,6 +27,7 @@ namespace AdminWebApi.Controllers
     {
 
         private readonly IUserBL _userBL;
+        private readonly IFoodDataBL _foodDataBL;
         private readonly IMapper _mapper;
         private readonly IEmailSender _mailSender;
         private readonly JWTSetttings _appSettings;
@@ -33,11 +35,13 @@ namespace AdminWebApi.Controllers
 
         public GuestController(
             IUserBL userBL,
+            IFoodDataBL foodDataBL,
             IMapper mapper,
             IEmailSender mailSender,
             IOptions<JWTSetttings> appSettings)
         {
             _userBL = userBL;
+            _foodDataBL = foodDataBL;
             _mapper = mapper;
             _mailSender = mailSender;
             _appSettings = appSettings.Value;
@@ -50,7 +54,7 @@ namespace AdminWebApi.Controllers
             {
                 var token = await _userBL.CheckLogin(login);
                 Entities.User user = null;
-                if(token != null)
+                if (token != null)
                 {
                     user = await _userBL.FindByName(login.Username);
                 }
@@ -63,7 +67,7 @@ namespace AdminWebApi.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(new { Message = e.Message.ToString() });
+                return BadRequest(new { message = e.Message, error = e.StackTrace });
             }
         }
 
@@ -94,6 +98,19 @@ namespace AdminWebApi.Controllers
                     //await _bl.RemoveByIdAsync(user.UserId);
                 }
                 return BadRequest(new { message = MessageConstant.UNHANDLE_ERROR });
+            }
+        }
+
+        [HttpGet("foodData")]
+        public async Task<IActionResult> GetFoodDataById(long id)
+        {
+            try
+            {
+                return Ok(new { data = await _foodDataBL.GetFoodDataByID(id) });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = MessageConstant.UNHANDLE_ERROR, error = e.StackTrace });
             }
         }
     }
