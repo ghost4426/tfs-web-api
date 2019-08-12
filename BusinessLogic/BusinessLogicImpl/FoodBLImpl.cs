@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.IBusinessLogic;
+using Common.Constant;
 using Common.Enum;
 using DataAccess.IRepositories;
 using DTO.Entities;
@@ -10,17 +11,25 @@ namespace BusinessLogic.BusinessLogicImpl
 {
     public class FoodBLImpl : IFoodBL
     {
-        private IFoodRepository _productRepos;
-        private ICategoryRepository _categoryRepos;
-        private IDistributorFoodRepository _distributorFoodRepository;
-        private IProviderFoodRepository _providerFoodRepository;
+        private readonly IFoodRepository _productRepos;
+        private readonly ICategoryRepository _categoryRepos;
+        private readonly IDistributorFoodRepository _distributorFoodRepository;
+        private readonly IProviderFoodRepository _providerFoodRepository;
+        private readonly IFoodDetailRepository _foodDetailRepository;
 
-        public FoodBLImpl(IFoodRepository productRepos, ICategoryRepository categoryRepos, IDistributorFoodRepository distributorFoodRepository, IProviderFoodRepository providerFoodRepository)
+        public FoodBLImpl(
+            IFoodRepository productRepos
+            , ICategoryRepository categoryRepos
+            , IDistributorFoodRepository distributorFoodRepository
+            , IProviderFoodRepository providerFoodRepository
+            , IFoodDetailRepository foodDetailRepository
+            )
         {
             _productRepos = productRepos;
             _categoryRepos = categoryRepos;
             _distributorFoodRepository = distributorFoodRepository;
             _providerFoodRepository = providerFoodRepository;
+            _foodDetailRepository = foodDetailRepository;
         }
 
         public async Task<IList<Food>> GetAllProductAsync()
@@ -72,29 +81,40 @@ namespace BusinessLogic.BusinessLogicImpl
             return products;
         }
 
-        public async Task AddDetail(long foodId, EFoodDetailType type)
+        public async Task AddDetail(int foodId, EFoodDetailType type, string transactionHash, int userID)
         {
-            var food = _productRepos.GetById((int)foodId);
-            //switch (type)
-            //{
-            //    case EFoodDetailType.FEEDING:
-            //        food.IsFeeding = true;
-            //        break;
-            //    case EFoodDetailType.VACCINATION:
-            //        food.IsVaccination = true;
-            //        break;
-            //    case EFoodDetailType.VERIFY:
-            //        food.IsCertification = true;
-            //        break;
-            //    case EFoodDetailType.TREATMENT:
-            //        food.IsTreatment = true;
-            //        break;
-            //    case EFoodDetailType.PACKAGING:
-            //        food.IsPackaging = true;
-            //        break;
-            //    default: break;
-            //}
-            await _productRepos.UpdateAsync(food);
+            var foodDetail = new FoodDetail()
+            {
+                TransactionHash = transactionHash,
+                FoodId = foodId,
+                CreateById = userID
+            };
+            switch (type)
+            {
+                case EFoodDetailType.CREATE:
+                    foodDetail.TypeId = FoodDetailTypeDataConstant.CREATE_NEW_ID;
+                    break;
+                case EFoodDetailType.FEEDING:
+                    foodDetail.TypeId = FoodDetailTypeDataConstant.ADD_FEEDING_ID;
+                    break;
+                case EFoodDetailType.VACCINATION:
+                    foodDetail.TypeId = FoodDetailTypeDataConstant.ADD_VACCINATION_ID;
+                    break;
+                case EFoodDetailType.VERIFY:
+                    foodDetail.TypeId = FoodDetailTypeDataConstant.ADD_VERIFY_ID;
+                    break;
+                case EFoodDetailType.PROVIDER:
+                    foodDetail.TypeId = FoodDetailTypeDataConstant.ADD_PROVIDER_ID;
+                    break;
+                case EFoodDetailType.TREATMENT:
+                    foodDetail.TypeId = FoodDetailTypeDataConstant.ADD_TREATMENT_ID;
+                    break;
+                case EFoodDetailType.PACKAGING:
+                    foodDetail.TypeId = FoodDetailTypeDataConstant.ADD_PACKAGING_ID;
+                    break;
+                default: break;
+            }
+            await _foodDetailRepository.InsertAsync(foodDetail);
         }
 
         public async Task<IList<ProviderFood>> getAllFoodByProviderId(int providerId)
@@ -144,6 +164,11 @@ namespace BusinessLogic.BusinessLogicImpl
         public Task<Food> getFoodById(int foodId)
         {
             return null;
+        }
+
+        public Task AddDetail(long foodId, EFoodDetailType type)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

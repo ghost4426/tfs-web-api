@@ -34,7 +34,7 @@
                                     <thead>
                                         <tr>
                                             <th>ID</th>
-                                            <th>Tên thực phẩm</th>
+                                            <th>Loại thực phẩm</th>
                                             <th>Giống</th>
                                             <th>Ngày tạo</th>
                                             <th></th>
@@ -52,7 +52,7 @@
 </div>
 
 <!-- Modal add new food -->
-<div class="modal fade text-left" id="default" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1"
+<div class="modal fade text-left" id="addNewFoodModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -133,8 +133,9 @@
                             </div>
                         </div>
                         <div id="detailTitle">
+                            
                         </div>
-                        <div class="row form-group" id="add-detail-form">
+                        <div class="input-group " id="add-detail-form">
 
                         </div>
                     </div>
@@ -149,10 +150,11 @@
 </div>
 <!-- End modal add new food info -->
 @*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*@
-<!-- Modal view food info -->
+<!-- Modal-->
 @await Html.PartialAsync("_ViewFoodDetailModalPartial")
-
-<!-- End view food info -->
+@await Html.PartialAsync("_ManageFeddingModelPartial")
+@await Html.PartialAsync("_ManageVaccineModelPartial")
+<!-- End Modal-->
 <!-- Modal addProvider-->
 <div class="modal fade text-left" id="addDistributor" role="dialog" aria-labelledby="myModalLabel1"
      aria-hidden="true">
@@ -189,7 +191,7 @@
         </div>
     </div>
 </div>
-<!-- End addDistributor-->
+<!-- End addProvider-->
 <!--BEGIN QR -->
 <div class="modal fade text-left" id="GetQRCode" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1"
      aria-hidden="true">
@@ -225,6 +227,7 @@
     <script src="~/app-assets/vendors/js/forms/select/select2.full.min.js" type="text/javascript"></script>
     <script src="~/app-assets/vendors/js/forms/select/i18n/vi.js" type="text/javascript"></script>
     <script src="~/app-assets/vendors/js/extensions/toastr.min.js" type="text/javascript"></script>
+    <script src="~/app-assets/vendors/js/extensions/sweetalert.min.js" type="text/javascript"></script>
     <!-- END PAGE VENDOR JS-->
     <!-- BEGIN PAGE LEVEL JS-->
     <script src="~/app-assets/js/scripts/forms/select/form-select2.js" type="text/javascript"></script>
@@ -232,6 +235,8 @@
     <!-- END PAGE LEVEL JS-->
     <!-- My JS-->
     <script src="~/js/farm/farm.js" type="text/javascript"></script>
+    <script src="~/js/farm/mng-feeding.js" type="text/javascript"></script>
+    <script src="~/js/farm/mng-vaccine.js" type="text/javascript"></script>
     <script src="~/lib/print.min.js" type="text/javascript"></script>
     <script src="https://cdn.jsdelivr.net/jsbarcode/3.3.16/barcodes/JsBarcode.code128.min.js"></script>
 }

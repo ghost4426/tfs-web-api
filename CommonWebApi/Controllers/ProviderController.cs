@@ -75,29 +75,42 @@ namespace CommonWebApi.Controllers
         }
 
         [HttpPut("food/treatment/{foodId}")]
-        public async Task<IActionResult> AddTreatment(long foodId, [FromBody]string treatmentId)
+        public async Task<IActionResult> AddTreatment(int foodId, [FromBody]string treatmentId)
         {
             try
             {
-                int providerId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
-                await _foodBL.AddDetail(foodId, EFoodDetailType.TREATMENT);
-                Entities.ProviderFood food = await _foodBL.getFoodById((int)foodId, providerId);
-                await _foodBL.UpdateFoodTreatment(food, (int)foodId, int.Parse(treatmentId),providerId);
-                return Ok(new { message = await _foodDataBL.AddTreatment(foodId, int.Parse(treatmentId), providerId) });
+                var providerId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
+                var userId = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
+                var transactionHash = await _foodDataBL.AddTreatment(foodId, int.Parse(treatmentId), providerId);
+
+                await _foodBL.AddDetail(foodId, EFoodDetailType.TREATMENT, transactionHash, userId);
+                Entities.ProviderFood food = await _foodBL.getFoodById(foodId, providerId);
+                await _foodBL.UpdateFoodTreatment(food, foodId, int.Parse(treatmentId), providerId);
+                return Ok(new { message = MessageConstant.INSERT_SUCCESS});
             }
             catch (Exception ex)
             {
-                return BadRequest(new { Message = ex.Message, Error = ex.ToString() });
+                return BadRequest(new { message = MessageConstant.UNHANDLE_ERROR, error = ex.StackTrace });
             }
         }
 
         [HttpPut("food/packaging/{foodId}")]
-        public async Task<string> Packaging(long foodId, [FromBody]Models.PackagingRequest packagingRequest)
+        public async Task<IActionResult> Packaging(int foodId, [FromBody]Models.PackagingRequest packagingRequest)
         {
-            int premisesId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
-            await _foodBL.AddDetail(foodId, EFoodDetailType.PACKAGING);
-            var Packaging = _mapper.Map<Models.FoodData.Packaging>(packagingRequest);
-            return await _foodDataBL.Packaging(foodId, Packaging, premisesId);
+            try
+            {
+                var providerId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
+                var userId = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
+                var Packaging = _mapper.Map<Models.FoodData.Packaging>(packagingRequest);
+                var transactionHash = await _foodDataBL.Packaging(foodId, Packaging, providerId);
+
+                await _foodBL.AddDetail(foodId, EFoodDetailType.PACKAGING, transactionHash, userId);
+                return Ok(new { message = MessageConstant.INSERT_SUCCESS });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = MessageConstant.UNHANDLE_ERROR, error = ex.StackTrace });
+            }
         }
 
         [HttpGet("getFoodByProvider")]
@@ -160,7 +173,7 @@ namespace CommonWebApi.Controllers
                     StatusId = trans.StatusId,
                     RejectReason = trans.RejectedReason,
                     ReceiverComment = trans.ProviderComment,
-                };                
+                };
                 await _transactionBL.UpdateTransaction(transaction, transactionId);
                 return Ok(new { message = MessageConstant.UPDATE_SUCCESS });
             }
@@ -185,7 +198,7 @@ namespace CommonWebApi.Controllers
             {
                 return BadRequest(new { msg = e.Message });
             }
-            
+
         }
 
         [HttpGet("foodTreatment/{treatmentId}")]

@@ -5,10 +5,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DTO.Entities
 {
-    public class Vaccin
+    public class Vaccine
     {
         [Key]
-        public int VaccinId { get; set; }
+        public int VaccineId { get; set; }
 
         [Required]
         public string Name { get; set; }
@@ -26,10 +26,13 @@ namespace DTO.Entities
         [ForeignKey("UpdateBy")]
         public int UpdateById { get; set; }
 
+        public bool IsDelete { get; set; }
+
         public Premises Premises { get; set; }
         public User CreateBy { get; set; }
         public User UpdateBy { get; set; }
 
-        public ICollection<VaccinFood> VaccinFoods { get; set; }
+
+        public ICollection<VaccineFood> VaccineFoods { get; set; }
     }
 }

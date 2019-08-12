@@ -21,7 +21,7 @@ namespace BusinessLogic.IBusinessLogic
 
         Task<IList<Food>> FindAllProductByFarmerAsync(int farmerID);
 
-        Task AddDetail(long foodId, EFoodDetailType type);
+        Task AddDetail(int foodId, EFoodDetailType type, string transactionHash, int userID);
 
         Task<IList<ProviderFood>> getAllFoodByProviderId(int providerId);
 
