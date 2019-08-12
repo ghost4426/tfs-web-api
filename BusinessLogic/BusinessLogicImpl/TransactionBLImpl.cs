@@ -118,6 +118,7 @@ namespace BusinessLogic.BusinessLogicImpl
                 transaction.RejectReason = reason;
                 transaction.RejectById = verId;
             }
+            transaction.VeterinaryId = verId;
             await _transactionRepos.UpdateAsync(transaction);
             return transaction;
         }
