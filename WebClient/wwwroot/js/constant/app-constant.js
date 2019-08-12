@@ -32,6 +32,14 @@ const COUNT_FARM_TRANSACTION_URI = BASE_FAMR_URI + "countFarmTransaction"
 const GET_FARM_TRANSACTION_URI = BASE_FAMR_URI + "getAllFarmTransaction";
 const CREATE_TRANSACTION_URI = BASE_FAMR_URI + "createTransaction";
 const GET_PROVIDER = BASE_FAMR_URI + "getAllProvider";
+const UPDATE_FEEDING_URI = BASE_FAMR_URI + "feedings";
+const GET_FEEDING_LIST_URI = BASE_FAMR_URI + "feedings";
+const GET_FEEDING_LIST_BY_PREMISES_URI = BASE_FAMR_URI + "premisesFeedings";
+const REMOVE_FEEDING_URI = BASE_FAMR_URI + "feeding/";
+const UPDATE_VACCINE_URI = BASE_FAMR_URI + "vaccines";
+const GET_VACCINE_LIST_URI = BASE_FAMR_URI + "vaccines";
+const GET_VACCINE_LIST_BY_PREMISES_URI = BASE_FAMR_URI + "premisesVaccines";
+const REMOVE_VACCINE_URI = BASE_FAMR_URI + "vaccine/";
 
 
 //Admin

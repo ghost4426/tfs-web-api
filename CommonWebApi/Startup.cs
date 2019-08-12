@@ -77,6 +77,9 @@ namespace CommonWebApi
             services.AddScoped<IDistributorFoodRepository, DistributorFoodRepositoryImpl>();
             services.AddScoped<IProviderFoodRepository, ProviderFoodRepositoryImpl>();
             services.AddScoped<ITransactionStatusRepository, TransactionStatusRepositoryImpl>();
+            services.AddScoped<IFeedingRepository, FeedingRepositoryImpl>();
+            services.AddScoped<IVaccineRepository, VaccineRepositoryImpl>();
+            services.AddScoped<IFoodDetailRepository, FoodDetailRepositoryImpl>();
 
             //BusinessLogic
             services.AddScoped<IUserBL, UserBLImpl>();
@@ -88,6 +91,8 @@ namespace CommonWebApi
             services.AddScoped<ITreatmentBL, TreatmentBLImpl>();
             services.AddScoped<IFoodDetailBL, FoodDetailImpl>();
             services.AddScoped<ITreatmentBL, TreatmentBLImpl>();
+            services.AddScoped<IFeedingBL, FeedingBLImpl>();
+            services.AddScoped<IVaccineBL, VaccineBLImpl>();
             services.AddSingleton<IEmailSender, EmailSender>();
 
             //Service

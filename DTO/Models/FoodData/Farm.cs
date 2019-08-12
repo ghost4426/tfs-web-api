@@ -14,7 +14,7 @@ namespace DTO.Models.FoodData
 
         public List<string> Feedings { get; set; }
 
-        public List<Vaccination> Vaccinations { get; set; }
+        public List<VaccineData> Vaccinations { get; set; }
 
         public DateTime CertificationDate { get; set; }
 

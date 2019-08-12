@@ -4,14 +4,16 @@ using DataAccess.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(FoodTrackingDbContext))]
-    partial class FoodTrackingDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190812025338_giantt-v10")]
+    partial class gianttv10
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -153,6 +155,8 @@ namespace DataAccess.Migrations
                     b.Property<int>("DetailId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("BlockNumber");
 
                     b.Property<int>("CreateById");
 
@@ -466,6 +470,8 @@ namespace DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("DBO.dReturnDate(getdate())");
 
+                    b.Property<DateTime?>("Dob");
+
                     b.Property<string>("Email")
                         .IsRequired();
 
@@ -506,9 +512,9 @@ namespace DataAccess.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("DTO.Entities.Vaccine", b =>
+            modelBuilder.Entity("DTO.Entities.Vaccin", b =>
                 {
-                    b.Property<int>("VaccineId")
+                    b.Property<int>("VaccinId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -531,7 +537,7 @@ namespace DataAccess.Migrations
 
                     b.Property<DateTime>("UpdateDate");
 
-                    b.HasKey("VaccineId");
+                    b.HasKey("VaccinId");
 
                     b.HasIndex("CreateById");
 
@@ -539,24 +545,24 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("UpdateById");
 
-                    b.ToTable("Vaccine");
+                    b.ToTable("Vaccin");
                 });
 
-            modelBuilder.Entity("DTO.Entities.VaccineFood", b =>
+            modelBuilder.Entity("DTO.Entities.VaccinFood", b =>
                 {
                     b.Property<int>("FoodId");
 
-                    b.Property<int>("VaccineId");
+                    b.Property<int>("VaccinId");
 
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("DBO.dReturnDate(getdate())");
 
-                    b.HasKey("FoodId", "VaccineId");
+                    b.HasKey("FoodId", "VaccinId");
 
-                    b.HasIndex("VaccineId");
+                    b.HasIndex("VaccinId");
 
-                    b.ToTable("VaccineFood");
+                    b.ToTable("VaccinFood");
                 });
 
             modelBuilder.Entity("DTO.Entities.DistributorFood", b =>
@@ -733,7 +739,7 @@ namespace DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("DTO.Entities.Vaccine", b =>
+            modelBuilder.Entity("DTO.Entities.Vaccin", b =>
                 {
                     b.HasOne("DTO.Entities.User", "CreateBy")
                         .WithMany("UserCreatedVaccins")
@@ -751,16 +757,16 @@ namespace DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("DTO.Entities.VaccineFood", b =>
+            modelBuilder.Entity("DTO.Entities.VaccinFood", b =>
                 {
                     b.HasOne("DTO.Entities.Food", "Food")
-                        .WithMany("VaccineFoods")
+                        .WithMany("VaccinFoods")
                         .HasForeignKey("FoodId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("DTO.Entities.Vaccine", "Vaccine")
-                        .WithMany("VaccineFoods")
-                        .HasForeignKey("VaccineId")
+                    b.HasOne("DTO.Entities.Vaccin", "Vaccin")
+                        .WithMany("VaccinFoods")
+                        .HasForeignKey("VaccinId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

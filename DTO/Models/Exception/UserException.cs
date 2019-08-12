@@ -17,6 +17,14 @@ namespace DTO.Models.Exception
         {
         }
     }
+
+
+    public class DeActivedUsernameException : ApplicationException
+    {
+        public DeActivedUsernameException(string msg) : base(msg)
+        {
+        }
+    }
     public class NotFoundException : ApplicationException
     {
         public NotFoundException(string msg) : base(msg)

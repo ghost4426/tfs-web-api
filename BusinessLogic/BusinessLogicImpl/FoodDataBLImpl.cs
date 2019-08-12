@@ -3,6 +3,7 @@ using Common.Utils;
 using ContractInteraction.ContractServices;
 using DataAccess.IRepositories;
 using Entities = DTO.Entities;
+using Models = DTO.Models;
 using DTO.Models.FoodData;
 using System;
 using System.Collections.Generic;
@@ -100,24 +101,24 @@ namespace BusinessLogic.BusinessLogicImpl
             return await SaveFoodData(FoodData);
         }
 
-        public async Task<string> AddVaccination(long foodId, List<string> vaccinationType)
+        public async Task<string> AddVaccination(long foodId, List<Models.AddVaccineInfoToFoodDataRequest> vaccines)
         {
             var FoodData = await GetFoodDataByID(foodId);
-            for (int i = 0; i < vaccinationType.Count; i++)
+
+            foreach (var vaccine in vaccines)
             {
-                var vaccin = new Vaccination()
+                var vaccineData = new VaccineData()
                 {
-                    VaccinationType = vaccinationType[i],
-                    VaccinationDate = DateTime.Now
+                    VaccinationType = vaccine.VaccineName,
+                    VaccinationDate = vaccine.VaccineDate
                 };
                 if (FoodData.Farm.Vaccinations == null)
                 {
-                    FoodData.Farm.Vaccinations = new List<Vaccination>();
+                    FoodData.Farm.Vaccinations = new List<VaccineData>();
                 }
 
-                FoodData.Farm.Vaccinations.Add(vaccin);
+                FoodData.Farm.Vaccinations.Add(vaccineData);
             }
-          
 
             return await SaveFoodData(FoodData);
         }
@@ -168,7 +169,7 @@ namespace BusinessLogic.BusinessLogicImpl
             return FoodData.Farm.Feedings;
         }
 
-        public async Task<IList<Vaccination>> GetVaccinsById(int foodId)
+        public async Task<IList<VaccineData>> GetVaccinsById(int foodId)
         {
             var FoodData =  await GetFoodDataByID(foodId);
             return FoodData.Farm.Vaccinations;
