@@ -137,6 +137,7 @@ namespace Common.Mapper
               .ReverseMap();
 
 
+            CreateMap<Entities.User, Models.CreateUserPremises>().ReverseMap();
         }
     }
 }

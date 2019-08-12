@@ -31,4 +31,11 @@ namespace DTO.Models
         public int RoleId { get; set; }
     }
 
+    public class CreateUserPremises
+    {
+        public string Username { get; set; }
+        public string Email { get; set; }
+        public string Fullname { get; set; }
+    }
+
 }

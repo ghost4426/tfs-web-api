@@ -4,11 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Models = DTO.Models;
+using Entities = DTO.Entities;
 using BusinessLogic.IBusinessLogic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Common.Constant;
+using DTO.Models.Exception;
+using Common.Utils;
 
 namespace CommonWebApi.Controllers
 {
@@ -19,13 +22,16 @@ namespace CommonWebApi.Controllers
     {
         private readonly IUserBL _userBL;
         private readonly IMapper _mapper;
+        private IEmailSender _mailSender;
 
         public ManagerController(
             IUserBL userBL,
-            IMapper mapper)
+            IMapper mapper,
+            IEmailSender mailSender)
         {
             _userBL = userBL;
             _mapper = mapper;
+            _mailSender = mailSender;
         }
 
         [HttpGet("getUserByPremises")]
@@ -53,6 +59,46 @@ namespace CommonWebApi.Controllers
             catch (Exception ex)
             {
                 return BadRequest(new { Message = ex.Message, Error = ex.ToString() });
+            }
+        }
+
+        [HttpPost("premise/account")]
+        public async Task<IActionResult> CreatePremises([FromBody]Models.CreateUserPremises createUserForm)
+        {
+            var isCreated = false;
+            var user = _mapper.Map<Entities.User>(createUserForm);
+            try
+            {
+                user.RoleId = 3;
+                user.PremisesId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
+                var password = Util.GeneratePassword(new Models.PasswordOptions()
+                {
+                    RequireDigit = true,
+                    RequiredLength = 8,
+                    RequireLowercase = true,
+                    RequireNonAlphanumeric = false,
+                    RequireUppercase = true
+                });
+                user.Password = password;
+                isCreated = await _userBL.CreateUser(user);
+                if (isCreated)
+                {
+                    await _mailSender.SendEmailAsync(user.Email, "Tạo tài khoản TFS", "Tên tài khoản: " + user.Username +"\n"+"Mật khẩu: "+password);
+                }
+                return Ok(new { messsage = MessageConstant.INSERT_SUCCESS });
+
+            }
+            catch (DulicatedUsernameException e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+            catch (Exception e)
+            {
+                if (isCreated)
+                {
+                    await _userBL.RemoveByIdAsync(user.UserId);
+                }
+                return BadRequest(new { message = e.Message });
             }
         }
     }
