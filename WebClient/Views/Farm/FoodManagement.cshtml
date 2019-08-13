@@ -1,18 +1,18 @@
 ﻿@{
     ViewData["Title"] = "Nông trại";
 }
-    <head>
-        <!-- BEGIN VENDOR CSS-->
-        <link rel="stylesheet" type="text/css" href="~/app-assets/css/vendors.css">
-        <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/tables/datatable/datatables.min.css">
-        <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/tables/extensions/buttons.dataTables.min.css">
-        <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/tables/datatable/buttons.bootstrap4.min.css">
-        <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/forms/selects/select2.min.css">
-        <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/extensions/toastr.css">
-        <link rel="stylesheet" type="text/css" href="~/css/home/print.min.css">
-        <link rel="stylesheet" type="text/css" href="~/css/home/barcode.css">
-        <!-- END VENDOR CSS-->
-    </head>
+<head>
+    <!-- BEGIN VENDOR CSS-->
+    <link rel="stylesheet" type="text/css" href="~/app-assets/css/vendors.css">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/tables/datatable/datatables.min.css">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/tables/extensions/buttons.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/tables/datatable/buttons.bootstrap4.min.css">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/forms/selects/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/extensions/toastr.css">
+    <link rel="stylesheet" type="text/css" href="~/css/home/print.min.css">
+    <link rel="stylesheet" type="text/css" href="~/css/home/barcode.css">
+    <!-- END VENDOR CSS-->
+</head>
 <!-- Excel - Cell background table -->
 <div class="content-wrapper">
     <div class="content-header row">
@@ -34,7 +34,7 @@
                                     <thead>
                                         <tr>
                                             <th>ID</th>
-                                            <th>Tên thực phẩm</th>
+                                            <th>Loại thực phẩm</th>
                                             <th>Giống</th>
                                             <th>Ngày tạo</th>
                                             <th></th>
@@ -52,7 +52,7 @@
 </div>
 
 <!-- Modal add new food -->
-<div class="modal fade text-left" id="default" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1"
+<div class="modal fade text-left" id="addNewFoodModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -63,7 +63,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form class="form">
+                <form class="form" role="form" id="add-new-food-form">
                     <div class="form-body">
                         <div class="row">
                             <div class="col-md-12">
@@ -83,119 +83,24 @@
                             </div>
                         </div>
                     </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">Đóng</button>
-                <button type="button" class="btn btn-outline-primary" id="btnAddProduct">Xác nhận</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- End modal add new food -->
-@*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*@
-<!-- Modal add  food data -->
-<div class="modal fade text-left" id="add-food-data" role="dialog" aria-labelledby="add-food-data" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="addDetailDataTitle">Thêm thông tin thực phẩm</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form class="form form-horizontal" novalidate id="formAddDetail">
-                    <div class="form-body">
-                        <h4 class="form-section"><i class="ft-info"></i> Thông Tin Thực Phẩm</h4>
-                        <div class="row form-group">
-                            <label class="col-md-2 label-control" for="txtFoodId">Mã</label>
-                            <div class="col-md-10">
-                                <input class="form-control" type="text" name="txtFoodId" id="txtFoodId" readonly />
-                            </div>
-                        </div>
-                        <div class="row form-group">
-                            <label class="col-md-2 label-control" for="txtFoodId">Loại</label>
-                            <div class="col-md-10">
-                                <input class="form-control" type="text" name="txtFoodCategory" id="txtFoodCategory" readonly />
-                            </div>
-                        </div>
-                        <div class="row form-group">
-                            <label class="col-md-2 label-control" for="txtFoodId">Giống</label>
-                            <div class="col-md-10">
-                                <input class="form-control" type="text" name="txtFoodBreed" id="txtFoodBreed" readonly />
-                            </div>
-                        </div>
-                        <div class="row form-group">
-                            <label class="col-md-2 label-control" for="txtFoodId">Thông Tin</label>
-                            <div class="col-md-10">
-                                <select class="select2" name="dllFoodDetailType" style="width: 100%" id="dllFoodDetailType"></select>
-                            </div>
-                        </div>
-                        <div id="detailTitle">
-                        </div>
-                        <div class="row form-group" id="add-detail-form">
-
-                                        </div>
-                                        </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">Đóng</button>
-                <button type="button" id="btnAddDetail" class="btn btn-outline-primary">Xác nhận</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- End modal add new food info -->
-@*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*@
-<!-- Modal view food info -->
-<div class="modal fade text-left" id="view-food-data" role="dialog" aria-labelledby="add-food-data" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="addDetailDataTitle">Thêm thông tin thực phẩm</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form class="form form-horizontal" novalidate id="formViewDetail">
-                    <div class="form-body">
-                        <h4 class="form-section"><i class="ft-info"></i> Thông Tin Thực Phẩm</h4>
-                        <div class="row form-group">
-                            <label class="col-md-2 label-control" for="txtFoodId">Mã</label>
-                            <div class="col-md-10">
-                                <input class="form-control" type="text" name="txtFoodId" id="txtFoodIdView" readonly />
-                            </div>
-                        </div>
-                        <div class="row form-group">
-                            <label class="col-md-2 label-control" for="txtFoodId">Loại</label>
-                            <div class="col-md-10">
-                                <input class="form-control" type="text" name="txtFoodCategory" id="txtFoodCategoryView" readonly />
-                            </div>
-                        </div>
-                        <div class="row form-group">
-                            <label class="col-md-2 label-control" for="txtFoodId">Giống</label>
-                            <div class="col-md-10">
-                                <input class="form-control" type="text" name="txtFoodBreed" id="txtFoodBreedView" readonly />
-                            </div>
-                        </div>
-                        <h4 class="form-section"><i class="ft-info"></i> Thông Tin Thức Ăn</h4>
-                        <h5>N/A</h5>
-                        <h4 class="form-section"><i class="ft-info"></i> Thông Tin Vắc-xin</h4>
-                        <h5>N/A</h5>
+                    <div class="modal-footer">
+                        <button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">Đóng</button>
+                        <button type="submit" class="btn btn-outline-primary" id="btnAddProduct">Xác nhận</button>
                     </div>
                 </form>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">Đóng</button>
-                <button type="button" id="btnAddDetail" class="btn btn-outline-primary">Xác nhận</button>
-            </div>
+
         </div>
     </div>
 </div>
-<!-- End view food info -->
+@*End modal*@   
+<!-- Modal-->
+
+@await Html.PartialAsync("_AddFoodDetailModalPartial")
+@await Html.PartialAsync("_ViewFoodDetailModalPartial")
+@await Html.PartialAsync("_ManageFeddingModalPartial")
+@await Html.PartialAsync("_ManageVaccineModalPartial")
+<!-- End Modal-->
 <!-- Modal addProvider-->
 <div class="modal fade text-left" id="addDistributor" role="dialog" aria-labelledby="myModalLabel1"
      aria-hidden="true">
@@ -208,7 +113,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form class="form">
+                <form class="form" role="form" id="add-provider">
                     <div class="form-body">
                         <div class="row">
                             <div class="col-md-12">
@@ -218,21 +123,34 @@
                         </div>
                         <div class="row">
                             <div class="col-md-12">
+                                <label for="projectinput2">Tên thực phẩm</label>
+                                <input id="pro-name" class="form-control" type="text" name="pro-Name" readonly />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label for="projectinput2">Giống</label>
+                                <input id="pro-breed" class="form-control" type="text" name="pro-Breed" readonly />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
                                 <label for="projectinput2">Nhà cung cấp</label>
-                                <select name="providerID" class="select2-placeholder select2-size-lg form-control" style="width:100%" id="ddlProvider"></select>
+                                <select name="providerID" required class="select2-placeholder select2-size-lg form-control" style="width:100%" id="ddlProvider"></select>
+                                <div id="pro-error"></div>
                             </div>
                         </div>
                     </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">Đóng</button>
+                        <button id="btn-addProvider" type="button" class="btn btn-outline-primary">Xác nhận</button>
+                    </div>
                 </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">Đóng</button>
-                <button id="btn-addProvider" type="button" class="btn btn-outline-primary">Xác nhận</button>
             </div>
         </div>
     </div>
 </div>
-<!-- End addDistributor-->
+<!-- End addProvider-->
 <!--BEGIN QR -->
 <div class="modal fade text-left" id="GetQRCode" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1"
      aria-hidden="true">
@@ -268,6 +186,7 @@
     <script src="~/app-assets/vendors/js/forms/select/select2.full.min.js" type="text/javascript"></script>
     <script src="~/app-assets/vendors/js/forms/select/i18n/vi.js" type="text/javascript"></script>
     <script src="~/app-assets/vendors/js/extensions/toastr.min.js" type="text/javascript"></script>
+    <script src="~/app-assets/vendors/js/extensions/sweetalert.min.js" type="text/javascript"></script>
     <!-- END PAGE VENDOR JS-->
     <!-- BEGIN PAGE LEVEL JS-->
     <script src="~/app-assets/js/scripts/forms/select/form-select2.js" type="text/javascript"></script>
@@ -275,6 +194,8 @@
     <!-- END PAGE LEVEL JS-->
     <!-- My JS-->
     <script src="~/js/farm/farm.js" type="text/javascript"></script>
+    <script src="~/js/farm/mng-feeding.js" type="text/javascript"></script>
+    <script src="~/js/farm/mng-vaccine.js" type="text/javascript"></script>
     <script src="~/lib/print.min.js" type="text/javascript"></script>
     <script src="https://cdn.jsdelivr.net/jsbarcode/3.3.16/barcodes/JsBarcode.code128.min.js"></script>
 }

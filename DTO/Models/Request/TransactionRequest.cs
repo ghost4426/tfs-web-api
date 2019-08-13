@@ -16,4 +16,17 @@ namespace DTO.Models
         public string RejectedReason { get; set; }
         public string ProviderComment { get; set; }
     }
+
+    public class TransactionVerterinaryUpdateRequest
+    {
+        public int StatusId { get; set; }
+        public string RejectedReason { get; set; }
+        public int RejectById { get; set; }
+    }
+    public class TransactionDistributorUpdateRequest
+    {
+        public int StatusId { get; set; }
+        public string RejectedReason { get; set; }
+        public int RejectById { get; set; }
+    }
 }

@@ -179,3 +179,59 @@ function Authorization() {
         }
     });
 }
+
+jQuery.validator.addMethod("lettersonly", function (value, element) {
+    return this.optional(element) || /^[a-zA-Z\s\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+$/i.test(value);
+}, "Letters only please"); 
+
+jQuery.validator.addMethod("username", function (value, element) {
+    return this.optional(element) || /^[0-9a-zA-Z]+$/i.test(value);
+}, "Letters only please"); 
+
+jQuery.validator.addMethod("smallerThan",
+    function (value, element, params) {
+        if (!/Invalid|NaN/.test(new Date(value))) {
+            var today = new Date();
+            var ptoday = today.getFullYear();
+            if ((today.getMonth() + 1).toString().length == 1) {
+                ptoday += "-0" + (today.getMonth() + 1);
+            } else {
+                ptoday += "-" + (today.getMonth() + 1);
+            }
+            if (today.getDate().toString().length == 1) {
+                ptoday += "-0" + today.getDate();
+            } else {
+                ptoday += "-" + today.getDate();
+            }
+            return new Date(value) <= new Date(ptoday);
+        }
+    }, 'Must be smaller than {0}.');
+
+jQuery.validator.addMethod("greaterThan",
+    function (value, element, params) {
+        if (!/Invalid|NaN/.test(new Date(value))) {
+            return new Date(value) > new Date(params);
+        }
+    }, 'Must be greaterThan than {0}.');
+
+jQuery.validator.addMethod("checkTreatment",
+    function (value, element, params) {
+        return params != "";
+    }, 'This field is required.');
+
+jQuery.validator.addMethod("checkPackaging",
+    function (value, element, params) {
+        return params != "";
+    }, 'This field is required.');
+
+jQuery.validator.addMethod("checkEXPDate",
+    function (value, element, params) {
+        if (!/Invalid|NaN/.test(new Date(params))) {
+            return new Date(params) > new Date();
+        }
+    }, 'expired date');
+
+var requiredError = "Vui lòng nhập trường này";
+var letterOnlyError = "Vui lòng chỉ nhập chữ (Không có ký tự đặc biệt)";
+var userError = "Vui lòng không nhập ký tự đặc biệt";
+var emailError = "Vui lòng nhập đúng email (vidu@gmail.com.vn)";

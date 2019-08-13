@@ -12,6 +12,7 @@ namespace DTO.Models
 
         public int RoleId { get; set; }
 
+
     }
     public class CreateVeterinaryRequest
     {
@@ -42,6 +43,13 @@ namespace DTO.Models
     public class ChangeAvatar
     {
         public string avaUrl { get; set; }
+    }
+
+    public class CreateUserPremises
+    {
+        public string Username { get; set; }
+        public string Email { get; set; }
+        public string Fullname { get; set; }
     }
 
 }

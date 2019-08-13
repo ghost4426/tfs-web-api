@@ -14,8 +14,6 @@ namespace DataAccess.IRepositories
         IQueryable<TEntity> GetAllIncluding(params Expression<Func<TEntity, object>>[] includeProperties);
         TEntity GetById(object id);
         TEntity Find(Expression<Func<TEntity, bool>> match);
-        IQueryable<TEntity> GetIQueryable();
-        //IList<TEntity> GetAllPaged(int pageIndex, int pageSize, out int totalCount);
 
         int Count();
         object Insert(TEntity entity, bool saveChanges = true);
@@ -23,7 +21,6 @@ namespace DataAccess.IRepositories
         void Delete(TEntity entity, bool saveChanges = true);
         void Update(TEntity entity, bool saveChanges = true);
         TEntity Update(TEntity entity, object key, bool saveChanges = true);
-        void Commit();
 
         Task<IList<TEntity>> GetAllAsync();
         Task<IList<TEntity>> GetTopAsync(Expression<Func<TEntity, bool>> orderBy, int top);

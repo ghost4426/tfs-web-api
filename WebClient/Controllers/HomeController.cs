@@ -15,11 +15,13 @@ namespace WebClient.Controllers
     [Route("")]
     public class HomeController : Controller
     {
+        [Authorize]
         public IActionResult Index()
         {
             return RedirectToAction("Dashboard");
         }
 
+        [Authorize]
         [Route("trang-chu")]
         public IActionResult Dashboard()
         {
@@ -71,7 +73,7 @@ namespace WebClient.Controllers
                 {
                     IsEssential = true
                 });
-                return RedirectToAction("UserProfile", "User");
+                return RedirectToAction("Dashboard", "Home");
             }
 
             ModelState.AddModelError(string.Empty, result.Message);

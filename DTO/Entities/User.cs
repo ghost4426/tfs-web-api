@@ -20,8 +20,6 @@ namespace DTO.Entities
         [Required]
         public string Password { get; set; }
 
-        public DateTime? Dob { get; set; }
-
         [Required]
         public string Salt { get; set; }
 
@@ -56,9 +54,9 @@ namespace DTO.Entities
         public ICollection<Food> UserCreatedFoods { get; set; }
         public ICollection<Treatment> UserCreatedTreatments { get; set; }
         public ICollection<Feeding> UserCreatedFeedings { get; set; }
-        public ICollection<Vaccin> UserCreatedVaccins { get; set; }
+        public ICollection<Vaccine> UserCreatedVaccins { get; set; }
         public ICollection<Treatment> UserUpdateTreatments { get; set; }
         public ICollection<Feeding> UserUpdateFeedings { get; set; }
-        public ICollection<Vaccin> UserUpdateVaccins { get; set; }
+        public ICollection<Vaccine> UserUpdateVaccins { get; set; }
     }
 }

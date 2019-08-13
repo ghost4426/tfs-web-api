@@ -16,5 +16,7 @@ namespace Common.Constant
 
         public const string DUPLICATED_PREMISESNAME = "Tên cơ sở đã tồn tại";
         public const string UPDATE_SUCCESS = "Cập nhật thành công";
+
+        public const string DEACTIVED_USER = "Tài khoản đã bị vô hiệu hóa";
     }
 }

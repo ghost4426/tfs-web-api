@@ -13,41 +13,44 @@
     <link rel="stylesheet" type="text/css" href="~/css/home/barcode.css">
     <!-- END VENDOR CSS-->
 </head>
-<!-- Excel - Cell background table -->
-<section id="file-export">
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-content collapse show">
-                    <div class="card-body card-dashboard">
-                        <h1 class="card-text" style="text-align:center;">
-                            Quản lý giao dịch
-                        </h1>
-                        <br />
-                        <table id="farm-transaction-mng" class="table table-striped table-bordered file-export">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Tên thực phẩm</th>
-                                    <th>Giống</th>
-                                    <th>Nhà phân phối</th>
-                                    <th>Ngày tạo</th>
-                                    <th></th>
-                                    <th></th>
-                                    <th>Trạng thái</th>
-                                    <th>Ghi chú</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
+<div class="content-wrapper">
+    <div class="content-header row">
+        <div class="content-header-left col-md-6 col-12 mb-2">
+            <h3 class="content-header-title mb-0">Quản Lý Giao Dịch</h3>
+        </div>
+    </div>
+    <div class="content-body">
+        <section id="file-export">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-content collapse show">
+                            <div class="card-body card-dashboard">
+                                <table id="farm-transaction-mng" class="table table-striped table-bordered file-export">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Tên thực phẩm</th>
+                                            <th>Giống</th>
+                                            <th>Nhà phân phối</th>
+                                            <th>Ngày tạo</th>
+                                            <th></th>
+                                            <th></th>
+                                            <th>Trạng thái</th>
+                                            <th>Ghi chú</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
     </div>
-</section>
-
+</div>
 <!--BEGIN QR -->
 <div class="modal fade text-left" id="GetQRCode" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1"
      aria-hidden="true">

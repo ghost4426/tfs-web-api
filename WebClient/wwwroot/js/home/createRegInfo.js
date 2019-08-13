@@ -30,7 +30,7 @@ $('#createNewRegisterInfoBtn').click(function () {
             toastr.success('Bạn tạo mới cơ sở thành công.', 'Tạo cơ sở thành công');
         },
         function (result) {
-            toastr.error();
+            toastr.error(result.responseJSON.message);
         }
     )
 });

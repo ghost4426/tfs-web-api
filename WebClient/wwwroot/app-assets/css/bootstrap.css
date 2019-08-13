@@ -6008,6 +6008,7 @@ a.close.disabled {
 
     .modal-dialog-scrollable .modal-body {
         overflow-y: auto;
+        overflow-x: hidden;
     }
 
 .modal-dialog-centered {

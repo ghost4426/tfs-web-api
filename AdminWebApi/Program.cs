@@ -13,7 +13,7 @@ namespace AdminWebApi
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args).UseKestrel().UseUrls("https://*:4200")
+            WebHost.CreateDefaultBuilder(args).UseKestrel().UseUrls("http://*:4200")
                 .UseStartup<Startup>();
     }
 }

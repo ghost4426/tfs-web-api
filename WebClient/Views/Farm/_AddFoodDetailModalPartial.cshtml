@@ -1,0 +1,57 @@
+﻿<div class="modal fade text-left" id="add-food-data" role="dialog" aria-labelledby="add-food-data" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="addDetailDataTitle">Thêm thông tin thực phẩm</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-body">
+                    <h4 class="form-section"><i class="ft-info"></i> Thông Tin Thực Phẩm</h4>
+                    <div class="row form-group">
+                        <label class="col-md-2 label-control" for="txtFoodId">Mã</label>
+                        <div class="col-md-10">
+                            <input class="form-control" type="text" name="txtFoodId" id="txtFoodId" readonly />
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-md-2 label-control" for="txtFoodId">Loại</label>
+                        <div class="col-md-10">
+                            <input class="form-control" type="text" name="txtFoodCategory" id="txtFoodCategory" readonly />
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-md-2 label-control" for="txtFoodId">Giống</label>
+                        <div class="col-md-10">
+                            <input class="form-control" type="text" name="txtFoodBreed" id="txtFoodBreed" readonly />
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-md-2 label-control" for="txtFoodId">Thông Tin</label>
+                        <div class="col-md-10">
+                            <select class="select2" name="dllFoodDetailType" style="width: 100%" id="dllFoodDetailType"></select>
+                            <div id="choose-error">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div id="detailTitle">
+
+                    </div>
+                    <div class="input-group " id="add-detail-form">
+
+                    </div>
+                    <div id="error">
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">Đóng</button>
+                <button type="button" id="btnAddDetail" class="btn btn-outline-primary">Xác nhận</button>
+            </div>
+        </div>
+    </div>
+</div>

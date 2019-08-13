@@ -21,8 +21,8 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "https://localhost:5000/",
-      "launchUrl": "https://localhost:5000/dang-nhap"
+      "applicationUrl": "http://localhost:5000/"
+      //"launchUrl": "http://localhost:5000/dang-nhap"
     }
   }
 }
