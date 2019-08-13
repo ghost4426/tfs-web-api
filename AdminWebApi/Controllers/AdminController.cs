@@ -50,21 +50,46 @@ namespace AdminWebApi.Controllers
             try
             {
                 user = _mapper.Map<Entities.User>(rUser);
-                //var password = Util.GeneratePassword(new Models.PasswordOptions()
-                //{
-                //    RequireDigit = true,
-                //    RequiredLength = 8,
-                //    RequireLowercase = true,
-                //    RequireNonAlphanumeric = false,
-                //    RequireUppercase = true
-                //});
+                
                 user.Password = "admin";
                 user.Fullname = "";
                 isCreated = await _userBL.CreateUser(user);
-                //if (isCreated)
-                //{
-                //    await _mailSender.SendEmailAsync(user.Email, "Created Account", "Your password: " + password);
-                //}
+                return Ok(new { messsage = MessageConstant.INSERT_SUCCESS });
+
+            }
+            catch (DulicatedUsernameException e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+            catch (Exception e)
+            {
+                if (isCreated)
+                {
+                    await _userBL.RemoveByIdAsync(user.UserId);
+                }
+                return BadRequest(new { message = e.Message });
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpPost("user/admin")]
+        public async Task<IActionResult> CreateAdmin()
+        {
+            Entities.User user = null;
+            var isCreated = false;
+            try
+            {
+                var admin = new Entities.User()
+                {
+                    Username = "admin",
+                    Password = "admin",
+                    Fullname = "Admin System",
+                    Email = "Admin@tfs.com",
+                    RoleId = 1
+                };
+                
+                isCreated = await _userBL.CreateAdmin(admin);
+                
                 return Ok(new { messsage = MessageConstant.INSERT_SUCCESS });
 
             }
@@ -87,11 +112,8 @@ namespace AdminWebApi.Controllers
         {
             try
             {
-                Entities.User user = new Entities.User()
-                
-                    ;
-                //user.Password = "123";
-                //await _userBL.CreateUser(user);
+                Entities.User user = new Entities.User();
+               
                 user = new Entities.User()
                 {
                     Username = "Provider2",

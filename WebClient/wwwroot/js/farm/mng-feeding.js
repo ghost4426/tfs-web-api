@@ -101,11 +101,11 @@ $('#btnConfirmSaveFeeding').on('click', function () {
             feeding
         ),
         function (result) {
-            toastr.success(result.msg);
+            toastr.success(result.message);
             loadFeedingDataModal();
         },
         function (result) {
-            toastr.error(result.msg);
+            toastr.error(result.message);
         }
     )
 })
@@ -179,6 +179,6 @@ function loadFeedingDataModal() {
             })
         },
         function (result) {
-            toastr.error(result);
+            toastr.error(result.message);
         })
 }

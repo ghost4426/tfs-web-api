@@ -12,6 +12,7 @@ namespace DTO.Models
 
         public int RoleId { get; set; }
 
+
     }
     public class UpdateUserRequest
     {

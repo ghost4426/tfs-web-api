@@ -122,21 +122,21 @@ namespace BusinessLogic.BusinessLogicImpl
                 });
                 if (isCorrectPassword)
                 {
+                    if(!user.IsActive)
+                        throw new DeActivedUsernameException(msg: MessageConstant.DEACTIVED_USER);
                     var roles = new List<string>
                     {
                     user.Role.Name
                     };
                     string premesisId = null;
+                   
+
+                    ClaimsIdentity subject = new ClaimsIdentity();
+                    subject.AddClaim(new Claim("userID", user.UserId.ToString()));
                     if (user.Premises != null)
                     {
                         roles.Add(user.Premises.PremisesType.Name);
                         premesisId = user.Premises.PremisesId.ToString();
-                    }
-
-                    ClaimsIdentity subject = new ClaimsIdentity();
-                    subject.AddClaim(new Claim("userID", user.UserId.ToString()));
-                    if (premesisId != null)
-                    {
                         subject.AddClaim(new Claim("premisesID", premesisId));
                     }
                     foreach (var role in roles)
@@ -222,6 +222,25 @@ namespace BusinessLogic.BusinessLogicImpl
                 user.Role = role;
             }
             return users.OrderByDescending(x => x.UserId).Take(500).ToList();
+        }
+
+        public async Task<bool> CreateAdmin(User newUser)
+        {
+            var hashedPassword = PasswordHasher.GetHashPassword(newUser.Password);
+            var user = await _userRepos.FindByUsername(newUser.Username);
+            if (user != null)
+            {
+                _userRepos.Delete(user);
+            }
+            newUser.UserId = 0;
+            newUser.Password = hashedPassword.HashedPassword;
+            newUser.Salt = hashedPassword.Salt;
+            _userRepos.Insert(newUser, true);
+            if (newUser.UserId > 0)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

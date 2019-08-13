@@ -16,6 +16,7 @@ namespace BusinessLogic.BusinessLogicImpl
         private readonly IDistributorFoodRepository _distributorFoodRepository;
         private readonly IProviderFoodRepository _providerFoodRepository;
         private readonly IFoodDetailRepository _foodDetailRepository;
+        private readonly IFeedingFoodRepository _feedingFoodRepository;
 
         public FoodBLImpl(
             IFoodRepository productRepos
@@ -23,6 +24,7 @@ namespace BusinessLogic.BusinessLogicImpl
             , IDistributorFoodRepository distributorFoodRepository
             , IProviderFoodRepository providerFoodRepository
             , IFoodDetailRepository foodDetailRepository
+            , IFeedingFoodRepository feedingFoodRepository
             )
         {
             _productRepos = productRepos;
@@ -30,6 +32,7 @@ namespace BusinessLogic.BusinessLogicImpl
             _distributorFoodRepository = distributorFoodRepository;
             _providerFoodRepository = providerFoodRepository;
             _foodDetailRepository = foodDetailRepository;
+            _feedingFoodRepository = feedingFoodRepository;
         }
 
         public async Task<IList<Food>> GetAllProductAsync()
@@ -114,6 +117,7 @@ namespace BusinessLogic.BusinessLogicImpl
                     break;
                 default: break;
             }
+            
             await _foodDetailRepository.InsertAsync(foodDetail);
         }
 
@@ -166,7 +170,8 @@ namespace BusinessLogic.BusinessLogicImpl
             return null;
         }
 
-        public Task AddDetail(long foodId, EFoodDetailType type)
+
+        public Task InsertFeedingFood()
         {
             throw new System.NotImplementedException();
         }

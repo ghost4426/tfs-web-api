@@ -101,11 +101,11 @@ $('#btnConfirmSaveVaccine').on('click', function () {
             vaccine
         ),
         function (result) {
-            toastr.success(result.msg);
+            toastr.success(result.message);
             loadvaccineDataModal();
         },
         function (result) {
-            toastr.error(result.msg);
+            toastr.error(result.message);
         }
     )
 })
@@ -179,6 +179,6 @@ function loadvaccineDataModal() {
             })
         },
         function (result) {
-            toastr.error(result);
+            toastr.error(result.message);
         })
 }
