@@ -36,5 +36,7 @@ namespace BusinessLogic.IBusinessLogic
 
         Task<int> createDistributorFood(DistributorFood newDistributorFood);
 
+        Task InsertFeedingFood();
+
     }
 }

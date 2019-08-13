@@ -67,16 +67,6 @@ namespace DataAccess.RepositoriesImpl
             return this.DbSet.SingleOrDefault(match);
         }
 
-        public virtual IQueryable<TEntity> GetIQueryable()
-        {
-            return this.DbSet.AsQueryable<TEntity>();
-        }
-
-        //public virtual IList<TEntity> GetAllPaged(int pageIndex, int pageSize, out int totalCount)
-        //{
-        //    totalCount = this.DbSet.Count();
-        //    return this.DbSet.Skip(pageSize * pageIndex).Take(pageSize).ToList();
-        //}
 
         public int Count()
         {
@@ -139,11 +129,7 @@ namespace DataAccess.RepositoriesImpl
             }
             return exist;
         }
-
-        public virtual void Commit()
-        {
-            Context.SaveChanges();
-        }
+       
         #endregion
 
         #region Async Members

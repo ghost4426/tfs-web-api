@@ -15,7 +15,6 @@ namespace Common.Utils
 
             string hashedPassword = EncryptPassword(salt, password);
             Console.WriteLine(salt);
-            //Console.WriteLine(Convert.ToBase64String(Encoding.UTF8.GetBytes(salt)));
             return new HashPassword() { Salt = salt, HashedPassword = hashedPassword };
         }
 

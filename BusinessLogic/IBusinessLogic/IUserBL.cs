@@ -11,6 +11,8 @@ namespace BusinessLogic.IBusinessLogic
     {
         Task<bool> CreateUser(User newUser);
 
+        Task<bool> CreateAdmin(User newUser);
+
         Task<string> CheckLogin(Models.LoginRequest loginInfo);
 
         Task<User> GetById(int id);
