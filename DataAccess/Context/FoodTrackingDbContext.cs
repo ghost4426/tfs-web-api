@@ -29,9 +29,9 @@ namespace DataAccess.Context
         //public DbSet<RegisterInfo> RegisterInfo { get; set; }
         public DbSet<ProviderFood> ProviderFood { get; set; }
         public DbSet<Feeding> Feeding { get; set; }
-        public DbSet<Vaccin> Vaccin { get; set; }
+        public DbSet<Vaccine> Vaccine { get; set; }
         public DbSet<FeedingFood> FeedingFood { get; set; }
-        public DbSet<VaccinFood> VaccinFood { get; set; }
+        public DbSet<VaccineFood> VaccineFood { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -40,7 +40,7 @@ namespace DataAccess.Context
             #region User
             builder.Entity<User>()
              .Property(f => f.CreateDate)
-             .HasDefaultValueSql("getdate()");
+             .HasDefaultValueSql("DBO.dReturnDate(getdate())");
 
             builder.Entity<User>()
              .Property(f => f.IsActive)
@@ -86,19 +86,19 @@ namespace DataAccess.Context
 
             builder.Entity<Food>()
               .Property(f => f.CreateDate)
-              .HasDefaultValueSql("getdate()");
+              .HasDefaultValueSql("DBO.dReturnDate(getdate())");
             #endregion
 
             #region Food Detail
             builder.Entity<FoodDetail>()
              .Property(f => f.CreateDate)
-             .HasDefaultValueSql("getdate()");
+             .HasDefaultValueSql("DBO.dReturnDate(getdate())");
             #endregion
 
             #region Premises
             builder.Entity<Premises>()
              .Property(f => f.CreateDate)
-             .HasDefaultValueSql("getdate()");
+             .HasDefaultValueSql("DBO.dReturnDate(getdate())");
             #endregion
 
             #region DistributorFood
@@ -114,7 +114,7 @@ namespace DataAccess.Context
                 .HasForeignKey(df => df.FoodId);
             builder.Entity<DistributorFood>()
             .Property(f => f.CreateDate)
-            .HasDefaultValueSql("getdate()");
+            .HasDefaultValueSql("DBO.dReturnDate(getdate())");
             #endregion
 
             #region ProviderFood
@@ -130,7 +130,7 @@ namespace DataAccess.Context
                 .HasForeignKey(df => df.FoodId);
             builder.Entity<ProviderFood>()
             .Property(f => f.CreateDate)
-            .HasDefaultValueSql("getdate()");
+            .HasDefaultValueSql("DBO.dReturnDate(getdate())");
             #endregion
 
             #region Transaction
@@ -148,7 +148,7 @@ namespace DataAccess.Context
 
             builder.Entity<Transaction>()
                .Property(f => f.CreateDate)
-               .HasDefaultValueSql("getdate()");
+               .HasDefaultValueSql("DBO.dReturnDate(getdate())");
 
             builder.Entity<Transaction>()
                 .HasOne(df => df.CreateBy)
@@ -170,7 +170,7 @@ namespace DataAccess.Context
             //#region RegisterInfo
             //builder.Entity<RegisterInfo>()
             //  .Property(f => f.CreatedDate)
-            //  .HasDefaultValueSql("getdate()");
+            //  .HasDefaultValueSql("DBO.dReturnDate(getdate())");
             //#endregion
 
             #region Treatment
@@ -184,7 +184,7 @@ namespace DataAccess.Context
                 .HasForeignKey(df => df.UpdateById);
             builder.Entity<Treatment>()
              .Property(f => f.CreateDate)
-             .HasDefaultValueSql("getdate()");
+             .HasDefaultValueSql("DBO.dReturnDate(getdate())");
             #endregion
 
             #region Feeding
@@ -198,21 +198,27 @@ namespace DataAccess.Context
                 .HasForeignKey(df => df.UpdateById);
             builder.Entity<Feeding>()
              .Property(f => f.CreateDate)
-             .HasDefaultValueSql("getdate()");
+             .HasDefaultValueSql("DBO.dReturnDate(getdate())");
+            builder.Entity<Feeding>()
+            .Property(f => f.IsDelete)
+            .HasDefaultValue(false);
             #endregion
 
-            #region Vaccin
-            builder.Entity<Vaccin>()
+            #region Vaccine
+            builder.Entity<Vaccine>()
                .HasOne(df => df.CreateBy)
                .WithMany(f => f.UserCreatedVaccins)
                .HasForeignKey(df => df.CreateById);
-            builder.Entity<Vaccin>()
+            builder.Entity<Vaccine>()
                 .HasOne(df => df.UpdateBy)
                 .WithMany(f => f.UserUpdateVaccins)
                 .HasForeignKey(df => df.UpdateById);
-            builder.Entity<Vaccin>()
+            builder.Entity<Vaccine>()
              .Property(f => f.CreateDate)
-             .HasDefaultValueSql("getdate()");
+             .HasDefaultValueSql("DBO.dReturnDate(getdate())");
+            builder.Entity<Vaccine>()
+           .Property(f => f.IsDelete)
+           .HasDefaultValue(false);
             #endregion
 
             #region FeedingFood
@@ -228,23 +234,23 @@ namespace DataAccess.Context
                 .HasForeignKey(df => df.FoodId);
             builder.Entity<FeedingFood>()
             .Property(f => f.CreateDate)
-            .HasDefaultValueSql("getdate()");
+            .HasDefaultValueSql("DBO.dReturnDate(getdate())");
             #endregion
 
             #region VaccinFood
-            builder.Entity<VaccinFood>()
-                .HasKey(df => new { df.FoodId, df.VaccinId });
-            builder.Entity<VaccinFood>()
-                .HasOne(df => df.Vaccin)
-                .WithMany(d => d.VaccinFoods)
-                .HasForeignKey(df => df.VaccinId);
-            builder.Entity<VaccinFood>()
+            builder.Entity<VaccineFood>()
+                .HasKey(df => new { df.FoodId, df.VaccineId });
+            builder.Entity<VaccineFood>()
+                .HasOne(df => df.Vaccine)
+                .WithMany(d => d.VaccineFoods)
+                .HasForeignKey(df => df.VaccineId);
+            builder.Entity<VaccineFood>()
                 .HasOne(df => df.Food)
-                .WithMany(f => f.VaccinFoods)
+                .WithMany(f => f.VaccineFoods)
                 .HasForeignKey(df => df.FoodId);
-            builder.Entity<VaccinFood>()
+            builder.Entity<VaccineFood>()
             .Property(f => f.CreateDate)
-            .HasDefaultValueSql("getdate()");
+            .HasDefaultValueSql("DBO.dReturnDate(getdate())");
             #endregion
 
             #region Init Data

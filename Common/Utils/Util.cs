@@ -25,29 +25,41 @@ namespace Common.Utils
 
             while (password.Length < length)
             {
-                char c = (char)random.Next(32, 126);
+                char c = (char)random.Next(33, 126);
 
-                password.Append(c);
-
-                if (char.IsDigit(c))
+                if (char.IsDigit(c) && options.RequireDigit)
+                {
+                    password.Append(c);
                     digit = false;
-                else if (char.IsLower(c))
+
+                }
+                else if (char.IsLower(c) && options.RequireLowercase)
+                {
+                    password.Append(c);
                     lowercase = false;
-                else if (char.IsUpper(c))
+
+                }
+                else if (char.IsUpper(c) && options.RequireUppercase)
+                {
+                    password.Append(c);
                     uppercase = false;
-                else if (!char.IsLetterOrDigit(c))
+
+                }
+                else if (!char.IsLetterOrDigit(c) && options.RequireNonAlphanumeric)
+                {
+                    password.Append(c);
                     nonAlphanumeric = false;
+
+                }
+                if ((digit || lowercase || uppercase || nonAlphanumeric) && password.Length >= length)
+                {
+                    password.Clear();
+                    nonAlphanumeric = options.RequireNonAlphanumeric;
+                    digit = options.RequireDigit;
+                    lowercase = options.RequireLowercase;
+                    uppercase = options.RequireUppercase;
+                }
             }
-
-            if (nonAlphanumeric)
-                password.Append((char)random.Next(33, 48));
-            if (digit)
-                password.Append((char)random.Next(48, 58));
-            if (lowercase)
-                password.Append((char)random.Next(97, 123));
-            if (uppercase)
-                password.Append((char)random.Next(65, 91));
-
             return password.ToString();
         }
 

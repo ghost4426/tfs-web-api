@@ -4,6 +4,7 @@ using DTO.Entities;
 using DTO.Models.Exception;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -95,5 +96,48 @@ namespace BusinessLogic.BusinessLogicImpl
             trans.ReceiverComment = transaction.ReceiverComment;
             await _transactionRepos.UpdateAsync(trans, transId);
         }
+        public Task<Transaction> GetTransactionById(int id)
+        {
+            var tran =  _transactionRepos.GetAllIncluding(t => t.Sender, t => t.Receiver, t => t.Food).Where(t => t.TransactionId == id).SingleOrDefault();
+            return Task.FromResult(tran);
+            //dto.Farm = _premisesRepos.GetById(dto.FarmId);
+            //dto.Provider = _premisesRepos.GetById(dto.ProviderId);
+            //dto.Food = _foodRepos.GetById(dto.FoodId);
+            //return dto;
+        }
+        public async Task<Transaction> UpdateVerterinaryTransaction(int id, int status, string reason, int verId)
+        {
+        
+            var transaction = _transactionRepos.GetById(id);
+            transaction.StatusId = status;
+            if(status == 2)
+            {
+                transaction.VeterinaryComment = reason;
+            } else
+            {
+                transaction.RejectReason = reason;
+                transaction.RejectById = verId;
+            }
+            transaction.VeterinaryId = verId;
+            await _transactionRepos.UpdateAsync(transaction);
+            return transaction;
+        }
+
+        public async Task<Transaction> UpdateDistributorTransaction(int id, int status, string reasone, int distributorId)
+        {
+            var transaction = _transactionRepos.GetById(id);
+            transaction.StatusId = status;
+            if(status == 3)
+            {
+                transaction.ReceiverComment = reasone;
+            } else
+            {
+                transaction.RejectReason = reasone;
+                transaction.RejectById = distributorId;
+            }
+            await _transactionRepos.UpdateAsync(transaction);
+            return transaction;
+        }
+
     }
 }

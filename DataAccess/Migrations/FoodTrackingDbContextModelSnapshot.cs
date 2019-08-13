@@ -56,7 +56,7 @@ namespace DataAccess.Migrations
 
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("getdate()");
+                        .HasDefaultValueSql("DBO.dReturnDate(getdate())");
 
                     b.HasKey("FoodId", "PremisesId");
 
@@ -75,7 +75,11 @@ namespace DataAccess.Migrations
 
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("getdate()");
+                        .HasDefaultValueSql("DBO.dReturnDate(getdate())");
+
+                    b.Property<bool>("IsDelete")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(false);
 
                     b.Property<string>("Name")
                         .IsRequired();
@@ -105,7 +109,7 @@ namespace DataAccess.Migrations
 
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("getdate()");
+                        .HasDefaultValueSql("DBO.dReturnDate(getdate())");
 
                     b.HasKey("FoodId", "FeedingId");
 
@@ -129,7 +133,7 @@ namespace DataAccess.Migrations
 
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("getdate()");
+                        .HasDefaultValueSql("DBO.dReturnDate(getdate())");
 
                     b.Property<int>("FarmId");
 
@@ -150,13 +154,11 @@ namespace DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("BlockNumber");
-
                     b.Property<int>("CreateById");
 
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("getdate()");
+                        .HasDefaultValueSql("DBO.dReturnDate(getdate())");
 
                     b.Property<int>("FoodId");
 
@@ -236,7 +238,7 @@ namespace DataAccess.Migrations
 
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("getdate()");
+                        .HasDefaultValueSql("DBO.dReturnDate(getdate())");
 
                     b.Property<string>("Name")
                         .IsRequired();
@@ -287,7 +289,7 @@ namespace DataAccess.Migrations
 
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("getdate()");
+                        .HasDefaultValueSql("DBO.dReturnDate(getdate())");
 
                     b.Property<int?>("TreatmentId");
 
@@ -341,7 +343,7 @@ namespace DataAccess.Migrations
 
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("getdate()");
+                        .HasDefaultValueSql("DBO.dReturnDate(getdate())");
 
                     b.Property<int>("FoodId");
 
@@ -426,7 +428,7 @@ namespace DataAccess.Migrations
 
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("getdate()");
+                        .HasDefaultValueSql("DBO.dReturnDate(getdate())");
 
                     b.Property<string>("Name")
                         .IsRequired();
@@ -462,9 +464,7 @@ namespace DataAccess.Migrations
 
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("getdate()");
-
-                    b.Property<DateTime?>("Dob");
+                        .HasDefaultValueSql("DBO.dReturnDate(getdate())");
 
                     b.Property<string>("Email")
                         .IsRequired();
@@ -506,9 +506,9 @@ namespace DataAccess.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("DTO.Entities.Vaccin", b =>
+            modelBuilder.Entity("DTO.Entities.Vaccine", b =>
                 {
-                    b.Property<int>("VaccinId")
+                    b.Property<int>("VaccineId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -516,7 +516,11 @@ namespace DataAccess.Migrations
 
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("getdate()");
+                        .HasDefaultValueSql("DBO.dReturnDate(getdate())");
+
+                    b.Property<bool>("IsDelete")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(false);
 
                     b.Property<string>("Name")
                         .IsRequired();
@@ -527,7 +531,7 @@ namespace DataAccess.Migrations
 
                     b.Property<DateTime>("UpdateDate");
 
-                    b.HasKey("VaccinId");
+                    b.HasKey("VaccineId");
 
                     b.HasIndex("CreateById");
 
@@ -535,24 +539,24 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("UpdateById");
 
-                    b.ToTable("Vaccin");
+                    b.ToTable("Vaccine");
                 });
 
-            modelBuilder.Entity("DTO.Entities.VaccinFood", b =>
+            modelBuilder.Entity("DTO.Entities.VaccineFood", b =>
                 {
                     b.Property<int>("FoodId");
 
-                    b.Property<int>("VaccinId");
+                    b.Property<int>("VaccineId");
 
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("getdate()");
+                        .HasDefaultValueSql("DBO.dReturnDate(getdate())");
 
-                    b.HasKey("FoodId", "VaccinId");
+                    b.HasKey("FoodId", "VaccineId");
 
-                    b.HasIndex("VaccinId");
+                    b.HasIndex("VaccineId");
 
-                    b.ToTable("VaccinFood");
+                    b.ToTable("VaccineFood");
                 });
 
             modelBuilder.Entity("DTO.Entities.DistributorFood", b =>
@@ -729,7 +733,7 @@ namespace DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("DTO.Entities.Vaccin", b =>
+            modelBuilder.Entity("DTO.Entities.Vaccine", b =>
                 {
                     b.HasOne("DTO.Entities.User", "CreateBy")
                         .WithMany("UserCreatedVaccins")
@@ -747,16 +751,16 @@ namespace DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("DTO.Entities.VaccinFood", b =>
+            modelBuilder.Entity("DTO.Entities.VaccineFood", b =>
                 {
                     b.HasOne("DTO.Entities.Food", "Food")
-                        .WithMany("VaccinFoods")
+                        .WithMany("VaccineFoods")
                         .HasForeignKey("FoodId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("DTO.Entities.Vaccin", "Vaccin")
-                        .WithMany("VaccinFoods")
-                        .HasForeignKey("VaccinId")
+                    b.HasOne("DTO.Entities.Vaccine", "Vaccine")
+                        .WithMany("VaccineFoods")
+                        .HasForeignKey("VaccineId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

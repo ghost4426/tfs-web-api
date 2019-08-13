@@ -9,4 +9,11 @@ namespace DTO.Models
         public int PremisesId { get; set; }
         public string Name { get; set; }
     }
+    public class Premises
+    {
+        public int PremisesId { get; set; }
+        public string Name { get; set; }
+        public string Address { get; set; }
+
+    }
 }

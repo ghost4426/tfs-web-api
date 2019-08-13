@@ -14,8 +14,6 @@ namespace DTO.Entities
         [ForeignKey("Type")]
         public int TypeId { get; set; }
 
-        public int BlockNumber { get; set; }
-
         [Required]
         public string TransactionHash { get; set; }
 

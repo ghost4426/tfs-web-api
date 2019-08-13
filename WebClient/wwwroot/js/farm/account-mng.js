@@ -1,4 +1,73 @@
-﻿var farmAccountTable = $('#farm-account-mng').DataTable({
+﻿$(document).ready(function () {
+    //Validation
+    $("#form-add-account").validate({
+        rules: {
+            Fullname: {
+                required: true,
+                lettersonly: true,
+                minlength: 3,
+                maxlength: 50
+            },
+            Username: {
+                required: true,
+                username: true,
+                minlength: 3,
+                maxlength: 20
+            },
+            Email: {
+                required: true,
+                email: true,
+                maxlength: 250
+            }
+        },
+        messages: {
+            Fullname: {
+                required: requiredError,
+                lettersonly: letterOnlyError,
+                minlength: "Vui lòng nhập ít nhất 3 ký tự",
+                maxlength: "Vui lòng nhập không quá 50 ký tự"
+            },
+            Username: {
+                required: requiredError,
+                username: userError,
+                minlength: "Vui lòng nhập ít nhất 3 ký tự",
+                maxlength: "Vui lòng nhập không quá 20 ký tự"
+            },
+            Email: {
+                required: requiredError,
+                email: emailError,
+                maxlength: "Vui lòng nhập không quá 250 ký tự"
+            }
+        },
+        submitHandler: function (form) {
+            var fullname = $('#Fullname').val();
+            var username = $('#Username').val();
+            var email = $('#Email').val();
+            console.log(fullname + "-" + username + "-" + email);
+            callAjaxAuth(
+                {
+                    url: MANAGER_CREATE_ACCOUNT_URI,
+                    dataType: JSON_DATATYPE,
+                    type: POST
+                }, JSON.stringify({
+                    Username: username,
+                    Email: email,
+                    Fullname: fullname
+                }),
+                function (result) {
+                    toastr.success('Thêm thành công');
+                    $('#add-account').modal('hide');
+                    $("#farm-account-mng").DataTable().ajax.reload();
+                },
+                function (result) {
+                    toastr.error(result.responseJSON.message);
+                }
+            )
+        }
+    });
+});
+
+var farmAccountTable = $('#farm-account-mng').DataTable({
     ajax: {
         url: MANAGER_GET_ACCOUNT_URI,
         headers: {
@@ -17,8 +86,8 @@
     'autoWidth': false,
     ordering: false,
     columns: [
-        { data: 'UserId', width:'10%' },
-        { data: 'Fullname', width: '25%' },
+        { data: 'Username', width:'15%' },
+        { data: 'Fullname', width: '20%' },
         { data: 'Email', width: '25%' },
         { data: 'PhoneNo', width: '15%' },   
         {
@@ -26,7 +95,7 @@
                 if (data.IsActive) {
                     return "<span class='badge badge-glow badge-pill badge-success'>Kích hoạt</span>";
                 } else {
-                    return "<span class='badge badge-glow badge-pill badge-danger'>Không kích hoạt</span>";
+                    return "<span class='badge badge-glow badge-pill badge-danger'>Vô hiệu hóa</span>";
                 }
             }, width:'15%'
         }, 
@@ -44,7 +113,12 @@
         + '<"row" <"col-sm-12"i>>'
         + '<"row" <"col-sm-12"tr>>'
         + '<"row"<"col-sm-5"l><"col-sm-7"p>>',
-    buttons: [],
+    buttons: [
+        {
+            text: '<i class="fa fa-plus white"></i> Thêm tài khoản',
+            className: 'btn btn-primary btn-sm mr-1 btnAccount'
+        }
+    ],
     language: table_vi_lang
 });
 
@@ -137,3 +211,15 @@ $('#farm-account-mng').on('click', 'button.btn-activate', function () {
         }
     });
 });
+
+$('.btnAccount').on('click', function () {
+    clearAddAccountModal();
+    $('#add-account').modal('show');
+});
+
+function clearAddAccountModal() {
+    $('#Fullname').val("");
+    $('#Username').val("");
+    $('#Email').val("");
+    $('.error').empty("");
+}

@@ -17,6 +17,9 @@ namespace Common.Mapper
             CreateMap<Entities.Premises, Models.FoodData.Provider>()
             .ForMember(dest => dest.ProviderId, opts => opts.MapFrom(src => src.PremisesId)).ReverseMap();
 
+            CreateMap<Entities.Premises, Models.FoodData.Distributor>()
+            .ForMember(dest => dest.DistributorId, opts => opts.MapFrom(src => src.PremisesId)).ReverseMap();
+
             CreateMap<Entities.Food, Models.CreateFoodRequest>()
                 .ReverseMap();
 
@@ -42,13 +45,21 @@ namespace Common.Mapper
 
             CreateMap<Entities.User, Models.UpdateUserRequest>().ReverseMap();
 
+            CreateMap<Entities.RegisterInfo, Models.CreateRegisterInfoRequest>().ReverseMap();
+
             CreateMap<Entities.RegisterInfo, Models.RegisterInfo>().ReverseMap();
 
             CreateMap<Entities.PremisesType, Models.PremisesType>().ReverseMap();
 
             CreateMap<Entities.Role, Models.Role>().ReverseMap();
 
-            CreateMap<Entities.RegisterInfo, Models.CreateRegisterInfoRequest>().ReverseMap();
+            CreateMap<Entities.Transaction, Models.Transaction>()
+              
+                .ReverseMap();
+           CreateMap<Entities.Premises, Models.PremisesProvider>()
+                .ReverseMap();
+            CreateMap<Entities.Premises, Models.Premises>()
+                 .ReverseMap();
 
             CreateMap<Entities.Premises, Models.RegisterRequest>()
                 .ForMember(dest => dest.PremisesName, opts => opts.MapFrom(src => src.Name))
@@ -60,8 +71,6 @@ namespace Common.Mapper
                 .ForMember(dest => dest.CategoryName, opts => opts.MapFrom(src => src.Category.Name))
                 .ForMember(dest => dest.CategoryId, opts => opts.MapFrom(src => src.Category.CategoryId))
                 .ReverseMap();
-
-            CreateMap<Entities.Premises, Models.PremisesProvider>().ReverseMap();
 
             CreateMap<Entities.Transaction, Models.TransactionRequest>().ReverseMap();
 
@@ -116,6 +125,28 @@ namespace Common.Mapper
                  .ForMember(dest => dest.text, opts => opts.MapFrom(src => src.Name))
                .ReverseMap();
 
+            CreateMap<Entities.Feeding, Models.Option>()
+                 .ForMember(dest => dest.id, opts => opts.MapFrom(src => src.FeedingId))
+                 .ForMember(dest => dest.text, opts => opts.MapFrom(src => src.Name))
+               .ReverseMap();
+
+            CreateMap<Entities.Feeding, Models.Feedingm>()
+                .ForMember(dest => dest.FeedingId, opts => opts.MapFrom(src => src.FeedingId))
+                .ForMember(dest => dest.FeedingName, opts => opts.MapFrom(src => src.Name))
+              .ReverseMap();
+
+            CreateMap<Entities.Vaccine, Models.Option>()
+                .ForMember(dest => dest.id, opts => opts.MapFrom(src => src.VaccineId))
+                .ForMember(dest => dest.text, opts => opts.MapFrom(src => src.Name))
+              .ReverseMap();
+
+            CreateMap<Entities.Vaccine, Models.Vaccinem>()
+                .ForMember(dest => dest.VaccineId, opts => opts.MapFrom(src => src.VaccineId))
+                .ForMember(dest => dest.VaccineName, opts => opts.MapFrom(src => src.Name))
+              .ReverseMap();
+
+
+            CreateMap<Entities.User, Models.CreateUserPremises>().ReverseMap();
         }
     }
 }

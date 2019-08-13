@@ -77,11 +77,14 @@ namespace CommonWebApi
             services.AddScoped<IDistributorFoodRepository, DistributorFoodRepositoryImpl>();
             services.AddScoped<IProviderFoodRepository, ProviderFoodRepositoryImpl>();
             services.AddScoped<ITransactionStatusRepository, TransactionStatusRepositoryImpl>();
-            services.AddScoped<IRegisterInfoRepository, RegisterInfoRepositoryImpl>();
+            services.AddScoped<IFeedingRepository, FeedingRepositoryImpl>();
+            services.AddScoped<IVaccineRepository, VaccineRepositoryImpl>();
+            services.AddScoped<IFoodDetailRepository, FoodDetailRepositoryImpl>();
+            services.AddScoped<IFeedingFoodRepository, FeedingFoodRepositoryImpl>();
             services.AddScoped<IPremisesTypeRepository, PremisesTypeRepositoryImpl>();
+            services.AddScoped<IRegisterInfoRepository, RegisterInfoRepositoryImpl>();
 
             //BusinessLogic
-            services.AddScoped<IProductBL, ProductBLImpl>();
             services.AddScoped<IUserBL, UserBLImpl>();
             services.AddScoped<IRoleBL, RoleBLImpl>();
             services.AddScoped<IFoodBL, FoodBLImpl>();
@@ -90,15 +93,19 @@ namespace CommonWebApi
             services.AddScoped<IPremisesBL, PremisesBLImpl>();
             services.AddScoped<ITreatmentBL, TreatmentBLImpl>();
             services.AddScoped<IFoodDetailBL, FoodDetailImpl>();
-            services.AddScoped<IRegisterInfoBL, RegisterInfoBLImpl>();
+            services.AddScoped<ITreatmentBL, TreatmentBLImpl>();
+            services.AddScoped<IFeedingBL, FeedingBLImpl>();
+            services.AddScoped<IVaccineBL, VaccineBLImpl>();
             services.AddSingleton<IEmailSender, EmailSender>();
-
+            services.AddScoped<IRegisterInfoBL, RegisterInfoBLImpl>();
             //Service
             services.AddScoped<IContractServices, ContractServicesImpl>();
 
             #endregion
+
             services.Configure<AuthMessageSenderOptions>(Configuration.GetSection("AuthMessageSenderOptions"));
             services.AddSingleton<IEmailSender, EmailSender>();
+
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
             {
@@ -150,7 +157,7 @@ namespace CommonWebApi
             {
             option.AddPolicy(MyAllowSpecificOrigins,
                 buidder => {
-                    buidder.WithOrigins("https://localhost:5000")
+                    buidder.WithOrigins("http://localhost:5000")
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials();

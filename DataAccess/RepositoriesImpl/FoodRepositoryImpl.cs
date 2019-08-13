@@ -34,14 +34,6 @@ namespace DataAccess.RepositoriesImpl
 
         public async Task<int> CreateProductAsync(Food newProduct)
         {
-            newProduct.FoodId = 0;
-            newProduct.CreateById = 11;
-            //newProduct.IsCertification = false;
-            //newProduct.IsFeeding = false;
-            //newProduct.IsPackaging = false;
-            //newProduct.IsTreatment = false;
-            //newProduct.IsVaccination = false;
-            //newProduct.CreatedDate = DateTime.Now;
             await this.InsertAsync(newProduct, true);
             return newProduct.FoodId;
         }

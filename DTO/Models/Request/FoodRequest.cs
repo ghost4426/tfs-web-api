@@ -24,4 +24,9 @@ namespace DTO.Models
     {
         public int FoodId { get; set; }
     }
+
+    public class CreateDistributorFoodRequest
+    {
+        public int FoodId { get; set; }
+    }
 }

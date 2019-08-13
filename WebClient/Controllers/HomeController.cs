@@ -15,11 +15,13 @@ namespace WebClient.Controllers
     [Route("")]
     public class HomeController : Controller
     {
+        [Authorize]
         public IActionResult Index()
         {
             return RedirectToAction("Dashboard");
         }
 
+        [Authorize]
         [Route("trang-chu")]
         public IActionResult Dashboard()
         {
