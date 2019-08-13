@@ -10,6 +10,8 @@ namespace DTO.Models.FoodData
 
         public string Name { get; set; }
 
+        public string Address { get; set; }
+
         public DateTime ReceivedDate { get; set; }
     }
 }
