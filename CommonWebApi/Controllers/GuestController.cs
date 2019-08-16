@@ -25,13 +25,12 @@ namespace AdminWebApi.Controllers
     [ApiController]
     public class GuestController : ControllerBase
     {
-
+        private readonly IRoleBL _roleBL;
         private readonly IUserBL _userBL;
         private readonly IFoodDataBL _foodDataBL;
         private readonly IMapper _mapper;
         private readonly IEmailSender _mailSender;
         private readonly JWTSetttings _appSettings;
-
 
         public GuestController(
             IUserBL userBL,
@@ -87,7 +86,7 @@ namespace AdminWebApi.Controllers
                 return Ok(new { messsage = MessageConstant.INSERT_SUCCESS });
 
             }
-            catch (DulicatedUsernameException e)
+            catch (DuplicatedUsernameException e)
             {
                 return BadRequest(new { message = e.Message });
             }
@@ -112,6 +111,20 @@ namespace AdminWebApi.Controllers
             {
                 return BadRequest(new { message = MessageConstant.UNHANDLE_ERROR, error = e.StackTrace });
             }
+        }
+        [HttpPut("account/activate/{activateCode}")]
+        public async Task<IActionResult> ActivateAccount(string activateCode)
+        {
+            try
+            {
+                await _userBL.ActivateAccount(activateCode);
+                return Ok();
+            }
+            catch(Exception e)
+            {
+                return BadRequest(new { message = MessageConstant.UNHANDLE_ERROR });
+            }
+            
         }
     }
 }

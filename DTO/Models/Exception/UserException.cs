@@ -11,13 +11,18 @@ namespace DTO.Models.Exception
         }
     }
 
-    public class DulicatedUsernameException : ApplicationException
+    public class DuplicatedUsernameException : ApplicationException
     {
-        public DulicatedUsernameException(string msg) : base(msg)
+        public DuplicatedUsernameException(string msg) : base(msg)
         {
         }
     }
-
+    public class DuplicatedPremisesNameException : ApplicationException
+    {
+        public DuplicatedPremisesNameException(string msg) : base(msg)
+        {
+        }
+    }
 
     public class DeActivedUsernameException : ApplicationException
     {
@@ -25,6 +30,7 @@ namespace DTO.Models.Exception
         {
         }
     }
+
     public class NotFoundException : ApplicationException
     {
         public NotFoundException(string msg) : base(msg)

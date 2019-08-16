@@ -157,7 +157,6 @@
                                 <div class="form-group">
                                     <label id="statusLabel" for="projectinput1"></label>
                                     <input id="txtUserIdActive" type="hidden" class="form-control" name="txtUserIdActive">
-                                    <label id="status" class="form-control" name="status"></label>
                                 </div>
                             </div>
                         </div>
@@ -171,6 +170,59 @@
         </div>
     </div>
 </div>
+<!-- Modal Add Veterinary -->
+<div class="modal fade text-left" id="addVeterinary" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="statusLabel1">Thêm mới Kiểm Duyệt Viên</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="form" id="addNewVeterinaryForm">
+                    <div class="form-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="projectinput1" style="font-weight:bold"><i style="color:seagreen" class="fa fa-user"></i> User Name: <label id="userValidate" style="color:red"></label></label>
+                                    <input id="txtVeterinaryName" type="text" class="form-control" name="txtVeterinaryName">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="projectinput1" style="font-weight:bold"><i style="color:seagreen" class="fa fa-pencil"></i> Họ và tên: <label id="fullnameValidate" style="color:red"></label></label>
+                                    <input id="txtVeterinaryFullname" type="text" class="form-control" name="txtVeterinaryFullname">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="projectinput1" style="font-weight:bold"><i style="color:seagreen" class="fa fa-envelope-o"></i> Email: <label id="emailValidate" style="color:red"></label></label>
+                                    <input id="txtVeterinaryEmail" type="text" class="form-control" name="txtVeterinaryEmail">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="projectinput1" style="font-weight:bold"><i style="color:seagreen" class="fa fa-phone"></i> Số Điện Thoại: <label id="phoneValidate" style="color:red"></label></label>
+                                    <input id="txtVeterinaryPhone" type="text" class="form-control" name="txtVeterinaryPhone">
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="addNewVeterinaryButton" type="button" class="btn btn-outline-primary">Thêm mới</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 
 @section Scripts{
     <!-- BEGIN PAGE VENDOR JS-->

@@ -19,11 +19,16 @@ namespace BusinessLogic.IBusinessLogic
 
         Task<IList<User>> GetUsers();
 
+        Task CreateVeterinary(User newVeterinary);
+
         Task RemoveByIdAsync(int id);
 
         Task<string> ChangeRole1User(int id, int role);
 
         Task<User> UpdateUser(User user, int ssId);
+
+        Task ChangeAvatar(int userId, string avaUrl);
+        Task ActivateAccount(string activateCode);
 
         Task updateUserStatus(int userId);
 

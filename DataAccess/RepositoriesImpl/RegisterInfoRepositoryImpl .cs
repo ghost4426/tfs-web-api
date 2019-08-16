@@ -16,6 +16,9 @@ namespace DataAccess.RepositoriesImpl
         {
             foodTrackerDbContext = context;
         }
-
+        public async Task<RegisterInfo> FindByName(string premisesName)
+        {
+            return await FindAsync(r => r.PremisesName == premisesName);
+        }
     }
 }

@@ -33,4 +33,3 @@
 //$("#view-provider-trans").click(function () {
 //    window.location.href = '/nha-cung-cap/quan-li-giao-dich';
 //});
-

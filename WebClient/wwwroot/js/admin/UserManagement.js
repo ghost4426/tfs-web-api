@@ -20,29 +20,49 @@ var userTable = $('#userTable').DataTable({
             data: 'IsActive',
             render: function (data, type, row) {
                 if (data == true) {
-                    return '<span class="badge badge-success"><b>Hiệu lực</b></span>';
+                    return '<span class="btn btn-success btn-sm mr-1 mb-1 ladda-button"><b>Hiệu lực</b></span>';
                 }
                 else {
-                    return '<span class="badge badge-danger"><b>Vô Hiệu lực</b></span>';
+                    return '<span class="btn btn-danger btn-sm mr-1 mb-1 ladda-button"><b>Vô Hiệu lực</b></span>';
                 };
             }
         },
         {
             data: null,
             render: function (data, type, row) {
-                return '<button onclick="getUserInfo(' + data.UserId + ')" class="btn btn-grey" data-toggle="modal" data-target="#confirm" tittle="Đổi trạng thái"><i class="fa fa-repeat"></i ></button >';
+                if (data.IsActive == true) {
+                    return '<button onclick="getUserInfo(' + data.UserId + ')" class="btn btn-danger" data-toggle="modal" data-target="#confirm" tittle="Đổi trạng thái"><i class="fa fa-times"></i ></button >';
+                }
+                else {
+                    return '<button onclick="getUserInfo(' + data.UserId + ')" class="btn btn-success" data-toggle="modal" data-target="#confirm" tittle="Đổi trạng thái"><i class="fa fa-check"></i ></button >';
+
+                };
 
             }
         },
     ],
+    dom: '<"row" <"col-sm-12"Bf>>'
+        + '<"row" <"col-sm-12"i>>'
+        + '<"row" <"col-sm-12"tr>>'
+        + '<"row"<"col-sm-5"l><"col-sm-7"p>>',
+    buttons: [
+        {
+            text: '<i class="fa fa-plus white"></i> Thêm mới Kiểm Duyệt viên',
+            
+            className: 'btn btn-primary btn-sm mr-1 btnAddNewVeterinary',
+        },
+    ],
     language: userTable_vi_lang
 });
-
+$('.btnAddNewVeterinary').on('click', function () {
+    $('#addVeterinary').modal('show');
+    
+});
 $('#confirmButton').click(function () {
     var userId = parseInt($('#txtUserIdActive').val());
     callAjax(
         {
-            url: DEACTIVE_USER_URI + 16,
+            url: DEACTIVE_USER_URI + userId,
             dataType: JSON_DATATYPE,
             type: PUT,
         }, JSON.stringify(),
@@ -57,12 +77,75 @@ $('#confirmButton').click(function () {
     )
 });
 
+$('#addNewVeterinaryButton').click(function () {
+    var isValidated = true;
+    var username = $('#txtVeterinaryName').val();
+    var fullname = $('#txtVeterinaryFullname').val();
+    var email = $('#txtVeterinaryEmail').val();
+    var phone = $('#txtVeterinaryPhone').val();
+    if (!validate(username)) {
+        $('#userValidate').text("*Vui lòng nhập tài khoản*");
+        isValidated = false;
+    } else {
+        $('#userValidate').text("");
+    }
+    if (!validate(fullname)) {
+        $('#fullnameValidate').text("*Vui lòng nhập Họ và tên*");
+        isValidated = false;
+    } else {
+        $('#fullnameValidate').text("");
+    }
+    if (!validate(email)) {
+        $('#emailValidate').text("*Vui lòng nhập đúng Email*");
+        isValidated = false;
+    } else {
+        $('#emailValidate').text("");
+    }
+    if (!validate(phone)) {
+        $('#phoneValidate').text("*Vui lòng nhập đúng Số điện thoại*");
+        isValidated = false;
+    } else {
+        $('#phoneValidate').text("");
+    }
+    if (isValidated) {
+        Create(username, fullname, email, phone);
+    }
+});
+function validate(input) {
+    if (input == null || input == "") {
+        return false;
+    }
+    return true;
+};
+function Create(username, fullname, email, phone) {
+    callAjax(
+        {
+            url: CREATE_VETERINARY_URI,
+            dataType: JSON_DATATYPE,
+            type: POST,
+        }, JSON.stringify({
+            Username: username,
+            Fullname: fullname,
+            Email: email,
+            Phone: phone
+        }),
+        function (result) {
+            toastr.success('Tạo mới Kiểm Duyệt Viên thành Công', 'Tạo mới thành công');
+            $('#addVeterinary').modal('hide');
+            $('#userTable').DataTable().ajax.reload();
+        },
+        function (result) {
+            toastr.error(result.message());
+        }
+    )
+};
+
 function getUserInfo(userId) {
 
     callAjax(
         {
             type: GET,
-            url: GET_USER_DETAILS_URI + 16,
+            url: GET_USER_DETAILS_URI + userId,
             dataType: JSON_DATATYPE,
 
         },
@@ -78,9 +161,17 @@ function getUserInfo(userId) {
             $('div#RoleOption select').val(user.data.RoleId).change();
             $('#txtUserIdActive').val(user.data.UserId);
             if (user.data.IsActive == true) {
-                document.getElementById("statusLabel").innerHTML = "Bạn có muốn thay đổi trạng thái sang Vô hiệu lực không?";
+                document.getElementById("statusLabel").innerHTML = "Bạn có muốn thay đổi trạng thái của tài khoản <font style='color:blue;font-weight:bold'>" +
+                    user.data.Username +
+                    "</font> sang" +
+                    "<font style='color:red'> Vô hiệu lực</font> " +
+                    " không?";
             } else {
-                document.getElementById("statusLabel").innerHTML = "Bạn có muốn thay đổi trạng thái sang Hiệu lực không?";
+                document.getElementById("statusLabel").innerHTML = "Bạn có muốn thay đổi trạng thái của tài khoản <font style='color:blue;font-weight:bold'>" +
+                    user.data.Username +
+                    "</font> sang" +
+                    "<font style='color:Green'> Hiệu lực</font>" +
+                    " không?";
             }
             $('#status').val(user.data.IsActive);
         },
@@ -89,20 +180,7 @@ function getUserInfo(userId) {
         })
     getRole();
 }
-//Load Image
-function readURL(input) {
-    if (input.files && input.files[0]) {
-        var reader = new FileReader();
-        reader.onload = function (e) {
-            $('#avatar')
-                .attr('src', e.target.result)
-                .width(150)
-                .height(200);
-        };
 
-        reader.readAsDataURL(input.files[0]);
-    }
-}
 function getRole() {
     $("#dllRole").empty();
     $.ajax({
@@ -119,62 +197,7 @@ function getRole() {
         }
     })
 }
-//Change pass
-$('#changePassButton').click(function () {
-    var userId = parseInt($('#txtUserIdPass').val());
-    var oldPass = $('#txtOldPass').val();
-    var newPass = $('#txtNewPass').val();
-    var confirmNewPass = $('#txtConfirmNewPass').val();
-    if (confirmNewPass == newPass) {
-        callAjax(
-            {
-                url: USER_PASS_CHANGE_URI + 16,
-                dataType: JSON_DATATYPE,
-                type: PUT,
-            },
-            JSON.stringify({
-                newPass: newPass,
-                oldPass: oldPass,
-            }),
-            function (result) {
-                toastr.success('Đổi mật khẩu thành công', 'Thành Công');
-                //setTimeout("location.reload(true);", 2000);
-                $('#changePass').modal('hide');
-                /*$('#userTable').DataTable().ajax.reload();*/
-            },
-            function (result) {
-                toastr.error("Mật khẩu cũ không chính xác!");
-            })
-    } else {
-        toastr.error("Xác nhận mật khẩu không chính xác!")
-    }
-});
-//Confirm save 
-$('#confirmSaveButton').click(function () {
-    var userId = parseInt($('#userId').val());
-    var FullName = $('#FullName').val();
-    var Email = $('#Email').val();
-    var Phone = $('#Phone').val();
-    callAjax(
-        {
-            type: PUT,
-            url: USER_UPDATE_URI + 16,
-        },
-        JSON.stringify({
-            fullName: FullName,
-            Email: Email,
-            phone: Phone
-        }),
-        function (result) {
-            toastr.success('Cập nhật thông tin người dùng thành công', 'Thành Công');
-            //setTimeout("location.reload(true);", 2000);
-            $('#confirm').modal('hide');
-            /*$('#userTable').DataTable().ajax.reload();*/
-        },
-        function (result) {
-            toastr.error(result);
-        })
-});
+
 //Change Role
 function changeRole() {
     $('#changeRoleButton').click(function () {
@@ -182,7 +205,7 @@ function changeRole() {
         var roleId = $('select[id="dllRole"]').val();
         $.ajax({
             type: 'PUT',
-            url: CHANGE_ROLE_URI + 16,
+            url: CHANGE_ROLE_URI + userId,
             contentType: 'json',
             headers: {
                 //'Accept': 'application/json',
@@ -201,22 +224,4 @@ function changeRole() {
     })
 }
 
-/*$('#changeRoleButton').click(function () {
-    var userId = parseInt($('input[name="UserId2"]').val());
-    var roleId = $('select[name="Role2"]').val();
-    callAjax({
-        type: PUT,
-        url: 'https://localhost:4200/api/Admin/User/Role/' + userId,
-        dataType: JSON_DATATYPE,
-        data: roleId,
-    }, JSON.stringify(),
-        function (result) {
-            toastr.success('Cập nhật thông tin người dùng thành công', 'Thành Công');
-            $('#changeRole').modal('hide');
-            $('#userTable').DataTable().ajax.reload();
-        },
-        function (result) {
-            toastr.error(result);
-        }
-    )
-});*/
+

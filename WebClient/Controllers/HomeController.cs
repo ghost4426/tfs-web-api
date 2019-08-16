@@ -73,7 +73,7 @@ namespace WebClient.Controllers
                 {
                     IsEssential = true
                 });
-                return RedirectToAction("Dashboard");
+                return RedirectToAction("Dashboard", "Home");
             }
 
             ModelState.AddModelError(string.Empty, result.Message);
@@ -85,6 +85,11 @@ namespace WebClient.Controllers
         {
             return View();
         }
+        [Route("dang-ky-co-so")]
+        public IActionResult CreatePremises()
+        {
+            return View();
+        }
 
         [Route("tu-choi-quyen-truy-cap")]
         public IActionResult AccessDenied()
@@ -92,6 +97,11 @@ namespace WebClient.Controllers
             return View();
         }
 
+        [Route("kich-hoat-tai-khoan")]
+        public IActionResult ActivationSuccess()
+        {
+            return View();
+        }
 
         [Authorize]
         [Route("dang-xuat")]
