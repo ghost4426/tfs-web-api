@@ -193,31 +193,6 @@ function clearDetailModal() {
     $('#dllFoodDetailType').val(null).trigger("change");
 }
 
-//Add product
-$('#btnAddProduct').click(function () {
-    var cate = parseInt($('select[name="NewCategory"]').val());
-    var breed = $('input[name="Breed"]').val();
-    callAjaxAuth(
-        {
-            url: CREATE_FOOD_DATA_URI,
-            dataType: JSON_DATATYPE,
-            type: POST
-        }, JSON.stringify({
-            CategoryId: cate,
-            Breed: breed
-        }),
-        function (result) {
-            toastr.success(result.message);
-            $('#addNewFoodModal').modal('hide');
-            $('select[name="NewCategory"]').val("1");
-            $('input[name="Breed"]').val("");
-            $("#farm-food-mng").DataTable().ajax.reload();
-        },
-        function (result) {
-            toastr.error(result.message);
-        }
-    )
-});
 var preId = 0;
 
 function clearViewDetailModel() {
