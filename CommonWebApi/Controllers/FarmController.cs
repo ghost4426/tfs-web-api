@@ -78,7 +78,7 @@ namespace CommonWebApi.Controllers
                 await _foodBL.CreateProductAsync(food);
                 var transactionHash = await _foodDataBL.CreateFood(food, food.FarmId);
                 await _foodBL.AddDetail(food.FoodId, EFoodDetailType.CREATE, transactionHash, food.CreateById);
-                return Ok(new { messeage = MessageConstant.INSERT_SUCCESS });
+                return Ok(new { message = MessageConstant.INSERT_SUCCESS });
             }
             catch (Exception ex)
             {
@@ -104,7 +104,6 @@ namespace CommonWebApi.Controllers
         [HttpPut("food/feedings/{foodId}")]
         public async Task<IActionResult> AddFeedings(int foodId, [FromBody]List<string> feedings)
         {
-            
             try
             {
                 var userId = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
@@ -114,10 +113,8 @@ namespace CommonWebApi.Controllers
             }
             catch (Exception ex)
             {
-
                 return BadRequest(new { message = MessageConstant.UNHANDLE_ERROR, error = ex.StackTrace });
             }
-
         }
 
 
@@ -231,7 +228,7 @@ namespace CommonWebApi.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(new { msg = e.Message });
+                return BadRequest(new { message = e.Message });
             }
         }
 
@@ -246,11 +243,11 @@ namespace CommonWebApi.Controllers
                 var userId = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
                 var premisesId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
                 _feedingBL.AddNewFeedingList(feedingList, premisesId, userId);
-                return Ok(new { msg = MessageConstant.INSERT_SUCCESS });
+                return Ok(new { message = MessageConstant.INSERT_SUCCESS });
             }
             catch (Exception e)
             {
-                return BadRequest(new { msg = e.Message });
+                return BadRequest(new { message = e.Message });
             }
         }
 
@@ -264,7 +261,7 @@ namespace CommonWebApi.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(new { msg = e.Message });
+                return BadRequest(new { message = e.Message });
             }
         }
 
@@ -278,7 +275,7 @@ namespace CommonWebApi.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(new { msg = e.Message });
+                return BadRequest(new { message = e.Message });
             }
         }
 
@@ -289,11 +286,11 @@ namespace CommonWebApi.Controllers
             {
                 var userId = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
                 await _feedingBL.RemoveFeedingById(id, userId);
-                return Ok(new { msg = "Xóa thành công" });
+                return Ok(new { message = "Xóa thành công" });
             }
             catch (Exception e)
             {
-                return BadRequest(new { msg = e.Message, error = e.StackTrace });
+                return BadRequest(new { message = e.Message, error = e.StackTrace });
             }
         }
 
@@ -310,7 +307,7 @@ namespace CommonWebApi.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(new { msg = e.Message });
+                return BadRequest(new { message = e.Message });
             }
         }
 
@@ -324,7 +321,7 @@ namespace CommonWebApi.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(new { msg = e.Message });
+                return BadRequest(new { message = e.Message });
             }
         }
 
@@ -338,7 +335,7 @@ namespace CommonWebApi.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(new { msg = e.Message });
+                return BadRequest(new { message = e.Message });
             }
         }
 
@@ -349,11 +346,11 @@ namespace CommonWebApi.Controllers
             {
                 var userId = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
                 await _vaccineBL.RemoveVaccineById(id, userId);
-                return Ok(new { msg = "Xóa thành công" });
+                return Ok(new { message = "Xóa thành công" });
             }
             catch (Exception e)
             {
-                return BadRequest(new { msg = e.Message, error = e.StackTrace });
+                return BadRequest(new { message = e.Message, error = e.StackTrace });
             }
         }
     }

@@ -88,7 +88,7 @@ namespace CommonWebApi.Controllers
                 return Ok(new { messsage = MessageConstant.INSERT_SUCCESS });
 
             }
-            catch (DulicatedUsernameException e)
+            catch (DuplicatedUsernameException e)
             {
                 return BadRequest(new { message = e.Message });
             }

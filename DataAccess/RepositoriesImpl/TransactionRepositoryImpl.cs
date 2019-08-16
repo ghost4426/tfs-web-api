@@ -41,6 +41,7 @@ namespace DataAccess.RepositoriesImpl
 
         public async Task<IList<Transaction>> getAllFarmTransaction(int premisesId)
         {
+
             IList<Transaction> list = await FindAllAsync(x => x.SenderId == premisesId);
             IEnumerable <Transaction> result = list.OrderByDescending(x => x.CreateDate).Take(500);
             return result.ToList();
@@ -48,6 +49,7 @@ namespace DataAccess.RepositoriesImpl
 
         public async Task<IList<Transaction>> getAllProviderReceiveTransaction(int premisesId)
         {
+
             IList<Transaction> list = await FindAllAsync(x => x.ReceiverId == premisesId);
             IEnumerable<Transaction> result = list.OrderByDescending(x => x.CreateDate).Take(500);
             return result.ToList();

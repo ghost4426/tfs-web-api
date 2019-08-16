@@ -196,5 +196,12 @@ namespace BusinessLogic.BusinessLogicImpl
 
             return await SaveFoodData(FoodData);
         }
+        public async Task<FoodData> GetFoodDataByIDAndProviderIDAndDistributorID(long foodId, int providerId,int distributorId)
+        {
+            FoodData food = await _service.GetFoodDataByID(foodId);
+            food.Providers = food.Providers.Where(x => x.ProviderId == providerId).ToList();
+            food.Distributors = food.Distributors.Where(x => x.DistributorId == distributorId).ToList();
+            return food;
+        }
     }
 }

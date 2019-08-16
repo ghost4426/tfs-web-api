@@ -1,7 +1,6 @@
 ﻿using DataAccess.Context;
 using DataAccess.IRepositories;
 using DTO.Entities;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +21,11 @@ namespace DataAccess.RepositoriesImpl
             IList<Premises> distribur = await FindAllAsync(x => x.TypeId == 3);
             IEnumerable<Premises> result = distribur.Where(x => x.Name.ToLower().Contains(keyword));
             return result.ToList();
+        }
+
+        public Task<Premises> FindByName(string premisesName)
+        {
+            return FindAsync(p => p.Name.Trim().ToLower() == premisesName.Trim().ToLower());
         }
 
         public async Task<IList<Premises>> getAllProviderAsync(string keyword)

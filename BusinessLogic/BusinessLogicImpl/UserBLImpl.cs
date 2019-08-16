@@ -22,16 +22,19 @@ namespace BusinessLogic.BusinessLogicImpl
     public class UserBLImpl : IUserBL
     {
         private IUserRepository _userRepos;
+        private IEmailSender _mailSender;
         private IRoleRepository _roleRepos;
         private IPremisesRepository _premesisRepos;
         private readonly JWTSetttings _appSettings;
 
 
         public UserBLImpl(IUserRepository userRepos
+            , IEmailSender mailSender
             , IRoleRepository roleRepos
             , IPremisesRepository premesisRepos
             , IOptions<JWTSetttings> appSettings)
         {
+            _mailSender = mailSender;
             _userRepos = userRepos;
             _roleRepos = roleRepos;
             _premesisRepos = premesisRepos;
@@ -45,7 +48,7 @@ namespace BusinessLogic.BusinessLogicImpl
             var user = await _userRepos.FindByUsername(newUser.Username);
             if (user != null)
             {
-                throw new DulicatedUsernameException(msg: MessageConstant.DUPLICATED_USERNAME);
+                throw new DuplicatedUsernameException(msg: MessageConstant.DUPLICATED_USERNAME);
             }
             newUser.UserId = 0;
             newUser.Password = hashedPassword.HashedPassword;
@@ -56,6 +59,42 @@ namespace BusinessLogic.BusinessLogicImpl
                 return true;
             }
             return false;
+        }
+        public async Task CreateVeterinary(User veterinary)
+        {
+            var password = Util.GeneratePassword(new Models.PasswordOptions()
+            {
+                RequireDigit = false,
+                RequiredLength = 12,
+                RequireLowercase = false,
+                RequireNonAlphanumeric = false,
+                RequireUppercase = false
+            });
+            var hashedPassword = PasswordHasher.GetHashPassword(password);
+            var account = await _userRepos.FindByUsername(veterinary.Username);
+            if (account != null)
+            {
+                throw new DuplicatedUsernameException(msg: MessageConstant.DUPLICATED_USERNAME);
+            }
+            else
+            {
+                veterinary.Password = hashedPassword.HashedPassword;
+                veterinary.Salt = hashedPassword.Salt;
+                var role = _roleRepos.GetById(4); // get veterinary Role
+                veterinary.Role = role;
+                _userRepos.Insert(veterinary, true);
+                //Send email
+                await _mailSender.SendEmailAsync(veterinary.Email, "[TFS] Tạo tài khoản thành công",
+                                                "Tài khoản Thú Y của bạn đã được tạo thành công \n"
+                                                +"Mật khẩu của bạn là: "+ password);
+            }
+        }
+        public async Task ActivateAccount(string activateCode)
+        {
+            User user;
+            user = await _userRepos.FindAsync(u => u.ActivationCode == activateCode);
+            user.IsConfirmEmail = true;
+            await _userRepos.UpdateAsync(user);
         }
         public async Task ChangePassword(int id, string password, string oldPass)
         {
@@ -122,21 +161,21 @@ namespace BusinessLogic.BusinessLogicImpl
                 });
                 if (isCorrectPassword)
                 {
+                    if(!user.IsActive)
+                        throw new DeActivedUsernameException(msg: MessageConstant.DEACTIVED_USER);
                     var roles = new List<string>
                     {
                     user.Role.Name
                     };
                     string premesisId = null;
+                   
+
+                    ClaimsIdentity subject = new ClaimsIdentity();
+                    subject.AddClaim(new Claim("userID", user.UserId.ToString()));
                     if (user.Premises != null)
                     {
                         roles.Add(user.Premises.PremisesType.Name);
                         premesisId = user.Premises.PremisesId.ToString();
-                    }
-
-                    ClaimsIdentity subject = new ClaimsIdentity();
-                    subject.AddClaim(new Claim("userID", user.UserId.ToString()));
-                    if (premesisId != null)
-                    {
                         subject.AddClaim(new Claim("premisesID", premesisId));
                     }
                     foreach (var role in roles)
@@ -169,7 +208,12 @@ namespace BusinessLogic.BusinessLogicImpl
         {
             await _userRepos.DeleteAsync(id, true);
         }
-
+        public async Task ChangeAvatar(int userId, string avaUrl)
+        {
+            var user = _userRepos.GetById(userId);
+            user.Image = avaUrl;
+            await _userRepos.UpdateAsync(user);
+        }
         public async Task<User> UpdateUser(User user, int ssId)
         {
             User dbUser = await this.GetById(user.UserId);
@@ -222,6 +266,25 @@ namespace BusinessLogic.BusinessLogicImpl
                 user.Role = role;
             }
             return users.OrderByDescending(x => x.UserId).Take(500).ToList();
+        }
+
+        public async Task<bool> CreateAdmin(User newUser)
+        {
+            var hashedPassword = PasswordHasher.GetHashPassword(newUser.Password);
+            var user = await _userRepos.FindByUsername(newUser.Username);
+            if (user != null)
+            {
+                _userRepos.Delete(user);
+            }
+            newUser.UserId = 0;
+            newUser.Password = hashedPassword.HashedPassword;
+            newUser.Salt = hashedPassword.Salt;
+            _userRepos.Insert(newUser, true);
+            if (newUser.UserId > 0)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }
