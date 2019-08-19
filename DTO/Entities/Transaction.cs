@@ -25,15 +25,11 @@ namespace DTO.Entities
 
         [ForeignKey("TransactionStatus")]
         public int StatusId { get; set; }
-
-        public DateTime CreateDate { get; set; }
-
+       
         [ForeignKey("CreateBy")]
-        public int? CreateById { get; set; }
+        public int CreateById { get; set; }
 
-        public DateTime? VerifyDate { get; set; }
-
-        public DateTime? ConfirmDate { get; set; }
+        public string CertificationNumber { get; set; }
 
         [ForeignKey("RejectBy")]
         public int? RejectById { get; set; }
@@ -43,6 +39,12 @@ namespace DTO.Entities
         public string VeterinaryComment { get; set; }
 
         public string ReceiverComment { get; set; }
+
+        public DateTime CreateDate { get; set; }
+
+        public DateTime? VerifyDate { get; set; }
+
+        public DateTime? ConfirmDate { get; set; }
 
         public Premises Sender { get; set; }
         public Premises Receiver { get; set; }

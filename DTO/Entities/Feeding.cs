@@ -27,11 +27,12 @@ namespace DTO.Entities
         [ForeignKey("UpdateBy")]
         public int UpdateById { get; set; }
 
+        public bool IsDelete { get; set; }
+
         public Premises Premises { get; set; }
         public User CreateBy { get; set; }
         public User UpdateBy { get; set; }
 
-        public bool IsDelete { get; set; }
 
         public ICollection<FeedingFood> FeedingFoods { get; set; }
     }
