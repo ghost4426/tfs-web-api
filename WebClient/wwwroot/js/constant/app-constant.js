@@ -4,17 +4,15 @@ const PUT = "PUT";
 const DELETE = "DELETE";
 const JSON_DATATYPE = "JSON";
 
-
-const BASE_ADMIN_API_URI = "http://localhost:4200/";
 const BASE_COMMON_API_URI = "http://localhost:4201/";
 
-const BASE_ADMIN_URI = "api/admin/";
+const BASE_ADMIN_URI = BASE_COMMON_API_URI + "api/admin/";
 const BASE_PROVIDER_URI = "api/provider/";
 const BASE_FAMR_URI = BASE_COMMON_API_URI + "api/farm/";
 const BASE_STAFF_URI = "api/staff/";
 const BASE_COMMON_URI = BASE_COMMON_API_URI + "api/common/";
 const BASE_GUEST_URI = BASE_COMMON_API_URI + "api/guest/";
-const BASE_REGISTER_URI = "api/register/";
+const BASE_REGISTER_URI = BASE_COMMON_API_URI+ "api/register/";
 const BASE_MANAGER_URI = "api/manager/";
 
 //Guest
@@ -46,19 +44,19 @@ const REMOVE_VACCINE_URI = BASE_FAMR_URI + "vaccine/";
 
 
 //Admin
-const GET_USER_URI = BASE_ADMIN_API_URI + BASE_ADMIN_URI + "users";
-const DEACTIVE_USER_URI = BASE_ADMIN_API_URI + BASE_ADMIN_URI + "user/deactive/";
-const GET_USER_DETAILS_URI = BASE_ADMIN_API_URI + BASE_ADMIN_URI + "user/";
-const GET_ROLE_URI = BASE_ADMIN_API_URI + BASE_ADMIN_URI + "role";
-const USER_PASS_CHANGE_URI = BASE_ADMIN_API_URI + BASE_ADMIN_URI + "password/";
-const USER_UPDATE_URI = BASE_ADMIN_API_URI + BASE_ADMIN_URI + "users/update/";
-const CHANGE_ROLE_URI = BASE_ADMIN_API_URI + BASE_ADMIN_URI + "user/role/";
-const GET_PREMISES_URI = BASE_ADMIN_API_URI + BASE_ADMIN_URI + "premises";
-const UPDATE_PREMISES_STATUS_URI = BASE_ADMIN_API_URI + BASE_ADMIN_URI + "premises/status/";
-const CREATE_NEW_PREMISES_URI = BASE_COMMON_API_URI + BASE_REGISTER_URI + "premises";
-const GET_PROFILE_URI = BASE_ADMIN_API_URI + BASE_ADMIN_URI + "profile";
-const CHANGE_AVA_URI = BASE_ADMIN_API_URI + BASE_ADMIN_URI + "user/avatar/";
-const CREATE_VETERINARY_URI = BASE_ADMIN_API_URI + BASE_ADMIN_URI + "veterinary";
+const GET_USER_URI = BASE_ADMIN_URI + "users";
+const DEACTIVE_USER_URI = BASE_ADMIN_URI + "user/deactive/";
+const GET_USER_DETAILS_URI = BASE_ADMIN_URI + "user/";
+const GET_ROLE_URI = BASE_ADMIN_URI + "role";
+const USER_PASS_CHANGE_URI = BASE_ADMIN_URI + "password/";
+const USER_UPDATE_URI = BASE_ADMIN_URI + "users/update/";
+const CHANGE_ROLE_URI = BASE_ADMIN_URI + "user/role/";
+const GET_PREMISES_URI = BASE_ADMIN_URI + "premises";
+const UPDATE_PREMISES_STATUS_URI = BASE_ADMIN_URI + "premises/status/";
+const CREATE_NEW_PREMISES_URI = BASE_REGISTER_URI + "premises";
+const GET_PROFILE_URI = BASE_ADMIN_URI + "profile";
+const CHANGE_AVA_URI = BASE_ADMIN_URI + "user/avatar/";
+const CREATE_VETERINARY_URI = BASE_ADMIN_URI + "veterinary";
 
 // Provider
 const GET_FOOD_PROVIDER_URI = BASE_COMMON_API_URI + BASE_PROVIDER_URI + "getFoodByProvider";

@@ -96,8 +96,9 @@ namespace CommonWebApi
             services.AddScoped<ITreatmentBL, TreatmentBLImpl>();
             services.AddScoped<IFeedingBL, FeedingBLImpl>();
             services.AddScoped<IVaccineBL, VaccineBLImpl>();
-            services.AddSingleton<IEmailSender, EmailSender>();
+            services.AddScoped<IPremisesTypeBL, PremisesTypeBLImpl>();
             services.AddScoped<IRegisterInfoBL, RegisterInfoBLImpl>();
+            services.AddSingleton<IEmailSender, EmailSender>();
             //Service
             services.AddScoped<IContractServices, ContractServicesImpl>();
 
