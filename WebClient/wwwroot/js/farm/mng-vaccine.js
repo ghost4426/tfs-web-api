@@ -2,7 +2,7 @@
     $('#vaccineList').append(
         '  <div class="input-group mb-1">'
         + ' <input type="hidden" class="form-control vaccine-id" value="0">'
-        + ' <input type="text" placeholder="Nhập thức ăn" class="form-control vaccine-name" >'
+        + ' <input type="text" placeholder="Nhập vac-xin" class="form-control vaccine-name" >'
         + ' <span class="input-group-append">'
         + '   <button class="btn btn-danger" onclick="removeVaccineMng(this)" type="button"><i class="ft-x"></i></button>'
         + ' </span>'

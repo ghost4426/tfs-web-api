@@ -17,6 +17,14 @@ namespace DTO.Models.Exception
         {
         }
     }
+
+    public class DuplicateEmailException : ApplicationException
+    {
+        public DuplicateEmailException(string msg) : base(msg)
+        {
+
+        }
+    }
     public class DuplicatedPremisesNameException : ApplicationException
     {
         public DuplicatedPremisesNameException(string msg) : base(msg)

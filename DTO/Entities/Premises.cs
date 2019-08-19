@@ -21,6 +21,7 @@ namespace DTO.Entities
         public int TypeId { get; set; }
 
         public DateTime CreateDate { get; set; }
+        public bool IsActive { get; set; }
 
         public PremisesType PremisesType { get; set; }
 

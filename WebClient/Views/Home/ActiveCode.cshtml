@@ -1,0 +1,88 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Kích hoạt tài khoản - Food Tracking</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--===============================================================================================-->
+    <link rel="icon" type="image/png" href="~/app-assets/images/icons/favicon.ico" />
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/app-assets/vendor/bootstrap/css/bootstrap.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/app-assets/fonts/font-awesome/css/font-awesome.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/app-assets/vendor/animate/animate.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/app-assets/vendor/css-hamburgers/hamburgers.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/app-assets/vendor/select2/select2.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/css/home/util.css">
+    <link rel="stylesheet" type="text/css" href="~/css/home/login.css">
+    <!--===============================================================================================-->
+</head>
+<body>
+
+    <div class="limiter">
+        <div class="container-login100">
+            <div class="wrap-login100">
+                <div class="login100-pic js-tilt" data-tilt>
+                    <img src="~/app-assets/images/img-01.png" alt="IMG">
+                </div>
+
+                <form class="login100-form validate-form" method="post" novalidate>
+                    <span class="login100-form-title">
+                        <b>Một mã kích hoạt đã được gửi đến email của bạn</b>
+                    </span>
+                    <div class="wrap-input100 validate-input" data-validate="Nhập mã hợp lệ">
+                        <input class="input100" type="text" placeholder="Mã kích hoạt">
+                        <span class="focus-input100"></span>
+                        <span class="symbol-input100">
+                            <i class="fa fa-envelope" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="container-login100-form-btn">
+                        <button class="login100-form-btn">
+                            Xác nhận
+                        </button>
+                    </div>
+
+                    <div class="text-center p-t-136">
+                        <a class="txt2" asp-controller="Home" asp-action="Login">
+                            Đăng nhập
+                            <i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!--===============================================================================================-->
+    <script src="~/app-assets/vendor/jquery/jquery-3.2.1.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/app-assets/vendor/bootstrap/js/popper.js"></script>
+    <script src="~/app-assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/app-assets/vendor/select2/select2.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/app-assets/vendor/tilt/tilt.jquery.min.js"></script>
+    <script>
+        $('.js-tilt').tilt({
+            scale: 1.1
+        })
+    </script>
+    <!--===============================================================================================-->
+    <script src="~/js/home/login.js"></script>
+
+</body>
+</html>

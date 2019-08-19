@@ -98,7 +98,7 @@ namespace WebClient.Controllers
         }
 
         [Route("kich-hoat-tai-khoan")]
-        public IActionResult ActivationSuccess()
+        public IActionResult ActiveCode()
         {
             return View();
         }

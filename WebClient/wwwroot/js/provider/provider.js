@@ -243,7 +243,7 @@ var providerFoodTable = $('#provider-food-mng').DataTable({
             render: function (o) {
                 var btnDetail = '<button class="btn btn-grey btn-sm btn-detail" title="Chi tiết"><i class="icon-eye"></i ></button >\n';
                 var btnUpdate = '<button class="btn btn-info btn-sm btn-add-detail" title="Thêm thông tin"><i class="icon-pencil"></i></button>\n'
-                var btnBarcode = '<button class="btn btn-secondary btn-sm btn-barcode" title="Barcode"><i class="fa fa-barcode"></i></button> '
+                var btnBarcode = '<button class="btn btn-success btn-sm btn-barcode" title="Bán sản phẩm"><i class="icon-basket"></i></button> '
                 return '<div class="col-12">' + btnDetail + btnUpdate + btnBarcode + '</div>';
             }
         }

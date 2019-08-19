@@ -20,6 +20,7 @@ const BASE_MANAGER_URI = "api/manager/";
 //Guest
 const GET_FOODDATA_BY_ID_URI = BASE_GUEST_URI + "foodData";
 const ACTIVATE_URI = BASE_COMMON_API_URI + "account/activate/";
+const REGISTER_URI = BASE_COMMON_API_URI + BASE_GUEST_URI + "register";
 
 //Farm
 const GET_FOOD_DETAIL_TYPE_URI = BASE_FAMR_URI + "productdetailtype";

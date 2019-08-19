@@ -32,7 +32,7 @@ namespace BusinessLogic.IBusinessLogic
 
         Task updateUserStatus(int userId);
 
-        Task Register(User user, Premises premises);
+        Task<bool> Register(User user, Premises premises);
 
         Task ChangePassword(int id, string password, string oldPass);
 
