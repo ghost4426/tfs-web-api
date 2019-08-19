@@ -12,9 +12,6 @@ using AutoMapper;
 using Common.Enum;
 using Microsoft.AspNetCore.Authorization;
 using Common.Constant;
-using System.Web.Http.Results;
-using System.Net.Http;
-using System.Net;
 
 namespace CommonWebApi.Controllers
 {
