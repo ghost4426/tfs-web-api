@@ -117,42 +117,6 @@ namespace AdminWebApi.Controllers
         //    }
         //}
 
-        [AllowAnonymous]
-        [HttpPost("user/admin")]
-        public async Task<IActionResult> CreateAdmin()
-        {
-            Entities.User user = null;
-            var isCreated = false;
-            try
-            {
-                var admin = new Entities.User()
-                {
-                    Username = "admin",
-                    Password = "admin",
-                    Fullname = "Admin System",
-                    Email = "Admin@tfs.com",
-                    RoleId = 1
-                };
-                
-                isCreated = await _userBL.CreateAdmin(admin);
-                
-                return Ok(new { messsage = MessageConstant.INSERT_SUCCESS });
-
-            }
-            catch (DuplicatedUsernameException e)
-            {
-                return BadRequest(new { message = e.Message });
-            }
-            catch (Exception e)
-            {
-                if (isCreated)
-                {
-                    await _userBL.RemoveByIdAsync(user.UserId);
-                }
-                return BadRequest(new { message = e.Message });
-            }
-        }
-
         [HttpPost("premises")]
         public async Task<IActionResult> CreatePremises()
         {
