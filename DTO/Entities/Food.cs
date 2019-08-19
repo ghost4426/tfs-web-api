@@ -24,9 +24,12 @@ namespace DTO.Entities
         [ForeignKey("CreateBy")]
         public int CreateById { get; set; }
 
+        public bool IsReadyForSale { get; set; }
+
+        public bool IsSoldOut { get; set; }
+
         public Category Category { get; set; }
         public Premises Farm { get; set; }
-        //public Treatment Treatment { get; set; }
         public User CreateBy { get; set; }
 
         public ICollection<DistributorFood> DistributorFoods { get; set; }

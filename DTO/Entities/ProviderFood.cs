@@ -18,6 +18,10 @@ namespace DTO.Entities
 
         public DateTime CreateDate { get; set; }
 
+        public bool IsTreatmented { get; set; }
+
+        public bool IsPacked { get; set; }
+
         public Premises Premises { get; set; }
         public Food Food { get; set; }
         public Treatment Treatment { get; set; }

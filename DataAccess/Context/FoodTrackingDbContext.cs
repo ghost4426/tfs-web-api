@@ -26,7 +26,6 @@ namespace DataAccess.Context
         public DbSet<DistributorFood> DistributorFood { get; set; }
         public DbSet<Transaction> Transaction { get; set; }
         public DbSet<TransactionStatus> TransactionStatus { get; set; }
-        //public DbSet<RegisterInfo> RegisterInfo { get; set; }
         public DbSet<ProviderFood> ProviderFood { get; set; }
         public DbSet<Feeding> Feeding { get; set; }
         public DbSet<Vaccine> Vaccine { get; set; }
@@ -97,8 +96,11 @@ namespace DataAccess.Context
 
             #region Premises
             builder.Entity<Premises>()
-             .Property(f => f.CreateDate)
+             .Property(p => p.CreateDate)
              .HasDefaultValueSql("DBO.dReturnDate(getdate())");
+            builder.Entity<Premises>()
+               .Property(f => f.IsActive)
+               .HasDefaultValue(true);
             #endregion
 
             #region DistributorFood
@@ -119,15 +121,21 @@ namespace DataAccess.Context
 
             #region ProviderFood
             builder.Entity<ProviderFood>()
-                .HasKey(df => new { df.FoodId, df.PremisesId });
+                .HasKey(pf => new { pf.FoodId, pf.PremisesId });
             builder.Entity<ProviderFood>()
-                .HasOne(df => df.Premises)
-                .WithMany(d => d.ProviderFoods)
-                .HasForeignKey(df => df.PremisesId);
+                .HasOne(pf => pf.Premises)
+                .WithMany(p => p.ProviderFoods)
+                .HasForeignKey(pf => pf.PremisesId);
             builder.Entity<ProviderFood>()
-                .HasOne(df => df.Food)
+                .HasOne(pf => pf.Food)
                 .WithMany(f => f.ProviderFoods)
-                .HasForeignKey(df => df.FoodId);
+                .HasForeignKey(pf => pf.FoodId);
+            builder.Entity<ProviderFood>()
+                .Property(pf => pf.IsTreatmented)
+                .HasDefaultValue(false);
+            builder.Entity<ProviderFood>()
+                .Property(f => f.IsPacked)
+                .HasDefaultValue(false);
             builder.Entity<ProviderFood>()
             .Property(f => f.CreateDate)
             .HasDefaultValueSql("DBO.dReturnDate(getdate())");
@@ -166,12 +174,6 @@ namespace DataAccess.Context
                .HasForeignKey(df => df.RejectById);
 
             #endregion RegisterInfo
-
-            //#region RegisterInfo
-            //builder.Entity<RegisterInfo>()
-            //  .Property(f => f.CreatedDate)
-            //  .HasDefaultValueSql("DBO.dReturnDate(getdate())");
-            //#endregion
 
             #region Treatment
             builder.Entity<Treatment>()

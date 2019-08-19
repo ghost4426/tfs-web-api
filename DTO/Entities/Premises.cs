@@ -22,6 +22,8 @@ namespace DTO.Entities
 
         public DateTime CreateDate { get; set; }
 
+        public bool IsActive { get; set; }
+
         public PremisesType PremisesType { get; set; }
 
         public ICollection<DistributorFood> DistributorFoods { get; set; }
