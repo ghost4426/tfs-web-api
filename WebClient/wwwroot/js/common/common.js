@@ -52,17 +52,17 @@ var userTable_vi_lang = {
 };
 var registerInfoTable_vi_lang = {
     "decimal": "",
-    "emptyTable": "Không có thông tin đăng ký",
-    "info": "Hiển thị _START_ - _END_ trong tổng số _TOTAL_ thông tin",
-    "infoEmpty": "Hiển thị 0 đến 0 trong tổng số 0 thông tin",
-    "infoFiltered": "(Lọc từ _MAX_ tổng thông tin)",
+    "emptyTable": "Không có thông tin cơ sở đăng ký",
+    "info": "Hiển thị _START_ - _END_ trong tổng số _TOTAL_ cơ sở",
+    "infoEmpty": "Hiển thị 0 đến 0 trong tổng số 0 cơ sở",
+    "infoFiltered": "(Lọc từ _MAX_ tổng cơ sở)",
     "infoPostFix": "",
     "thousands": ",",
     "loadingRecords": "Đang tải...",
     "processing": "Đang tiến hành...",
-    "sLengthMenu": "Hiển thị _MENU_ thông tin",
+    "sLengthMenu": "Hiển thị _MENU_ cơ sở",
     "search": "Tìm kiếm:",
-    "zeroRecords": "Không tìm thấy thông tin phù hợp",
+    "zeroRecords": "Không tìm thấy cơ sở phù hợp",
     "paginate": {
         "first": "Đầu",
         "last": "Cuối",
@@ -231,7 +231,18 @@ jQuery.validator.addMethod("checkEXPDate",
         }
     }, 'expired date');
 
+jQuery.validator.addMethod("checkConfirmPass",
+    function (value, element, params) {
+        if (value == params) return true;
+        else return false;
+    }, 'confirm not correct');
+
+jQuery.validator.addMethod("numberonly", function (value, element) {
+    return this.optional(element) || /^[0-9]+$/i.test(value);
+}, "Number only please"); 
+
 var requiredError = "Vui lòng nhập trường này";
 var letterOnlyError = "Vui lòng chỉ nhập chữ (Không có ký tự đặc biệt)";
 var userError = "Vui lòng không nhập ký tự đặc biệt";
 var emailError = "Vui lòng nhập đúng email (vidu@gmail.com.vn)";
+var numberOnlyError = "Vui lòng chỉ nhập số";

@@ -145,8 +145,39 @@ namespace Common.Mapper
                 .ForMember(dest => dest.VaccineName, opts => opts.MapFrom(src => src.Name))
               .ReverseMap();
 
-
             CreateMap<Entities.User, Models.CreateUserPremises>().ReverseMap();
+
+            CreateMap<Entities.User, Models.CreateVeterinaryRequest>()
+                .ForMember(dest => dest.Phone, opts => opts.MapFrom(src => src.PhoneNo))
+                .ReverseMap();
+
+            CreateMap<Entities.Premises, Models.PremisesReponse>()
+                .ForMember(dest => dest.TypeName, opts => opts.MapFrom(src => src.PremisesType.Name))
+                .ReverseMap();
+
+            CreateMap<Entities.User, Models.ForgetPasswordRequest>().ReverseMap();
+
+            CreateMap<Entities.Food, Models.FoodRespone.ReportFood>()
+                .ForMember(dest => dest.CategoryName, opts => opts.MapFrom(src => src.Category.Name))
+                .ReverseMap();
+
+            CreateMap<Entities.Transaction, Models.FoodRespone.ReportFoodOut>()
+                .ForMember(dest => dest.Breed, opts => opts.MapFrom(src => src.Food.Breed))
+                .ForMember(dest => dest.CategoryName, opts => opts.MapFrom(src => src.Food.Category.Name))
+                .ForMember(dest => dest.ReceiverName, opts => opts.MapFrom(src => src.Receiver.Name))
+                .ReverseMap();
+
+            CreateMap<Entities.Transaction, Models.FoodRespone.ReportFoodReject>()
+                .ForMember(dest => dest.Breed, opts => opts.MapFrom(src => src.Food.Breed))
+                .ForMember(dest => dest.CategoryName, opts => opts.MapFrom(src => src.Food.Category.Name))
+                .ForMember(dest => dest.ReceiverName, opts => opts.MapFrom(src => src.Receiver.Name))
+                .ReverseMap();
+
+            CreateMap<Entities.Transaction, Models.FoodRespone.ProviderReportFoodIn>()
+                .ForMember(dest => dest.Breed, opts => opts.MapFrom(src => src.Food.Breed))
+                .ForMember(dest => dest.CategoryName, opts => opts.MapFrom(src => src.Food.Category.Name))
+                .ForMember(dest => dest.SenderName, opts => opts.MapFrom(src => src.Sender.Name))
+                .ReverseMap();
         }
     }
 }

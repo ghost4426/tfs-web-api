@@ -38,5 +38,8 @@ namespace BusinessLogic.IBusinessLogic
 
         Task InsertFeedingFood();
 
+        Task<IList<Food>> FarmReportFoodIn(int premisesId);
+        Task<IList<Transaction>> FarmReportFoodOut(int premisesId);
+        Task<IList<Transaction>> FarmReportFoodReject(int premisesId);
     }
 }

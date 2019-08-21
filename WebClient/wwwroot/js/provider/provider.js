@@ -258,16 +258,40 @@ var providerFoodTable = $('#provider-food-mng').DataTable({
             className: 'btn btn-primary btn-sm mr-1 btnTreatment',
         },
         {
-            extend: 'excel',
             text: '<i class="fa fa-arrow-down white"></i> Tải báo cáo',
-            className: 'btn btn-primary btn-sm mr-1',
+            className: 'btn btn-primary btn-sm mr-1 btn-report',
         }
     ],
     language: table_vi_lang
 })
 
-$('.buttons-excel').addClass('btn btn-primary btn-sm mr-1 ');
-$('.buttons-excel').removeClass('btn-secondary');
+$('.btn-report').click(function () {
+    data = {
+        ids: [1, 2, 3, 4, 5]
+    };
+    // Use XMLHttpRequest instead of Jquery $ajax
+    xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        var a;
+        var date = new Date();
+        var filename = "Báo cáo tháng " + (date.getMonth() + 1);
+        if (xhttp.readyState === 4 && xhttp.status === 200) {
+            a = document.createElement('a');
+            a.href = window.URL.createObjectURL(xhttp.response);
+            a.download = filename + ".xlsx";
+            a.style.display = 'none';
+            document.body.appendChild(a);
+            a.click();
+        }
+    };
+    // Post data to URL which handles post request
+    xhttp.open("POST", PROVIDER_DOWNLOAD_REPORT_URI);
+    xhttp.setRequestHeader("Authorization", 'Bearer ' + Cookies.get('token'));
+    xhttp.setRequestHeader("Content-Type", "application/json");
+    // You should set responseType as blob for binary responses
+    xhttp.responseType = 'blob';
+    xhttp.send(JSON.stringify(data));
+});
 
 // Show add food data modal
 var preId = 0;

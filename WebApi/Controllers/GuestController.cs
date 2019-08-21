@@ -124,11 +124,30 @@ namespace AdminWebApi.Controllers
                 await _userBL.ActivateAccount(activateCode);
                 return Ok(new { messsage = "Tài khoản đã được kích hoạt thành công" });
             }
+            catch(NotFoundException e)
+            {
+                return BadRequest(new { message = e.Message});
+            }
             catch(Exception e)
             {
                 return BadRequest(new { message = MessageConstant.UNHANDLE_ERROR });
             }
             
+        }
+
+        [HttpPut("forgetPassword")]
+        public async Task<IActionResult> resetPassword([FromBody]Models.ForgetPasswordRequest forget)
+        {
+            var email = _mapper.Map<Entities.User>(forget);
+            try
+            {
+                await _userBL.resetPassword(email.Email);
+                return Ok(new { message = "Khôi phục mật khẩu thành công" });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
         }
     }
 }

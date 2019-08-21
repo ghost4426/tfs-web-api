@@ -85,7 +85,7 @@ namespace WebClient.Controllers
         {
             return View();
         }
-        [Route("dang-ky-co-so")]
+        [Route("dang-ky")]
         public IActionResult CreatePremises()
         {
             return View();

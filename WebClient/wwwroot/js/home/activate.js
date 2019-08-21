@@ -1,28 +1,71 @@
-﻿$(document).ready(function () {
-    var activationCode = GetURLParameter('ActivationCode');
-    ActivateAccount(activationCode);
-})
+﻿(function ($) {
+    "use strict";
 
-function GetURLParameter(sParam){
-    var sPageURL = window.location.search.substring(1);
-    var sURLVariables = sPageURL.split('&');
-    for (var i = 0; i < sURLVariables.length; i++)
-    {
-        var sParameterName = sURLVariables[i].split('=');
-        if (sParameterName[0] == sParam)
-        {
-            return sParameterName[1];
+
+    /*==================================================================
+    [ Validate ]*/
+    var input = $('.validate-input .input100');
+
+    $('#btnConfirm').on('click', function () {
+        var check = true;
+        for (var i = 0; i < input.length; i++) {
+            if (validate(input[i]) == false) {
+                showValidate(input[i]);
+                check = false;
+            }
+        }
+        if (check) {
+            var activecode = $('#activeCode').val();
+            callAjax(
+                {
+                    url: ACTIVATE_URI + activecode,
+                    dataType: JSON_DATATYPE,
+                    type: PUT,
+                }, "",
+                function (result) {
+                    $('#active-form').empty();
+                    $('#active-form').append('<span>Tài khoản của bạn đã được kích hoạt thành công</span>');
+                    $('#btnConfirm').remove();
+                },
+                function (result) {
+                    console.log(result);
+                    toastr.error(result.responseJSON.message);
+                }
+            );
+        } else {
+            return false;
+        }
+    });
+
+
+    $('.validate-form .input100').each(function () {
+        $(this).focus(function () {
+            hideValidate(this);
+        });
+    });
+
+    function validate(input) {
+        if ($(input).attr('type') == 'email' || $(input).attr('name') == 'email') {
+            if ($(input).val().trim().match(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{1,5}|[0-9]{1,3})(\]?)$/) == null) {
+                return false;
+            }
+        }
+        else {
+            if ($(input).val() == '' || $(input).val() == null) {
+                return false;
+            }
         }
     }
-}
 
-function ActivateAccount(activationCode) {
-    $.ajax({
-        url: ACTIVATE_URI + activationCode,
-        method: PUT,
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json; charset=utf-8',
-        },
-    });
-}
+    function showValidate(input) {
+        var thisAlert = $(input).parent();
+
+        $(thisAlert).addClass('alert-validate');
+    }
+
+    function hideValidate(input) {
+        var thisAlert = $(input).parent();
+
+        $(thisAlert).removeClass('alert-validate');
+    }
+})(jQuery);

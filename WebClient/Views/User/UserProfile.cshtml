@@ -190,29 +190,31 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div class="form-group row">
-                    <label class="col-md-3 label-control" for="projectinput2">Họ Và Tên</label>
-                    <div class="col-md-9">
-                        <input type="text" id="txtFullName" class="form-control">
+                <form class="form" role="form" id="UpdateProfile">
+                    <div class="form-group row">
+                        <label class="col-md-3 label-control" for="projectinput2">Họ Và Tên</label>
+                        <div class="col-md-9">
+                            <input type="text" id="txtFullName" name="Fullname" class="form-control">
+                        </div>
                     </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-md-3 label-control" for="projectinput3">E-mail</label>
-                    <div class="col-md-9">
-                        <input type="email" id="txtEmail" class="form-control" name="email">
+                    <div class="form-group row">
+                        <label class="col-md-3 label-control" for="projectinput3">E-mail</label>
+                        <div class="col-md-9">
+                            <input type="email" id="txtEmail" class="form-control" name="Email">
+                        </div>
                     </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-md-3 label-control" for="projectinput4">Số Điện Thoại</label>
-                    <div class="col-md-9">
-                        <input type="text" name="Phone" id="txtPhone" class="form-control">
+                    <div class="form-group row">
+                        <label class="col-md-3 label-control" for="projectinput4">Số Điện Thoại</label>
+                        <div class="col-md-9">
+                            <input type="text" name="Phone" id="txtPhone" class="form-control">
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button id="confirmSaveButton" type="button" class="btn btn-outline-primary">Xác nhận</button>
-                <button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">Đóng</button>
-            </div>
+                    <div class="modal-footer">
+                        <button id="confirmSaveButton" type="submit" class="btn btn-outline-primary">Xác nhận</button>
+                        <button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">Đóng</button>
+                    </div>
+                </form>
+            </div>            
         </div>
     </div>
 </div>
@@ -228,7 +230,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form class="form">
+                <form class="form" role="form" id="ChangePass">
                     <div class="form-body">
                         <div class="row">
                             <div class="col-md-12">
@@ -242,7 +244,7 @@
                             <div class="col-md-12">
                                 <div class="form-group" id="RoleOption">
                                     <label for="projectinput1">Mật khẩu cũ</label>
-                                    <input type="password" id="txtOldPass" class="form-control" name="txtOldPass">
+                                    <input type="password" id="txtOldPass" class="form-control" name="OldPass">
                                 </div>
                             </div>
                         </div>
@@ -250,7 +252,7 @@
                             <div class="col-md-12">
                                 <div class="form-group" id="RoleOption">
                                     <label for="projectinput1">Mật khẩu mới</label>
-                                    <input type="password" id="txtNewPass" class="form-control" name="txtNewPass">
+                                    <input type="password" id="txtNewPass" class="form-control" name="NewPass">
                                 </div>
                             </div>
                         </div>
@@ -258,16 +260,16 @@
                             <div class="col-md-12">
                                 <div class="form-group" id="RoleOption">
                                     <label for="projectinput1">Xác nhận Mật khẩu mới</label>
-                                    <input type="password" id="txtConfirmNewPass" class="form-control" name="txtConfirmNewPass">
+                                    <input type="password" id="txtConfirmNewPass" class="form-control" name="ConfirmPass">
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div class="modal-footer">
+                        <button id="changePassButton" type="submit" class="btn btn-outline-primary">Xác nhận</button>
+                        <button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">Đóng</button>
+                    </div>
                 </form>
-            </div>
-            <div class="modal-footer">
-                <button id="changePassButton" type="button" class="btn btn-outline-primary">Xác nhận</button>
-                <button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">Đóng</button>
             </div>
         </div>
     </div>
@@ -282,8 +284,8 @@
     <!-- END PAGE LEVEL JS-->
     <script src="~/js/user/user.js" type="text/javascript"></script>
     <script src="~/app-assets/vendors/js/extensions/toastr.min.js" type="text/javascript"></script>
-    <script src="../../../app-assets/js/scripts/extensions/jquery-file-upload.js" type="text/javascript"></script>
-
+    <script src="~/app-assets/js/scripts/extensions/jquery-file-upload.js" type="text/javascript"></script>
+    <script src="~/js/common/common.js" type="text/javascript"></script>
 
 
 }

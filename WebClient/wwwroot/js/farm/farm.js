@@ -173,12 +173,41 @@ var farmFoodTable = $('#farm-food-mng').DataTable({
             className: 'btn btn-primary btn-sm mr-1 btn-manage-vaccine',
         },
         {
-            extend: 'excel',
             text: '<i class="fa fa-arrow-down white"></i> Tải báo cáo',
-            className: 'btn btn-primary btn-sm mr-1',
+            className: 'btn btn-primary btn-sm mr-1 btn-report',
         }
     ],
     language: table_vi_lang
+});
+
+//report
+$('.btn-report').click(function () {
+    data = {
+        ids: [1, 2, 3, 4, 5]
+    };
+
+    // Use XMLHttpRequest instead of Jquery $ajax
+    xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        var a;
+        var date = new Date();
+        var filename = "Báo cáo tháng " + (date.getMonth() + 1);
+        if (xhttp.readyState === 4 && xhttp.status === 200) {
+            a = document.createElement('a');
+            a.href = window.URL.createObjectURL(xhttp.response);
+            a.download = filename+".xlsx";
+            a.style.display = 'none';
+            document.body.appendChild(a);
+            a.click();
+        }
+    };
+    // Post data to URL which handles post request
+    xhttp.open("POST", DOWNLOAD_REPORT_URI);
+    xhttp.setRequestHeader("Authorization", 'Bearer ' + Cookies.get('token'));
+    xhttp.setRequestHeader("Content-Type", "application/json");
+    // You should set responseType as blob for binary responses
+    xhttp.responseType = 'blob';
+    xhttp.send(JSON.stringify(data));
 });
 
 //$('.buttons-excel, .btn-addNew').addClass('btn btn-primary btn-sm mr-1 ');
@@ -387,42 +416,43 @@ function loadRepeatForm(nameInput) {
             }
         )
     } else {
-         var todaysDate = new Date(); 
-        var year = todaysDate.getFullYear();                        
-        var month = ("0" + (todaysDate.getMonth() + 1)).slice(-2);  
-        var day = ("0" + todaysDate.getDate()).slice(-2);           
+        var todaysDate = new Date();
+        var year = todaysDate.getFullYear();
+        var month = ("0" + (todaysDate.getMonth() + 1)).slice(-2);
+        var day = ("0" + todaysDate.getDate()).slice(-2);
         var maxDate = (year + "-" + month + "-" + day);
         $("#add-detail-form").append(
-            '<input type="date" class="form-control" style="height: 40px !important" max="' + maxDate +'" id="vaccineDate"/>'
+            '<input type="date" class="form-control" style="height: 40px !important" max="' + maxDate + '" id="vaccineDate"/>'
             + '<select class="form-control " id="dllAddVaccineData">'
             + '</select>'
             + '<span class="input-group-append" style="width: 10%"><button class="btn btn-primary" onclick="addVaccineToList()" type="button" style="width: 100%"><i class="ft-plus"></i></button> </span>'
         );
-       
+
         //$('#vaccineDate').attr('max', maxDate);
 
-    callAjaxAuth(
-        {
-            url: GET_VACCINE_LIST_URI,
-            dataType: JSON_DATATYPE,
-            type: GET
-        }, "",
-        function (result) {
-            var data = $.map(result.results, function (obj) {
-                obj.id = obj.id;
-                return obj;
-            });
-            $("#dllAddVaccineData").select2({
-                data: data,
-                placeholder: "Chọn thông tin",
-                language: "vi"
-            });
-        },
-        function (result) {
-            toastr.error(result.message);
-        }
-    )
-}};
+        callAjaxAuth(
+            {
+                url: GET_VACCINE_LIST_URI,
+                dataType: JSON_DATATYPE,
+                type: GET
+            }, "",
+            function (result) {
+                var data = $.map(result.results, function (obj) {
+                    obj.id = obj.id;
+                    return obj;
+                });
+                $("#dllAddVaccineData").select2({
+                    data: data,
+                    placeholder: "Chọn thông tin",
+                    language: "vi"
+                });
+            },
+            function (result) {
+                toastr.error(result.message);
+            }
+        )
+    }
+};
 
 function addFeedingToList() {
     var text = $('#dllAddFeedingData :selected').text();
@@ -516,7 +546,7 @@ $('#btnAddDetail').on('click', function () {
     if (value == null || value == "") {
         $('#choose-error').append('<label id="Breed-error" class="error" for="Breed">Vui lòng chọn một thông tin</label>');
     }
-  
+
     switch (value) {
         case "2":
             var feedingData = [];
@@ -524,9 +554,9 @@ $('#btnAddDetail').on('click', function () {
                 feedingData.push($(this).val())
             })
             var foodId = $('#txtFoodId').val();
-                callAjaxAddFeedingsData(foodId, feedingData);
-                $('#add-food-data').modal('hide');
-                clearDetailModal();
+            callAjaxAddFeedingsData(foodId, feedingData);
+            $('#add-food-data').modal('hide');
+            clearDetailModal();
             break;
         case "3":
             var vaccineData = [];

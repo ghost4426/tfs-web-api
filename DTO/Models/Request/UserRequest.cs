@@ -52,4 +52,9 @@ namespace DTO.Models
         public string Fullname { get; set; }
     }
 
+    public class ForgetPasswordRequest
+    {
+        public string Email { get; set; }
+    }
+
 }

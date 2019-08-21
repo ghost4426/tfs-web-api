@@ -1,5 +1,4 @@
 ﻿$(document).ready(function () {
-    changeRole();
 });
 
 var userTable = $('#userTable').DataTable({
@@ -19,37 +18,44 @@ var userTable = $('#userTable').DataTable({
         complete: hideLoadingPage
     },
     'autoWidth': false,
+    ordering: false,
     columns: [
-        { data: 'UserId' },
         { data: 'Username' },
         { data: 'Fullname' },
-        { data: 'Role.Name' },
+        {
+            data: 'Role.Name',
+            render: function (data, type, row) {
+                if (data == "Manager") {
+                    return "Quản lý";
+                } else if (data == "Staff") {
+                    return "Nhân viên";
+                } else if (data == "Veterinary") {
+                    return "Kiểm duyệt viên";
+                }
+            }
+        },
         { data: 'PhoneNo' },
         { data: 'Email' },
         {
             data: 'IsActive',
             render: function (data, type, row) {
                 if (data == true) {
-                    return '<span class="btn btn-success btn-sm mr-1 mb-1 ladda-button"><b>Hiệu lực</b></span>';
+                    return "<span class='badge badge-glow badge-pill badge-success'>Kích hoạt</span>";
                 }
                 else {
-                    return '<span class="btn btn-danger btn-sm mr-1 mb-1 ladda-button"><b>Vô Hiệu lực</b></span>';
+                    return "<span class='badge badge-glow badge-pill badge-danger'>Vô hiệu hóa</span>";
                 };
             }
         },
         {
-            data: null,
-            render: function (data, type, row) {
-                if (data.IsActive == true) {
-                    return '<button onclick="getUserInfo(' + data.UserId + ')" class="btn btn-danger" data-toggle="modal" data-target="#confirm" tittle="Đổi trạng thái"><i class="fa fa-times"></i ></button >';
+            data: function (data, type, dataToSet) {
+                if (data.IsActive) {
+                    return '<center><button class="btn btn-danger btn-deactivate" title="Hủy kích hoạt"><i class="fa fa-times"></i></button></center>';
+                } else {
+                    return '<center><button class="btn btn-success btn-activate" title="Kích hoạt"><i class="fa fa-check"></i></button></center>';
                 }
-                else {
-                    return '<button onclick="getUserInfo(' + data.UserId + ')" class="btn btn-success" data-toggle="modal" data-target="#confirm" tittle="Đổi trạng thái"><i class="fa fa-check"></i ></button >';
-
-                };
-
             }
-        },
+        }
     ],
     dom: '<"row" <"col-sm-12"Bf>>'
         + '<"row" <"col-sm-12"i>>'
@@ -128,7 +134,7 @@ function validate(input) {
     return true;
 };
 function Create(username, fullname, email, phone) {
-    callAjax(
+    callAjaxAuth(
         {
             url: CREATE_VETERINARY_URI,
             dataType: JSON_DATATYPE,
@@ -142,6 +148,7 @@ function Create(username, fullname, email, phone) {
         function (result) {
             toastr.success('Tạo mới Kiểm Duyệt Viên thành Công', 'Tạo mới thành công');
             $('#addVeterinary').modal('hide');
+            clearAddAccountModal();
             $('#userTable').DataTable().ajax.reload();
         },
         function (result) {
@@ -191,47 +198,104 @@ function getUserInfo(userId) {
     getRole();
 }
 
-function getRole() {
-    $("#dllRole").empty();
-    $.ajax({
-        url: GET_ROLE_URI,
-        type: GET,
-        success: function (data) {
-
-            $.each(data, function (key, value) {
-                $("#dllRole").append($("<option></option>").val(value.RoleId).html(value.Name));
-            });
-        },
-        error: function () {
-            toastr.error('Xin hãy kiểm tra lại', 'Thất bại');
-        }
-    })
-}
-
-//Change Role
-function changeRole() {
-    $('#changeRoleButton').click(function () {
-        var userId = parseInt($('#txtUserIdRole').val());
-        var roleId = $('select[id="dllRole"]').val();
-        $.ajax({
-            type: 'PUT',
-            url: CHANGE_ROLE_URI + userId,
-            contentType: 'json',
-            headers: {
-                //'Accept': 'application/json',
-                'Content-Type': 'application/json; charset=utf-8'
+$('#userTable').on('click', 'button.btn-deactivate', function () {
+    var tr = $(this).closest('tr');
+    var row = userTable.row(tr);
+    var id = row.data().UserId;
+    swal({
+        title: "Hủy kích hoạt?",
+        text: "Tài khoản này sẽ bị hủy kích hoạt!",
+        icon: "warning",
+        showCancelButton: true,
+        buttons: {
+            cancel: {
+                text: "Không",
+                visible: true,
+                className: "btn-warning",
+                closeModal: false,
             },
-            data: roleId,
-            success: function () {
-                toastr.success('Cập nhật thông tin người dùng thành công', 'Thành Công');
-                $('#changeRole').modal('hide');
-                $('#userTable').DataTable().ajax.reload();
-            },
-            error: function () {
-                toastr.error('Xin hãy kiểm tra lại', 'Cập nhật thất bại');
+            confirm: {
+                text: "Xác nhận!",
+                visible: true,
+                className: "",
+                closeModal: false
             }
-        })
-    })
+        }
+    }).then(isConfirm => {
+        if (isConfirm) {
+            callAjaxAuth(
+                {
+                    url: DEACTIVE_USER_URI + id,
+                    dataType: JSON_DATATYPE,
+                    type: PUT
+                }, "",
+                function (result) {
+                    swal("Hủy thành công!", "Tài khoản đã được hủy kích hoạt.", "success");
+                    $("#userTable").DataTable().ajax.reload();
+                },
+                function (result) {
+                    toastr.error(result);
+                }
+            );
+        } else {
+            swal("", "Bạn đã hủy hành động này", "error");
+        }
+    });
+});
+
+$('#userTable').on('click', 'button.btn-activate', function () {
+    var tr = $(this).closest('tr');
+    var row = userTable.row(tr);
+    var id = row.data().UserId;
+    swal({
+        title: "Kích hoạt?",
+        text: "Tài khoản này sẽ được kích hoạt!",
+        icon: "warning",
+        showCancelButton: true,
+        buttons: {
+            cancel: {
+                text: "Không",
+                visible: true,
+                className: "btn-warning",
+                closeModal: false,
+            },
+            confirm: {
+                text: "Xác nhận!",
+                visible: true,
+                className: "",
+                closeModal: false
+            }
+        }
+    }).then(isConfirm => {
+        if (isConfirm) {
+            callAjaxAuth(
+                {
+                    url: DEACTIVE_USER_URI + id,
+                    dataType: JSON_DATATYPE,
+                    type: PUT
+                }, "",
+                function (result) {
+                    swal("Kích hoạt thành công!", "Tài khoản đã được kích hoạt.", "success");
+                    $("#userTable").DataTable().ajax.reload();
+                },
+                function (result) {
+                    toastr.error(result);
+                }
+            );
+        } else {
+            swal("", "Bạn đã hủy hành động này", "error");
+        }
+    });
+});
+
+$('.btnAccount').on('click', function () {
+    clearAddAccountModal();
+    $('#add-account').modal('show');
+});
+
+function clearAddAccountModal() {
+    $('#txtVeterinaryName').val("");
+    $('#txtVeterinaryFullname').val("");
+    $('#txtVeterinaryEmail').val("");
+    $('#txtVeterinaryPhone').val("");
 }
-
-

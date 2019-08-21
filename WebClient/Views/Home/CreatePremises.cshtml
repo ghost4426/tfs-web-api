@@ -23,31 +23,32 @@
     <link rel="stylesheet" type="text/css" href="~/css/home/util.css">
     <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/extensions/toastr.css">
     <link rel="stylesheet" type="text/css" href="~/css/home/login.css">
-    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/core/colors/palette-gradient.css">
-    <link rel="stylesheet" type="text/css" href="../../../assets/css/style.css">
-    <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/forms/selects/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/css/core/colors/palette-gradient.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/forms/selects/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="~/css/common/validate-error.css"/>
     <!--===============================================================================================-->
 </head>
 <body>
 
     <div class="limiter">
-        <div class="container-login100">
-            <div class="wrap-login100 col-5">
+        <div class="container-login100 row">
+            <div class="wrap-login100 col-md-5 m-2" >
                 <div class="login100-form validate-form col-12">
                     <span class="login100-form-title">
-                        <b>Đăng Ký Thông tin</b>
+                        <b>Đăng Ký Tài Khoản</b>
                     </span>
                     <span class=""><i class="fa fa-user" aria-hidden="true"></i> Thông tin người dùng</span>
                     <hr />
-                    <div class="wrap-input100 validate-input" data-validate="Vui lòng nhập tài khoản">
-                        <input id="txtUsername" class="input100" type="text" name="txtUsername" placeholder="Tài Khoản">
-                        <span class="focus-input100"></span>
+                    <div class="wrap-input100 validate-input has-icon-left" data-validate="Vui lòng nhập tài khoản">
+                        <input id="txtUsername" class="input100" type="text" name="Username" placeholder="Tài Khoản">
+                        <span class="focus-input"></span>
                         <span class="symbol-input100">
                             <i class="fa fa-user" aria-hidden="true"></i>
                         </span>
                     </div>
                     <div class="wrap-input100 validate-input" data-validate="Vui lòng nhập Mật khẩu">
-                        <input id="txtPassword" class="input100" type="password" name="txtPassword" placeholder="Mật khẩu">
+                        <input id="txtPassword" class="input100" type="password" name="Password" placeholder="Mật khẩu">
                         <span class="focus-input100"></span>
                         <span class="symbol-input100">
                             <i class="fa fa-lock" aria-hidden="true"></i>
@@ -55,7 +56,7 @@
                     </div>
 
                     <div class="wrap-input100 validate-input" data-validate="Vui lòng Họ và Tên">
-                        <input id="txtFullname" class="input100" type="text" name="fullname" placeholder="Họ và Tên">
+                        <input id="txtFullname" class="input100" type="text" name="Fullname" placeholder="Họ và Tên">
                         <span class="focus-input100"></span>
                         <span class="symbol-input100">
                             <i class="fa fa-pencil" aria-hidden="true"></i>
@@ -63,14 +64,14 @@
                     </div>
                     <hr />
                     <div class="wrap-input100 validate-input" data-validate="Vui lòng nhập Email">
-                        <input id="txtEmail" class="input100" type="text" name="email" placeholder="Email">
+                        <input id="txtEmail" class="input100" type="email" name="Email" placeholder="Email">
                         <span class="focus-input100"></span>
                         <span class="symbol-input100">
                             <i class="fa fa-envelope-o" aria-hidden="true"></i>
                         </span>
                     </div>
                     <div class="wrap-input100 validate-input" data-validate="Vui lòng nhập Số Điện Thoại">
-                        <input id="txtPhone" class="input100" type="text" name="phone" placeholder="Số Điện Thoại">
+                        <input id="txtPhone" class="input100" type="text" name="Phone" placeholder="Số Điện Thoại">
                         <span class="focus-input100"></span>
                         <span class="symbol-input100">
                             <i class="fa fa-phone" aria-hidden="true"></i>
@@ -79,23 +80,23 @@
                     <span class=""><i class="fa fa-building-o" aria-hidden="true"></i> Thông tin cơ sở</span>
                     <hr />
                     <div class="wrap-input100 validate-input" data-validate="Vui lòng nhập Tên cơ sở">
-                        <input id="txtPremisesName" class="input100" type="text" name="txtPremisesName" placeholder="Tên cơ sở">
+                        <input id="txtPremisesName" class="input100" type="text" name="PremisesName" placeholder="Tên cơ sở">
                         <span class="focus-input100"></span>
                         <span class="symbol-input100">
                             <i class="fa fa-building" aria-hidden="true"></i>
                         </span>
                     </div>
                     <div class="wrap-input100 validate-input" data-validate="Vui lòng nhập Địa chỉ cơ sở">
-                        <input id="txtPremisesAddress" class="input100" type="text" name="txtPremisesAddress" placeholder="Địa chỉ cơ sở">
+                        <input id="txtPremisesAddress" class="input100" type="text" name="PremisesAddress" placeholder="Địa chỉ cơ sở">
                         <span class="focus-input100"></span>
                         <span class="symbol-input100">
                             <i class="fa fa-map-marker" aria-hidden="true"></i>
                         </span>
                     </div>
-                    <div class="wrap-input100 validate-input" data-validate="Vui lòng nhập Số Điện Thoại">
+                    <div class="wrap-input100 validate-input">
                         <div>
-                            <fieldset class="form-group position-relative">
-                                <select id="dllPremisesType" class="input100" required>
+                            <fieldset class="form-group position-relative" data-validate="Vui lòng chọn loại cơ sở">
+                                <select id="dllPremisesType" class="input100" required name="PremisesType">
                                     <option value="0" selected="" disabled="">Loại cơ sở</option>
                                     <option value="1">Nông trại</option>
                                     <option value="2">Nhà cung cấp</option>
@@ -144,7 +145,6 @@
     <!-- BEGIN PAGE VENDOR JS-->
     <script type="text/javascript" src="~/app-assets/vendors/js/ui/jquery.sticky.js"></script>
     <script type="text/javascript" src="~/app-assets/vendors/js/forms/repeater/jquery.repeater.min.js"></script>
-    @*<script type="text/javascript" src="~/app-assets/vendors/js/forms/validation/jqBootstrapValidation.js"></script>*@
     <script type="text/javascript" src="~/app-assets/vendors/js/forms/validation/jquery.validate.min.js"></script>
     <script type="text/javascript" src="~/lib/js.cookie.js"></script>
     <script type="text/javascript" src="~/lib/jwt-decode.min.js"></script>

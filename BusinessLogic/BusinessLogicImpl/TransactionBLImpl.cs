@@ -17,18 +17,21 @@ namespace BusinessLogic.BusinessLogicImpl
         private ITransactionStatusRepository _transactionStatusRepos;
         private IFoodRepository _foodRepos;
         private ICategoryRepository _categoryRepos;
+        private IFoodRepository _productRepos;
 
         public TransactionBLImpl(ITransactionRepository transactionRepos,
             IPremisesRepository premisesRepos,
             ITransactionStatusRepository transactionStatus,
             IFoodRepository foodRepos,
-            ICategoryRepository categoryRepos)
+            ICategoryRepository categoryRepos,
+            IFoodRepository foodRepository)
         {
             _transactionRepos = transactionRepos;
             _premisesRepos = premisesRepos;
             _transactionStatusRepos = transactionStatus;
             _foodRepos = foodRepos;
             _categoryRepos = categoryRepos;
+            _productRepos = foodRepository;
         }
 
         public async Task<int> CountFarmTransaction(int userId)
@@ -139,5 +142,43 @@ namespace BusinessLogic.BusinessLogicImpl
             return transaction;
         }
 
+        public async Task<IList<Transaction>> ProviderFoodInReport(int premisesId)
+        {
+            int month = DateTime.Now.Month;
+            var result = await _transactionRepos.FindAllAsync(x => x.ReceiverId == premisesId && x.CreateDate.Month == month && x.StatusId == 3);
+            foreach (var t in result)
+            {
+                t.Food = _productRepos.GetById(t.FoodId);
+                t.Food.Category = _categoryRepos.GetById(t.Food.CategoryId);
+                t.Sender = _premisesRepos.GetById(t.SenderId);
+            }
+            return result;
+        }
+
+        public async Task<IList<Transaction>> ProviderFoodOutReport(int premisesId)
+        {
+            int month = DateTime.Now.Month;
+            var result = await _transactionRepos.FindAllAsync(x => x.SenderId == premisesId && x.CreateDate.Month == month && x.StatusId == 3);
+            foreach (var t in result)
+            {
+                t.Food = _productRepos.GetById(t.FoodId);
+                t.Food.Category = _categoryRepos.GetById(t.Food.CategoryId);
+                t.Receiver = _premisesRepos.GetById(t.ReceiverId);
+            }
+            return result;
+        }
+
+        public async Task<IList<Transaction>> ProviderFoodRejectReport(int premisesId)
+        {
+            int month = DateTime.Now.Month;
+            var result = await _transactionRepos.FindAllAsync(x => x.SenderId == premisesId && x.CreateDate.Month == month && x.StatusId == 4);
+            foreach (var t in result)
+            {
+                t.Food = _productRepos.GetById(t.FoodId);
+                t.Food.Category = _categoryRepos.GetById(t.Food.CategoryId);
+                t.Receiver = _premisesRepos.GetById(t.ReceiverId);
+            }
+            return result;
+        }
     }
 }
