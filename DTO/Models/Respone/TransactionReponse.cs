@@ -49,6 +49,8 @@ namespace DTO.Models
             public int StatusId { get; set; }
             public string Status { get; set; }
             public string RejectReason { get; set; }
+            public int SenderId { get; set; }
+            public int ReceiverId { get; set; }
         }
     }
 }

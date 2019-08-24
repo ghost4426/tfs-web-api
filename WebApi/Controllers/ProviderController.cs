@@ -49,13 +49,20 @@ namespace CommonWebApi.Controllers
         [HttpPost("treatment")]
         public async Task<IActionResult> CreateTreatment([FromBody]Models.CreateTreatmentRequest treatmentRequest)
         {
-            var Treatment = _mapper.Map<Entities.Treatment>(treatmentRequest);
-            var TreatmentProcess = treatmentRequest.TreatmentProcess;
-            Treatment.PremisesId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
-            Treatment.CreateById = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
-            Treatment.CreateDate = DateTime.Now;
-            await _treatmentBL.CreateTreatment(Treatment, TreatmentProcess);
-            return Ok(new { message = MessageConstant.INSERT_SUCCESS });
+            try
+            {
+                var Treatment = _mapper.Map<Entities.Treatment>(treatmentRequest);
+                var TreatmentProcess = treatmentRequest.TreatmentProcess;
+                Treatment.PremisesId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
+                Treatment.CreateById = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
+                Treatment.UpdateById = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
+                Treatment.CreateDate = DateTime.Now;
+                await _treatmentBL.CreateTreatment(Treatment, TreatmentProcess);
+                return Ok(new { message = MessageConstant.INSERT_SUCCESS });
+            }catch(Exception ex)
+            {
+                return BadRequest(new { message = MessageConstant.UNHANDLE_ERROR, error = ex.StackTrace });
+            }           
         }
 
         //More treatmentDetail
@@ -71,6 +78,7 @@ namespace CommonWebApi.Controllers
             }
             Treatment.PremisesId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
             Treatment.CreateById = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
+            Treatment.UpdateById = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
             Treatment.CreateDate = DateTime.Now;
             await _treatmentBL.CreateMoreTreatmentDetail(treatmentId, Treatment, TreatmentProcess);
             return Ok(new { message = MessageConstant.INSERT_SUCCESS });
@@ -107,6 +115,7 @@ namespace CommonWebApi.Controllers
                 var transactionHash = await _foodDataBL.Packaging(foodId, Packaging, providerId);
 
                 await _foodBL.AddDetail(foodId, EFoodDetailType.PACKAGING, transactionHash, userId);
+                await _foodBL.UpdatePackagingFood(foodId, providerId);
                 return Ok(new { message = MessageConstant.INSERT_SUCCESS });
             }
             catch (Exception ex)
@@ -123,9 +132,9 @@ namespace CommonWebApi.Controllers
                 int premisesId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
                 return Ok(new { data = _mapper.Map<IList<Models.FoodProvider>>(await _foodBL.getAllFoodByProviderId(premisesId)) });
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                return BadRequest(new { msg = e.Message });
+                return BadRequest(new { message = MessageConstant.UNHANDLE_ERROR, error = ex.StackTrace });
             }
         }
 
@@ -144,9 +153,9 @@ namespace CommonWebApi.Controllers
                 int premisesId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
                 return Ok(new { data = _mapper.Map<IList<Models.TransactionReponse.ProviderGetTransaction>>(await _transactionBL.getAllProviderReceiveTransaction(premisesId)) });
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                return BadRequest(new { msg = e.Message });
+                return BadRequest(new { message = MessageConstant.UNHANDLE_ERROR, error = ex.StackTrace });
             }
         }
 
@@ -158,9 +167,9 @@ namespace CommonWebApi.Controllers
                 int premisesId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
                 return Ok(new { data = _mapper.Map<IList<Models.TransactionReponse.ProviderGetSendTransaction>>(await _transactionBL.getAllProviderSendTransaction(premisesId)) });
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                return BadRequest(new { msg = e.Message });
+                return BadRequest(new { message = MessageConstant.UNHANDLE_ERROR, error = ex.StackTrace });
             }
         }
 
@@ -179,9 +188,9 @@ namespace CommonWebApi.Controllers
                 await _transactionBL.UpdateTransaction(transaction, transactionId);
                 return Ok(new { message = MessageConstant.UPDATE_SUCCESS });
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                return BadRequest(new { msg = e.Message });
+                return BadRequest(new { message = MessageConstant.UNHANDLE_ERROR, error = ex.StackTrace });
             }
         }
 
@@ -196,9 +205,9 @@ namespace CommonWebApi.Controllers
                 await _foodBL.createProviderFood(food);
                 return Ok(new { message = MessageConstant.INSERT_SUCCESS });
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                return BadRequest(new { msg = e.Message });
+                return BadRequest(new { message = MessageConstant.UNHANDLE_ERROR, error = ex.StackTrace });
             }
 
         }
@@ -210,9 +219,9 @@ namespace CommonWebApi.Controllers
             {
                 return Ok(new { data = _mapper.Map<IList<Models.FoodRespone.TreatmentReponse>>(await _treatmentBL.getAllTreatmentById(treatmentId)) });
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                return BadRequest(new { msg = e.Message });
+                return BadRequest(new { message = MessageConstant.UNHANDLE_ERROR, error = ex.StackTrace });
             }
         }
 
@@ -224,9 +233,9 @@ namespace CommonWebApi.Controllers
                 int premisesId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
                 return Ok(new { results = _mapper.Map<IList<Models.Option>>(await _treatmentBL.getAllTreatmentByPremisesId(premisesId)) });
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                return BadRequest(new { msg = e.Message });
+                return BadRequest(new { message = MessageConstant.UNHANDLE_ERROR, error = ex.StackTrace });
             }
         }
 
@@ -238,22 +247,22 @@ namespace CommonWebApi.Controllers
                 await _treatmentBL.deleteTreatment(treatmentId);
                 return Ok(new { message = "Xóa thành công" });
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                return BadRequest(new { msg = e.Message });
+                return BadRequest(new { message = MessageConstant.UNHANDLE_ERROR, error = ex.StackTrace });
             }
         }
 
         [HttpGet("getAllDistributor")]
-        public async Task<IActionResult> getAllDistributorAsync(string search)
+        public async Task<IActionResult> getAllDistributorAsync(string search, int foodId)
         {
             try
             {
-                return Ok(new { results = _mapper.Map<IList<Models.Option>>(await _premisesBL.getAllDistriburtorAsync(search)) });
+                return Ok(new { results = _mapper.Map<IList<Models.Option>>(await _premisesBL.getAllDistriburtorAsync(search, foodId)) });
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                return BadRequest(new { msg = e.Message });
+                return BadRequest(new { message = MessageConstant.UNHANDLE_ERROR, error = ex.StackTrace });
             }
         }
 
@@ -265,9 +274,9 @@ namespace CommonWebApi.Controllers
                 int providerId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
                 return Ok(new { data = await _foodDataBL.GetFoodDataByIDAndProviderID(id, providerId) });
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                return BadRequest(new { msg = e.Message });
+                return BadRequest(new { message = MessageConstant.UNHANDLE_ERROR, error = ex.StackTrace });
             }
         }
 
@@ -294,7 +303,7 @@ namespace CommonWebApi.Controllers
                 var row = 3;
                 int premisesId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
                 byte[] fileContents;
-                var foodCreate = _mapper.Map<IList<Models.FoodRespone.ProviderReportFoodIn>>(await _transactionBL.ProviderFoodInReport(premisesId));
+                var foodCreate = _mapper.Map<IList<Models.FoodRespone.ProviderReportFoodIn>>(await _foodBL.ProviderReportFoodIn(premisesId));
                 var foodSell = _mapper.Map<IList<Models.FoodRespone.ReportFoodOut>>(await _transactionBL.ProviderFoodOutReport(premisesId));
                 var foodReject = _mapper.Map<IList<Models.FoodRespone.ReportFoodReject>>(await _transactionBL.ProviderFoodRejectReport(premisesId));
                 using (var package = new ExcelPackage())
@@ -398,7 +407,7 @@ namespace CommonWebApi.Controllers
                     }
                     worksheet3.Cells[(row + foodReject.Count), 1].Value = "Tổng: " + foodReject.Count;
                     worksheet3.Cells[(row + foodReject.Count), 1].Style.Font.Bold = true;
-                    worksheet3.Cells["A" + (row + foodReject.Count) + ":D" + (row + foodReject.Count)].Merge = true;
+                    worksheet3.Cells["A" + (row + foodReject.Count) + ":E" + (row + foodReject.Count)].Merge = true;
 
                     fileContents = package.GetAsByteArray();
                 }
@@ -413,9 +422,9 @@ namespace CommonWebApi.Controllers
                     fileDownloadName: "test.xlsx"
                 );
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                return BadRequest(new { message = e.Message });
+                return BadRequest(new { message = MessageConstant.UNHANDLE_ERROR, error = ex.StackTrace });
             }
         }
     }

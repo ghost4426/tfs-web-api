@@ -38,8 +38,7 @@ namespace CommonWebApi.Controllers
         [HttpGet("getProductMatched")]
         public async Task<IActionResult> getMatchedWithNumber()
         {
-            //string disID = User.Claims.First(c => c.Type == "PremisesId").Value;
-            var disID = 16; 
+            int disID = int.Parse(User.Claims.First(c => c.Type == "PremisesId").Value);
             return Ok(new { data = _mapper.Map<IList<Models.Food>>(await _foodBL.getMatchedWithNumber(disID))});
         }
 

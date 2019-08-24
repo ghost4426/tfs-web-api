@@ -70,7 +70,7 @@
     });
 
     //List distributor
-    $("#ddlDistributor").select2({
+    $("#ddlDistributor").select2({        
         ajax: {
             url: GET_DISTRIBUTOR_URI,
             dataType: JSON_DATATYPE,
@@ -80,8 +80,10 @@
                 "Authorization": 'Bearer ' + Cookies.get('token')
             },
             data: function (params) {
+                var id = $('#foodId-trans').val();
                 var query = {
                     search: params.term,
+                    foodId: id,
                     type: 'public'
                 }
                 // Query parameters will be ?search=[term]&type=public
@@ -145,7 +147,7 @@
                         $('#addinfo').modal('hide');
                     },
                     function (result) {
-                        toastr.error(result);
+                        toastr.error(result.responseJSON.message);
                     }
                 );
             } else if (option == 7) {
@@ -166,7 +168,7 @@
                         $('#addinfo').modal('hide');
                     },
                     function (result) {
-                        toastr.error(result);
+                        toastr.error(result.responseJSON.message);
                     }
                 );
             }
@@ -201,7 +203,7 @@
                     $('#GetQRCode').modal('hide');
                 },
                 function (result) {
-                    toastr.error(result);
+                    toastr.error(result.responseJSON.message);
                 }
             );
         }
@@ -570,6 +572,7 @@ function loadTreatmentForm() {
             type: GET
         }, "",
             function (result) {
+                console.log(result);
                 if (result.data.length != 0) {
                     for (var i = 0; i < result.data.length; i++) {
                         $('#add-detail-treatment-process').append('<label class="col-md-2 mb-1 mt-1 label-control" for="txtFoodId">Bước ' + (i + 1) + '</label>'
@@ -580,7 +583,7 @@ function loadTreatmentForm() {
                 }
             },
             function (result) {
-                toastr.error(result);
+                toastr.error(result.responseJSON.message);
             }
         );
     });
@@ -604,55 +607,11 @@ function loadTreatmentForm() {
                 }
             },
             function (result) {
-                toastr.error(result);
+                toastr.error(result.responseJSON.message);
             }
         )
     }
 }
-
-//$('#addDetailConfirm').on('click', function () {
-//    var foodId = $('#txtFoodId').val();
-//    var choose = $('#dllFoodDetailType').val();
-//    if (choose == 6) {
-//        var treatmentId = $('#ddlChooseTreatment').val();
-//        callAjaxAuth(
-//            {
-//                url: UPDATE_FOOD_TREATMENT_URI + foodId,
-//                dataType: JSON_DATATYPE,
-//                type: PUT
-//            }, JSON.stringify(treatmentId),
-//            function (result) {
-//                toastr.success("Thêm thông tin thành công");
-//                clearDetailModal();
-//                $('#addinfo').modal('hide');
-//            },
-//            function (result) {
-//                toastr.error(result);
-//            }
-//        );
-//    } else if (choose == 7) {
-//        var mfg = $('#txtMFGDate').val();
-//        var exp = $('#EXPDate').val();
-//        callAjaxAuth(
-//            {
-//                url: ADD_FOOD_PACKAGING_URI + foodId,
-//                dataType: JSON_DATATYPE,
-//                type: PUT
-//            }, JSON.stringify({
-//                MFGDate: mfg,
-//                EXPDate: exp
-//            }),
-//            function (result) {
-//                toastr.success("Thêm thông tin thành công");
-//                clearDetailModal();
-//                $('#addinfo').modal('hide');
-//            },
-//            function (result) {
-//                toastr.error(result);
-//            }
-//        );
-//    }
-//});
 
 function callAjaxAddTreatmentData(treatmentName, treatmentProcess) {
     callAjaxAuth(
@@ -668,7 +627,7 @@ function callAjaxAddTreatmentData(treatmentName, treatmentProcess) {
             toastr.success("Thêm thông tin thành công");
         },
         function (result) {
-            toastr.error(result);
+            toastr.error(result.responseJSON.message);
         }
     )
 }
@@ -686,7 +645,7 @@ function callAjaxAddMoreTreatmentData(treatmentId, treatmentProcess) {
             toastr.success("Thêm thông tin thành công");
         },
         function (result) {
-            toastr.error(result);
+            toastr.error(result.responseJSON.message);
         }
     )
 }
@@ -716,7 +675,7 @@ function loadPackingForm() {
             }
         },
         function (result) {
-            toastr.error(result);
+            toastr.error(result.responseJSON.message);
         }
     );
 };
@@ -783,7 +742,7 @@ $('#provider-food-mng').on('click', 'button.btn-detail', function () {
             }
         },
         function (result) {
-            toastr.error(result);
+            toastr.error(result.responseJSON.message);
         }
     );
 });
@@ -819,28 +778,6 @@ $('#provider-food-mng').on('click', 'button.btn-barcode', function () {
     $("#btnPrintBarcode").attr("download", "Food-" + foodId + ".jpg");
     $('#GetQRCode').modal('show');
 });
-
-//$('#btn-transaction').on('click', function () {
-//    var foodId = $('#foodId-trans').val();
-//    var distributorId = $('#ddlDistributor').val();
-//    callAjaxAuth(
-//        {
-//            url: PROVIDER_CREATE_TRANSACTION_URI,
-//            dataType: JSON_DATATYPE,
-//            type: POST
-//        }, JSON.stringify({
-//            ReceiverId: distributorId,
-//            FoodId: foodId
-//        }),
-//        function (result) {
-//            toastr.success("Tạo giao dịch thành công, vui lòng chờ nhà phân phối xác nhận");
-//            $('#GetQRCode').modal('hide');
-//        },
-//        function (result) {
-//            toastr.error(result);
-//        }
-//    )
-//});
 
 function makeCode(id) {
     JsBarcode("#barcode", "" + id, {

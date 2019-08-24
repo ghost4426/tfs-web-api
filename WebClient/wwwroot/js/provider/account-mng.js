@@ -158,7 +158,7 @@ $('#provider-account-mng').on('click', 'button.btn-deactivate', function () {
                     $("#provider-account-mng").DataTable().ajax.reload();
                 },
                 function (result) {
-                    toastr.error(result);
+                    toastr.error(result.responseJSON.message);
                 }
             );
         } else {
@@ -203,7 +203,7 @@ $('#provider-account-mng').on('click', 'button.btn-activate', function () {
                     $("#provider-account-mng").DataTable().ajax.reload();
                 },
                 function (result) {
-                    toastr.error(result);
+                    toastr.error(result.responseJSON.message);
                 }
             );
         } else {

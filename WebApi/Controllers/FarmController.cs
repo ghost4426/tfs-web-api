@@ -184,6 +184,8 @@ namespace CommonWebApi.Controllers
             transaction.SenderId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
             transaction.CreateById = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
             await _transactionBL.CreateSellFoodTransactionAsync(transaction);
+            var transactionHash = await _foodDataBL.AddCertification(transactionRequest.FoodId, transactionRequest.CertificationNumber);
+            await _foodBL.AddDetail(transactionRequest.FoodId, EFoodDetailType.VERIFY, transactionHash, transaction.CreateById);
             var reponseModel = new Models.TransactionReponse.CreateTransactionReponse()
             {
                 TransactionId = transaction.TransactionId
@@ -192,11 +194,11 @@ namespace CommonWebApi.Controllers
         }
 
         [HttpGet("getAllProvider")]
-        public async Task<IActionResult> GetAllProvider(string search)
+        public async Task<IActionResult> GetAllProvider(string search, int foodId)
         {
             try
             {
-                return Ok(new { results = _mapper.Map<IList<Models.Option>>(await _premisesBL.getAllProviderAsync(search)) });
+                return Ok(new { results = _mapper.Map<IList<Models.Option>>(await _premisesBL.getAllProviderAsync(search, foodId)) });
             }
             catch (Exception ex)
             {
@@ -490,6 +492,19 @@ namespace CommonWebApi.Controllers
                 );
             }
             catch (Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+        }
+
+        [HttpPut("soldOut/{foodId}")]
+        public async Task<IActionResult> checkFoodSoldOut(int foodId)
+        {
+            try
+            {
+                await _foodBL.UpdateFoodSoldOut(foodId);
+                return Ok(new { data = MessageConstant.UPDATE_SUCCESS });
+            }catch(Exception e)
             {
                 return BadRequest(new { message = e.Message });
             }

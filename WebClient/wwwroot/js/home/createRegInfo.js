@@ -43,7 +43,6 @@
                     window.location.href = '/kich-hoat-tai-khoan';
                 },
                 function (result) {
-                    console.log(result);
                     toastr.error(result.responseJSON.message);
                 }
             );

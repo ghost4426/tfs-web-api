@@ -173,10 +173,10 @@ namespace Common.Mapper
                 .ForMember(dest => dest.ReceiverName, opts => opts.MapFrom(src => src.Receiver.Name))
                 .ReverseMap();
 
-            CreateMap<Entities.Transaction, Models.FoodRespone.ProviderReportFoodIn>()
+            CreateMap<Entities.ProviderFood, Models.FoodRespone.ProviderReportFoodIn>()
                 .ForMember(dest => dest.Breed, opts => opts.MapFrom(src => src.Food.Breed))
                 .ForMember(dest => dest.CategoryName, opts => opts.MapFrom(src => src.Food.Category.Name))
-                .ForMember(dest => dest.SenderName, opts => opts.MapFrom(src => src.Sender.Name))
+                .ForMember(dest => dest.SenderName, opts => opts.MapFrom(src => src.Food.Farm.Name))
                 .ReverseMap();
         }
     }

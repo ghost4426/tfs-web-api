@@ -148,6 +148,7 @@ namespace BusinessLogic.BusinessLogicImpl
         {
             ProviderFood result = await _providerFoodRepository.FindAsync(x => x.FoodId == foodId & x.PremisesId == premisesId);
             result.TreatmentId = treatmentId;
+            result.IsTreatmented = true;
             await _providerFoodRepository.UpdateAsync(result);
         }
 
@@ -218,6 +219,33 @@ namespace BusinessLogic.BusinessLogicImpl
                 t.Receiver = _premisesRepos.GetById(t.ReceiverId);
             }
             return result;
+        }
+
+        public async Task<IList<ProviderFood>> ProviderReportFoodIn(int premisesId)
+        {
+            int month = DateTime.Now.Month;
+            var result = await _providerFoodRepository.FindAllAsync(x => x.PremisesId == premisesId && x.CreateDate.Month == month);
+            foreach (var t in result)
+            {
+                t.Food = _productRepos.GetById(t.FoodId);
+                t.Food.Category = _categoryRepos.GetById(t.Food.CategoryId);
+                t.Food.Farm = _premisesRepos.GetById(t.Food.FarmId);
+            }
+            return result;
+        }
+
+        public async Task UpdateFoodSoldOut(int foodId)
+        {
+            var food = _productRepos.GetById(foodId);
+            food.IsSoldOut = true;
+            await _productRepos.UpdateAsync(food);
+        }
+
+        public async Task UpdatePackagingFood(int foodId, int premisesId)
+        {
+            ProviderFood result = await _providerFoodRepository.FindAsync(x => x.FoodId == foodId & x.PremisesId == premisesId);
+            result.IsPacked = true;
+            await _providerFoodRepository.UpdateAsync(result);
         }
     }
 }

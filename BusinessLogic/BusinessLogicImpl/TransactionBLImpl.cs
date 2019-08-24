@@ -46,6 +46,9 @@ namespace BusinessLogic.BusinessLogicImpl
 
         public async Task<int> CreateSellFoodTransactionAsync(Transaction newTransaction)
         {
+            var food = _foodRepos.GetById(newTransaction.FoodId);
+            food.IsReadyForSale = true;
+            await _foodRepos.UpdateAsync(food);
             return await this._transactionRepos.CreateSellFoodTransactionAsync(newTransaction);
         }
 

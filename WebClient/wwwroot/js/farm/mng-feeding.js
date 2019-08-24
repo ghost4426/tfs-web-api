@@ -105,7 +105,7 @@ $('#btnConfirmSaveFeeding').on('click', function () {
             loadFeedingDataModal();
         },
         function (result) {
-            toastr.error(result.message);
+            toastr.error(result.responseJSON.message);
         }
     )
 })
@@ -179,6 +179,6 @@ function loadFeedingDataModal() {
             })
         },
         function (result) {
-            toastr.error(result.message);
+            toastr.error(result.responseJSON.message);
         })
 }

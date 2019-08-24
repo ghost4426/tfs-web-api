@@ -44,6 +44,7 @@ const GET_VACCINE_LIST_URI = BASE_FAMR_URI + "vaccines";
 const GET_VACCINE_LIST_BY_PREMISES_URI = BASE_FAMR_URI + "premisesVaccines";
 const REMOVE_VACCINE_URI = BASE_FAMR_URI + "vaccine/";
 const DOWNLOAD_REPORT_URI = BASE_FAMR_URI + "farmReport";
+const SOLD_OUT_URI = BASE_FAMR_URI + "soldOut/";
 
 
 //Admin

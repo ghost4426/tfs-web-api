@@ -15,19 +15,24 @@ namespace BusinessLogic.BusinessLogicImpl
     {
         private IPremisesRepository _premisesRepository;
         private IPremisesTypeRepository _premisesTypeRepository;
+        private ITransactionRepository _transactionRepos;
 
-        public PremisesBLImpl(IPremisesRepository premisesRepository)
+        public PremisesBLImpl(IPremisesRepository premisesRepository, ITransactionRepository transactionRepository)
         {
             _premisesRepository = premisesRepository;
+            _transactionRepos = transactionRepository;
         }
 
-        public Task<IList<Premises>> getAllDistriburtorAsync(string keyword)
+        public async Task<IList<Premises>> getAllDistriburtorAsync(string keyword, int foodId)
         {
             if(keyword == null)
             {
                 keyword = "";
             }
-            return this._premisesRepository.getAllDistributorAsync(keyword.ToLower());
+            var result = await _premisesRepository.getAllProviderAsync(keyword.ToLower());
+            var distributor = await _transactionRepos.FindAllAsync(x => x.FoodId == foodId);
+            var fin = result.Where(x => !distributor.Any(x2 => x2.ReceiverId == x.PremisesId));
+            return fin.ToList();
         }
 
         public async Task<IList<Premises>> getAllPremisesAsync()
@@ -41,13 +46,16 @@ namespace BusinessLogic.BusinessLogicImpl
             return result;
         }
 
-        public Task<IList<Premises>> getAllProviderAsync(string keyword)
+        public async Task<IList<Premises>> getAllProviderAsync(string keyword, int foodId)
         {
             if(keyword == null)
             {
                 keyword = "";
             }
-            return this._premisesRepository.getAllProviderAsync(keyword.ToLower());
+            var result = await _premisesRepository.getAllProviderAsync(keyword.ToLower());
+            var provider = await _transactionRepos.FindAllAsync(x => x.FoodId == foodId);
+            var fin = result.Where(x => !provider.Any(x2 => x2.ReceiverId == x.PremisesId));
+            return fin.ToList();
         }
         public async Task<Premises> GetById(int premisesId)
         {

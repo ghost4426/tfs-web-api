@@ -114,11 +114,14 @@ $('#btnAddProviderFood').click(function () {
                     $('#AcceptModal').modal('hide');
                 },
                 function (result) {
-                    toastr.error(result);
+                    toastr.error(result.responseJSON.message);
                 }
             );
             toastr.success('Giao dịch thành công');
             $('#ProviderComment').val("");
+        },
+        function (result) {
+            toastr.error(result.responseJSON.message);
         }
     );
 });
@@ -157,7 +160,7 @@ $("#btnDenyProviderFood").click(function () {
             $("#provider-transaction-mng").DataTable().ajax.reload();
         },
         function (result) {
-            toastr.error(result);
+            toastr.error(result.responseJSON.message);
         }
     )
 });

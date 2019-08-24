@@ -28,7 +28,6 @@
                     $('#btnConfirm').remove();
                 },
                 function (result) {
-                    console.log(result);
                     toastr.error(result.responseJSON.message);
                 }
             );

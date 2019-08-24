@@ -26,7 +26,7 @@
     });
 
     //load provider
-    $("#ddlProvider").select2({
+    $("#ddlProvider").select2({        
         ajax: {
             url: GET_PROVIDER,
             dataType: JSON_DATATYPE,
@@ -36,8 +36,10 @@
                 "Authorization": 'Bearer ' + Cookies.get('token')
             },
             data: function (params) {
+                var foodId = parseInt($('#pro-food-id').val());
                 var query = {
                     search: params.term,
+                    foodId: foodId,
                     type: 'public'
                 }
                 // Query parameters will be ?search=[term]&type=public
@@ -67,7 +69,7 @@
             });
         },
         function (result) {
-            toastr.error(result);
+            toastr.error(result.responseJSON.message);
         }
     )
     //Validate
@@ -107,7 +109,7 @@
                     $("#farm-food-mng").DataTable().ajax.reload();
                 },
                 function (result) {
-                    toastr.error(result);
+                    toastr.error(result.responseJSON.message);
                 }
             )
         }
@@ -146,12 +148,21 @@ var farmFoodTable = $('#farm-food-mng').DataTable({
         },
         {
             width: '20%',
-            data: null,
-            render: function () {
+            data: function (data, type, dataToSet) {
                 var btnDetail = '<button class="btn btn-grey btn-sm btn-view-detail" title="Chi tiết"><i class="icon-eye"></i ></button >\n';
                 var btnUpdate = '<button class="btn btn-info btn-sm btn-add-detail" title="Thêm thông tin"><i class="icon-pencil"></i></button>\n'
                 var btnSale = '<button class="btn btn-success btn-sm btn-add-provider" title="Bán sản phẩm"><i class="icon-basket"></i></button>\n'
-                return '<div class="col-12">' + btnDetail + btnUpdate + btnSale + '</div>';
+                var btnSoldOut = '<button class="btn btn-danger btn-sm btn-sold-out" title="Hết sản phẩm"><i class="ft-x"></i></button>\n'
+                var btnUpdateDis = '<button class="btn btn-info btn-sm btn-add-detail" title="Thêm thông tin" disabled><i class="icon-pencil"></i></button>\n'
+                var btnSaleDis = '<button class="btn btn-success btn-sm btn-add-provider" title="Bán sản phẩm" disabled><i class="icon-basket"></i></button>\n'
+                var btnSoldOutDis = '<button class="btn btn-danger btn-sm btn-sold-out" title="Hết sản phẩm" disabled><i class="ft-x"></i></button>\n'
+                if (data.IsSoldOut) {
+                    return '<div class="col-12">' + btnDetail + btnUpdateDis + btnSaleDis + btnSoldOutDis + '</div>';
+                } else if (data.IsReadyForSale) {
+                    return '<div class="col-12">' + btnDetail + btnUpdateDis + btnSale + btnSoldOut + '</div>';
+                } else {
+                    return '<div class="col-12">' + btnDetail + btnUpdate + btnSale + btnSoldOut + '</div>';
+                }            
             }
         }
     ],
@@ -182,10 +193,6 @@ var farmFoodTable = $('#farm-food-mng').DataTable({
 
 //report
 $('.btn-report').click(function () {
-    data = {
-        ids: [1, 2, 3, 4, 5]
-    };
-
     // Use XMLHttpRequest instead of Jquery $ajax
     xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
@@ -277,7 +284,7 @@ $('#farm-food-mng').on('click', 'button.btn-view-detail', function () {
             }
         },
         function (result) {
-            toastr.error(result.message);
+            toastr.error(result.responseJSON.message);
         }
     );
 
@@ -323,7 +330,7 @@ function getFeedingData(foodId) {
             }
         },
         function (result) {
-            toastr.error(result.message);
+            toastr.error(result.responseJSON.message);
         });
 }
 
@@ -356,7 +363,7 @@ function getVaccinsData(foodId) {
             }
         },
         function (result) {
-            toastr.error(result.message);
+            toastr.error(result.responseJSON.message);
         });
 }
 
@@ -412,7 +419,7 @@ function loadRepeatForm(nameInput) {
                 });
             },
             function (result) {
-                toastr.error(result.message);
+                toastr.error(result.responseJSON.message);
             }
         )
     } else {
@@ -448,7 +455,7 @@ function loadRepeatForm(nameInput) {
                 });
             },
             function (result) {
-                toastr.error(result.message);
+                toastr.error(result.responseJSON.message);
             }
         )
     }
@@ -515,7 +522,7 @@ function callAjaxAddFeedingsData(foodId, feedingData) {
             toastr.success(result.message);
         },
         function (result) {
-            toastr.error(result.message);
+            toastr.error(result.responseJSON.message);
         }
     )
 }
@@ -532,7 +539,7 @@ function callAjaxAddVaccinsData(foodId, vaccinData) {
             toastr.success(result.message);
         },
         function (result) {
-            toastr.error(result.message);
+            toastr.error(result.responseJSON.message);
         }
     )
 }
@@ -607,6 +614,8 @@ $('#btnAddDetail').on('click', function () {
 //Clear Create transaction modal
 function clearProviderModal() {
     $('#pro-error').empty();
+    $('#num-error').empty();
+    $('#check-pro').val("");
     $('#ddlProvider').val(null).trigger("change");
 }
 
@@ -620,6 +629,36 @@ $('#farm-food-mng').on('click', 'button.btn-add-provider', function () {
     var id = row.data().FoodId;
     var name = row.data().CategoryName;
     var breed = row.data().Breed;
+    callAjaxAuth(
+        {
+            url: GET_FOODDATA_BY_ID_URI,
+            dataType: JSON_DATATYPE,
+            type: GET
+        },
+        {
+            id: id
+        }, function (result) {
+            var feeding = result.data.Farm.Feedings;
+            var vacxin = result.data.Farm.Vaccinations;
+            var certificationNum = result.data.Farm.CertificationNumber;
+            if (certificationNum != null) {
+                $('#certificationNumber').val(certificationNum);
+                $('#certificationNumber').attr('readonly', true);
+            } else {
+                $('#certificationNumber').val("");
+                $('#certificationNumber').attr('readonly', false);
+            }
+            if (feeding == null) {
+                $('#check-pro').val("feeding");
+            }
+            if (vacxin == null) {
+                $('#check-pro').val("vacxin");
+            }
+        },
+        function (result) {
+            toastr.error(result.responseJSON.message);
+        }
+    );
     if (preId != id) {
         clearProviderModal();
     }
@@ -631,10 +670,18 @@ $('#farm-food-mng').on('click', 'button.btn-add-provider', function () {
 });
 
 $('#btn-addProvider').click(function () {
+    $('#pro-error').empty();
+    $('#num-error').empty();
     var foodId = parseInt($('#pro-food-id').val());
     var providerId = parseInt($('#ddlProvider').val());
+    var number = $('#certificationNumber').val();    
+    var check = $('#check-pro').val();
     if ($('#ddlProvider').val() == null || $('#ddlProvider').val() == "") {
         $('#pro-error').append('<label class="error">Vui lòng chọn một nhà cung cấp</label>');
+    } else if ($('#certificationNumber').val() == "") {
+        $('#num-error').append('<label class="error">Vui lòng không bỏ trống trường này</label>');
+    } else if (check != "") {
+        $('#num-error').append('<label class="error">Chưa có dữ liệu thức ăn hoặc vacxin</label>');
     } else {
         callAjaxAuth(
             {
@@ -643,7 +690,8 @@ $('#btn-addProvider').click(function () {
                 type: POST
             }, JSON.stringify({
                 ReceiverId: providerId,
-                FoodId: foodId
+                FoodId: foodId,
+                CertificationNumber: number
             }),
             function (result) {
                 toastr.success('Giao dịch thành công, vui lòng chờ bộ phận kiểm dịch và nhà cung cấp xác minh');
@@ -652,7 +700,7 @@ $('#btn-addProvider').click(function () {
                 $("#farm-food-mng").DataTable().ajax.reload();
             },
             function (result) {
-                toastr.error(result);
+                toastr.error(result.responseJSON.message);
             }
         )
     }
@@ -684,4 +732,48 @@ download_img = function (el) {
     el.href = image;
 };
 
-
+// Sold out
+$('#farm-food-mng').on('click', 'button.btn-sold-out', function () {
+    var tr = $(this).closest('tr');
+    var row = farmFoodTable.row(tr);
+    var id = row.data().FoodId;
+    swal({
+        title: "Hết hàng?",
+        text: "Sản phẩm này đã hết hàng!",
+        icon: "warning",
+        showCancelButton: true,
+        buttons: {
+            cancel: {
+                text: "Không",
+                visible: true,
+                className: "btn-warning",
+                closeModal: false,
+            },
+            confirm: {
+                text: "Xác nhận!",
+                visible: true,
+                className: "",
+                closeModal: false
+            }
+        }
+    }).then(isConfirm => {
+        if (isConfirm) {
+            callAjaxAuth(
+                {
+                    url: SOLD_OUT_URI + id,
+                    dataType: JSON_DATATYPE,
+                    type: PUT
+                }, "",
+                function (result) {
+                    swal("Cập nhật thành công!", "Sản phẩm này đã hết, không thể tạo thêm giao dịch.", "success");
+                    $("#farm-food-mng").DataTable().ajax.reload();
+                },
+                function (result) {
+                    toastr.error(result.responseJSON.message);
+                }
+            );
+        } else {
+            swal("", "Bạn đã hủy hành động này", "error");
+        }
+    });
+});

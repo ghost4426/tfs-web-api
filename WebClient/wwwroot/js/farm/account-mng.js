@@ -158,7 +158,7 @@ $('#farm-account-mng').on('click', 'button.btn-deactivate', function () {
                     $("#farm-account-mng").DataTable().ajax.reload();
                 },
                 function (result) {
-                    toastr.error(result);
+                    toastr.error(result.responseJSON.message);
                 }
             );            
         } else {
@@ -203,7 +203,7 @@ $('#farm-account-mng').on('click', 'button.btn-activate', function () {
                     $("#farm-account-mng").DataTable().ajax.reload();
                 },
                 function (result) {
-                    toastr.error(result);
+                    toastr.error(result.responseJSON.message);
                 }
             );
         } else {
