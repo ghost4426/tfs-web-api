@@ -1,5 +1,4 @@
 ﻿$(document).ready(function () {
-
     var activationCode = GetURLParameter('ActivationCode');
     ActivateAccount(activationCode);
 })
@@ -24,7 +23,6 @@ function ActivateAccount(activationCode) {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json; charset=utf-8',
-
         },
     });
 }

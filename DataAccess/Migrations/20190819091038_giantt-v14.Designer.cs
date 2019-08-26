@@ -4,14 +4,16 @@ using DataAccess.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(FoodTrackingDbContext))]
-    partial class FoodTrackingDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190819091038_giantt-v14")]
+    partial class gianttv14
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -562,23 +564,15 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("DTO.Entities.VaccineFood", b =>
                 {
-                    b.Property<int>("VaccineFoodId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<int>("FoodId");
+
+                    b.Property<int>("VaccineId");
 
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("DBO.dReturnDate(getdate())");
 
-                    b.Property<int>("FoodId");
-
-                    b.Property<DateTime>("VaccineDate");
-
-                    b.Property<int>("VaccineId");
-
-                    b.HasKey("VaccineFoodId");
-
-                    b.HasIndex("FoodId");
+                    b.HasKey("FoodId", "VaccineId");
 
                     b.HasIndex("VaccineId");
 

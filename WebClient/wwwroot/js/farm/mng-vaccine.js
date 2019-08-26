@@ -2,13 +2,15 @@
     $('#vaccineList').append(
         '  <div class="input-group mb-1">'
         + ' <input type="hidden" class="form-control vaccine-id" value="0">'
-        + ' <input type="text" placeholder="Nhập thức ăn" class="form-control vaccine-name" >'
+        + ' <input type="text" placeholder="Nhập vac-xin" class="form-control vaccine-name" >'
         + ' <span class="input-group-append">'
         + '   <button class="btn btn-danger" onclick="removeVaccineMng(this)" type="button"><i class="ft-x"></i></button>'
         + ' </span>'
         + '</div>');
 })
 
+
+var listVaccine = [];
 function removeVaccineMng(button) {
 
     var vaccineId = $(button).parent().parent().find('.vaccine-id').val();
@@ -77,9 +79,13 @@ $('#btnConfirmSaveVaccine').on('click', function () {
     if (!IsVaccineModified()) {
         return;
     }
+    $('#mng-vaccine-error').empty();
     var vaccine = [];
     var vaccineIds = [];
     var vaccineNames = [];
+    var isDuplicate = false;
+    var listDuplicate = [];
+
     $('input.vaccine-id').each(function () {
         vaccineIds.push($(this).val())
     })
@@ -87,11 +93,42 @@ $('#btnConfirmSaveVaccine').on('click', function () {
         vaccineNames.push($(this).val())
     })
     vaccineIds.forEach(function (item, index, array) {
-        vaccine.push({
-            'VaccineId': item,
-            'VaccineName': vaccineNames[index]
-        })
+        if (vaccineNames[index] != "") {
+            vaccine.push({
+                'VaccineId': item,
+                'VaccineName': vaccineNames[index]
+            })
+        }
     });
+    debugger;
+    var isHasNewValue = false;
+    vaccine.forEach(function (value, index, array) {
+        if (value.VaccineId == 0) {
+            isHasNewValue = true;
+            var vaccineName = value.VaccineName + "";
+            listVaccine.forEach(function (value, index, array) {
+                if (vaccineName.toLowerCase() == value) {
+                    listDuplicate.push(vaccineName);
+                    isDuplicate = true;
+                }
+            });
+        }
+    });
+
+    if (isDuplicate) {
+        var stringDuplicate = ""
+        listDuplicate.forEach(function (value, index, array) {
+            stringDuplicate = stringDuplicate + "'" + value + "'" + " ";
+        });
+        $('#mng-vaccine-error').append('<label class="error"> Vac-xin ' + stringDuplicate + ' đã tồn tại!</label>');
+        return;
+    }
+
+
+    if (!isHasNewValue) {
+        return;
+    }
+
     callAjaxAuth(
         {
             url: UPDATE_VACCINE_URI,
@@ -108,6 +145,7 @@ $('#btnConfirmSaveVaccine').on('click', function () {
             toastr.error(result.message);
         }
     )
+    $('#mng-vaccine-error').empty();
 })
 
 
@@ -156,6 +194,7 @@ $('#manageVaccineModal').on('hide.bs.modal', function (e) {
 
 function loadvaccineDataModal() {
     $('#vaccineList').empty();
+    listVaccine = [];
     callAjaxAuth(
         {
             url: GET_VACCINE_LIST_BY_PREMISES_URI,
@@ -168,6 +207,7 @@ function loadvaccineDataModal() {
                 return;
             }
             $.each(result.data, function (data, value) {
+                listVaccine.push(value.VaccineName.toLowerCase());
                 $('#vaccineList').append(
                     '  <div class="input-group mb-1">'
                     + ' <input type="hidden" class="form-control vaccine-id" value="' + value.VaccineId + '">'

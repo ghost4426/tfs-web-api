@@ -13,7 +13,7 @@ $('#createNewRegisterInfoBtn').click(function () {
     var preTypeId = $('select[id="dllPremisesType"]').val();
     callAjax(
         {
-            url: CREATE_NEW_PREMISES_URI,
+            url: REGISTER_URI,
             dataType: JSON_DATATYPE,
             type: POST,
         }, JSON.stringify({

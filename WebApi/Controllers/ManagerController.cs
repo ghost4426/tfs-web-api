@@ -83,7 +83,7 @@ namespace CommonWebApi.Controllers
                 isCreated = await _userBL.CreateUser(user);
                 if (isCreated)
                 {
-                    await _mailSender.SendEmailAsync(user.Email, "Tạo tài khoản TFS", "Tên tài khoản: " + user.Username +"\n"+"Mật khẩu: "+password);
+                    await _mailSender.SendEmailAsync(user.Email, "Tạo tài khoản TSF", "Tên tài khoản: " + user.Username +"\n"+"Mật khẩu: "+password);
                 }
                 return Ok(new { messsage = MessageConstant.INSERT_SUCCESS });
 

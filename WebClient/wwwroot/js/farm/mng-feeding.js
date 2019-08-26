@@ -9,6 +9,8 @@
         + '</div>');
 })
 
+
+var listFeeding = [];
 function removeFeedingMng(button) {
 
     var feedingId = $(button).parent().parent().find('.feeding-id').val();
@@ -74,24 +76,62 @@ function IsFeedingModified() {
 }
 
 $('#btnConfirmSaveFeeding').on('click', function () {
+    $('#mng-feeding-error').empty();
     if (!IsFeedingModified()) {
         return;
     }
     var feeding = [];
     var feedingIds = [];
     var feedingNames = [];
+    var isDuplicate = false;
+    var listDuplicate = []
+
     $('input.feeding-id').each(function () {
         feedingIds.push($(this).val())
     })
+    
     $('input.feeding-name').each(function () {
-        feedingNames.push($(this).val())
+        var feeding = $(this).val()
+        feedingNames.push(feeding);
     })
+    
+
     feedingIds.forEach(function (item, index, array) {
-        feeding.push({
-            'FeedingId': item,
-            'FeedingName': feedingNames[index]
-        })
+        if (feedingNames[index] != "") {
+            feeding.push({
+                'FeedingId': item,
+                'FeedingName': feedingNames[index]
+            })
+        }
     });
+    var isHasNewValue = false;
+    feeding.forEach(function (value, index, array) {
+        if (value.FeedingId == 0) {
+            isHasNewValue = true;
+           var feedingName = value.FeedingName +"";
+            listFeeding.forEach(function (value, index, array) {
+                if (feedingName.toLowerCase() == value) {
+                    listDuplicate.push(feedingName);
+                    isDuplicate = true;
+                }
+            });
+        }
+    });
+
+    if (isDuplicate) {
+        var stringDuplicate = ""
+        listDuplicate.forEach(function (value, index, array) {
+            stringDuplicate = stringDuplicate +"'"+ value +"'"+ " ";
+        });
+        $('#mng-feeding-error').append('<label class="error"> Thức ăn ' + stringDuplicate + ' đã tồn tại!</label>');
+        return;
+    }
+
+
+    if (!isHasNewValue) {
+        return;
+    }
+
     callAjaxAuth(
         {
             url: UPDATE_FEEDING_URI,
@@ -108,6 +148,7 @@ $('#btnConfirmSaveFeeding').on('click', function () {
             toastr.error(result.message);
         }
     )
+    $('#mng-feeding-error').empty();
 })
 
 
@@ -122,7 +163,6 @@ $('#manageFeedingModal').on('hide.bs.modal', function (e) {
 
     if (isModified && !confirmHide) {
         e.preventDefault();
-        //e.stopImmediatePropagation();
         swal({
             title: "Những chỉnh sửa sẽ không được lưu bạn có muốn tiếp tục ?",
             text: "",
@@ -156,6 +196,7 @@ $('#manageFeedingModal').on('hide.bs.modal', function (e) {
 
 function loadFeedingDataModal() {
     $('#feedingList').empty();
+    listFeeding = [];
     callAjaxAuth(
         {
             url: GET_FEEDING_LIST_BY_PREMISES_URI,
@@ -168,6 +209,7 @@ function loadFeedingDataModal() {
                 return;
             }
             $.each(result.data, function (data, value) {
+                listFeeding.push(value.FeedingName.toLowerCase());
                 $('#feedingList').append(
                     '  <div class="input-group mb-1">'
                     + ' <input type="hidden" class="form-control feeding-id" value="' + value.FeedingId + '">'

@@ -73,15 +73,15 @@ namespace AdminWebApi.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody]Models.RegisterRequest register)
         {
-            Entities.User user = null;
+            var user = _mapper.Map<Entities.User>(register);
+            var premises = _mapper.Map<Entities.Premises>(register);
             var isCreated = false;
             try
-            {
-                user = _mapper.Map<Entities.User>(register);
-                isCreated = await _userBL.CreateUser(user);
+            {                
+                isCreated = await _userBL.Register(user,premises);
                 if (isCreated)
                 {
-                    //await _mailSender.SendEmailAsync(user.Email, "Created Account", "Your password: " + password);
+                    await _mailSender.SendEmailAsync(user.Email, "Tạo tài khoản TSF", "Bạn đã tạo tài khoản: " + user.Username +" thành công \n Mã kích hoạt: "+ user.ActivationCode);
                 }
                 return Ok(new { messsage = MessageConstant.INSERT_SUCCESS });
 
@@ -90,13 +90,17 @@ namespace AdminWebApi.Controllers
             {
                 return BadRequest(new { message = e.Message });
             }
-            catch (Exception)
+            catch(DuplicateEmailException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (Exception e)
             {
                 if (isCreated)
                 {
-                    //await _bl.RemoveByIdAsync(user.UserId);
+                    await _userBL.RemoveByIdAsync(user.UserId);
                 }
-                return BadRequest(new { message = MessageConstant.UNHANDLE_ERROR });
+                return BadRequest(new { message = MessageConstant.UNHANDLE_ERROR, error = e.StackTrace });
             }
         }
 
@@ -118,7 +122,7 @@ namespace AdminWebApi.Controllers
             try
             {
                 await _userBL.ActivateAccount(activateCode);
-                return Ok();
+                return Ok(new { messsage = "Tài khoản đã được kích hoạt thành công" });
             }
             catch(Exception e)
             {

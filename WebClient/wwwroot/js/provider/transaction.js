@@ -64,15 +64,10 @@
         + '<"row" <"col-sm-12"tr>>'
         + '<"row"<"col-sm-5"l><"col-sm-7"p>>',
     buttons: [
-        {
-            extend: 'excel',
-            text: '<i class="fa fa-arrow-down white"></i> Tải báo cáo'
-        }
+       
     ],
     language: table_vi_lang
 });
-$('.buttons-excel').addClass('btn btn-primary btn-sm mr-1 ');
-$('.buttons-excel').removeClass('btn-secondary');
 
 $('#provider-transaction-mng').on('click', 'button.btn-accept-trans', function () {
     var tr = $(this).closest('tr');

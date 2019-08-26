@@ -94,7 +94,11 @@ namespace BusinessLogic.BusinessLogicImpl
             User user;
             user = await _userRepos.FindAsync(u => u.ActivationCode == activateCode);
             user.IsConfirmEmail = true;
+            user.IsActive = true;
+            Premises premises = await _premesisRepos.FindAsync(x => x.PremisesId == user.PremisesId);
+            premises.IsActive = true;
             await _userRepos.UpdateAsync(user);
+            await _premesisRepos.UpdateAsync(premises);
         }
         public async Task ChangePassword(int id, string password, string oldPass)
         {
@@ -246,9 +250,43 @@ namespace BusinessLogic.BusinessLogicImpl
             await _userRepos.UpdateAsync(user, true);
         }
 
-        public Task Register(User user, Premises premises)
+        public async Task<bool> Register(User newUser, Premises newPremises)
         {
-            throw new NotImplementedException();
+            var hashedPassword = PasswordHasher.GetHashPassword(newUser.Password);
+            var user = await _userRepos.FindByUsername(newUser.Username);
+            var mail = await _userRepos.FindAllAsync(x => x.Email == newUser.Email);
+            var activeCode = Util.GeneratePassword(new Models.PasswordOptions()
+            {
+                RequireDigit = true,
+                RequiredLength = 6,
+                RequireLowercase = true,
+                RequireNonAlphanumeric = false,
+                RequireUppercase = true
+            });
+            if (user != null)
+            {
+                throw new DuplicatedUsernameException(msg: MessageConstant.DUPLICATED_USERNAME);
+            }
+            if(mail.Count > 0)
+            {
+                throw new DuplicateEmailException(msg: MessageConstant.DUPLICATED_EMAIL);
+            }
+            _premesisRepos.Insert(newPremises, true);
+            //newUser.UserId = 0;
+            newUser.Password = hashedPassword.HashedPassword;
+            newUser.Salt = hashedPassword.Salt;
+            newUser.ActivationCode = activeCode;
+            newUser.RoleId = 2;
+            newUser.PremisesId = newPremises.PremisesId;
+            newUser.IsActive = false;
+            newUser.Image = "/app-assets/images/avatar.jpg";
+            newUser.IsConfirmEmail = false;
+            _userRepos.Insert(newUser,true);
+            if (newUser.UserId > 0)
+            {
+                return true;
+            }
+            return false;
         }
 
         public Task<User> FindByName(string username)

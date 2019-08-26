@@ -241,8 +241,6 @@ namespace DataAccess.Context
 
             #region VaccinFood
             builder.Entity<VaccineFood>()
-                .HasKey(df => new { df.FoodId, df.VaccineId });
-            builder.Entity<VaccineFood>()
                 .HasOne(df => df.Vaccine)
                 .WithMany(d => d.VaccineFoods)
                 .HasForeignKey(df => df.VaccineId);

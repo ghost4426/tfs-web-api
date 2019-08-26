@@ -5,6 +5,16 @@
 var userTable = $('#userTable').DataTable({
     ajax: {
         url: GET_USER_URI,
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json; charset=utf-8',
+            "Authorization": 'Bearer ' + Cookies.get('token')
+        },
+        statusCode: {
+            401: function () {
+                window.location.replace("/dang-nhap");
+            },
+        },
         beforeSend: showLoadingPage,
         complete: hideLoadingPage
     },

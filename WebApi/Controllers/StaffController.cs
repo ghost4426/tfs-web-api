@@ -38,30 +38,6 @@ namespace CommonWebApi.Controllers
             return await _foodDataBL.GetFoodDataByID(id);
         }
 
-        //[HttpPost("saveFoodData")]
-        //public async Task<string> SaveFoodData()
-        //{
-        //    FoodData foodData = new FoodData()
-        //    {
-        //        FoodId = 1,
-        //        Category = "Thịt Heo",
-        //        Farm = new Farm()
-        //        {
-        //            Name = "Farm Test",
-        //            FarmId = 1
-        //        },
-        //        Distributor = new Distributor()
-        //        {
-        //            Name = "Dis test"
-        //        },
-        //        Provider = new Provider()
-        //        {
-        //            Name = "Provider test"
-        //        }
-        //    };
-        //    return await _foodDataBL.SaveFoodData(foodData);
-        //}
-
         [HttpGet("getFoodDataByProvider")]
         public async Task<FoodData> GetFoodDataByIDAndProviderID(long id, int providerId)
         {
