@@ -19,7 +19,7 @@ namespace DTO.Models.FoodData
 
         public List<Distributor> Distributors { get; set; }
 
-        public DateTime StartedDate { get; set; }
+        public DateTime StartedDate { get; set; } 
 
     }
 }

@@ -1,29 +1,28 @@
-﻿$(document).ready(function () {
-    $("#dllFoodDetailType").select2({
-        ajax: {
-            url: GET_FOOD_DETAIL_TYPE_URI,
-            dataType: JSON_DATATYPE,
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json; charset=utf-8',
-                "Authorization": 'Bearer ' + Cookies.get('token')
-            },
-            statusCode: {
-                401: function () {
-                    window.location.replace("/dang-nhap");
-                },
-            },
-            processResults: function (data, params) {
-                return {
-                    results: data.results
-                };
-            },
-            cache: false
+﻿$("#dllFoodDetailType").select2({
+    ajax: {
+        url: GET_FOOD_DETAIL_TYPE_URI,
+        dataType: JSON_DATATYPE,
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json; charset=utf-8',
+            "Authorization": 'Bearer ' + Cookies.get('token')
         },
-        minimumResultsForSearch: Infinity,
-        placeholder: "Chọn thông tin",
-        language: "vi"
-    });
+        statusCode: {
+            401: function () {
+                window.location.replace("/dang-nhap");
+            },
+        },
+        processResults: function (data, params) {
+            return {
+                results: data.results
+            };
+        },
+        cache: false
+    },
+    minimumResultsForSearch: Infinity,
+    placeholder: "Chọn thông tin",
+    language: "vi"
+});
 
     //load provider
     $("#ddlProvider").select2({        
@@ -253,6 +252,9 @@ $('#farm-food-mng').on('click', 'button.btn-view-detail', function () {
         {
             id: id
         }, function (result) {
+            if (result.data == null) {
+                return;
+            }
             var feeding = result.data.Farm.Feedings;
             var vacxin = result.data.Farm.Vaccinations;
             if (feeding != null) {
@@ -295,7 +297,6 @@ $('#farm-food-mng').on('click', 'button.btn-view-detail', function () {
 });
 
 
-
 // Show add food detail modal
 $('#farm-food-mng').on('click', 'button.btn-add-detail', function () {
     $('#choose-error').empty();
@@ -310,6 +311,36 @@ $('#farm-food-mng').on('click', 'button.btn-add-detail', function () {
     $('#txtFoodCategory').val(row.data().CategoryName);
     $('#txtFoodBreed').val(row.data().Breed);
     $('#add-food-data').modal('show');
+});
+
+
+
+var tmpIdList = [];
+// Load form add detail base on dll change
+$('#dllFoodDetailType').on('change', function () {
+    if (this.value == null) {
+        return;
+    }
+    $('#choose-error').empty();
+    $('#error').empty();
+    tmpIdList = [];
+    var foodId = $('#txtFoodId').val();
+    switch (this.value) {
+        case "2":
+            $("#detailTitle").empty();
+            $("#add-detail-form").empty();
+            $("#detailTitle").append('<h4 class="form-section"><i class="ft-info"></i> Chi Tiết Thức Ăn</h4>');
+            getFeedingData(foodId);
+            loadRepeatForm("feedings", foodId);
+            break;
+        case "3":
+            $("#detailTitle").empty();
+            $("#add-detail-form").empty();
+            $("#detailTitle").append('<h4 class="form-section"><i class="ft-info"></i> Chi Tiết Vac-xin</h4>');
+            getVaccinsData(foodId);
+            loadRepeatForm("vaccins");
+            break;
+    }
 });
 
 //Get feeding data
@@ -333,9 +364,9 @@ function getFeedingData(foodId) {
             toastr.error(result.responseJSON.message);
         });
 }
-
-//Get vaccine data
+var currentFoodVaccines = [];
 function getVaccinsData(foodId) {
+    currentFoodVaccines = [];
     callAjaxAuth(
         {
             url: GET_FOOD_VACCIN_DATA_URI + foodId,
@@ -345,11 +376,17 @@ function getVaccinsData(foodId) {
         function (result) {
             if (result != null || typeof result != 'undefined') {
                 $.each(result.data, function (data, value) {
+                    var vaccineDate = value.VaccinationDate;
+                    currentFoodVaccines.push({
+                        'vaccineDate': new Date(vaccineDate).getTime(),
+                        'vaccineType': value.VaccinationType
+                    });
+                    vaccineDate = $.format.date(vaccineDate, "dd-MM-yyyy");
                     $("#detailTitle").append('<div class="input-group mb-1"">'
                         + '<div class="col-5">'
                         + '<div class="form-group">'
                         + '<label for= "userinput1" >Ngày tiêm:</label >'
-                        + '<input type="text" readonly class="form-control" value="' + $.format.date(value.VaccinationDate, "dd-MM-yyyy") + '" >'
+                        + '<input type="text" readonly class="form-control" value="' + vaccineDate + '" >'
                         + '</div > '
                         + '</div > '
                         + '<div class="col-7">'
@@ -367,34 +404,7 @@ function getVaccinsData(foodId) {
         });
 }
 
-
-// Load form add detail base on dll change
-$('#dllFoodDetailType').on('change', function () {
-    if (this.value == null) {
-        return;
-    }
-    $('#choose-error').empty();
-    $('#error').empty();
-    var foodId = $('#txtFoodId').val();
-    switch (this.value) {
-        case "2":
-            $("#detailTitle").empty();
-            $("#add-detail-form").empty();
-            $("#detailTitle").append('<h4 class="form-section"><i class="ft-info"></i> Chi Tiết Thức Ăn</h4>');
-            getFeedingData(foodId);
-            loadRepeatForm("feedings");
-            break;
-        case "3":
-            $("#detailTitle").empty();
-            $("#add-detail-form").empty();
-            $("#detailTitle").append('<h4 class="form-section"><i class="ft-info"></i> Chi Tiết Vac-xin</h4>');
-            getVaccinsData(foodId);
-            loadRepeatForm("vaccins");
-            break;
-    }
-});
-
-function loadRepeatForm(nameInput) {
+function loadRepeatForm(nameInput, foodId) {
     if (nameInput === "feedings") {
         $("#add-detail-form").append(
             '<select class="form-control" id="dllAddFeedingData"style="width: 90% !important">'
@@ -403,7 +413,7 @@ function loadRepeatForm(nameInput) {
         );
         callAjaxAuth(
             {
-                url: GET_FEEDING_LIST_URI,
+                url: GET_FEEDING_LIST_BY_FOODID_URI + foodId,
                 dataType: JSON_DATATYPE,
                 type: GET
             }, "",
@@ -462,51 +472,106 @@ function loadRepeatForm(nameInput) {
 };
 
 function addFeedingToList() {
-    var text = $('#dllAddFeedingData :selected').text();
-    $("#detailTitle").append('<div class="input-group mb-1"">'
-        + '<input type="text" readonly class="form-control feeding-selected" value="' + text + '" >'
-        + ' <span class="input-group-append">'
-        + '   <button class="btn btn-danger" onclick="removeFeedingAddDetail(this)" type="button"><i class="ft-x"></i></button>'
-        + ' </span>'
-        + '</div > ')
-    $("#dllAddFeedingData").val(null).trigger("change");
+    $('#error').empty();
+    var feedingId = $('#dllAddFeedingData').val();
+    if (feedingId == null) {
+        $('#error').append('<label class="error">Vui lòng chọn 1 loại thức ăn!</label>');
+        return;
+    }
+    if (tmpIdList.indexOf(feedingId) < 0) {
+        tmpIdList.push(feedingId)
+        var feeding = $('#dllAddFeedingData :selected').text();
+        $("#detailTitle").append('<div class="input-group mb-1"">'
+            + '<input type="hidden" readonly class="form-control feedingId-selected" value="' + feedingId + '">'
+            + '<input type="text" readonly class="form-control feeding-selected" value="' + feeding + '" >'
+            + ' <span class="input-group-append">'
+            + '   <button class="btn btn-danger" onclick="removeFeedingAddDetail(this)" type="button"><i class="ft-x"></i></button>'
+            + ' </span>'
+            + '</div > ')
+        $("#dllAddFeedingData").val(null).trigger("change");
+    } else {
+        $('#error').append('<label class="error">Bạn không thể chọn thức ăn giống nhau!</label>');
+    }
+
 }
 
 function removeFeedingAddDetail(button) {
+    var feedingId = $(button).parent().parent().find('.feedingId-selected').val();
+    var pos = tmpIdList.indexOf(feedingId);
+    tmpIdList.splice(pos, 1);
     $(button).parent().parent().remove();
 }
 
+
 function addVaccineToList() {
+    $('#error').empty();
+    var isError = false;
     var vaccineId = $('#dllAddVaccineData').val();
-    var vaccine = $('#dllAddVaccineData :selected').text();
     var vaccineDate = $('#vaccineDate').val();
+    var vaccine = $('#dllAddVaccineData :selected').text();
+    if (vaccineId == null) {
+        $('#error').append('<label class="error">Vui lòng chọn 1 loại vac-xin!</label>');
+        isError = true;
+    }
+    if (vaccineDate == null != vaccineDate == "") {
+        $('#error').append('<label class="error">Vui lòng chọn ngày tiêm!</label>');
+        isError = true;
+    }
+    vaccineDate = $.format.date(new Date(vaccineDate), "MM-dd-yyyy")
+    var isVaccineInfoExist = false;
+    var vaccineSelected = {
+        'vaccineDate': new Date(vaccineDate).getTime(),
+        'vaccineType': vaccine
+    }
+    currentFoodVaccines.forEach(function (vaccine, index) {
+        if (vaccine.vaccineDate === vaccineSelected.vaccineDate && vaccine.vaccineType === vaccineSelected.vaccineType) {
+            isVaccineInfoExist = true;
+        }
+    })
+    vaccineDate = $.format.date(new Date(vaccineDate), "dd-MM-yyyy")
+    if (isVaccineInfoExist) {
+        $('#error').append('<label class="error">Đã tồn tại thông tin:Vac-xin ' + vaccine + ' tiêm vào ngày ' + vaccineDate + '!</label>');
+        isError = true;
+
+
+    }
+    if (isError) {
+        return;
+    }
+    appendDataToVaccineList(vaccineId, vaccineDate, vaccine)
+}
+
+function appendDataToVaccineList(vaccineId, vaccineDate, vaccine) {
     $("#detailTitle").append(
         '<div class="input-group mb-1">'
-        + '<div class="col-5">'
-        + '<div class="form-group">'
-        + ' <label >Ngày tiêm:</label>'
-        + '<input type="text" readonly class="form-control vaccineDate-selected" value="' + $.format.date(new Date(vaccineDate), "dd-MM-yyyy") + '">'
-        + '</div>'
-        + '</div>'
-        + '<div class="col-5">'
-        + '<div class="form-group">'
-        + '<label>Loại vac-xin:</label>'
-        + '<input type="hidden" readonly class="form-control vaccineId-selected" value="' + vaccineId + '">'
-        + '<input type="text" readonly name="txtVaccineName" class="form-control vaccine-selected" value="' + vaccine + '">'
-        + '</div>'
-        + '</div>'
-        + '<div class="col-2">'
-        + '<div class="form-group">'
-        + '<label for="userinput1">Xóa</label>'
-        + '<button class="btn btn-danger" onclick="removeVaccineAddDetail(this)" type="button"><i class="ft-x"></i></button>'
-        + '</div>'
-        + '</div>'
+        + ' <div class="col-5">'
+        + '     <div class="form-group">'
+        + '         <label >Ngày tiêm:</label>'
+        + '         <input type="text" readonly class="form-control vaccineDate-selected" value="' + vaccineDate + '">'
+        + '     </div>'
+        + '     </div>'
+        + ' <div class="col-5">'
+        + '     <div class="form-group">'
+        + '         <label>Loại vac-xin:</label>'
+        + '         <input type="hidden" readonly class="form-control vaccineId-selected" value="' + vaccineId + '">'
+        + '         <input type="text" readonly name="txtVaccineName" class="form-control vaccine-selected" value="' + vaccine + '">'
+        + '     </div>'
+        + ' </div>'
+        + ' <div class="col-2">'
+        + '     <div class="form-group">'
+        + '         <label for="userinput1">Xóa</label>'
+        + '         <button class="btn btn-danger" onclick="removeVaccineAddDetail(this)" type="button"><i class="ft-x"></i></button>'
+        + '     </div>'
+        + ' </div>'
         + '</div>'
     )
     $("#dllAddVaccineData").val(null).trigger("change");
 }
 
 function removeVaccineAddDetail(button) {
+    var vaccineId = $(button).parent().parent().find('.vaccineId-selected').val();
+    var pos = tmpIdList.indexOf(vaccineId);
+    tmpIdList.splice(pos, 1);
     $(button).parent().parent().parent().remove();
 }
 
@@ -557,9 +622,24 @@ $('#btnAddDetail').on('click', function () {
     switch (value) {
         case "2":
             var feedingData = [];
+            var feedingIds = [];
+            var feedingNames = [];
+            $('input.feedingId-selected').each(function () {
+                feedingIds.push($(this).val());
+            });
             $('input.feeding-selected').each(function () {
-                feedingData.push($(this).val())
-            })
+                feedingNames.push($(this).val());
+            });
+            if ((feedingIds.length != feedingNames.length)) {
+                toastr.error('Đã có lỗi xảy ra vui lòng thử lại');
+                return;
+            }
+            feedingIds.forEach(function (item, index, array) {
+                feedingData.push({
+                    'FeedingId': item,
+                    'Feedingname': feedingNames[index]
+                })
+            });
             var foodId = $('#txtFoodId').val();
             callAjaxAddFeedingsData(foodId, feedingData);
             $('#add-food-data').modal('hide');
@@ -574,12 +654,13 @@ $('#btnAddDetail').on('click', function () {
                 vaccineIds.push($(this).val())
             })
             $('input.vaccineDate-selected').each(function () {
-                vaccineDates.push($(this).val())
+                var dateArray = $(this).val().split("-");
+                var newdate = dateArray[1] + '-' + dateArray[0] + '-' + dateArray[2];
+                vaccineDates.push(newdate);
             })
             $('input.vaccine-selected').each(function () {
                 vaccineNames.push($(this).val())
             })
-            debugger;
             if (vaccineIds.length != vaccineDates.length && vaccineIds.length != vaccineNames.length) {
                 toastr.error('Đã có lỗi xảy ra vui lòng thử lại');
                 return;
@@ -595,21 +676,45 @@ $('#btnAddDetail').on('click', function () {
             callAjaxAddVaccinsData(foodId, vaccineData);
             clearDetailModal();
             $('#add-food-data').modal('hide');
-            // if (check == 0) {
-            //     callAjaxAddVaccinsData(foodId, vaccinData);
-            //     $('#add-food-data').modal('hide');
-            //     clearDetailModal();
-            // } else if (check == 1) {
-            //     $('#error').append('<label class="error">Vui lòng nhập các trường</label>');
-            // } else if (check == 2) {
-            //     $('#error').append('<label class="error">Vui lòng không nhập ký tự đặc biệt</label>');
-            // }
             break;
         default:
             break;
     }
 });
 
+//Call ajax add feeding data
+function callAjaxAddFeedingsData(foodId, feedingData) {
+    callAjaxAuth(
+        {
+            url: ADD_FOOD_FEEDING_DATA_URI + foodId,
+            dataType: JSON_DATATYPE,
+            type: PUT
+        }, JSON.stringify(feedingData),
+        function (result) {
+            toastr.success(result.message);
+        },
+        function (result) {
+            toastr.error(result.message);
+        }
+    )
+}
+
+//Call ajax add Vaccine data
+function callAjaxAddVaccinsData(foodId, vaccineData) {
+    callAjaxAuth(
+        {
+            url: ADD_FOOD_VACCIN_DATA_URI + foodId,
+            dataType: JSON_DATATYPE,
+            type: PUT
+        }, JSON.stringify(vaccineData),
+        function (result) {
+            toastr.success(result.message);
+        },
+        function (result) {
+            toastr.error(result.message);
+        }
+    )
+}
 
 //Clear Create transaction modal
 function clearProviderModal() {

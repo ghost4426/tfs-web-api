@@ -1,9 +1,8 @@
 ﻿using Common.Enum;
 using DTO.Entities;
 using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
+using Models = DTO.Models;
 
 namespace BusinessLogic.IBusinessLogic
 {
@@ -23,6 +22,7 @@ namespace BusinessLogic.IBusinessLogic
 
         Task AddDetail(int foodId, EFoodDetailType type, string transactionHash, int userID);
 
+
         Task<IList<ProviderFood>> getAllFoodByProviderId(int providerId);
 
         Task<int> createProviderFood(ProviderFood newProviderFood);
@@ -36,7 +36,7 @@ namespace BusinessLogic.IBusinessLogic
 
         Task<int> createDistributorFood(DistributorFood newDistributorFood);
 
-        Task InsertFeedingFood();
+        Task InsertFeedingFood(int foodId, List<Models.AddFeedingInfoToFoodDataRequest> feedings);
 
         Task<IList<Food>> FarmReportFoodIn(int premisesId);
         Task<IList<Transaction>> FarmReportFoodOut(int premisesId);
@@ -44,5 +44,6 @@ namespace BusinessLogic.IBusinessLogic
         Task<IList<ProviderFood>> ProviderReportFoodIn(int premisesId);
         Task UpdateFoodSoldOut(int foodId);
         Task UpdatePackagingFood(int foodId, int premisesId);
+        Task InsertVaccineFood(int foodId, List<Models.AddVaccineInfoToFoodDataRequest> vaccines);
     }
 }

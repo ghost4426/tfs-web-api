@@ -13,6 +13,7 @@ namespace DataAccess.IRepositories
         IList<TEntity> GetAllMatched(Expression<Func<TEntity, bool>> match);
         IQueryable<TEntity> GetAllIncluding(params Expression<Func<TEntity, object>>[] includeProperties);
         TEntity GetById(object id);
+        IQueryable<TEntity> GetIQueryable();
         TEntity Find(Expression<Func<TEntity, bool>> match);
 
         int Count();

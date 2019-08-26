@@ -12,7 +12,7 @@ namespace BusinessLogic.IBusinessLogic
 
         Task<IList<Feeding>> GetFeedingListByPremisesId(int premisesId);
 
-        Task<IList<Feeding>> GetFeedingList();
+        Task<IList<Feeding>> GetFeedingListByFoodId(int foodId);
 
         Task RemoveFeedingById(int feedingId, int userId);
     }

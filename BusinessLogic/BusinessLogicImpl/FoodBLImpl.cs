@@ -3,6 +3,7 @@ using Common.Constant;
 using Common.Enum;
 using DataAccess.IRepositories;
 using DTO.Entities;
+using Models = DTO.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,7 @@ namespace BusinessLogic.BusinessLogicImpl
         private readonly IFeedingFoodRepository _feedingFoodRepository;
         private readonly ITransactionRepository _transactionRepos;
         private readonly IPremisesRepository _premisesRepos;
+        private readonly IVaccineFoodRepository _vaccineFoodRepository;
 
         public FoodBLImpl(
             IFoodRepository productRepos
@@ -28,6 +30,7 @@ namespace BusinessLogic.BusinessLogicImpl
             , IProviderFoodRepository providerFoodRepository
             , IFoodDetailRepository foodDetailRepository
             , IFeedingFoodRepository feedingFoodRepository
+            , IVaccineFoodRepository vaccineFoodRepository
             , ITransactionRepository transactionRepository
             , IPremisesRepository premisesRepository
             )
@@ -38,6 +41,7 @@ namespace BusinessLogic.BusinessLogicImpl
             _providerFoodRepository = providerFoodRepository;
             _foodDetailRepository = foodDetailRepository;
             _feedingFoodRepository = feedingFoodRepository;
+            _vaccineFoodRepository = vaccineFoodRepository;
             _transactionRepos = transactionRepository;
             _premisesRepos = premisesRepository;
         }
@@ -124,14 +128,14 @@ namespace BusinessLogic.BusinessLogicImpl
                     break;
                 default: break;
             }
-            
+
             await _foodDetailRepository.InsertAsync(foodDetail);
         }
 
         public async Task<IList<ProviderFood>> getAllFoodByProviderId(int providerId)
         {
             var food = await _providerFoodRepository.getAllFoodByProviderId(providerId);
-            foreach(var i in food)
+            foreach (var i in food)
             {
                 i.Food = _productRepos.GetById(i.FoodId);
                 i.Food.Category = _categoryRepos.GetById(i.Food.CategoryId);
@@ -179,9 +183,29 @@ namespace BusinessLogic.BusinessLogicImpl
         }
 
 
-        public Task InsertFeedingFood()
+        public async Task InsertFeedingFood(int foodId, List<Models.AddFeedingInfoToFoodDataRequest> feedings)
         {
-            throw new System.NotImplementedException();
+            foreach (var feeding in feedings)
+            {
+                await _feedingFoodRepository.InsertAsync(new FeedingFood()
+                {
+                    FeedingId = feeding.FeedingId,
+                    FoodId = foodId,
+                });
+            }
+        }
+
+        public async Task InsertVaccineFood(int foodId, List<Models.AddVaccineInfoToFoodDataRequest> vaccines)
+        {
+            foreach (var vaccine in vaccines)
+            {
+                await _vaccineFoodRepository.InsertAsync(new VaccineFood()
+                {
+                    FoodId = foodId,
+                    VaccineId = vaccine.VaccineId,
+                    CreateDate = vaccine.VaccineDate
+                });
+            }
         }
 
         public async Task<IList<Food>> FarmReportFoodIn(int premisesId)

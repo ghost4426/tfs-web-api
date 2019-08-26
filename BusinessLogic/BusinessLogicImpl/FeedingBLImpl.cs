@@ -1,8 +1,10 @@
 ﻿using BusinessLogic.IBusinessLogic;
 using DataAccess.IRepositories;
 using DTO.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,11 +12,16 @@ namespace BusinessLogic.BusinessLogicImpl
 {
     public class FeedingBLImpl : IFeedingBL
     {
-        private IFeedingRepository _feedingRepository;
+        private readonly IFeedingRepository _feedingRepository;
+        private readonly IFeedingFoodRepository _feedingFoodRepository;
 
-        public FeedingBLImpl(IFeedingRepository feedingRepository)
+        public FeedingBLImpl(
+            IFeedingRepository feedingRepository,
+            IFeedingFoodRepository feedingFoodRepository
+            )
         {
             _feedingRepository = feedingRepository;
+            _feedingFoodRepository = feedingFoodRepository;
         }
 
         public async Task<IList<Feeding>> GetFeedingListByPremisesId(int premisesId)
@@ -35,27 +42,7 @@ namespace BusinessLogic.BusinessLogicImpl
                     feeding.UpdateDate = DateTime.Now;
                     _feedingRepository.Insert(feeding);
                 }
-                //else
-                //{
-                //    if (feedingUpdateList == null)
-                //    {
-                //        feedingUpdateList = new List<Feeding>();
-                //    }
-                //    feedingUpdateList.Add(feeding);
-                //}
             }
-
-            //if (feedingUpdateList != null)
-            //{
-            //    foreach (var feeding in feedingUpdateList)
-            //    {
-            //        var tmpFeeding = _feedingRepository.GetById(feeding.FeedingId);
-            //        tmpFeeding.Name = feeding.Name;
-            //        tmpFeeding.UpdateById = userId;
-            //        tmpFeeding.UpdateDate = DateTime.Now;
-            //    }
-            //  await  _feedingRepository.UpdateRangeAsync(feedingUpdateList);
-            //}
         }
 
         public async Task RemoveFeedingById(int feedingId, int userId)
@@ -67,9 +54,11 @@ namespace BusinessLogic.BusinessLogicImpl
             await _feedingRepository.UpdateAsync(feeding);
         }
 
-        public async  Task<IList<Feeding>> GetFeedingList()
+        public async Task<IList<Feeding>> GetFeedingListByFoodId(int foodId)
         {
-            return await _feedingRepository.FindAllAsync(t => t.IsDelete == false);
+            var feedingFood = await _feedingFoodRepository.FindAllAsync(f => f.FoodId == foodId);
+            var query = _feedingRepository.GetIQueryable();
+            return await query.Include(f => f.Premises).Where(f => !feedingFood.Any(ff => ff.FeedingId == f.FeedingId) && f.Premises.IsActive && !f.IsDelete).ToListAsync();
         }
     }
 }

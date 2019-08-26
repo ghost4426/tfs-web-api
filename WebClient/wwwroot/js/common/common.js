@@ -246,3 +246,14 @@ var letterOnlyError = "Vui lòng chỉ nhập chữ (Không có ký tự đặc 
 var userError = "Vui lòng không nhập ký tự đặc biệt";
 var emailError = "Vui lòng nhập đúng email (vidu@gmail.com.vn)";
 var numberOnlyError = "Vui lòng chỉ nhập số";
+
+function containsObject(obj, list) {
+    var i;
+    for (i = 0; i < list.length; i++) {
+        if (list[i] === obj) {
+            return true;
+        }
+    }
+
+    return false;
+}

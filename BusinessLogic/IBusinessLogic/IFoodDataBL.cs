@@ -9,12 +9,13 @@ namespace BusinessLogic.IBusinessLogic
 {
    public interface IFoodDataBL
     {
+        Task<string> AddFoodData(FoodData food);
 
         Task<string> SaveFoodData(FoodData food);
 
         Task<string> CreateFood(Food newFood, int farmId);
 
-        Task<string> AddFeedings(long foodId, List<string> feedings);
+        Task<string> AddFeedings(long foodId, List<Models.AddFeedingInfoToFoodDataRequest> addFeedingInfos);
 
         Task<string> AddVaccination(long foodId, List<Models.AddVaccineInfoToFoodDataRequest> addVaccineInfos);
 
@@ -37,6 +38,7 @@ namespace BusinessLogic.IBusinessLogic
         Task<IList<Models.FoodData.VaccineData>> GetVaccinsById(int foodId);
 
         Task<FoodData> GetFoodDataByIDAndProviderID(long foodId, int providerId);
+
         Task<FoodData> GetFoodDataByIDAndProviderIDAndDistributorID(long foodId, int providerId,int distributorId);
 
     }
