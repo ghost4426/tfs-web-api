@@ -258,7 +258,8 @@ namespace CommonWebApi.Controllers
         {
             try
             {
-                return Ok(new { results = _mapper.Map<IList<Models.Option>>(await _premisesBL.getAllDistriburtorAsync(search, foodId)) });
+                int premisesId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
+                return Ok(new { results = _mapper.Map<IList<Models.Option>>(await _premisesBL.getAllDistriburtorAsync(search, foodId,premisesId)) });
             }
             catch (Exception ex)
             {
@@ -281,17 +282,24 @@ namespace CommonWebApi.Controllers
         }
 
         [HttpPost("createTransaction")]
-        public async Task<Models.TransactionReponse.CreateTransactionReponse> CreateTransaction([FromBody]Models.TransactionRequest transactionRequest)
+        public async Task<IActionResult> CreateTransaction([FromBody]Models.TransactionRequest transactionRequest)
         {
-            Entities.Transaction transaction = _mapper.Map<Entities.Transaction>(transactionRequest);
-            transaction.SenderId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
-            transaction.CreateById = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
-            await _transactionBL.CreateSellFoodTransactionAsync(transaction);
-            var reponseModel = new Models.TransactionReponse.CreateTransactionReponse()
+            try
             {
-                TransactionId = transaction.TransactionId
-            };
-            return reponseModel;
+                Entities.Transaction transaction = _mapper.Map<Entities.Transaction>(transactionRequest);
+                transaction.SenderId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
+                transaction.CreateById = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
+                var transactionHash = await _foodDataBL.ProviderAddCertification(transactionRequest.FoodId, transaction.SenderId, transactionRequest.CertificationNumber);
+                await _transactionBL.CreateSellFoodTransactionAsync(transaction);
+                var reponseModel = new Models.TransactionReponse.CreateTransactionReponse()
+                {
+                    TransactionId = transaction.TransactionId
+                };
+                return Ok(new { message = MessageConstant.INSERT_SUCCESS});
+            }catch(Exception ex)
+            {
+                return BadRequest(new { message = MessageConstant.UNHANDLE_ERROR, error = ex.StackTrace });
+            }            
         }
 
         [HttpPost("downloadReport")]

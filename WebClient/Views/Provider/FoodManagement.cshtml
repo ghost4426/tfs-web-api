@@ -216,6 +216,12 @@
                                     <select name="Treatment" class="select2-placeholder select2-size-lg form-control" style="width:100%" id="ddlDistributor" required></select>
                                 </div>
                             </div>
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                    <label class="col-md-12 label-control" for="txtCerNum">Mã số kiểm dịch</label>
+                                    <input class="col-md-12 form-control" type="text" id="cerNum" name="CerNum" />
+                                </div>
+                            </div>
                             <canvas id="barcode"></canvas>
                             <div class="row justify-content-md-center">
                                 <button type="button" class="btn btn-secondary col-4" onclick="printJS('barcode', 'html')">In mã barcode</button>
@@ -298,26 +304,26 @@
     </div>
 </div>
 @section Scripts{
-    <!-- BEGIN PAGE VENDOR JS-->
-    <script src="~/app-assets/vendors/js/tables/datatable/datatables.min.js" type="text/javascript"></script>
-    <script src="~/app-assets/vendors/js/tables/datatable/dataTables.buttons.min.js" type="text/javascript"></script>
-    <script src="~/app-assets/vendors/js/tables/buttons.flash.min.js" type="text/javascript"></script>
-    <script src="~/app-assets/vendors/js/tables/jszip.min.js" type="text/javascript"></script>
-    <script src="~/app-assets/vendors/js/tables/pdfmake.min.js" type="text/javascript"></script>
-    <script src="~/app-assets/vendors/js/tables/vfs_fonts.js" type="text/javascript"></script>
-    <script src="~/app-assets/vendors/js/tables/buttons.html5.min.js" type="text/javascript"></script>
-    <script src="~/app-assets/vendors/js/tables/buttons.print.min.js" type="text/javascript"></script>
-    <script src="~/app-assets/vendors/js/forms/select/select2.full.min.js" type="text/javascript"></script>
-    <script src="~/app-assets/vendors/js/extensions/toastr.min.js" type="text/javascript"></script>
-    <!-- END PAGE VENDOR JS-->
-    <!-- BEGIN PAGE LEVEL JS-->
-    <script src="~/app-assets/js/scripts/forms/select/form-select2.js" type="text/javascript"></script>
-    <script src="~/app-assets/js/scripts/modal/components-modal.js" type="text/javascript"></script>
-    <script src="~/app-assets/js/scripts/navs/navs.js" type="text/javascript"></script>
-    <!-- END PAGE LEVEL JS-->
-    <!-- My JS-->
-    <script src="~/js/provider/provider.js" type="text/javascript"></script>
-    <script src="~/lib/JsBarcode.all.min.js" type="text/javascript"></script>
-    <script src="~/lib/print.min.js" type="text/javascript"></script>
-    <script src="~/lib/JsBarcode.code128.min.js"></script>
+<!-- BEGIN PAGE VENDOR JS-->
+<script src="~/app-assets/vendors/js/tables/datatable/datatables.min.js" type="text/javascript"></script>
+<script src="~/app-assets/vendors/js/tables/datatable/dataTables.buttons.min.js" type="text/javascript"></script>
+<script src="~/app-assets/vendors/js/tables/buttons.flash.min.js" type="text/javascript"></script>
+<script src="~/app-assets/vendors/js/tables/jszip.min.js" type="text/javascript"></script>
+<script src="~/app-assets/vendors/js/tables/pdfmake.min.js" type="text/javascript"></script>
+<script src="~/app-assets/vendors/js/tables/vfs_fonts.js" type="text/javascript"></script>
+<script src="~/app-assets/vendors/js/tables/buttons.html5.min.js" type="text/javascript"></script>
+<script src="~/app-assets/vendors/js/tables/buttons.print.min.js" type="text/javascript"></script>
+<script src="~/app-assets/vendors/js/forms/select/select2.full.min.js" type="text/javascript"></script>
+<script src="~/app-assets/vendors/js/extensions/toastr.min.js" type="text/javascript"></script>
+<!-- END PAGE VENDOR JS-->
+<!-- BEGIN PAGE LEVEL JS-->
+<script src="~/app-assets/js/scripts/forms/select/form-select2.js" type="text/javascript"></script>
+<script src="~/app-assets/js/scripts/modal/components-modal.js" type="text/javascript"></script>
+<script src="~/app-assets/js/scripts/navs/navs.js" type="text/javascript"></script>
+<!-- END PAGE LEVEL JS-->
+<!-- My JS-->
+<script src="~/js/provider/provider.js" type="text/javascript"></script>
+<script src="~/lib/JsBarcode.all.min.js" type="text/javascript"></script>
+<script src="~/lib/print.min.js" type="text/javascript"></script>
+<script src="~/lib/JsBarcode.code128.min.js"></script>
 }

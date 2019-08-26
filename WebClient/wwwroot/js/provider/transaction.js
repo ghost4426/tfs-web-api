@@ -239,8 +239,9 @@ var providerSendTransactionTable = $('#provider-send-transaction-mng').DataTable
         { data: 'RejectReason' },
         {
             data: function (data, type, dataToSet) {
-                var btnBarcode = '<button class="btn btn-secondary btn-sm btn-barcode-send" title="Barcode"><i class="fa fa-barcode"></i></button> '
-                return btnBarcode;
+                var btnBarcode = '<button class="btn btn-secondary btn-sm btn-barcode-send" title="Barcode giao dịch"><i class="fa fa-barcode"></i></button> '
+                var btnBarcodeFood = '<button class="btn btn-success btn-sm btn-barcode-food" title="Barcode thực phẩm"><i class="fa fa-barcode"></i></button> '
+                return btnBarcode + btnBarcodeFood;
             }
         }
     ],
@@ -275,3 +276,14 @@ function makeCode(id) {
         displayValue: false
     });
 }
+
+$('#provider-send-transaction-mng').on('click', 'button.btn-barcode-food', function () {
+    var tr = $(this).closest('tr');
+    var row = providerSendTransactionTable.row(tr);
+    var foodid = row.data().FoodId;
+    var providerid = row.data().SenderId;
+    var distributorid = row.data().ReceiverId;
+    $("#btnPrintBarcode").attr("download", "Food-" + foodid + ".jpg");
+    makeCode("Food-" + foodid + "-" + providerid + "-" + distributorid);
+    $('#GetQRCode').modal('show');
+});

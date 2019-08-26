@@ -198,7 +198,8 @@ namespace CommonWebApi.Controllers
         {
             try
             {
-                return Ok(new { results = _mapper.Map<IList<Models.Option>>(await _premisesBL.getAllProviderAsync(search, foodId)) });
+                int premisesId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
+                return Ok(new { results = _mapper.Map<IList<Models.Option>>(await _premisesBL.getAllProviderAsync(search, foodId, premisesId)) });
             }
             catch (Exception ex)
             {

@@ -19,5 +19,7 @@ namespace DTO.Models.FoodData
         public Packaging Packaging { get; set; }
 
         public DateTime ProvideDate { get; set; }
+        public DateTime CertificationDate { get; set; }
+        public string CertificationNumber { get; set; }
     }
 }

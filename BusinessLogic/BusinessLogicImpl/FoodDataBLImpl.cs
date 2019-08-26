@@ -133,6 +133,15 @@ namespace BusinessLogic.BusinessLogicImpl
             return await SaveFoodData(FoodData);
         }
 
+        public async Task<string> ProviderAddCertification(long foodId, int providerId, string certificationNumber)
+        {
+            var FoodData = await GetFoodDataByIDAndProviderID(foodId, providerId);
+            FoodData.Providers[0].CertificationNumber = certificationNumber;
+            FoodData.Providers[0].CertificationDate = DateTime.Now;
+
+            return await SaveFoodData(FoodData);
+        }
+
         public async Task<string> Packaging(long foodId, Packaging packaging, int providerId)
         {
             packaging.PackagingDate = DateTime.Now;

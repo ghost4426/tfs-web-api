@@ -179,16 +179,23 @@
         rules: {
             Treatment: {
                 required: true
+            },
+            CerNum: {
+                required: true
             }
         },
         messages: {
             Treatment: {
                 required: "Vui lòng chọn một nhà phân phối"
+            },
+            CerNum: {
+                required: requiredError
             }
         },
         submitHandler: function (form) {
             var foodId = $('#foodId-trans').val();
             var distributorId = $('#ddlDistributor').val();
+            var cerNum = $('#cerNum').val();
             callAjaxAuth(
                 {
                     url: PROVIDER_CREATE_TRANSACTION_URI,
@@ -196,7 +203,8 @@
                     type: POST
                 }, JSON.stringify({
                     ReceiverId: distributorId,
-                    FoodId: foodId
+                    FoodId: foodId,
+                    CertificationNumber: cerNum
                 }),
                 function (result) {
                     toastr.success("Tạo giao dịch thành công, vui lòng chờ nhà phân phối xác nhận");
@@ -762,6 +770,22 @@ $('#provider-food-mng').on('click', 'button.btn-barcode', function () {
     var tr = $(this).closest('tr');
     var row = providerFoodTable.row(tr);
     var foodId = row.data().FoodId;
+    callAjaxAuth(
+        {
+            url: PROVIDER_GET_FOOD_DATA_URI,
+            dataType: JSON_DATATYPE,
+            type: GET
+        },
+        {
+            id: foodId
+        }, function (result) {
+            console.log(result);
+            
+        },
+        function (result) {
+            toastr.error(result.responseJSON.message);
+        }
+    );
     $('#foodId-trans').val(foodId);
     $('#category-trans').val(row.data().Food.Category.Name);
     $('#breed-trans').val(row.data().Food.Breed);

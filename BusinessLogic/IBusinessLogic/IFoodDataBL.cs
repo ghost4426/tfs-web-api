@@ -20,6 +20,8 @@ namespace BusinessLogic.IBusinessLogic
 
         Task<string> AddCertification(long foodId, string certificationNumber);
 
+        Task<string> ProviderAddCertification(long foodId, int providerId, string certificationNumber);
+
         Task<string> AddProvider(long foodId, int providerId);
 
         Task<string> AddDistributor(long foodId, int distributorId);

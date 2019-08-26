@@ -23,14 +23,14 @@ namespace BusinessLogic.BusinessLogicImpl
             _transactionRepos = transactionRepository;
         }
 
-        public async Task<IList<Premises>> getAllDistriburtorAsync(string keyword, int foodId)
+        public async Task<IList<Premises>> getAllDistriburtorAsync(string keyword, int foodId, int premisesId)
         {
             if(keyword == null)
             {
                 keyword = "";
             }
-            var result = await _premisesRepository.getAllProviderAsync(keyword.ToLower());
-            var distributor = await _transactionRepos.FindAllAsync(x => x.FoodId == foodId);
+            var result = await _premisesRepository.getAllDistributorAsync(keyword.ToLower());
+            var distributor = await _transactionRepos.FindAllAsync(x => x.FoodId == foodId & x.SenderId == premisesId);
             var fin = result.Where(x => !distributor.Any(x2 => x2.ReceiverId == x.PremisesId));
             return fin.ToList();
         }
@@ -46,14 +46,14 @@ namespace BusinessLogic.BusinessLogicImpl
             return result;
         }
 
-        public async Task<IList<Premises>> getAllProviderAsync(string keyword, int foodId)
+        public async Task<IList<Premises>> getAllProviderAsync(string keyword, int foodId, int premisesId)
         {
             if(keyword == null)
             {
                 keyword = "";
             }
             var result = await _premisesRepository.getAllProviderAsync(keyword.ToLower());
-            var provider = await _transactionRepos.FindAllAsync(x => x.FoodId == foodId);
+            var provider = await _transactionRepos.FindAllAsync(x => x.FoodId == foodId & x.SenderId == premisesId);
             var fin = result.Where(x => !provider.Any(x2 => x2.ReceiverId == x.PremisesId));
             return fin.ToList();
         }
