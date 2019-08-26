@@ -171,19 +171,27 @@ namespace CommonWebApi.Controllers
 
 
         [HttpPost("createTransaction")]
-        public async Task<Models.TransactionReponse.CreateTransactionReponse> CreateTransaction([FromBody]Models.TransactionRequest transactionRequest)
+        public async Task<IActionResult> CreateTransaction([FromBody]Models.TransactionRequest transactionRequest)
         {
-            Entities.Transaction transaction = _mapper.Map<Entities.Transaction>(transactionRequest);
-            transaction.SenderId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
-            transaction.CreateById = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
-            await _transactionBL.CreateSellFoodTransactionAsync(transaction);
-            var transactionHash = await _foodDataBL.AddCertification(transactionRequest.FoodId, transactionRequest.CertificationNumber);
-            await _foodBL.AddDetail(transactionRequest.FoodId, EFoodDetailType.VERIFY, transactionHash, transaction.CreateById);
-            var reponseModel = new Models.TransactionReponse.CreateTransactionReponse()
+            try
             {
-                TransactionId = transaction.TransactionId
-            };
-            return reponseModel;
+                Entities.Transaction transaction = _mapper.Map<Entities.Transaction>(transactionRequest);
+                transaction.SenderId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
+                transaction.CreateById = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
+                await _transactionBL.CreateSellFoodTransactionAsync(transaction);
+                var transactionHash = await _foodDataBL.AddCertification(transactionRequest.FoodId, transactionRequest.CertificationNumber);
+                await _foodBL.AddDetail(transactionRequest.FoodId, EFoodDetailType.VERIFY, transactionHash, transaction.CreateById);
+                var reponseModel = new Models.TransactionReponse.CreateTransactionReponse()
+                {
+                    TransactionId = transaction.TransactionId
+                };
+                return Ok(new { message = MessageConstant.INSERT_SUCCESS});
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(new { message = MessageConstant.UNHANDLE_ERROR, error = ex.StackTrace });
+            }
+            
         }
 
         [HttpGet("getAllProvider")]

@@ -210,5 +210,15 @@ namespace BusinessLogic.BusinessLogicImpl
             food.Distributors = food.Distributors.Where(x => x.DistributorId == distributorId).ToList();
             return food;
         }
+
+        public async Task<string> AddCertification(long foodId, string certificationNumber)
+        {
+            var FoodData = await GetFoodDataByID(foodId);
+
+            FoodData.Farm.CertificationNumber = certificationNumber;
+            FoodData.Farm.CertificationDate = DateTime.Now;
+
+            return await SaveFoodData(FoodData);
+        }
     }
 }

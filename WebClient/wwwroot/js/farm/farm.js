@@ -1,31 +1,32 @@
-﻿$("#dllFoodDetailType").select2({
-    ajax: {
-        url: GET_FOOD_DETAIL_TYPE_URI,
-        dataType: JSON_DATATYPE,
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json; charset=utf-8',
-            "Authorization": 'Bearer ' + Cookies.get('token')
-        },
-        statusCode: {
-            401: function () {
-                window.location.replace("/dang-nhap");
+﻿$(document).ready(function () {
+    $("#dllFoodDetailType").select2({
+        ajax: {
+            url: GET_FOOD_DETAIL_TYPE_URI,
+            dataType: JSON_DATATYPE,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json; charset=utf-8',
+                "Authorization": 'Bearer ' + Cookies.get('token')
             },
+            statusCode: {
+                401: function () {
+                    window.location.replace("/dang-nhap");
+                },
+            },
+            processResults: function (data, params) {
+                return {
+                    results: data.results
+                };
+            },
+            cache: false
         },
-        processResults: function (data, params) {
-            return {
-                results: data.results
-            };
-        },
-        cache: false
-    },
-    minimumResultsForSearch: Infinity,
-    placeholder: "Chọn thông tin",
-    language: "vi"
-});
+        minimumResultsForSearch: Infinity,
+        placeholder: "Chọn thông tin",
+        language: "vi"
+    });
 
     //load provider
-    $("#ddlProvider").select2({        
+    $("#ddlProvider").select2({
         ajax: {
             url: GET_PROVIDER,
             dataType: JSON_DATATYPE,
@@ -102,7 +103,7 @@
                 }),
                 function (result) {
                     toastr.success('Thêm thành công');
-                    $('#default').modal('hide');
+                    $('#addNewFoodModal').modal('hide');
                     $('select[name="NewCategory"]').val("1");
                     $('input[name="Breed"]').val("");
                     $("#farm-food-mng").DataTable().ajax.reload();
@@ -160,8 +161,8 @@ var farmFoodTable = $('#farm-food-mng').DataTable({
                 } else if (data.IsReadyForSale) {
                     return '<div class="col-12">' + btnDetail + btnUpdateDis + btnSale + btnSoldOut + '</div>';
                 } else {
-                    return '<div class="col-12">' + btnDetail + btnUpdate + btnSale + btnSoldOut + '</div>';
-                }            
+                    return '<div class="col-12">' + btnDetail + btnUpdate + btnSale + btnSoldOutDis + '</div>';
+                }
             }
         }
     ],
@@ -192,6 +193,9 @@ var farmFoodTable = $('#farm-food-mng').DataTable({
 
 //report
 $('.btn-report').click(function () {
+    data = {
+        ids: [1, 2, 3, 4, 5]
+    };
     // Use XMLHttpRequest instead of Jquery $ajax
     xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
@@ -201,7 +205,7 @@ $('.btn-report').click(function () {
         if (xhttp.readyState === 4 && xhttp.status === 200) {
             a = document.createElement('a');
             a.href = window.URL.createObjectURL(xhttp.response);
-            a.download = filename+".xlsx";
+            a.download = filename + ".xlsx";
             a.style.display = 'none';
             document.body.appendChild(a);
             a.click();
@@ -779,7 +783,7 @@ $('#btn-addProvider').click(function () {
     $('#num-error').empty();
     var foodId = parseInt($('#pro-food-id').val());
     var providerId = parseInt($('#ddlProvider').val());
-    var number = $('#certificationNumber').val();    
+    var number = $('#certificationNumber').val();
     var check = $('#check-pro').val();
     if ($('#ddlProvider').val() == null || $('#ddlProvider').val() == "") {
         $('#pro-error').append('<label class="error">Vui lòng chọn một nhà cung cấp</label>');
