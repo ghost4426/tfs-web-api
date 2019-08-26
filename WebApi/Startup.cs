@@ -83,6 +83,7 @@ namespace CommonWebApi
             services.AddScoped<IFeedingFoodRepository, FeedingFoodRepositoryImpl>();
             services.AddScoped<IPremisesTypeRepository, PremisesTypeRepositoryImpl>();
             services.AddScoped<IRegisterInfoRepository, RegisterInfoRepositoryImpl>();
+            services.AddScoped<IVaccineFoodRepository, VaccineFoodRepositoryImpl>();
 
             //BusinessLogic
             services.AddScoped<IUserBL, UserBLImpl>();

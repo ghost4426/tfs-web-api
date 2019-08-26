@@ -99,12 +99,13 @@ namespace CommonWebApi.Controllers
         }
 
         [HttpPut("food/feedings/{foodId}")]
-        public async Task<IActionResult> AddFeedings(int foodId, [FromBody]List<string> feedings)
+        public async Task<IActionResult> AddFeedings(int foodId, [FromBody]List<Models.AddFeedingInfoToFoodDataRequest> feedingModelRequest)
         {
             try
             {
                 var userId = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
-                var transactionHash = await _foodDataBL.AddFeedings(foodId, feedings);
+                var transactionHash = await _foodDataBL.AddFeedings(foodId, feedingModelRequest);
+                await _foodBL.InsertFeedingFood(foodId, feedingModelRequest);
                 await _foodBL.AddDetail(foodId, EFoodDetailType.FEEDING, transactionHash, userId);
                 return Ok(new { message = MessageConstant.INSERT_SUCCESS });
             }
@@ -135,6 +136,7 @@ namespace CommonWebApi.Controllers
             {
                 var userId = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
                 var transactionHash = await _foodDataBL.AddVaccination(foodId, vaccineModelRequest);
+                await _foodBL.InsertVaccineFood(foodId, vaccineModelRequest);
                 await _foodBL.AddDetail(foodId, EFoodDetailType.VACCINATION, transactionHash, userId);
                 return Ok(new { message = MessageConstant.INSERT_SUCCESS });
             }
@@ -145,16 +147,7 @@ namespace CommonWebApi.Controllers
             }
            
         }
-
-        //[HttpPut("food/verify/{foodId}")]
-        //public async Task<string> Addverify(int foodId, [FromBody]string certificationNumber)
-        //{
-        //    var userId = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
-        //    var transactionHash= await _foodDataBL.AddCertification(foodId, certificationNumber);
-        //    await _foodBL.AddDetail(foodId, EFoodDetailType.VERIFY, transactionHash, userId);
-        //    return 
-        //}
-
+      
         [HttpGet("category")]
         public async Task<IList<Entities.Category>> GetAllCategory()
         {
@@ -262,12 +255,13 @@ namespace CommonWebApi.Controllers
             }
         }
 
-        [HttpGet("feedings")]
-        public async Task<IActionResult> GetFeedingList()
+        [AllowAnonymous]
+        [HttpGet("feedings/{foodId}")]
+        public async Task<IActionResult> GetFeedingList(int foodId)
         {
             try
             {
-                var feedingList = await _feedingBL.GetFeedingList();
+                var feedingList = await _feedingBL.GetFeedingListByFoodId(foodId);
                 return Ok(new { results = _mapper.Map<IList<Models.Option>>(feedingList) });
             }
             catch (Exception e)
