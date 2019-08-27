@@ -1,72 +1,73 @@
-﻿
-
-$(document).ready(function () {
-    getProduct();
-
-})
-
-function getProduct() {
-    $.ajax({
-        type: 'GET',
-        url: 'https://localhost:4201/api/Distributor/getProductMatched',
-        dataType: 'JSON',
-        success: function (data) {
-            console.log(data);
-            $('.dataex-html5-background').DataTable({
-                data: data,
-                ordering: false,
-                columns: [
-                    { data: 'FoodId' },
-                    { data: 'Breed' },
-                    {
-                        data: 'CreatedDate',
-                        render: function (data, type, row) {
-                            var d = new Date(data);
-                            return d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear();
-                        }
-                    },
-                    { data: 'Provider.Name' },
-                    {
-                        data: 'FoodId',
-                        render: function (data) {
-                            return '<button class="btn btn-grey" style="width: 25%" data-target="#moreInfo" data-toggle="modal">Chi tiết<i class="icon-eye"></i></button><button class="btn btn-info" style="width: 50%" data-target="#AddMoreInfo" data-toggle="modal">Thêm thông tin<i class="icon-pencil"></i></button><button class="btn btn-success" style="width: 25%" data-target="#GetQRCode" onclick="makeCode(' + data + ')" data-toggle="modal">Mã QR</button>';
-                        }
-                    }
-                ],
-            });
+﻿$.fn.dataTable.ext.errMode = 'none';
+var distFoodTable = $('#dist-food-mng').DataTable({
+    ajax: {
+        url: DISTRIBUTOR_GET_FOOD,
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json; charset=utf-8',
+            "Authorization": 'Bearer ' + Cookies.get('token')
         },
-        dom: 'Bfrtip'
-    });
-}
+        statusCode: {
+            401: function () {
+                window.location.replace("/dang-nhap");
+            },
+        },
+        beforeSend: showLoadingPage,
+        complete: hideLoadingPage
+    },
+    'autoWidth': false,
+    ordering: false,
+    columns: [
+        { data: 'FoodId', width: '5%' },
+        { data: 'Food.Category.Name', width: '10%' },
+        { data: 'Food.Breed', width: '20%' },
+        { data: 'FarmName', width: '22.5%' },
+        { data: 'ProviderName', width: '22.5%' },
+        {
+            data: 'Food.CreateDate', width: '15%',
+            render: function (data, type, row) {
+                return $.format.date(data, "dd-MM-yyyy HH:mm")
+            }
+        },
+        {
+            width: '5%',
+            data: function (data, type, dataToSet) {
+                var btnBarcode = '<button class="btn btn-secondary btn-sm btn-barcode" title="Barcode"><i class="fa fa-barcode"></i></button> '
+                return '<center>' + btnBarcode + '</center>';
+            }
+        }
+    ],
+    dom: '<"row" <"col-sm-12"Bf>>'
+        + '<"row" <"col-sm-12"i>>'
+        + '<"row" <"col-sm-12"tr>>'
+        + '<"row"<"col-sm-5"l><"col-sm-7"p>>',
+    buttons: [
+       
+    ],
+    language: table_vi_lang
+});
 
-//var qrcode = new QRCode(document.getElementById("qrcode"));
+$('#dist-food-mng').on('click', 'button.btn-barcode', function () {
+    var tr = $(this).closest('tr');
+    var row = distFoodTable.row(tr);
+    var foodid = row.data().FoodId;
+    var providerId = row.data().ProviderId;
+    var distributorId = row.data().DistributorId;
+    $("#btnPrintBarcode").attr("download", "Food-" + foodid + ".jpg");
+    makeCode("Food-" + foodid + "-" + providerId + "-" + distributorId);
+    $('#GetQRCode').modal('show');
+});
+
 function makeCode(id) {
-    //qrcode.clear();
-    //qrcode.makeCode(id + "");
-    //JsBarcode("#barcode", "abc" , {
-    //    format: "pharmacode",
-    //    lineColor: "#0aa",
-    //    width: 4,
-    //    height: 80,
-    //    displayValue: false
-    //});
-    JsBarcode("#barcode", "" + id);
-}
-
-//var myCustomScrollbar = document.querySelector('.my-custom-scrollbar');
-//var ps = new PerfectScrollbar(myCustomScrollbar);
-
-//var scrollbarY = myCustomScrollbar.querySelector('.ps.ps--active-y>.ps__scrollbar-y-rail');
-
-//myCustomScrollbar.onscroll = function () {
-//    scrollbarY.style.cssText = `top: ${this.scrollTop}px!important; height: 400px; right: ${-this.scrollLeft}px`;
-//}
-
-function exportPfd() {
-    var doc = new jsPDF();
-    doc.fromHTML($('#printJs-form').get(0), 20, 20, {
-        'width': 500
+    JsBarcode("#barcode", "" + id, {
+        width: 50,
+        height: 1600,
+        displayValue: false
     });
-    doc.save('barcode.pdf');
 }
 
+download_img = function (el) {
+    var canvas = document.getElementById("barcode");
+    var image = canvas.toDataURL("image/jpg");
+    el.href = image;
+};

@@ -178,6 +178,14 @@ namespace Common.Mapper
                 .ForMember(dest => dest.CategoryName, opts => opts.MapFrom(src => src.Food.Category.Name))
                 .ForMember(dest => dest.SenderName, opts => opts.MapFrom(src => src.Food.Farm.Name))
                 .ReverseMap();
+
+            CreateMap<Entities.Transaction, Models.FoodDistributor>()
+                .ForMember(dest => dest.ProviderId, opts => opts.MapFrom(src => src.SenderId))
+                .ForMember(dest => dest.DistributorId, opts => opts.MapFrom(src => src.ReceiverId))
+                .ForMember(dest => dest.ProviderId, opts => opts.MapFrom(src => src.SenderId))
+                .ForMember(dest => dest.FarmName, opts => opts.MapFrom(src => src.Food.Farm.Name))
+                .ForMember(dest => dest.ProviderName, opts => opts.MapFrom(src => src.Sender.Name))
+                .ReverseMap();
         }
     }
 }

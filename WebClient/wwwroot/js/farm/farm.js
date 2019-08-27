@@ -725,6 +725,7 @@ function clearProviderModal() {
     $('#pro-error').empty();
     $('#num-error').empty();
     $('#check-pro').val("");
+    $('#check-pro-vac').val("");
     $('#ddlProvider').val(null).trigger("change");
 }
 
@@ -759,9 +760,13 @@ $('#farm-food-mng').on('click', 'button.btn-add-provider', function () {
             }
             if (feeding == null) {
                 $('#check-pro').val("feeding");
+            } else {
+                $('#check-pro').val("check");
             }
             if (vacxin == null) {
-                $('#check-pro').val("vacxin");
+                $('#check-pro-vac').val("vacxin");
+            } else {
+                $('#check-pro-vac').val("check");
             }
         },
         function (result) {
@@ -785,12 +790,15 @@ $('#btn-addProvider').click(function () {
     var providerId = parseInt($('#ddlProvider').val());
     var number = $('#certificationNumber').val();
     var check = $('#check-pro').val();
+    var checkvac = $('#check-pro-vac').val();
     if ($('#ddlProvider').val() == null || $('#ddlProvider').val() == "") {
         $('#pro-error').append('<label class="error">Vui lòng chọn một nhà cung cấp</label>');
     } else if ($('#certificationNumber').val() == "") {
         $('#num-error').append('<label class="error">Vui lòng không bỏ trống trường này</label>');
-    } else if (check != "") {
-        $('#num-error').append('<label class="error">Chưa có dữ liệu thức ăn hoặc vacxin</label>');
+    } else if (check != "check") {
+        $('#num-error').append('<label class="error">Chưa có dữ liệu thức ăn</label>');
+    } else if (checkvac != "check") {
+        $('#num-error').append('<label class="error">Chưa có dữ liệu vacxin</label>');
     } else {
         callAjaxAuth(
             {

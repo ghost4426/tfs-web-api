@@ -1,115 +1,58 @@
 ﻿@{
     ViewData["Title"] = "Nhà phân phối";
 }
-    <head>
-        <!-- BEGIN VENDOR CSS-->
-        <link rel="stylesheet" type="text/css" href="~/app-assets/css/vendors.css">
-        <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/tables/datatable/datatables.min.css">
-        <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/tables/extensions/buttons.dataTables.min.css">
-        <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/tables/datatable/buttons.bootstrap4.min.css">
-        <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/forms/selects/select2.min.css">
-        <link rel="stylesheet" type="text/css" href="~/js/printJs/print.min.css">
-        <script src="~/js/distributor/JsBarcode.all.min.js"></script>
-        <script src="~/js/printJs/print.min.js"></script>
-
-        <script src="https://cdn.jsdelivr.net/jsbarcode/3.3.16/barcodes/JsBarcode.code128.min.js"></script>
-        <!-- END VENDOR CSS-->
-    </head>
+<head>
+    <!-- BEGIN VENDOR CSS-->
+    <link rel="stylesheet" type="text/css" href="~/app-assets/css/vendors.css">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/tables/datatable/datatables.min.css">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/tables/extensions/buttons.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/tables/datatable/buttons.bootstrap4.min.css">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/forms/selects/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/css/extensions/toastr.css">
+    <link rel="stylesheet" type="text/css" href="~/css/home/print.min.css">
+    <link rel="stylesheet" type="text/css" href="~/css/home/barcode.css">
+    <!-- END VENDOR CSS-->
+</head>
 <!-- Excel - Cell background table -->
-
-<section id="cell-background">
-
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-content collapse show">
-                    <div class="card-body card-dashboard">
-                        <h1 class="card-text" style="text-align:center;">
-                            Quản lý thực phẩm phân phối
-                        </h1>
-                        <br />
-                        <table class="table table-striped table-bordered dataex-html5-background">
-                            <thead>
-                                <tr>
-                                    <th style="text-align: center; width: 10%">Mã thực phẩm</th>
-                                    <th style="text-align: center; width: 20%">Tên thực phẩm</th>
-                                    <th style="text-align: center; width: 10%">Ngày tạo</th>
-                                    <th style="text-align: center; width: 20%">Nhà sản xuất</th>
-                                    <th style="text-align: center; width: 40%">Hành động</th>
-                                </tr>
-                            </thead>
-                            @*<tbody>
-                                    @for (var i = 0; i < 25; i++)
-                                    {
-                                    <tr>
-                                        <td>Mã @i</td>
-                                        <td>Rau @i</td>
-                                        <td>15/6/2019</td>
-                                        <td>Nhà sản xuất @i</td>
-                                        <td>
-                                            <button class="btn btn-grey" style="font-size:10px" data-target="#moreInfo" data-toggle="modal">Thông tin chi tiết<i class="icon-eye"></i></button>
-                                            <button class="btn btn-info" style="font-size:10px" data-target="#AddMoreInfo" data-toggle="modal">Thêm thông tin<i class="icon-pencil"></i></button>
-                                        </td>
-                                    </tr>
-                                    }
-                                </tbody>*@
-                        </table>
+<div class="content-wrapper">
+    <div class="content-header row">
+        <div class="content-header-left col-md-6 col-12 mb-2">
+            <h3 class="content-header-title mb-0">Quản Lý Thực Phẩm</h3>
+        </div>
+    </div>
+    <div class="content-body">
+        <section>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-content collapse show">
+                            <div class="card-body card-dashboard">
+                                <h1 class="card-text" style="text-align:center;">
+                                    @*Quản Lý Thực Phẩm*@
+                                </h1>
+                                <table id="dist-food-mng" class="table table-striped table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Loại thực phẩm</th>
+                                            <th>Giống</th>
+                                            <th>Nông trại</th>
+                                            <th>Nhà cung cấp</th>
+                                            <th>Ngày nhập</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</section>
-<!--Show more information -->
-<div class="modal fade text-left" id="moreInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1"
-     aria-hidden="true" style="height: 600px;">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <h3 class="modal-title" style="text-align: center">Thông tin thực phẩm</h3>
-            <div class="my-custom-scrollbar my-custom-scrollbar-primary">
-                <!--INPUT PRODUCT DETAIL-->
-                <!--END INPUT PRODUCT DETAIL-->
-            </div>
-            <div class="text-center">
-                <button type="button" class="btn btn-success btn-block btn-rounded z-depth-1" data-dismiss="modal">Đóng</button>
-            </div>
-        </div>
+        </section>
     </div>
 </div>
-<!-- -->
-<!--Add more information -->
-<div class="modal fade text-left" id="AddMoreInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <section class="form-elegant scrollbar-light-blue">
-                <div class="card" style="width: 100%; height: 100%; margin-bottom:0 !important;">
-                    <div class="card-body mx-4">
-                        <div class="text-center">
-                            <h3 class="dark-grey-text mb-5"><strong>Thêm thông tin sản phẩm</strong></h3>
-                        </div>
-                        <div class="md-form">
-                            <label for="Form-name1">Nội dung</label>
-                            <textarea class="form-control" rows="5" id="Form-content"></textarea>
-                        </div>
-                        <div>
-                            <label for="Form-name1">Hình ảnh</label>
-                            <input type="file" name="imageUpload" accept="image/*" /><br />
-                        </div>
-                        <div class="md-form">
-                            <label for="projectinput1"> Ngày thực hiện</label>
-                            <input type="date" id="Form-date" class="form-control">
-                        </div>
-                        <div class="text-center">
-                            <button type="button" class="btn btn-success btn-block btn-rounded z-depth-1" data-dismiss="modal">Đóng</button>
-                            <button type="button" class="btn btn-success btn-block btn-rounded z-depth-1">Xác nhận</button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-    </div>
-</div>
+
 <!--BEGIN QR -->
 <div class="modal fade text-left" id="GetQRCode" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1"
      aria-hidden="true">
@@ -118,14 +61,13 @@
             <section class="form-elegant scrollbar-light-blue">
                 <div class="card" style="width: 100%; height: 100%; margin-bottom:0 !important;">
                     <div class="card-body mx-4">
-                        @*<div id="qrcode"></div>*@
                         <form method="post" action="#" id="printJs-form">
-                            <svg id="barcode"></svg>
+                            <canvas id="barcode"></canvas>
                         </form>
-
-                        <div class="text-center">
-                            <button type="button" class="btn btn-success btn-block btn-rounded z-depth-1" onclick="printJS('printJs-form', 'html')">Print</button>
-                            <button type="button" class="btn btn-success btn-block btn-rounded z-depth-1" data-dismiss="modal">Đóng</button>
+                        <div class="row justify-content-md-center">
+                            <button type="button" class="btn btn-secondary col-4" onclick="printJS('printJs-form', 'html')">In mã barcode</button>
+                            <div class="col-2"></div>
+                            <a id="btnPrintBarcode" href="" onclick="download_img(this)" class="btn btn-info col-4">Tải mã barcode</a>
                         </div>
                     </div>
                 </div>
@@ -133,51 +75,27 @@
         </div>
     </div>
 </div>
-@*end QR*@
-
 @section Scripts{
     <!-- BEGIN PAGE VENDOR JS-->
     <script src="~/app-assets/vendors/js/tables/datatable/datatables.min.js" type="text/javascript"></script>
-    <script src="~/app-assets/vendors/js/tables/datatable/dataTables.buttons.min.js"
-            type="text/javascript"></script>
+    <script src="~/app-assets/vendors/js/tables/datatable/dataTables.buttons.min.js" type="text/javascript"></script>
+    <script src="~/app-assets/vendors/js/tables/buttons.flash.min.js" type="text/javascript"></script>
     <script src="~/app-assets/vendors/js/tables/jszip.min.js" type="text/javascript"></script>
     <script src="~/app-assets/vendors/js/tables/pdfmake.min.js" type="text/javascript"></script>
     <script src="~/app-assets/vendors/js/tables/vfs_fonts.js" type="text/javascript"></script>
     <script src="~/app-assets/vendors/js/tables/buttons.html5.min.js" type="text/javascript"></script>
     <script src="~/app-assets/vendors/js/tables/buttons.print.min.js" type="text/javascript"></script>
-    <script src="~/app-assets/vendors/js/tables/buttons.colVis.min.js" type="text/javascript"></script>
     <script src="~/app-assets/vendors/js/forms/select/select2.full.min.js" type="text/javascript"></script>
+    <script src="~/app-assets/vendors/js/forms/select/i18n/vi.js" type="text/javascript"></script>
+    <script src="~/app-assets/vendors/js/extensions/toastr.min.js" type="text/javascript"></script>
+    <script src="~/app-assets/vendors/js/extensions/sweetalert.min.js" type="text/javascript"></script>
     <!-- END PAGE VENDOR JS-->
     <!-- BEGIN PAGE LEVEL JS-->
     <script src="~/app-assets/js/scripts/forms/select/form-select2.js" type="text/javascript"></script>
     <script src="~/app-assets/js/scripts/modal/components-modal.js" type="text/javascript"></script>
     <!-- END PAGE LEVEL JS-->
+    <!-- My JS-->
     <script src="~/js/distributor/distributor.js" type="text/javascript"></script>
+    <script src="~/lib/print.min.js" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/jsbarcode/3.3.16/barcodes/JsBarcode.code128.min.js"></script>
 }
-<style scoped>
-    a.btn.btn-secondary.buttons-excel.buttons-html5 {
-        z-index: -1;
-    }
-
-    .my-custom-scrollbar {
-        position: relative;
-        width: 800px;
-        height: 400px;
-        overflow: auto;
-    }
-
-    #qrcode {
-        width: 100%;
-        height: 100%;
-        margin-top: 15px;
-        margin-bottom: 15px;
-    }
-    #barcode {
-        width: 100%;
-    }
-    #GetQRCode {
-        margin-top: 100px;
-    }
-</style>
-
-

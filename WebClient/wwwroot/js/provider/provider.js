@@ -196,24 +196,32 @@
             var foodId = $('#foodId-trans').val();
             var distributorId = $('#ddlDistributor').val();
             var cerNum = $('#cerNum').val();
-            callAjaxAuth(
-                {
-                    url: PROVIDER_CREATE_TRANSACTION_URI,
-                    dataType: JSON_DATATYPE,
-                    type: POST
-                }, JSON.stringify({
-                    ReceiverId: distributorId,
-                    FoodId: foodId,
-                    CertificationNumber: cerNum
-                }),
-                function (result) {
-                    toastr.success("Tạo giao dịch thành công, vui lòng chờ nhà phân phối xác nhận");
-                    $('#GetQRCode').modal('hide');
-                },
-                function (result) {
-                    toastr.error(result.responseJSON.message);
-                }
-            );
+            var checktreatment = $('#check-treatment').val();
+            var checkpackaging = $('#check-packaging').val();
+            if (checktreatment != "check") {
+                $('#check-trans').append('<label class="error">Chưa có dữ liệu quy trình xử lý</label>');
+            } else if (checkpackaging != "check") {
+                $('#check-trans').append('<label class="error">Chưa có dữ liệu đóng gói</label>');
+            } else {
+                callAjaxAuth(
+                    {
+                        url: PROVIDER_CREATE_TRANSACTION_URI,
+                        dataType: JSON_DATATYPE,
+                        type: POST
+                    }, JSON.stringify({
+                        ReceiverId: distributorId,
+                        FoodId: foodId,
+                        CertificationNumber: cerNum
+                    }),
+                    function (result) {
+                        toastr.success("Tạo giao dịch thành công, vui lòng chờ nhà phân phối xác nhận");
+                        $('#GetQRCode').modal('hide');
+                    },
+                    function (result) {
+                        toastr.error(result.responseJSON.message);
+                    }
+                );
+            }            
         }
     });
 });
@@ -236,6 +244,7 @@ var providerFoodTable = $('#provider-food-mng').DataTable({
         complete: hideLoadingPage
     },
     'autoWidth': false,
+    ordering: false,
     order: [[3, "desc"]],
     columns: [
         { data: 'FoodId', width: '10%' },
@@ -244,7 +253,7 @@ var providerFoodTable = $('#provider-food-mng').DataTable({
         {
             data: 'CreateDate', width: '20%',
             render: function (data, type, row) {
-                return $.format.date(data, "dd-MM-yyyy HH:mm")
+                return jQuery.format.prettyDate(data)
             }
         },
         {
@@ -431,7 +440,7 @@ $('#btn-confirm').on('click', function () {
         } else {
             $('input[name="treatment-process"').each(function () {
                 treatmentData.push($(this).val());
-            });
+            });   
             $.each(treatmentData, function (data, value) {
                 if (value == null || value == "") {
                     error = 1;
@@ -446,6 +455,9 @@ $('#btn-confirm').on('click', function () {
                 } else {
                     treatmentData.push(value);
                 }
+            });            
+            treatmentData = jQuery.grep(treatmentData, function (value) {
+                return value != "";
             });
             if (error == 0) {
                 callAjaxAddMoreTreatmentData(treatmentId, treatmentData);
@@ -580,7 +592,6 @@ function loadTreatmentForm() {
             type: GET
         }, "",
             function (result) {
-                console.log(result);
                 if (result.data.length != 0) {
                     for (var i = 0; i < result.data.length; i++) {
                         $('#add-detail-treatment-process').append('<label class="col-md-2 mb-1 mt-1 label-control" for="txtFoodId">Bước ' + (i + 1) + '</label>'
@@ -598,18 +609,23 @@ function loadTreatmentForm() {
 
     if (treatmentId != "") {
         $("#add-detail-form").empty();
+        var foodId = $('#txtFoodId').val();
         callAjaxAuth(
             {
-                url: GET_FOOD_TREATMENT_URI + treatmentId,
+                url: PROVIDER_GET_FOOD_DATA_URI,
                 dataType: JSON_DATATYPE,
                 type: GET
-            }, "",
+            },
+            {
+                id: foodId
+            },
             function (result) {
-                if (result.data.length != 0) {
-                    for (var i = 0; i < result.data.length; i++) {
+                var process = result.data.Providers[0].Treatment.TreatmentProcess;
+                if (result.data.Providers.length != 0) {
+                    for (var i = 0; i < process.length; i++) {
                         $('#add-detail-form').append('<label class="col-md-2 mb-1 label-control" for="txtFoodId">Bước ' + (i + 1) + '</label>'
                             + '<div class="col-md-10 mb-1">'
-                            + '<input class="form-control" type="text" value="' + result.data[i].Name + '" readonly />'
+                            + '<input class="form-control" type="text" value="' + process[i] + '" readonly />'
                             + '</div>');
                     }
                 }
@@ -767,6 +783,7 @@ function clearViewDetailModal() {
 $('#provider-food-mng').on('click', 'button.btn-barcode', function () {
     $('#ddlDistributor').val(null).trigger("change");
     $('#barcode').empty();
+    $('#check-trans').empty();
     var tr = $(this).closest('tr');
     var row = providerFoodTable.row(tr);
     var foodId = row.data().FoodId;
@@ -779,7 +796,26 @@ $('#provider-food-mng').on('click', 'button.btn-barcode', function () {
         {
             id: foodId
         }, function (result) {
-            console.log(result);
+            var treatment = result.data.Providers[0].Treatment;
+            var packaging = result.data.Providers[0].Packaging;
+            if (treatment == null) {
+                $('#check-treatment').val("treatment");
+            } else {
+                $('#check-treatment').val("check");
+            }
+            if (packaging == null) {
+                $('#check-packaging').val("packaging");
+            } else {
+                $('#check-packaging').val("check");
+            }
+            var cerNum = result.data.Providers[0].CertificationNumber;
+            if (cerNum != null) {
+                $('#cerNum').val(cerNum);
+                $('#cerNum').attr('readonly', true);
+            } else {
+                $('#cerNum').val("");
+                $('#cerNum').attr('readonly', false);
+            }
             
         },
         function (result) {

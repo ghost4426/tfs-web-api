@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace BusinessLogic.BusinessLogicImpl
 {
@@ -270,6 +271,13 @@ namespace BusinessLogic.BusinessLogicImpl
             ProviderFood result = await _providerFoodRepository.FindAsync(x => x.FoodId == foodId & x.PremisesId == premisesId);
             result.IsPacked = true;
             await _providerFoodRepository.UpdateAsync(result);
+        }
+
+        public async Task<IList<Transaction>> GetAllDistributorFood(int distributorId)
+        {
+           return await _transactionRepos.GetAllIncluding(t => t.Food, t => t.Food.Category, t => t.Sender, t => t.Food.Farm)
+                .Where(x => x.ReceiverId == distributorId & x.StatusId == 3).OrderByDescending(x => x.FoodId).ToListAsync();
+            
         }
     }
 }

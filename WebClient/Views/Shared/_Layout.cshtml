@@ -172,14 +172,23 @@
                             </a>
                         </li>
                     }
+                    else if (role.Value == "Distributor")
+                    {
+                        <li class="dropdown nav-item">
+                            <a class="nav-link" asp-controller="Distributor" asp-action="Index">
+                                <i class="icon-grid"></i>
+                                <span data-i18n="nav.category.general">Quản lý thực phẩm</span>
+                            </a>
+                        </li>
+                    }
                 }
 
                 @*<li class="dropdown nav-item">
-                        <a class="nav-link" asp-controller="Distributor" asp-action="Index">
-                            <i class="fa fa-truck"></i>
-                            <span data-i18n="nav.category.general">Quản lý thực phẩm</span>
-                        </a>
-                    </li>*@
+            <a class="nav-link" asp-controller="Distributor" asp-action="Index">
+                <i class="fa fa-truck"></i>
+                <span data-i18n="nav.category.general">Quản lý thực phẩm</span>
+            </a>
+        </li>*@
             </ul>
         </div>
     </div>
