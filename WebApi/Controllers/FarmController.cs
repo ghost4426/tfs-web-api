@@ -12,6 +12,8 @@ using AutoMapper;
 using Common.Enum;
 using Microsoft.AspNetCore.Authorization;
 using Common.Constant;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
 
 namespace CommonWebApi.Controllers
 {
@@ -145,7 +147,7 @@ namespace CommonWebApi.Controllers
 
                 return BadRequest(new { message = MessageConstant.UNHANDLE_ERROR, error = ex.StackTrace });
             }
-           
+
         }
       
         [HttpGet("category")]
@@ -169,25 +171,36 @@ namespace CommonWebApi.Controllers
 
 
         [HttpPost("createTransaction")]
-        public async Task<Models.TransactionReponse.CreateTransactionReponse> CreateTransaction([FromBody]Models.TransactionRequest transactionRequest)
-        {
-            Entities.Transaction transaction = _mapper.Map<Entities.Transaction>(transactionRequest);
-            transaction.SenderId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
-            transaction.CreateById = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
-            await _transactionBL.CreateSellFoodTransactionAsync(transaction);
-            var reponseModel = new Models.TransactionReponse.CreateTransactionReponse()
-            {
-                TransactionId = transaction.TransactionId
-            };
-            return reponseModel;
-        }
-
-        [HttpGet("getAllProvider")]
-        public async Task<IActionResult> GetAllProvider(string search)
+        public async Task<IActionResult> CreateTransaction([FromBody]Models.TransactionRequest transactionRequest)
         {
             try
             {
-                return Ok(new { results = _mapper.Map<IList<Models.Option>>(await _premisesBL.getAllProviderAsync(search)) });
+                Entities.Transaction transaction = _mapper.Map<Entities.Transaction>(transactionRequest);
+                transaction.SenderId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
+                transaction.CreateById = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
+                await _transactionBL.CreateSellFoodTransactionAsync(transaction);
+                var transactionHash = await _foodDataBL.AddCertification(transactionRequest.FoodId, transactionRequest.CertificationNumber);
+                await _foodBL.AddDetail(transactionRequest.FoodId, EFoodDetailType.VERIFY, transactionHash, transaction.CreateById);
+                var reponseModel = new Models.TransactionReponse.CreateTransactionReponse()
+                {
+                    TransactionId = transaction.TransactionId
+                };
+                return Ok(new { message = MessageConstant.INSERT_SUCCESS});
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(new { message = MessageConstant.UNHANDLE_ERROR, error = ex.StackTrace });
+            }
+            
+        }
+
+        [HttpGet("getAllProvider")]
+        public async Task<IActionResult> GetAllProvider(string search, int foodId)
+        {
+            try
+            {
+                int premisesId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
+                return Ok(new { results = _mapper.Map<IList<Models.Option>>(await _premisesBL.getAllProviderAsync(search, foodId, premisesId)) });
             }
             catch (Exception ex)
             {
@@ -342,6 +355,161 @@ namespace CommonWebApi.Controllers
             catch (Exception e)
             {
                 return BadRequest(new { message = e.Message, error = e.StackTrace });
+            }
+        }
+
+        [HttpPost("farmReport")]
+        public async Task<IActionResult> downloadReport()
+        {
+            try
+            {
+                int month = DateTime.Now.Month;
+                var row = 3;
+                int premisesId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
+                byte[] fileContents;
+                var foodCreate = _mapper.Map<IList<Models.FoodRespone.ReportFood>>(await _foodBL.FarmReportFoodIn(premisesId));
+                var foodSell = _mapper.Map<IList<Models.FoodRespone.ReportFoodOut>>(await _foodBL.FarmReportFoodOut(premisesId));
+                var foodReject = _mapper.Map<IList<Models.FoodRespone.ReportFoodReject>>(await _foodBL.FarmReportFoodReject(premisesId));
+                using (var package = new ExcelPackage())
+                {
+                    //sheet 1
+                    var worksheet = package.Workbook.Worksheets.Add("Thêm mới");
+
+                    //Row 1
+
+                    worksheet.Cells[1, 1].Value = "Báo cáo chăn nuôi tháng " + month;
+                    worksheet.Cells[1, 1].Style.Font.Size = 12;
+                    worksheet.Cells[1, 1].Style.Font.Bold = true;
+                    worksheet.Cells[1, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    worksheet.Cells["A1:D1"].Merge = true;
+
+                    //Row 2
+                    worksheet.Cells[2, 1].Value = "Loại";
+                    worksheet.Cells[2, 2].Value = "Giống";
+                    worksheet.Cells[2, 3].Value = "Ngày tạo";
+                    worksheet.Cells[2, 4].Value = "Hết hàng";
+                    worksheet.Cells["A2:D2"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                    worksheet.Cells["A2:D2"].AutoFitColumns();
+
+                    for (var i = 0; i < foodCreate.Count; i++)
+                    {
+                        worksheet.Cells[row + i, 1].Value = foodCreate[i].CategoryName;
+                        worksheet.Cells[row + i, 2].Value = foodCreate[i].Breed;
+                        worksheet.Cells[row + i, 3].Value = foodCreate[i].CreateDate;
+                        worksheet.Cells[row + i, 3].Style.Numberformat.Format = "dd-mm-yyyy";
+                        if (foodCreate[i].IsSoldOut)
+                        {
+                            worksheet.Cells[row + i, 4].Value = "X";
+                        }
+                        else
+                        {
+                            worksheet.Cells[row + i, 4].Value = "";
+                        }
+                        worksheet.Cells["A" + (row + i) + ":D" + (row + i)].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        worksheet.Cells["A" + (row + i) + ":D" + (row + i)].AutoFitColumns();
+                    }
+                    worksheet.Cells[(row + foodCreate.Count), 1].Value = "Tổng: " + foodCreate.Count;
+                    worksheet.Cells[(row + foodCreate.Count), 1].Style.Font.Bold = true;
+                    worksheet.Cells["A" + (row + foodCreate.Count) + ":D" + (row + foodCreate.Count)].Merge = true;
+
+                    //Sheet 2
+                    var worksheet2 = package.Workbook.Worksheets.Add("Bán hàng");
+                    //Row 1
+
+                    worksheet2.Cells[1, 1].Value = "Báo cáo bán hàng tháng " + month;
+                    worksheet2.Cells[1, 1].Style.Font.Size = 12;
+                    worksheet2.Cells[1, 1].Style.Font.Bold = true;
+                    worksheet2.Cells[1, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    worksheet2.Cells["A1:E1"].Merge = true;
+
+                    //Row 2
+                    worksheet2.Cells[2, 1].Value = "Loại";
+                    worksheet2.Cells[2, 2].Value = "Giống";
+                    worksheet2.Cells[2, 3].Value = "Nhà cung cấp";
+                    worksheet2.Cells[2, 4].Value = "Ngày bán";
+                    worksheet2.Cells[2, 5].Value = "Ghi chú";
+                    worksheet2.Cells["A2:E5"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                    worksheet2.Cells["A2:E5"].AutoFitColumns();
+
+                    for (var i = 0; i < foodSell.Count; i++)
+                    {
+                        worksheet2.Cells[row + i, 1].Value = foodSell[i].CategoryName;
+                        worksheet2.Cells[row + i, 2].Value = foodSell[i].Breed;
+                        worksheet2.Cells[row + i, 3].Value = foodSell[i].ReceiverName;
+                        worksheet2.Cells[row + i, 4].Value = foodSell[i].CreateDate;
+                        worksheet2.Cells[row + i, 4].Style.Numberformat.Format = "dd-mm-yyyy";
+                        worksheet2.Cells[row + i, 5].Value = foodSell[i].ReceiverCommnent;
+                        worksheet2.Cells["A" + (row + i) + ":E" + (row + i)].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        worksheet2.Cells["A" + (row + i) + ":E" + (row + i)].AutoFitColumns();
+                    }
+                    worksheet2.Cells[(row + foodSell.Count), 1].Value = "Tổng: " + foodSell.Count;
+                    worksheet2.Cells[(row + foodSell.Count), 1].Style.Font.Bold = true;
+                    worksheet2.Cells["A" + (row + foodSell.Count) + ":E" + (row + foodSell.Count)].Merge = true;
+
+                    //sheet 3
+                    var worksheet3 = package.Workbook.Worksheets.Add("Từ chối");
+                    //Row 1
+
+                    worksheet3.Cells[1, 1].Value = "Báo cáo hàng bị từ chối tháng " + month;
+                    worksheet3.Cells[1, 1].Style.Font.Size = 12;
+                    worksheet3.Cells[1, 1].Style.Font.Bold = true;
+                    worksheet3.Cells[1, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    worksheet3.Cells["A1:E1"].Merge = true;
+
+                    //Row 2
+                    worksheet3.Cells[2, 1].Value = "Loại";
+                    worksheet3.Cells[2, 2].Value = "Giống";
+                    worksheet3.Cells[2, 3].Value = "Nhà cung cấp";
+                    worksheet3.Cells[2, 4].Value = "Ngày bán";
+                    worksheet3.Cells[2, 5].Value = "Lý do từ chối";
+                    worksheet3.Cells["A2:E5"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                    worksheet3.Cells["A2:E5"].AutoFitColumns();
+
+                    for (var i = 0; i < foodReject.Count; i++)
+                    {
+                        worksheet3.Cells[row + i, 1].Value = foodReject[i].CategoryName;
+                        worksheet3.Cells[row + i, 2].Value = foodReject[i].Breed;
+                        worksheet3.Cells[row + i, 3].Value = foodReject[i].ReceiverName;
+                        worksheet3.Cells[row + i, 4].Value = foodReject[i].CreateDate;
+                        worksheet3.Cells[row + i, 4].Style.Numberformat.Format = "dd-mm-yyyy";
+                        worksheet3.Cells[row + i, 5].Value = foodReject[i].RejectReason;
+                        worksheet3.Cells["A" + (row + i) + ":E" + (row + i)].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        worksheet3.Cells["A" + (row + i) + ":E" + (row + i)].AutoFitColumns();
+                    }
+                    worksheet3.Cells[(row + foodReject.Count), 1].Value = "Tổng: " + foodReject.Count;
+                    worksheet3.Cells[(row + foodReject.Count), 1].Style.Font.Bold = true;
+                    worksheet3.Cells["A" + (row + foodReject.Count) + ":D" + (row + foodReject.Count)].Merge = true;
+
+                    fileContents = package.GetAsByteArray();
+                }
+
+                if (fileContents == null || fileContents.Length == 0)
+                {
+                    return NotFound();
+                }
+
+                return File(
+                    fileContents: fileContents,
+                    contentType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    fileDownloadName: "test.xlsx"
+                );
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+        }
+
+        [HttpPut("soldOut/{foodId}")]
+        public async Task<IActionResult> checkFoodSoldOut(int foodId)
+        {
+            try
+            {
+                await _foodBL.UpdateFoodSoldOut(foodId);
+                return Ok(new { data = MessageConstant.UPDATE_SUCCESS });
+            }catch(Exception e)
+            {
+                return BadRequest(new { message = e.Message });
             }
         }
     }

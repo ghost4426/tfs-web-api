@@ -145,7 +145,7 @@ $('#btnConfirmSaveFeeding').on('click', function () {
             loadFeedingDataModal();
         },
         function (result) {
-            toastr.error(result.message);
+            toastr.error(result.responseJSON.message);
         }
     )
     $('#mng-feeding-error').empty();
@@ -221,6 +221,6 @@ function loadFeedingDataModal() {
             })
         },
         function (result) {
-            toastr.error(result.message);
+            toastr.error(result.responseJSON.message);
         })
 }

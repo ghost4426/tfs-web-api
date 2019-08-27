@@ -14,11 +14,13 @@ const BASE_COMMON_URI = BASE_COMMON_API_URI + "api/common/";
 const BASE_GUEST_URI = BASE_COMMON_API_URI + "api/guest/";
 const BASE_REGISTER_URI = BASE_COMMON_API_URI+ "api/register/";
 const BASE_MANAGER_URI = "api/manager/";
+const BASE_USER_URI = BASE_COMMON_API_URI + "api/user/"
 
 //Guest
 const GET_FOODDATA_BY_ID_URI = BASE_GUEST_URI + "foodData";
-const ACTIVATE_URI = BASE_COMMON_API_URI + "account/activate/";
-const REGISTER_URI = BASE_COMMON_API_URI + BASE_GUEST_URI + "register";
+const ACTIVATE_URI = BASE_GUEST_URI + "account/activate/";
+const REGISTER_URI = BASE_GUEST_URI + "register";
+const FORGET_PASSWORD_URI = BASE_GUEST_URI + "forgetPassword";
 
 //Farm
 const GET_FOOD_DETAIL_TYPE_URI = BASE_FAMR_URI + "productdetailtype";
@@ -41,6 +43,8 @@ const UPDATE_VACCINE_URI = BASE_FAMR_URI + "vaccines";
 const GET_VACCINE_LIST_URI = BASE_FAMR_URI + "vaccines";
 const GET_VACCINE_LIST_BY_PREMISES_URI = BASE_FAMR_URI + "premisesVaccines";
 const REMOVE_VACCINE_URI = BASE_FAMR_URI + "vaccine/";
+const DOWNLOAD_REPORT_URI = BASE_FAMR_URI + "farmReport";
+const SOLD_OUT_URI = BASE_FAMR_URI + "soldOut/";
 
 
 //Admin
@@ -48,14 +52,10 @@ const GET_USER_URI = BASE_ADMIN_URI + "users";
 const DEACTIVE_USER_URI = BASE_ADMIN_URI + "user/deactive/";
 const GET_USER_DETAILS_URI = BASE_ADMIN_URI + "user/";
 const GET_ROLE_URI = BASE_ADMIN_URI + "role";
-const USER_PASS_CHANGE_URI = BASE_ADMIN_URI + "password/";
-const USER_UPDATE_URI = BASE_ADMIN_URI + "users/update/";
 const CHANGE_ROLE_URI = BASE_ADMIN_URI + "user/role/";
 const GET_PREMISES_URI = BASE_ADMIN_URI + "premises";
 const UPDATE_PREMISES_STATUS_URI = BASE_ADMIN_URI + "premises/status/";
 const CREATE_NEW_PREMISES_URI = BASE_REGISTER_URI + "premises";
-const GET_PROFILE_URI = BASE_ADMIN_URI + "profile";
-const CHANGE_AVA_URI = BASE_ADMIN_URI + "user/avatar/";
 const CREATE_VETERINARY_URI = BASE_ADMIN_URI + "veterinary";
 
 // Provider
@@ -76,8 +76,15 @@ const ADD_FOOD_PACKAGING_URI = BASE_COMMON_API_URI + BASE_PROVIDER_URI + "food/p
 const PROVIDER_GET_FOOD_DATA_URI = BASE_COMMON_API_URI + BASE_PROVIDER_URI + "getFoodDataByProvider";
 const PROVIDER_CREATE_TRANSACTION_URI = BASE_COMMON_API_URI + BASE_PROVIDER_URI + "createTransaction";
 const PROVIDER_GET_SEND_TRANSACTION_URI = BASE_COMMON_API_URI + BASE_PROVIDER_URI + "getAllProviderSendTransaction";
+const PROVIDER_DOWNLOAD_REPORT_URI = BASE_COMMON_API_URI + BASE_PROVIDER_URI + "downloadReport";
 
 //Manager
 const MANAGER_GET_ACCOUNT_URI = BASE_COMMON_API_URI + BASE_MANAGER_URI + "getUserByPremises";
 const MANAGER_UPDATE_ACCOUNT_STATUS_URI = BASE_COMMON_API_URI + BASE_MANAGER_URI + "changeUserStatus/"
 const MANAGER_CREATE_ACCOUNT_URI = BASE_COMMON_API_URI + BASE_MANAGER_URI + "premise/account";
+
+//User
+const GET_PROFILE_URI = BASE_USER_URI + "profile";
+const USER_PASS_CHANGE_URI = BASE_USER_URI + "password";
+const CHANGE_AVA_URI = BASE_USER_URI + "user/avatar";
+const USER_UPDATE_URI = BASE_USER_URI + "users/update";

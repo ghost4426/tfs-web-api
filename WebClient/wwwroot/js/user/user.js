@@ -1,5 +1,128 @@
 ﻿$(document).ready(function () {
     getProfile();
+
+    //Validation
+    $("#ChangePass").validate({
+        rules: {
+            OldPass: {
+                required: true
+            },
+            NewPass: {
+                required: true,
+                minlength: 8
+            },
+            ConfirmPass: {
+                required: true,
+                checkConfirmPass: function () { return $('#txtNewPass').val(); }
+            }
+        },
+        messages: {
+            OldPass: {
+                required: requiredError
+            },
+            NewPass: {
+                required: requiredError,
+                minlength: "Mật khẩu cần it nhất 8 ký tự"
+            },
+            ConfirmPass: {
+                required: requiredError,
+                checkConfirmPass: "Không trùng với mật khẩu mới!"
+            }
+        },
+        submitHandler: function (form) {
+            var userId = parseInt($('#txtUserIdPass').val());
+            var oldPass = $('#txtOldPass').val();
+            var newPass = $('#txtNewPass').val();
+            var confirmNewPass = $('#txtConfirmNewPass').val();
+            if (newPass != "" && oldPass != "" && confirmNewPass != "") {
+                if (confirmNewPass == newPass) {
+                    callAjaxAuth(
+                        {
+                            url: USER_PASS_CHANGE_URI,
+                            dataType: JSON_DATATYPE,
+                            type: PUT,
+                        },
+                        JSON.stringify({
+                            newPass: newPass,
+                            oldPass: oldPass,
+                        }),
+                        function (result) {
+                            toastr.success('Đổi mật khẩu thành công', 'Thành Công');
+                            //setTimeout("location.reload(true);", 2000);
+                            $('#changePassModal').modal('hide');
+                            getProfile();
+                            clearChangePassModal();
+                        },
+                        function (result) {
+                            toastr.error("Mật khẩu cũ không chính xác!");
+                        })
+                } else {
+                    toastr.error("Xác nhận mật khẩu không chính xác!")
+                }
+            } else {
+                toastr.error("Vui lòng điền đầy đủ thông tin!")
+            }
+        }
+    });
+
+    $("#UpdateProfile").validate({
+        rules: {
+            Fullname: {
+                required: true,
+                lettersonly: true,
+                minlength: 3,
+                maxlength: 50
+            },
+            Email: {
+                required: true,
+                email: true
+            },
+            Phone: {
+                numberonly: true
+            }
+        },
+        messages: {
+            Fullname: {
+                required: requiredError,
+                letteronly: "Vui lòng chỉ nhập chữ (Không có ký tự đặc biệt)",
+                minlength: "Vui lòng nhập ít nhất 3 ký tự",
+                maxlength: "Vui lòng nhập không quá 50 ký tự"
+            },
+            Email: {
+                required: requiredError,
+                email: emailError
+            },
+            ConfirmPass: {
+                numberonly: "Vui lòng chỉ nhập số"
+            }
+        },
+        submitHandler: function (form) {
+            var txtFullName = $('#txtFullName').val();
+            var txtEmail = $('#txtEmail').val();
+            var txtPhone = $('#txtPhone').val();
+            callAjaxAuth(
+                {
+                    type: PUT,
+                    url: USER_UPDATE_URI,
+                    dataType: JSON_DATATYPE,
+                },
+                JSON.stringify({
+                    Fullname: txtFullName,
+                    Email: txtEmail,
+                    PhoneNo: txtPhone
+                }),
+                function (result) {
+                    toastr.success('Cập nhật thông tin người dùng thành công', 'Thành Công');
+                    //setTimeout("location.reload(true);", 2000);
+                    $('#confirm').modal('hide');
+                    getProfile();
+                },
+                function (result) {
+                    toastr.error('Đã có lỗi xảy ra!');
+                }
+            );
+        }
+    });
 });
 
 function getProfile() {
@@ -13,7 +136,7 @@ function getProfile() {
         JSON.stringify({}),
         function (result) {
             $('span.avatar > img').attr({ src: result.data.Image });
-            $('#profile-ava').attr({src:result.data.Image});
+            $('#profile-ava').attr({ src: result.data.Image });
             $('#userId').text(result.data.UserId);
             $('#txtUserId').val(result.data.UserId);
             $('#txtUserIdPass').val(result.data.UserId);
@@ -22,20 +145,20 @@ function getProfile() {
             $('#Email').text(result.data.Email);
             $('#Phone').text(result.data.PhoneNo);
             $('#txtRole').text(result.data.Role);
-            if (result.data.IsActive==true) {
+            if (result.data.IsActive == true) {
                 $('#txtStatus').append('<span class="btn btn-success btn-sm mr-1 mb-1 ladda-button"><b>Hiệu lực</b></span>');
-                
+
             } else {
                 $('#txtStatus').append('<span class="btn btn-danger btn-sm mr-1 mb-1 ladda-button"><b>Vô Hiệu lực</b></span>');
             }
             if (result.data.PremisesName != null && result.data.PremisesType != null) {
-                
-                $('#h4Premises').css('visibility','visible');
-                $('#PremisesName').css('visibility','visible');
+
+                $('#h4Premises').css('visibility', 'visible');
+                $('#PremisesName').css('visibility', 'visible');
                 $('#PremisesType').css('visibility', 'visible');
                 $('#txtPremisesName').text(result.data.PremisesName);
                 $('#txtPremisesType').text(result.data.PremisesType);
-                
+
             } else {
                 $('#h4Premises').css('visibility', 'hidden');
                 $('#PremisesName').css('visibility', 'hidden');
@@ -49,42 +172,13 @@ function getProfile() {
             toastr.error(result.UserId);
         })
 }
-//Change pass
-$('#changePassButton').click(function () {
-    var userId = parseInt($('#txtUserIdPass').val());
-    var oldPass = $('#txtOldPass').val();
-    var newPass = $('#txtNewPass').val();
-    var confirmNewPass = $('#txtConfirmNewPass').val();
-    if (newPass != "" && oldPass != "" && confirmNewPass != "") {
-        if (confirmNewPass == newPass) {
-            callAjax(
-                {
-                    url: USER_PASS_CHANGE_URI + userId,
-                    dataType: JSON_DATATYPE,
-                    type: PUT,
-                },
-                JSON.stringify({
-                    newPass: newPass,
-                    oldPass: oldPass,
-                }),
-                function (result) {
-                    toastr.success('Đổi mật khẩu thành công', 'Thành Công');
-                    //setTimeout("location.reload(true);", 2000);
-                    $('#changePassModal').modal('hide');
-                    getProfile();
-                    /*$('#userTable').DataTable().ajax.reload();*/
-                },
-                function (result) {
-                    toastr.error("Mật khẩu cũ không chính xác!");
-                })
-        } else {
-            toastr.error("Xác nhận mật khẩu không chính xác!")
-        }
-    } else {
-        toastr.error("Vui lòng điền đầy đủ thông tin!")
-    }
-    
-});
+
+function clearChangePassModal() {
+    $('#txtOldPass').val('');
+    $('#txtNewPass').val('');
+    $('#txtConfirmNewPass').val('');
+}
+
 //Load Image
 
 
@@ -107,7 +201,6 @@ $(".file-upload").on("change", function (event) {
         $('.profile-pic').attr('src', e.target.result);
     }
     reader.readAsDataURL(img);
-    console.log(img);
     var form = new FormData();
     form.append("image", img);
 
@@ -125,18 +218,16 @@ $(".file-upload").on("change", function (event) {
         "contentType": false,
         "data": form
     };
-
     $.ajax(settings).done(function (response) {
-        console.log(response.data.link);
         saveImg(response.data.link);
     });
 });
 //save img link to db
 function saveImg(imgDetails) {
     var userId = $('#userId').text();
-    callAjax(
+    callAjaxAuth(
         {
-            url: CHANGE_AVA_URI + userId,
+            url: CHANGE_AVA_URI,
             dataType: JSON_DATATYPE,
             type: PUT,
         },
@@ -171,46 +262,3 @@ function validate(input) {
         }
     }
 }
-//Confirm save 
-$('#confirmSaveButton').click(function () {
-    var isValidated = true;
-    var txtUserId = parseInt($('#txtUserId').val());
-    var txtFullName = $('#txtFullName').val();
-    var txtEmail = $('#txtEmail').val();
-    var txtPhone = $('#txtPhone').val();
-
-    if (validate('txtFullName') == false) {
-        toastr.error('Vui lòng kiểm tra lại Tên');
-        isValidated = false;
-    } else if (validate('txtEmail') == false) {
-        toastr.error('Vui lòng kiểm tra lại Email');
-        isValidated = false;
-    } else if (validate('txtPhone') == false) {
-        toastr.error('Vui lòng kiểm tra lại Số điện thoại');
-        isValidated = false;
-    }else
-    if (isValidated == true) {
-        callAjax(
-            {
-                type: PUT,
-                url: USER_UPDATE_URI + txtUserId,
-                dataType: JSON_DATATYPE,
-            },
-            JSON.stringify({
-                Fullname: txtFullName,
-                Email: txtEmail,
-                PhoneNo: txtPhone
-            }),
-            function (result) {
-                toastr.success('Cập nhật thông tin người dùng thành công', 'Thành Công');
-                //setTimeout("location.reload(true);", 2000);
-                $('#confirm').modal('hide');
-                getProfile();
-                /*$('#userTable').DataTable().ajax.reload();*/
-            },
-            function (result) {
-                toastr.error('Đã có lỗi xảy ra!');
-            })
-    }
-    
-});

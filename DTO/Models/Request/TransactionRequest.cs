@@ -8,6 +8,7 @@ namespace DTO.Models
     {
         public int ReceiverId { get; set; }
         public int FoodId { get; set; }
+        public string CertificationNumber { get; set; }
     }
 
     public class TransactionUpdateRequest

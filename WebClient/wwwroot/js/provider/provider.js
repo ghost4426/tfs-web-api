@@ -70,7 +70,7 @@
     });
 
     //List distributor
-    $("#ddlDistributor").select2({
+    $("#ddlDistributor").select2({        
         ajax: {
             url: GET_DISTRIBUTOR_URI,
             dataType: JSON_DATATYPE,
@@ -80,8 +80,10 @@
                 "Authorization": 'Bearer ' + Cookies.get('token')
             },
             data: function (params) {
+                var id = $('#foodId-trans').val();
                 var query = {
                     search: params.term,
+                    foodId: id,
                     type: 'public'
                 }
                 // Query parameters will be ?search=[term]&type=public
@@ -145,7 +147,7 @@
                         $('#addinfo').modal('hide');
                     },
                     function (result) {
-                        toastr.error(result);
+                        toastr.error(result.responseJSON.message);
                     }
                 );
             } else if (option == 7) {
@@ -166,7 +168,7 @@
                         $('#addinfo').modal('hide');
                     },
                     function (result) {
-                        toastr.error(result);
+                        toastr.error(result.responseJSON.message);
                     }
                 );
             }
@@ -177,16 +179,23 @@
         rules: {
             Treatment: {
                 required: true
+            },
+            CerNum: {
+                required: true
             }
         },
         messages: {
             Treatment: {
                 required: "Vui lòng chọn một nhà phân phối"
+            },
+            CerNum: {
+                required: requiredError
             }
         },
         submitHandler: function (form) {
             var foodId = $('#foodId-trans').val();
             var distributorId = $('#ddlDistributor').val();
+            var cerNum = $('#cerNum').val();
             callAjaxAuth(
                 {
                     url: PROVIDER_CREATE_TRANSACTION_URI,
@@ -194,14 +203,15 @@
                     type: POST
                 }, JSON.stringify({
                     ReceiverId: distributorId,
-                    FoodId: foodId
+                    FoodId: foodId,
+                    CertificationNumber: cerNum
                 }),
                 function (result) {
                     toastr.success("Tạo giao dịch thành công, vui lòng chờ nhà phân phối xác nhận");
                     $('#GetQRCode').modal('hide');
                 },
                 function (result) {
-                    toastr.error(result);
+                    toastr.error(result.responseJSON.message);
                 }
             );
         }
@@ -258,16 +268,40 @@ var providerFoodTable = $('#provider-food-mng').DataTable({
             className: 'btn btn-primary btn-sm mr-1 btnTreatment',
         },
         {
-            extend: 'excel',
             text: '<i class="fa fa-arrow-down white"></i> Tải báo cáo',
-            className: 'btn btn-primary btn-sm mr-1',
+            className: 'btn btn-primary btn-sm mr-1 btn-report',
         }
     ],
     language: table_vi_lang
 })
 
-$('.buttons-excel').addClass('btn btn-primary btn-sm mr-1 ');
-$('.buttons-excel').removeClass('btn-secondary');
+$('.btn-report').click(function () {
+    data = {
+        ids: [1, 2, 3, 4, 5]
+    };
+    // Use XMLHttpRequest instead of Jquery $ajax
+    xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        var a;
+        var date = new Date();
+        var filename = "Báo cáo tháng " + (date.getMonth() + 1);
+        if (xhttp.readyState === 4 && xhttp.status === 200) {
+            a = document.createElement('a');
+            a.href = window.URL.createObjectURL(xhttp.response);
+            a.download = filename + ".xlsx";
+            a.style.display = 'none';
+            document.body.appendChild(a);
+            a.click();
+        }
+    };
+    // Post data to URL which handles post request
+    xhttp.open("POST", PROVIDER_DOWNLOAD_REPORT_URI);
+    xhttp.setRequestHeader("Authorization", 'Bearer ' + Cookies.get('token'));
+    xhttp.setRequestHeader("Content-Type", "application/json");
+    // You should set responseType as blob for binary responses
+    xhttp.responseType = 'blob';
+    xhttp.send(JSON.stringify(data));
+});
 
 // Show add food data modal
 var preId = 0;
@@ -546,6 +580,7 @@ function loadTreatmentForm() {
             type: GET
         }, "",
             function (result) {
+                console.log(result);
                 if (result.data.length != 0) {
                     for (var i = 0; i < result.data.length; i++) {
                         $('#add-detail-treatment-process').append('<label class="col-md-2 mb-1 mt-1 label-control" for="txtFoodId">Bước ' + (i + 1) + '</label>'
@@ -556,7 +591,7 @@ function loadTreatmentForm() {
                 }
             },
             function (result) {
-                toastr.error(result);
+                toastr.error(result.responseJSON.message);
             }
         );
     });
@@ -580,55 +615,11 @@ function loadTreatmentForm() {
                 }
             },
             function (result) {
-                toastr.error(result);
+                toastr.error(result.responseJSON.message);
             }
         )
     }
 }
-
-//$('#addDetailConfirm').on('click', function () {
-//    var foodId = $('#txtFoodId').val();
-//    var choose = $('#dllFoodDetailType').val();
-//    if (choose == 6) {
-//        var treatmentId = $('#ddlChooseTreatment').val();
-//        callAjaxAuth(
-//            {
-//                url: UPDATE_FOOD_TREATMENT_URI + foodId,
-//                dataType: JSON_DATATYPE,
-//                type: PUT
-//            }, JSON.stringify(treatmentId),
-//            function (result) {
-//                toastr.success("Thêm thông tin thành công");
-//                clearDetailModal();
-//                $('#addinfo').modal('hide');
-//            },
-//            function (result) {
-//                toastr.error(result);
-//            }
-//        );
-//    } else if (choose == 7) {
-//        var mfg = $('#txtMFGDate').val();
-//        var exp = $('#EXPDate').val();
-//        callAjaxAuth(
-//            {
-//                url: ADD_FOOD_PACKAGING_URI + foodId,
-//                dataType: JSON_DATATYPE,
-//                type: PUT
-//            }, JSON.stringify({
-//                MFGDate: mfg,
-//                EXPDate: exp
-//            }),
-//            function (result) {
-//                toastr.success("Thêm thông tin thành công");
-//                clearDetailModal();
-//                $('#addinfo').modal('hide');
-//            },
-//            function (result) {
-//                toastr.error(result);
-//            }
-//        );
-//    }
-//});
 
 function callAjaxAddTreatmentData(treatmentName, treatmentProcess) {
     callAjaxAuth(
@@ -644,7 +635,7 @@ function callAjaxAddTreatmentData(treatmentName, treatmentProcess) {
             toastr.success("Thêm thông tin thành công");
         },
         function (result) {
-            toastr.error(result);
+            toastr.error(result.responseJSON.message);
         }
     )
 }
@@ -662,7 +653,7 @@ function callAjaxAddMoreTreatmentData(treatmentId, treatmentProcess) {
             toastr.success("Thêm thông tin thành công");
         },
         function (result) {
-            toastr.error(result);
+            toastr.error(result.responseJSON.message);
         }
     )
 }
@@ -692,7 +683,7 @@ function loadPackingForm() {
             }
         },
         function (result) {
-            toastr.error(result);
+            toastr.error(result.responseJSON.message);
         }
     );
 };
@@ -759,7 +750,7 @@ $('#provider-food-mng').on('click', 'button.btn-detail', function () {
             }
         },
         function (result) {
-            toastr.error(result);
+            toastr.error(result.responseJSON.message);
         }
     );
 });
@@ -779,6 +770,22 @@ $('#provider-food-mng').on('click', 'button.btn-barcode', function () {
     var tr = $(this).closest('tr');
     var row = providerFoodTable.row(tr);
     var foodId = row.data().FoodId;
+    callAjaxAuth(
+        {
+            url: PROVIDER_GET_FOOD_DATA_URI,
+            dataType: JSON_DATATYPE,
+            type: GET
+        },
+        {
+            id: foodId
+        }, function (result) {
+            console.log(result);
+            
+        },
+        function (result) {
+            toastr.error(result.responseJSON.message);
+        }
+    );
     $('#foodId-trans').val(foodId);
     $('#category-trans').val(row.data().Food.Category.Name);
     $('#breed-trans').val(row.data().Food.Breed);
@@ -795,28 +802,6 @@ $('#provider-food-mng').on('click', 'button.btn-barcode', function () {
     $("#btnPrintBarcode").attr("download", "Food-" + foodId + ".jpg");
     $('#GetQRCode').modal('show');
 });
-
-//$('#btn-transaction').on('click', function () {
-//    var foodId = $('#foodId-trans').val();
-//    var distributorId = $('#ddlDistributor').val();
-//    callAjaxAuth(
-//        {
-//            url: PROVIDER_CREATE_TRANSACTION_URI,
-//            dataType: JSON_DATATYPE,
-//            type: POST
-//        }, JSON.stringify({
-//            ReceiverId: distributorId,
-//            FoodId: foodId
-//        }),
-//        function (result) {
-//            toastr.success("Tạo giao dịch thành công, vui lòng chờ nhà phân phối xác nhận");
-//            $('#GetQRCode').modal('hide');
-//        },
-//        function (result) {
-//            toastr.error(result);
-//        }
-//    )
-//});
 
 function makeCode(id) {
     JsBarcode("#barcode", "" + id, {

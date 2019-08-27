@@ -142,7 +142,7 @@ $('#btnConfirmSaveVaccine').on('click', function () {
             loadvaccineDataModal();
         },
         function (result) {
-            toastr.error(result.message);
+            toastr.error(result.responseJSON.message);
         }
     )
     $('#mng-vaccine-error').empty();
@@ -219,6 +219,6 @@ function loadvaccineDataModal() {
             })
         },
         function (result) {
-            toastr.error(result.message);
+            toastr.error(result.responseJSON.message);
         })
 }

@@ -38,6 +38,12 @@ namespace BusinessLogic.IBusinessLogic
 
         Task InsertFeedingFood(int foodId, List<Models.AddFeedingInfoToFoodDataRequest> feedings);
 
+        Task<IList<Food>> FarmReportFoodIn(int premisesId);
+        Task<IList<Transaction>> FarmReportFoodOut(int premisesId);
+        Task<IList<Transaction>> FarmReportFoodReject(int premisesId);
+        Task<IList<ProviderFood>> ProviderReportFoodIn(int premisesId);
+        Task UpdateFoodSoldOut(int foodId);
+        Task UpdatePackagingFood(int foodId, int premisesId);
         Task InsertVaccineFood(int foodId, List<Models.AddVaccineInfoToFoodDataRequest> vaccines);
     }
 }

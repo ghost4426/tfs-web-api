@@ -30,6 +30,8 @@ namespace DTO.Models
         public int CategoryId { get; set; }
         public int FarmId { get; set; }
         public DateTime CreateDate { get; set; }
+        public bool IsSoldOut { get; set; }
+        public bool IsReadyForSale { get; set; }
     }
 
     public class FoodProvider

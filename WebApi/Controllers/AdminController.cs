@@ -150,20 +150,41 @@ namespace AdminWebApi.Controllers
         [HttpPost("veterinary")]
         public async Task<IActionResult> CreateVeterinary([FromBody] Models.CreateVeterinaryRequest veterinary)
         {
+            var isCreated = false;
+            var user = _mapper.Map<Entities.User>(veterinary);
             try
             {
-                Entities.User veterinaryAccount = new Entities.User()
+                user.RoleId = 4;
+                var password = Util.GeneratePassword(new Models.PasswordOptions()
                 {
-                    Username = veterinary.Username,
-                    Fullname = veterinary.Fullname,
-                    Email = veterinary.Email,
-                    PhoneNo = veterinary.Phone
-                };
-                await _userBL.CreateVeterinary(veterinaryAccount);
-                return Ok("Thêm thành công");
+                    RequireDigit = true,
+                    RequiredLength = 8,
+                    RequireLowercase = true,
+                    RequireNonAlphanumeric = false,
+                    RequireUppercase = true
+                });
+                user.Password = password;
+                isCreated = await _userBL.CreateUser(user);
+                if (isCreated)
+                {
+                    await _mailSender.SendEmailAsync(user.Email, "Tạo tài khoản TSF","Tài khoản kiểm dịch được tạo thành công \n" + "Tên tài khoản: " + user.Username + "\n" + "Mật khẩu: " + password);
+                }
+                return Ok(new { messsage = MessageConstant.INSERT_SUCCESS });
             }
-            catch(Exception e)
+            catch (DuplicatedUsernameException e)
             {
+                return BadRequest(new { message = e.Message });
+            }
+            catch (DuplicateEmailException e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+            catch (Exception e)
+            {
+                if (isCreated)
+                {
+                    await _userBL.RemoveByIdAsync(user.UserId);
+                }
                 return BadRequest(new { message = e.Message });
             }
         }
@@ -173,22 +194,6 @@ namespace AdminWebApi.Controllers
         {
             return Ok(new { data = _mapper.Map<IList<Models.User>>(await _userBL.GetUsers()) });
         }
-
-        [HttpPut("password/{userid}")]
-        public async Task<IActionResult> ChangePassword(int userid, [FromBody] Models.ChangePasswordUserRequest userInfo)
-        {
-            try
-            {
-                await _userBL.ChangePassword(userid, userInfo.newPass, userInfo.oldPass);
-                return Ok("success!");
-            }
-            catch (Exception e)
-            {
-                return BadRequest(new { message = e.Message });
-            }
-
-        }
-
 
         //GET : /api/admin/profile
         [Authorize]
@@ -235,27 +240,7 @@ namespace AdminWebApi.Controllers
             return Ok(role);
 
         }
-        [HttpPut("users/update/{id}")]
-        public async Task<IActionResult> UpdateUser(int id,[FromBody] Models.UpdateUserRequest userInfo)
-        {
-            Entities.User user = null;
-            try
-            {
-                user = _mapper.Map<Entities.User>(userInfo);
-                user.UserId = id;
-                user.Fullname = userInfo.Fullname;
-                user.Email = userInfo.Email;
-                user.PhoneNo = userInfo.PhoneNo;
-                await _userBL.UpdateUser(user, id);
-                return Ok("success!!");
-
-            }
-            catch (Exception e)
-            {
-                return BadRequest(new { message = e.Message });
-            }
-
-        }
+        
         [HttpPut("user/role/{id}")]
         public async Task<IActionResult> Role(int id, [FromBody] string role)
         {
@@ -269,21 +254,7 @@ namespace AdminWebApi.Controllers
                 return BadRequest(new { message = e.Message.ToString() });
 
             }
-        }
-        [HttpPut("user/avatar/{userId}")]
-        public async Task<IActionResult> ChangeAvatar(int userId, [FromBody] Models.ChangeAvatar ava)
-        {
-            
-            try {
-                await _userBL.ChangeAvatar(userId,ava.avaUrl);
-                return Ok("Success!");
-            }
-            catch (Exception e)
-            {
-                return BadRequest(new { message = e.Message.ToString() });
-            }
-            
-        }
+        }        
 
         [HttpPut("user/deactive/{userId}")]
         public async Task<IActionResult> Deactive(int userId)
@@ -308,53 +279,22 @@ namespace AdminWebApi.Controllers
         public async Task<IActionResult> Premises()
         {
             return Ok(
-                new { data = _mapper.Map<IList<Models.RegisterInfo>>(await this._regBl.GetAllRegisterInfo()) }
+                new { data = _mapper.Map<IList<Models.PremisesReponse>>(await _premisesBL.getAllPremisesAsync()) }
                 );
         }
-        [HttpPut("premises/status/{regId}")]
-        public async Task<IActionResult> ChangeStatusPremises(int regId,[FromBody] int isConfirm)
+        [HttpPut("premises/status/{premisesId}")]
+        public async Task<IActionResult> ChangeStatusPremises(int premisesId)
         {
             try
             {
-                await _regBl.ChangeStatusRegisterInfo(regId, isConfirm);
-                return Ok("success!");
+                await _premisesBL.updatePremisesStatus(premisesId);
+                return Ok(new { messsage = MessageConstant.UPDATE_SUCCESS });
             }
             catch(Exception e)
             {
                 return BadRequest(new { message = e.Message });
             }
-        }
-       /* [HttpGet("test")]
-        public async Task<IActionResult> test()
-        {
-            StringBuilder activateCode = new StringBuilder();
-            Random random = new Random();
-            int i = 0;
-            *//*while (i < 12)
-            {
-                char c = (char)random.Next(10, 100);
-                if (!char.IsLetterOrDigit(c))
-                activateCode.Append(c);
-                i++;
-            }*//*
-            const string valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-            StringBuilder res = new StringBuilder();
-            Random rnd = new Random();
-            while (i < 12)
-            {
-                res.Append(valid[rnd.Next(valid.Length)]);
-                i++;
-            }
-            *//*var activateCode = Util.GeneratePassword(new Models.PasswordOptions()
-            {
-                RequireDigit = false,
-                RequiredLength = 12,
-                RequireLowercase = false,
-                RequireNonAlphanumeric = false,
-                RequireUppercase = false
-            });*//*
-            return Ok(res.ToString());
-        }*/
+        }        
     }
 }
 

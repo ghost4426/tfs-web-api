@@ -46,9 +46,14 @@ namespace BusinessLogic.BusinessLogicImpl
         {
             var hashedPassword = PasswordHasher.GetHashPassword(newUser.Password);
             var user = await _userRepos.FindByUsername(newUser.Username);
+            var mail = await _userRepos.FindAllAsync(x => x.Email == newUser.Email);
             if (user != null)
             {
                 throw new DuplicatedUsernameException(msg: MessageConstant.DUPLICATED_USERNAME);
+            }
+            if (mail.Count > 0)
+            {
+                throw new DuplicateEmailException(msg: MessageConstant.DUPLICATED_EMAIL);
             }
             newUser.UserId = 0;
             newUser.Password = hashedPassword.HashedPassword;
@@ -65,7 +70,7 @@ namespace BusinessLogic.BusinessLogicImpl
             var password = Util.GeneratePassword(new Models.PasswordOptions()
             {
                 RequireDigit = false,
-                RequiredLength = 12,
+                RequiredLength = 8,
                 RequireLowercase = false,
                 RequireNonAlphanumeric = false,
                 RequireUppercase = false
@@ -80,21 +85,29 @@ namespace BusinessLogic.BusinessLogicImpl
             {
                 veterinary.Password = hashedPassword.HashedPassword;
                 veterinary.Salt = hashedPassword.Salt;
-                var role = _roleRepos.GetById(4); // get veterinary Role
-                veterinary.Role = role;
-                _userRepos.Insert(veterinary, true);
-                //Send email
-                await _mailSender.SendEmailAsync(veterinary.Email, "[TFS] Tạo tài khoản thành công",
-                                                "Tài khoản Thú Y của bạn đã được tạo thành công \n"
-                                                +"Mật khẩu của bạn là: "+ password);
+                veterinary.RoleId = 4;
+                _userRepos.Insert(veterinary, true);               
             }
         }
         public async Task ActivateAccount(string activateCode)
         {
             User user;
             user = await _userRepos.FindAsync(u => u.ActivationCode == activateCode);
+            if(user == null)
+            {
+                throw new NotFoundException(msg: "Mã kích hoạt không chính xác");
+            }
             user.IsConfirmEmail = true;
             user.IsActive = true;
+            var activeCode = Util.GeneratePassword(new Models.PasswordOptions()
+            {
+                RequireDigit = true,
+                RequiredLength = 6,
+                RequireLowercase = true,
+                RequireNonAlphanumeric = false,
+                RequireUppercase = true
+            });
+            user.ActivationCode = activeCode;
             Premises premises = await _premesisRepos.FindAsync(x => x.PremisesId == user.PremisesId);
             premises.IsActive = true;
             await _userRepos.UpdateAsync(user);
@@ -132,7 +145,7 @@ namespace BusinessLogic.BusinessLogicImpl
                 var role = _roleRepos.GetById(user.RoleId);
                 user.Role = role;
             }
-            return users;
+            return users.OrderByDescending(x => x.UserId).ToList();
         }
 
         public async Task<string> ChangeRole1User(int id, int role)
@@ -267,21 +280,22 @@ namespace BusinessLogic.BusinessLogicImpl
             {
                 throw new DuplicatedUsernameException(msg: MessageConstant.DUPLICATED_USERNAME);
             }
-            if(mail.Count > 0)
+            if (mail.Count > 0)
             {
                 throw new DuplicateEmailException(msg: MessageConstant.DUPLICATED_EMAIL);
             }
-            _premesisRepos.Insert(newPremises, true);
-            //newUser.UserId = 0;
+            await _premesisRepos.InsertAsync(newPremises);
+            newPremises.IsActive = false;
+            await _premesisRepos.UpdateAsync(newPremises);
             newUser.Password = hashedPassword.HashedPassword;
             newUser.Salt = hashedPassword.Salt;
             newUser.ActivationCode = activeCode;
-            newUser.RoleId = 2;
+            newUser.RoleId = 2;            
             newUser.PremisesId = newPremises.PremisesId;
-            newUser.IsActive = false;
-            newUser.Image = "/app-assets/images/avatar.jpg";
             newUser.IsConfirmEmail = false;
-            _userRepos.Insert(newUser,true);
+            await _userRepos.InsertAsync(newUser);
+            newUser.IsActive = false;
+            await _userRepos.UpdateAsync(newUser);
             if (newUser.UserId > 0)
             {
                 return true;
@@ -323,6 +337,31 @@ namespace BusinessLogic.BusinessLogicImpl
                 return true;
             }
             return false;
+        }
+
+        public async Task resetPassword(string email)
+        {
+            var user = await _userRepos.FindAsync(x => x.Email.Equals(email));
+            if(user == null)
+            {
+                throw new NotFoundException(msg: "Email không tồn tại trong hệ thống");
+            }
+            else
+            {
+                var password = Util.GeneratePassword(new Models.PasswordOptions()
+                {
+                    RequireDigit = true,
+                    RequiredLength = 8,
+                    RequireLowercase = true,
+                    RequireNonAlphanumeric = false,
+                    RequireUppercase = true
+                });
+                var hashedPassword = PasswordHasher.GetHashPassword(password);
+                await _mailSender.SendEmailAsync(email, "Cấp lại mật khẩu TSF", "Tài khoản của bạn được cấp lại mật khẩu \n" + "Tên tài khoản: " + user.Username + "\n" + "Mật khẩu: " + password);
+                user.Password = hashedPassword.HashedPassword;
+                user.Salt = hashedPassword.Salt;
+                await _userRepos.UpdateAsync(user);
+            }
         }
     }
 }

@@ -85,7 +85,7 @@
                                 <span class="user-name">@HttpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value</span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="user-detail.html"><i class="ft-user"></i> Cập nhật thông tin</a>
+                                <a asp-controller="User" asp-action="UserProfile" class="dropdown-item"><i class="ft-user"></i> Cập nhật thông tin</a>
                                 <div class="dropdown-divider"></div><a class="dropdown-item" href="~/dang-xuat"><i class="ft-power"></i> Đăng xuất</a>
                             </div>
                         </li>

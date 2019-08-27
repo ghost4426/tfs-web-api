@@ -119,7 +119,7 @@ var providerAccountTable = $('#provider-account-mng').DataTable({
             className: 'btn btn-primary btn-sm mr-1 btnAccount'
         }
     ],
-    language: table_vi_lang
+    language: userTable_vi_lang
 });
 
 $('#provider-account-mng').on('click', 'button.btn-deactivate', function () {
@@ -154,11 +154,11 @@ $('#provider-account-mng').on('click', 'button.btn-deactivate', function () {
                     type: PUT
                 }, "",
                 function (result) {
-                    swal("Xóa thành công!", "Tài khoản đã được hủy kích hoạt.", "success");
+                    swal("Hủy thành công!", "Tài khoản đã được hủy kích hoạt.", "success");
                     $("#provider-account-mng").DataTable().ajax.reload();
                 },
                 function (result) {
-                    toastr.error(result);
+                    toastr.error(result.responseJSON.message);
                 }
             );
         } else {
@@ -199,11 +199,11 @@ $('#provider-account-mng').on('click', 'button.btn-activate', function () {
                     type: PUT
                 }, "",
                 function (result) {
-                    swal("Xóa thành công!", "Tài khoản đã được kích hoạt.", "success");
+                    swal("Kích hoạt thành công!", "Tài khoản đã được kích hoạt.", "success");
                     $("#provider-account-mng").DataTable().ajax.reload();
                 },
                 function (result) {
-                    toastr.error(result);
+                    toastr.error(result.responseJSON.message);
                 }
             );
         } else {

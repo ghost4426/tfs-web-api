@@ -92,6 +92,10 @@ namespace CommonWebApi.Controllers
             {
                 return BadRequest(new { message = e.Message });
             }
+            catch(DuplicateEmailException e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
             catch (Exception e)
             {
                 if (isCreated)

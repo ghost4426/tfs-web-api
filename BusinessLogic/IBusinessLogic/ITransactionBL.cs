@@ -26,5 +26,8 @@ namespace BusinessLogic.IBusinessLogic
         Task<Transaction> UpdateDistributorTransaction(int id, int status, string reasone, int verId);
 
         Task<Transaction> GetTransactionById(int id);
+        Task<IList<Transaction>> ProviderFoodInReport(int premisesId);
+        Task<IList<Transaction>> ProviderFoodOutReport(int premisesId);
+        Task<IList<Transaction>> ProviderFoodRejectReport(int premisesId);
     }
 }

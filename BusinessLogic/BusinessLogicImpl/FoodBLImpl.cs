@@ -4,6 +4,7 @@ using Common.Enum;
 using DataAccess.IRepositories;
 using DTO.Entities;
 using Models = DTO.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,6 +19,8 @@ namespace BusinessLogic.BusinessLogicImpl
         private readonly IProviderFoodRepository _providerFoodRepository;
         private readonly IFoodDetailRepository _foodDetailRepository;
         private readonly IFeedingFoodRepository _feedingFoodRepository;
+        private readonly ITransactionRepository _transactionRepos;
+        private readonly IPremisesRepository _premisesRepos;
         private readonly IVaccineFoodRepository _vaccineFoodRepository;
 
         public FoodBLImpl(
@@ -28,6 +31,8 @@ namespace BusinessLogic.BusinessLogicImpl
             , IFoodDetailRepository foodDetailRepository
             , IFeedingFoodRepository feedingFoodRepository
             , IVaccineFoodRepository vaccineFoodRepository
+            , ITransactionRepository transactionRepository
+            , IPremisesRepository premisesRepository
             )
         {
             _productRepos = productRepos;
@@ -37,6 +42,8 @@ namespace BusinessLogic.BusinessLogicImpl
             _foodDetailRepository = foodDetailRepository;
             _feedingFoodRepository = feedingFoodRepository;
             _vaccineFoodRepository = vaccineFoodRepository;
+            _transactionRepos = transactionRepository;
+            _premisesRepos = premisesRepository;
         }
 
         public async Task<IList<Food>> GetAllProductAsync()
@@ -145,6 +152,7 @@ namespace BusinessLogic.BusinessLogicImpl
         {
             ProviderFood result = await _providerFoodRepository.FindAsync(x => x.FoodId == foodId & x.PremisesId == premisesId);
             result.TreatmentId = treatmentId;
+            result.IsTreatmented = true;
             await _providerFoodRepository.UpdateAsync(result);
         }
 
@@ -198,6 +206,70 @@ namespace BusinessLogic.BusinessLogicImpl
                     CreateDate = vaccine.VaccineDate
                 });
             }
+        }
+
+        public async Task<IList<Food>> FarmReportFoodIn(int premisesId)
+        {
+            int month = DateTime.Now.Month;
+            var result = await _productRepos.FindAllAsync(x => x.FarmId == premisesId && x.CreateDate.Month == month );
+            foreach(var c in result)
+            {
+                c.Category = _categoryRepos.GetById(c.CategoryId);                
+            }
+            return result;
+        }
+
+        public async Task<IList<Transaction>> FarmReportFoodOut(int premisesId)
+        {
+            int month = DateTime.Now.Month;
+            var result = await _transactionRepos.FindAllAsync(x => x.SenderId == premisesId && x.CreateDate.Month == month && x.StatusId == 3);
+            foreach(var t in result)
+            {                
+                t.Food = _productRepos.GetById(t.FoodId);
+                t.Food.Category = _categoryRepos.GetById(t.Food.CategoryId);
+                t.Receiver = _premisesRepos.GetById(t.ReceiverId);
+            }
+            return result;
+        }
+
+        public async Task<IList<Transaction>> FarmReportFoodReject(int premisesId)
+        {
+            int month = DateTime.Now.Month;
+            var result = await _transactionRepos.FindAllAsync(x => x.SenderId == premisesId && x.CreateDate.Month == month && x.StatusId == 4);
+            foreach (var t in result)
+            {
+                t.Food = _productRepos.GetById(t.FoodId);
+                t.Food.Category = _categoryRepos.GetById(t.Food.CategoryId);
+                t.Receiver = _premisesRepos.GetById(t.ReceiverId);
+            }
+            return result;
+        }
+
+        public async Task<IList<ProviderFood>> ProviderReportFoodIn(int premisesId)
+        {
+            int month = DateTime.Now.Month;
+            var result = await _providerFoodRepository.FindAllAsync(x => x.PremisesId == premisesId && x.CreateDate.Month == month);
+            foreach (var t in result)
+            {
+                t.Food = _productRepos.GetById(t.FoodId);
+                t.Food.Category = _categoryRepos.GetById(t.Food.CategoryId);
+                t.Food.Farm = _premisesRepos.GetById(t.Food.FarmId);
+            }
+            return result;
+        }
+
+        public async Task UpdateFoodSoldOut(int foodId)
+        {
+            var food = _productRepos.GetById(foodId);
+            food.IsSoldOut = true;
+            await _productRepos.UpdateAsync(food);
+        }
+
+        public async Task UpdatePackagingFood(int foodId, int premisesId)
+        {
+            ProviderFood result = await _providerFoodRepository.FindAsync(x => x.FoodId == foodId & x.PremisesId == premisesId);
+            result.IsPacked = true;
+            await _providerFoodRepository.UpdateAsync(result);
         }
     }
 }

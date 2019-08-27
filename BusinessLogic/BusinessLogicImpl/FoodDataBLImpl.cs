@@ -131,6 +131,15 @@ namespace BusinessLogic.BusinessLogicImpl
         }
 
 
+        public async Task<string> ProviderAddCertification(long foodId, int providerId, string certificationNumber)
+        {
+            var FoodData = await GetFoodDataByIDAndProviderID(foodId, providerId);
+            FoodData.Providers[0].CertificationNumber = certificationNumber;
+            FoodData.Providers[0].CertificationDate = DateTime.Now;
+
+            return await SaveFoodData(FoodData);
+        }
+
         public async Task<string> Packaging(long foodId, Packaging packaging, int providerId)
         {
             packaging.PackagingDate = DateTime.Now;
@@ -200,6 +209,16 @@ namespace BusinessLogic.BusinessLogicImpl
             food.Providers = food.Providers.Where(x => x.ProviderId == providerId).ToList();
             food.Distributors = food.Distributors.Where(x => x.DistributorId == distributorId).ToList();
             return food;
+        }
+
+        public async Task<string> AddCertification(long foodId, string certificationNumber)
+        {
+            var FoodData = await GetFoodDataByID(foodId);
+
+            FoodData.Farm.CertificationNumber = certificationNumber;
+            FoodData.Farm.CertificationDate = DateTime.Now;
+
+            return await SaveFoodData(FoodData);
         }
     }
 }
