@@ -39,6 +39,13 @@ namespace DTO.Models.Exception
         }
     }
 
+    public class DeActivedPremisesException : ApplicationException
+    {
+        public DeActivedPremisesException(string msg) : base(msg)
+        {
+        }
+    }
+
     public class NotFoundException : ApplicationException
     {
         public NotFoundException(string msg) : base(msg)

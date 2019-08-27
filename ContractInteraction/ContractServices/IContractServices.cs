@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Nethereum.RPC.Eth.DTOs;
 
 namespace ContractInteraction.ContractServices
 {
@@ -19,5 +20,7 @@ namespace ContractInteraction.ContractServices
         Task<string> GetTransactionByHashAsync(string transactionHash);
 
         string DecodeData(string data);
+
+        Task<List<Transaction>> GetContractTransaction();
     }
 }

@@ -19,6 +19,8 @@ namespace Common.Constant
 
         public const string DEACTIVED_USER = "Tài khoản đã bị vô hiệu hóa";
 
+        public const string DEACTIVED_PREMISES = "Cơ sở đã bị vô hiệu hóa";
+
         public const string DUPLICATED_EMAIL = "Email đã tồn tại";
     }
 }

@@ -28,6 +28,7 @@ namespace AdminWebApi.Controllers
         private readonly IRoleBL _roleBL;
         private readonly IUserBL _userBL;
         private readonly IFoodDataBL _foodDataBL;
+        private readonly IFoodDetailBL _foodDetailBL;
         private readonly IMapper _mapper;
         private readonly IEmailSender _mailSender;
         private readonly JWTSetttings _appSettings;
@@ -35,12 +36,14 @@ namespace AdminWebApi.Controllers
         public GuestController(
             IUserBL userBL,
             IFoodDataBL foodDataBL,
+             IFoodDetailBL foodBL,
             IMapper mapper,
             IEmailSender mailSender,
             IOptions<JWTSetttings> appSettings)
         {
             _userBL = userBL;
             _foodDataBL = foodDataBL;
+            _foodDetailBL = foodBL;
             _mapper = mapper;
             _mailSender = mailSender;
             _appSettings = appSettings.Value;
@@ -143,6 +146,19 @@ namespace AdminWebApi.Controllers
             {
                 await _userBL.resetPassword(email.Email);
                 return Ok(new { message = "Khôi phục mật khẩu thành công" });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+        }
+
+        [HttpGet("transaction")]
+        public async Task<IActionResult> getFoodTransaction()
+        {
+            try
+            {
+                return Ok(new { data = _mapper.Map<IList<Models.TransactionLog>>( await _foodDetailBL.GetFoodDetail() )});
             }
             catch (Exception e)
             {

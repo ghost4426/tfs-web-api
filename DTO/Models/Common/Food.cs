@@ -32,6 +32,7 @@ namespace DTO.Models
         public DateTime CreateDate { get; set; }
         public bool IsSoldOut { get; set; }
         public bool IsReadyForSale { get; set; }
+        public string CreateBy { get; set; }
     }
 
     public class FoodProvider

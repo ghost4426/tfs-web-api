@@ -138,8 +138,9 @@ var farmFoodTable = $('#farm-food-mng').DataTable({
     ordering: false,
     columns: [
         { data: 'FoodId', width: '10%' },
-        { data: 'CategoryName', width: '20%' },
-        { data: 'Breed', width: '25%' },
+        { data: 'CategoryName', width: '10%' },
+        { data: 'Breed', width: '15%' },
+        { data: 'CreateBy', width: '10%' },
         {
             data: 'CreateDate', width: '15%',
             render: function (data, type, row) {
@@ -147,15 +148,25 @@ var farmFoodTable = $('#farm-food-mng').DataTable({
             }
         },
         {
+            data: function (data, type, dataToSet) {
+                if (data.IsSoldOut) {
+                    return "<span class='badge badge-glow badge-pill badge-warning'>Đã bán</span>";
+                } else if (data.IsReadyForSale) {
+                    return "<span class='badge badge-glow badge-pill badge-success'>Đang bán</span>";
+                } else {
+                    return "<span class='badge badge-glow badge-pill badge-info'>Đang nuôi</span>";
+                }
+            }, width: '10%'},
+        {
             width: '20%',
             data: function (data, type, dataToSet) {
-                var btnDetail = '<button class="btn btn-grey btn-sm btn-view-detail" title="Chi tiết"><i class="icon-eye"></i ></button >\n';
+                var btnDetail = '<button class="btn btn-primary btn-sm btn-view-detail" title="Chi tiết"><i class="icon-eye"></i ></button >\n';
                 var btnUpdate = '<button class="btn btn-info btn-sm btn-add-detail" title="Thêm thông tin"><i class="icon-pencil"></i></button>\n'
                 var btnSale = '<button class="btn btn-success btn-sm btn-add-provider" title="Bán sản phẩm"><i class="icon-basket"></i></button>\n'
                 var btnSoldOut = '<button class="btn btn-danger btn-sm btn-sold-out" title="Hết sản phẩm"><i class="ft-x"></i></button>\n'
-                var btnUpdateDis = '<button class="btn btn-info btn-sm btn-add-detail" title="Thêm thông tin" disabled><i class="icon-pencil"></i></button>\n'
-                var btnSaleDis = '<button class="btn btn-success btn-sm btn-add-provider" title="Bán sản phẩm" disabled><i class="icon-basket"></i></button>\n'
-                var btnSoldOutDis = '<button class="btn btn-danger btn-sm btn-sold-out" title="Hết sản phẩm" disabled><i class="ft-x"></i></button>\n'
+                var btnUpdateDis = '<button class="btn btn-grey btn-sm btn-add-detail" title="Thêm thông tin" disabled><i class="icon-pencil"></i></button>\n'
+                var btnSaleDis = '<button class="btn btn-grey btn-sm btn-add-provider" title="Bán sản phẩm" disabled><i class="icon-basket"></i></button>\n'
+                var btnSoldOutDis = '<button class="btn btn-grey btn-sm btn-sold-out" title="Hết sản phẩm" disabled><i class="ft-x"></i></button>\n'
                 if (data.IsSoldOut) {
                     return '<div class="col-12">' + btnDetail + btnUpdateDis + btnSaleDis + btnSoldOutDis + '</div>';
                 } else if (data.IsReadyForSale) {
@@ -847,8 +858,8 @@ $('#farm-food-mng').on('click', 'button.btn-sold-out', function () {
     var row = farmFoodTable.row(tr);
     var id = row.data().FoodId;
     swal({
-        title: "Hết hàng?",
-        text: "Sản phẩm này đã hết hàng!",
+        title: "Hết hàng",
+        text: "Xác nhận Sản phẩm này đã hết hàng!",
         icon: "warning",
         showCancelButton: true,
         buttons: {
@@ -856,7 +867,7 @@ $('#farm-food-mng').on('click', 'button.btn-sold-out', function () {
                 text: "Không",
                 visible: true,
                 className: "btn-warning",
-                closeModal: false,
+                closeModal: true,
             },
             confirm: {
                 text: "Xác nhận!",
@@ -881,8 +892,6 @@ $('#farm-food-mng').on('click', 'button.btn-sold-out', function () {
                     toastr.error(result.responseJSON.message);
                 }
             );
-        } else {
-            swal("", "Bạn đã hủy hành động này", "error");
-        }
+        } 
     });
 });

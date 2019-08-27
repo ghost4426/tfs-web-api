@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace BusinessLogic.BusinessLogicImpl
 {
@@ -86,13 +87,9 @@ namespace BusinessLogic.BusinessLogicImpl
 
         public async Task<IList<Food>> FindAllProductByFarmerAsync(int farmerID)
         {
-            var products = await this._productRepos.FindAllProductByFarmerAsync(farmerID);
-            foreach (var product in products)
-            {
-                var cat = _categoryRepos.GetById(product.CategoryId);
-                product.Category = cat;
-            }
-            return products;
+            //var products = await this._productRepos.FindAllProductByFarmerAsync(farmerID);
+          return await _productRepos.GetAllIncluding(f => f.CreateBy, f => f.Category).Where(f => f.FarmId == farmerID).OrderByDescending(f => f.CreateDate).ToListAsync();
+            //return products;
         }
 
         public async Task AddDetail(int foodId, EFoodDetailType type, string transactionHash, int userID)

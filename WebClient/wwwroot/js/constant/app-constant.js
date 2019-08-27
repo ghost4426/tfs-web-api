@@ -21,6 +21,7 @@ const GET_FOODDATA_BY_ID_URI = BASE_GUEST_URI + "foodData";
 const ACTIVATE_URI = BASE_GUEST_URI + "account/activate/";
 const REGISTER_URI = BASE_GUEST_URI + "register";
 const FORGET_PASSWORD_URI = BASE_GUEST_URI + "forgetPassword";
+const GET_TRANSACTION_URI = BASE_GUEST_URI + "transaction";
 
 //Farm
 const GET_FOOD_DETAIL_TYPE_URI = BASE_FAMR_URI + "productdetailtype";

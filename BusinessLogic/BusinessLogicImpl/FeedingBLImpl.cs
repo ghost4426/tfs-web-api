@@ -26,6 +26,7 @@ namespace BusinessLogic.BusinessLogicImpl
 
         public async Task<IList<Feeding>> GetFeedingListByPremisesId(int premisesId)
         {
+            //return await _feedingRepository.GetAllIncluding(f => f.Premises).Where(t => t.PremisesId == premisesId && t.IsDelete == false).ToListAsync();
             return await _feedingRepository.FindAllAsync(t => t.PremisesId == premisesId && t.IsDelete == false);
         }
 

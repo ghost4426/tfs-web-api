@@ -9,5 +9,7 @@ namespace BusinessLogic.IBusinessLogic
    public interface IFoodDetailBL
     {
         Task<IList<FoodDetailType>> GetFoodDetailTypeByPremises(string premisesType);
+
+        Task<IList<FoodDetail>> GetFoodDetail();
     }
 }

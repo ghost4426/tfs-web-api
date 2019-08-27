@@ -2,8 +2,10 @@
 using Common.Constant;
 using DataAccess.IRepositories;
 using DTO.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,10 +14,14 @@ namespace BusinessLogic.BusinessLogicImpl
     public class FoodDetailImpl : IFoodDetailBL
     {
         private IFoodDetailTypeRepository _foodDetailTypeRepos;
+        private IFoodDetailRepository _foodDetailRepository;
 
-        public FoodDetailImpl(IFoodDetailTypeRepository foodDetailTypeRepos)
+        public FoodDetailImpl(
+            IFoodDetailTypeRepository foodDetailTypeRepos
+            ,IFoodDetailRepository foodDetailRepository)
         {
             _foodDetailTypeRepos = foodDetailTypeRepos;
+            _foodDetailRepository = foodDetailRepository;
         }
 
         public async Task<IList<FoodDetailType>> GetFoodDetailTypeByPremises(string premisesType)
@@ -40,6 +46,11 @@ namespace BusinessLogic.BusinessLogicImpl
                     break;
             }
             return foodDetails;
+        }
+
+        public async Task<IList<FoodDetail>> GetFoodDetail()
+        {
+            return await _foodDetailRepository.GetAllIncluding(f => f.CreateBy, f => f.Type).OrderByDescending(f => f.CreateDate).ToListAsync();
         }
     }
 }

@@ -1,8 +1,10 @@
 ﻿using BusinessLogic.IBusinessLogic;
 using DataAccess.IRepositories;
 using DTO.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -48,7 +50,7 @@ namespace BusinessLogic.BusinessLogicImpl
 
         public async  Task<IList<Vaccine>> GetVaccineList()
         {
-            return await _vaccineRepository.FindAllAsync(t => t.IsDelete == false);
+            return await _vaccineRepository.GetAllIncluding(v => v.Premises).Where(v => v.Premises.IsActive && !v.IsDelete).ToListAsync();
         }
     }
 }

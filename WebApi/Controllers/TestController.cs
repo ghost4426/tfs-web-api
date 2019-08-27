@@ -70,18 +70,18 @@ namespace AdminWebApi.Controllers
             }
         }
 
-        //[HttpPost("Decode")]
-        //public async Task<IActionResult> DeGetTransaction(string hash)
-        //{
-        //    try
-        //    {
-        //        return Ok(new { result = await _contracctServices.GetTransactionByHashAsync(hash) });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(new { message = MessageConstant.UNHANDLE_ERROR, error = ex.StackTrace });
-        //    }
-        //}
+        [HttpPost("contractTransactions")]
+        public async Task<IActionResult> DeGetTransaction(string hash)
+        {
+            try
+            {
+                return Ok(new { data = await _contractServices.GetContractTransaction() });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = MessageConstant.UNHANDLE_ERROR, error = ex.StackTrace });
+            }
+        }
 
 
     }

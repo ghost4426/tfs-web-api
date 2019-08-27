@@ -26,6 +26,31 @@ var table_vi_lang = {
     }
 };
 
+var table_vi_lang_transaction = {
+    "decimal": "",
+    "emptyTable": "Không có transaction",
+    "info": "Hiển thị _START_ - _END_ trong tổng số _TOTAL_ transaction",
+    "infoEmpty": "Hiển thị 0 đến 0 trong tổng số 0 transaction",
+    "infoFiltered": "(Lọc từ _MAX_ tổng transaction)",
+    "infoPostFix": "",
+    "thousands": ",",
+    "loadingRecords": "Đang tải...",
+    "processing": "Đang tiến hành...",
+    "sLengthMenu": "Hiển thị _MENU_ transaction",
+    "search": "Tìm kiếm:",
+    "zeroRecords": "Không tìm thấy transaction phù hợp",
+    "paginate": {
+        "first": "Đầu",
+        "last": "Cuối",
+        "next": "Sau",
+        "previous": "Trước"
+    },
+    "aria": {
+        "sortAscending": ": Lọc từ thấp đến cao",
+        "sortDescending": ": Lọc từ cao đến thấp"
+    }
+};
+
 var userTable_vi_lang = {
     "decimal": "",
     "emptyTable": "Không có người dùng",

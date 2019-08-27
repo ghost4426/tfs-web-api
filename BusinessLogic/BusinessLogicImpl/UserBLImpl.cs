@@ -46,15 +46,15 @@ namespace BusinessLogic.BusinessLogicImpl
         {
             var hashedPassword = PasswordHasher.GetHashPassword(newUser.Password);
             var user = await _userRepos.FindByUsername(newUser.Username);
-            var mail = await _userRepos.FindAllAsync(x => x.Email == newUser.Email);
+            //var mail = await _userRepos.FindAllAsync(x => x.Email == newUser.Email);
             if (user != null)
             {
                 throw new DuplicatedUsernameException(msg: MessageConstant.DUPLICATED_USERNAME);
             }
-            if (mail.Count > 0)
-            {
-                throw new DuplicateEmailException(msg: MessageConstant.DUPLICATED_EMAIL);
-            }
+            //if (mail.Count > 0)
+            //{
+            //    throw new DuplicateEmailException(msg: MessageConstant.DUPLICATED_EMAIL);
+            //}
             newUser.UserId = 0;
             newUser.Password = hashedPassword.HashedPassword;
             newUser.Salt = hashedPassword.Salt;
@@ -86,14 +86,14 @@ namespace BusinessLogic.BusinessLogicImpl
                 veterinary.Password = hashedPassword.HashedPassword;
                 veterinary.Salt = hashedPassword.Salt;
                 veterinary.RoleId = 4;
-                _userRepos.Insert(veterinary, true);               
+                _userRepos.Insert(veterinary, true);
             }
         }
         public async Task ActivateAccount(string activateCode)
         {
             User user;
             user = await _userRepos.FindAsync(u => u.ActivationCode == activateCode);
-            if(user == null)
+            if (user == null)
             {
                 throw new NotFoundException(msg: "Mã kích hoạt không chính xác");
             }
@@ -178,14 +178,19 @@ namespace BusinessLogic.BusinessLogicImpl
                 });
                 if (isCorrectPassword)
                 {
-                    if(!user.IsActive)
+                    if (!user.IsActive)
                         throw new DeActivedUsernameException(msg: MessageConstant.DEACTIVED_USER);
+                    if (user.RoleId != RoleDataConstant.ADMIN_ID && user.RoleId != RoleDataConstant.VETERINARY_ID)
+                    {
+                        if (!user.Premises.IsActive)
+                            throw new DeActivedPremisesException(msg: MessageConstant.DEACTIVED_PREMISES);
+                    }
                     var roles = new List<string>
                     {
                     user.Role.Name
                     };
                     string premesisId = null;
-                   
+
 
                     ClaimsIdentity subject = new ClaimsIdentity();
                     subject.AddClaim(new Claim("userID", user.UserId.ToString()));
@@ -280,17 +285,17 @@ namespace BusinessLogic.BusinessLogicImpl
             {
                 throw new DuplicatedUsernameException(msg: MessageConstant.DUPLICATED_USERNAME);
             }
-            if (mail.Count > 0)
-            {
-                throw new DuplicateEmailException(msg: MessageConstant.DUPLICATED_EMAIL);
-            }
+            //if (mail.Count > 0)
+            //{
+            //    throw new DuplicateEmailException(msg: MessageConstant.DUPLICATED_EMAIL);
+            //}
             await _premesisRepos.InsertAsync(newPremises);
             newPremises.IsActive = false;
             await _premesisRepos.UpdateAsync(newPremises);
             newUser.Password = hashedPassword.HashedPassword;
             newUser.Salt = hashedPassword.Salt;
             newUser.ActivationCode = activeCode;
-            newUser.RoleId = 2;            
+            newUser.RoleId = 2;
             newUser.PremisesId = newPremises.PremisesId;
             newUser.IsConfirmEmail = false;
             await _userRepos.InsertAsync(newUser);
@@ -342,7 +347,7 @@ namespace BusinessLogic.BusinessLogicImpl
         public async Task resetPassword(string email)
         {
             var user = await _userRepos.FindAsync(x => x.Email.Equals(email));
-            if(user == null)
+            if (user == null)
             {
                 throw new NotFoundException(msg: "Email không tồn tại trong hệ thống");
             }

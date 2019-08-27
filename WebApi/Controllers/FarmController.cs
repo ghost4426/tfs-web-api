@@ -268,7 +268,7 @@ namespace CommonWebApi.Controllers
             }
         }
 
-        [AllowAnonymous]
+        //[AllowAnonymous]
         [HttpGet("feedings/{foodId}")]
         public async Task<IActionResult> GetFeedingList(int foodId)
         {

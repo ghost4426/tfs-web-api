@@ -112,5 +112,13 @@ namespace WebClient.Controllers
             return RedirectToAction("Login");
         }
 
+
+        [Route("transaction")]
+        public  IActionResult TransactionLog()
+        {
+            return View();
+        }
+
+
     }
 }

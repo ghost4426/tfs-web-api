@@ -18,7 +18,7 @@ namespace DataAccess.RepositoriesImpl
 
         public async Task<IList<Premises>> getAllDistributorAsync(string keyword)
         {
-            IList<Premises> distribur = await FindAllAsync(x => x.TypeId == 3);
+            IList<Premises> distribur = await FindAllAsync(x => x.TypeId == 3 && x.IsActive == true);
             IEnumerable<Premises> result = distribur.Where(x => x.Name.ToLower().Contains(keyword));
             return result.ToList();
         }
@@ -30,7 +30,7 @@ namespace DataAccess.RepositoriesImpl
 
         public async Task<IList<Premises>> getAllProviderAsync(string keyword)
         {
-            IList<Premises> provider = await FindAllAsync(x => x.TypeId == 2);
+            IList<Premises> provider = await FindAllAsync(x => x.TypeId == 2 && x.IsActive == true);
             IEnumerable<Premises> result = provider.Where(x => x.Name.ToLower().Contains(keyword));
             return result.ToList();
         }
