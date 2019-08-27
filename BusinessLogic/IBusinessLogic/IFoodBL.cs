@@ -45,5 +45,6 @@ namespace BusinessLogic.IBusinessLogic
         Task UpdateFoodSoldOut(int foodId);
         Task UpdatePackagingFood(int foodId, int premisesId);
         Task InsertVaccineFood(int foodId, List<Models.AddVaccineInfoToFoodDataRequest> vaccines);
+        Task<IList<Transaction>> GetAllDistributorFood(int distributorId);
     }
 }

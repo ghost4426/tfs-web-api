@@ -124,5 +124,20 @@ namespace CommonWebApi.Controllers
             }
 
         }
+
+        [Authorize(Roles = "Distributor")]
+        [HttpGet("getFoodByDistributor")]
+        public async Task<IActionResult> FindAllDistributorFoodAsync()
+        {
+            try
+            {
+                int premisesId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
+                return Ok(new { data = _mapper.Map<IList<Models.FoodDistributor>>(await _foodBL.GetAllDistributorFood(premisesId)) });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = MessageConstant.UNHANDLE_ERROR, error = ex.StackTrace });
+            }
+        }
     }
 }

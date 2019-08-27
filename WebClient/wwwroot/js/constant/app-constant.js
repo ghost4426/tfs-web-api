@@ -15,6 +15,7 @@ const BASE_GUEST_URI = BASE_COMMON_API_URI + "api/guest/";
 const BASE_REGISTER_URI = BASE_COMMON_API_URI+ "api/register/";
 const BASE_MANAGER_URI = "api/manager/";
 const BASE_USER_URI = BASE_COMMON_API_URI + "api/user/"
+const BASE_DISTRIBUTOR_URI = BASE_COMMON_API_URI + "api/distributor/";
 
 //Guest
 const GET_FOODDATA_BY_ID_URI = BASE_GUEST_URI + "foodData";
@@ -89,3 +90,6 @@ const GET_PROFILE_URI = BASE_USER_URI + "profile";
 const USER_PASS_CHANGE_URI = BASE_USER_URI + "password";
 const CHANGE_AVA_URI = BASE_USER_URI + "user/avatar";
 const USER_UPDATE_URI = BASE_USER_URI + "users/update";
+
+//Distributor
+const DISTRIBUTOR_GET_FOOD = BASE_DISTRIBUTOR_URI + "getFoodByDistributor";

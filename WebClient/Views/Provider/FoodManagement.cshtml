@@ -222,8 +222,11 @@
                                     <input class="col-md-12 form-control" type="text" id="cerNum" name="CerNum" />
                                 </div>
                             </div>
-                            <canvas id="barcode"></canvas>
-                            <div class="row justify-content-md-center">
+                            <div id="check-trans"></div>
+                            <input type="hidden" id="check-treatment" readonly />
+                            <input type="hidden" id="check-packaging" readonly />
+                            <canvas id="barcode" hidden></canvas>
+                            <div class="row justify-content-md-center" hidden>
                                 <button type="button" class="btn btn-secondary col-4" onclick="printJS('barcode', 'html')">In mã barcode</button>
                                 <div class="col-2"></div>
                                 <a id="btnPrintBarcode" href="" onclick="download_img(this)" class="btn btn-info col-4">Tải mã barcode</a>

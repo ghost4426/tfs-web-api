@@ -24,7 +24,7 @@
         {
             data: 'CreateDate',
             render: function (data, type, row) {
-                return $.format.date(data, "dd-MM-yyyy HH:mm")
+                return jQuery.format.prettyDate(data)
             }
         },
         { data: 'StatusId', visible: false },

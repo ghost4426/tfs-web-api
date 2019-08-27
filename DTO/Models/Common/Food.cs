@@ -43,4 +43,14 @@ namespace DTO.Models
         public Food Food { get; set; }
         public int? TreatmentId {get;set;}
     }
+
+    public class FoodDistributor
+    {
+        public int FoodId { get; set; }
+        public int ProviderId { get; set; }
+        public int DistributorId { get; set; }
+        public string FarmName { get; set; }
+        public string ProviderName { get; set; }
+        public Food Food { get; set; }
+    }
 }

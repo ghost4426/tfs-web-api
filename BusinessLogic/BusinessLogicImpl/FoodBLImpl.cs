@@ -268,5 +268,12 @@ namespace BusinessLogic.BusinessLogicImpl
             result.IsPacked = true;
             await _providerFoodRepository.UpdateAsync(result);
         }
+
+        public async Task<IList<Transaction>> GetAllDistributorFood(int distributorId)
+        {
+           return await _transactionRepos.GetAllIncluding(t => t.Food, t => t.Food.Category, t => t.Sender, t => t.Food.Farm)
+                .Where(x => x.ReceiverId == distributorId & x.StatusId == 3).OrderByDescending(x => x.FoodId).ToListAsync();
+            
+        }
     }
 }
