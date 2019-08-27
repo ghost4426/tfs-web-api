@@ -174,6 +174,15 @@
                     }
                     else if (role.Value == "Distributor")
                     {
+                        if (manager == "Manager")
+                        {
+                            <li class="dropdown nav-item">
+                                <a class="nav-link" asp-controller="Distributor" asp-action="AccountManagement">
+                                    <i class="icon-user"></i>
+                                    <span data-i18n="nav.category.general">Quản lý tài khoản</span>
+                                </a>
+                            </li>
+                        }
                         <li class="dropdown nav-item">
                             <a class="nav-link" asp-controller="Distributor" asp-action="Index">
                                 <i class="icon-grid"></i>
