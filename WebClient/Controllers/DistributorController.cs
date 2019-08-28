@@ -19,5 +19,11 @@ namespace WebClient.Controllers
         {
             return View();
         }
+
+        [Route("quan-li-tai-khoan")]
+        public IActionResult AccountManagement()
+        {
+            return View();
+        }
     }
 }
