@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Authorization;
 using Common.Constant;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
+using DTO.Models.Exception;
 
 namespace CommonWebApi.Controllers
 {
@@ -73,11 +74,16 @@ namespace CommonWebApi.Controllers
             {
                 Entities.Food food = _mapper.Map<Entities.Food>(foodRequest);
                 food.FarmId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
-                food.CreateById = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
+                var createById = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
+                food.CreateById = createById;
                 await _foodBL.CreateProductAsync(food);
-                var transactionHash = await _foodDataBL.CreateFood(food, food.FarmId);
+                var transactionHash = await _foodDataBL.CreateFood(food, food.FarmId, createById);
                 await _foodBL.AddDetail(food.FoodId, EFoodDetailType.CREATE, transactionHash, food.CreateById);
                 return Ok(new { message = MessageConstant.INSERT_SUCCESS });
+            }
+            catch (InvalidDataException ex)
+            {
+                return BadRequest(new { message = ex.Message, error = ex.StackTrace });
             }
             catch (Exception ex)
             {
@@ -94,6 +100,10 @@ namespace CommonWebApi.Controllers
                 return Ok(new { data = await _foodDataBL.GetFeedingsById(foodId) });
 
             }
+            catch (InvalidDataException ex)
+            {
+                return BadRequest(new { message = ex.Message, error = ex.StackTrace });
+            }
             catch (Exception ex)
             {
                 return BadRequest(new { message = MessageConstant.UNHANDLE_ERROR, error = ex.StackTrace });
@@ -106,10 +116,14 @@ namespace CommonWebApi.Controllers
             try
             {
                 var userId = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
-                var transactionHash = await _foodDataBL.AddFeedings(foodId, feedingModelRequest);
+                var transactionHash = await _foodDataBL.AddFeedings(foodId, feedingModelRequest, userId);
                 await _foodBL.InsertFeedingFood(foodId, feedingModelRequest);
                 await _foodBL.AddDetail(foodId, EFoodDetailType.FEEDING, transactionHash, userId);
                 return Ok(new { message = MessageConstant.INSERT_SUCCESS });
+            }
+            catch (InvalidDataException ex)
+            {
+                return BadRequest(new { message = ex.Message, error = ex.StackTrace });
             }
             catch (Exception ex)
             {
@@ -125,6 +139,10 @@ namespace CommonWebApi.Controllers
             {
                 return Ok(new { data = await _foodDataBL.GetVaccinsById(foodId) });
             }
+            catch (InvalidDataException ex)
+            {
+                return BadRequest(new { message = ex.Message, error = ex.StackTrace });
+            }
             catch (Exception ex)
             {
                 return BadRequest(new { message = MessageConstant.UNHANDLE_ERROR, error = ex.StackTrace });
@@ -137,7 +155,7 @@ namespace CommonWebApi.Controllers
             try
             {
                 var userId = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
-                var transactionHash = await _foodDataBL.AddVaccination(foodId, vaccineModelRequest);
+                var transactionHash = await _foodDataBL.AddVaccination(foodId, vaccineModelRequest, userId);
                 await _foodBL.InsertVaccineFood(foodId, vaccineModelRequest);
                 await _foodBL.AddDetail(foodId, EFoodDetailType.VACCINATION, transactionHash, userId);
                 return Ok(new { message = MessageConstant.INSERT_SUCCESS });
@@ -149,7 +167,7 @@ namespace CommonWebApi.Controllers
             }
 
         }
-      
+
         [HttpGet("category")]
         public async Task<IList<Entities.Category>> GetAllCategory()
         {
@@ -177,21 +195,26 @@ namespace CommonWebApi.Controllers
             {
                 Entities.Transaction transaction = _mapper.Map<Entities.Transaction>(transactionRequest);
                 transaction.SenderId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
-                transaction.CreateById = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
+                var createByID = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
+                transaction.CreateById = createByID;
                 await _transactionBL.CreateSellFoodTransactionAsync(transaction);
-                var transactionHash = await _foodDataBL.AddCertification(transactionRequest.FoodId, transactionRequest.CertificationNumber);
+                var transactionHash = await _foodDataBL.AddCertification(transactionRequest.FoodId, transactionRequest.CertificationNumber, createByID);
                 await _foodBL.AddDetail(transactionRequest.FoodId, EFoodDetailType.VERIFY, transactionHash, transaction.CreateById);
                 var reponseModel = new Models.TransactionReponse.CreateTransactionReponse()
                 {
                     TransactionId = transaction.TransactionId
                 };
-                return Ok(new { message = MessageConstant.INSERT_SUCCESS});
+                return Ok(new { message = MessageConstant.INSERT_SUCCESS });
             }
-            catch(Exception ex)
+            catch (InvalidDataException ex)
+            {
+                return BadRequest(new { message = ex.Message, error = ex.StackTrace });
+            }
+            catch (Exception ex)
             {
                 return BadRequest(new { message = MessageConstant.UNHANDLE_ERROR, error = ex.StackTrace });
             }
-            
+
         }
 
         [HttpGet("getAllProvider")]
@@ -268,7 +291,6 @@ namespace CommonWebApi.Controllers
             }
         }
 
-        //[AllowAnonymous]
         [HttpGet("feedings/{foodId}")]
         public async Task<IActionResult> GetFeedingList(int foodId)
         {
@@ -507,7 +529,8 @@ namespace CommonWebApi.Controllers
             {
                 await _foodBL.UpdateFoodSoldOut(foodId);
                 return Ok(new { data = MessageConstant.UPDATE_SUCCESS });
-            }catch(Exception e)
+            }
+            catch (Exception e)
             {
                 return BadRequest(new { message = e.Message });
             }

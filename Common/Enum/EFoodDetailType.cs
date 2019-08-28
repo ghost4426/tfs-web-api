@@ -12,7 +12,8 @@ namespace Common.Enum
         VERIFY,
         PROVIDER,
         TREATMENT,
-        PACKAGING
+        PACKAGING,
+        DISTRIBUTOR
 
     }
 }

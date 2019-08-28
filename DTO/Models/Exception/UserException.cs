@@ -46,6 +46,13 @@ namespace DTO.Models.Exception
         }
     }
 
+    public class InvalidDataException : ApplicationException
+    {
+        public InvalidDataException(string msg) : base(msg)
+        {
+        }
+    }
+
     public class NotFoundException : ApplicationException
     {
         public NotFoundException(string msg) : base(msg)

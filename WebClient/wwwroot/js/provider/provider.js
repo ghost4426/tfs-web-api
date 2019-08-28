@@ -256,6 +256,17 @@ var providerFoodTable = $('#provider-food-mng').DataTable({
                 return jQuery.format.prettyDate(data)
             }
         },
+        //{
+        //    data: function (data, type, dataToSet) {
+        //        if (data.IsSoldOut) {
+        //            return "<span class='badge badge-glow badge-pill badge-warning'>Đã bán</span>";
+        //        } else if (data.IsReadyForSale) {
+        //            return "<span class='badge badge-glow badge-pill badge-success'>Đang bán</span>";
+        //        } else {
+        //            return "<span class='badge badge-glow badge-pill badge-info'>Đang nuôi</span>";
+        //        }
+        //    }, width: '10%'
+        //},
         {
             width: '15%',
             data: null,

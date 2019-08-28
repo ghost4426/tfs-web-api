@@ -17,17 +17,16 @@ using Common.Constant;
 namespace CommonWebApi.Controllers
 {
     [Route("api/[controller]")]
-    //[Authorize] 
     [ApiController]
     public class DistributorController : ControllerBase
     {
         private readonly IFoodBL _foodBL;
-        private readonly IMapper     _mapper;
+        private readonly IMapper _mapper;
         private readonly IUserBL _userBL;
         private IFoodDataBL _foodDataBL;
         private readonly ITransactionBL _transactionBL;
 
-        public DistributorController (IFoodBL productBL, IMapper mapper, IUserBL userBL, IFoodDataBL foodDataBL, ITransactionBL transactionBL)
+        public DistributorController(IFoodBL productBL, IMapper mapper, IUserBL userBL, IFoodDataBL foodDataBL, ITransactionBL transactionBL)
         {
             _mapper = mapper;
             _foodBL = productBL;
@@ -39,7 +38,7 @@ namespace CommonWebApi.Controllers
         public async Task<IActionResult> getMatchedWithNumber()
         {
             int disID = int.Parse(User.Claims.First(c => c.Type == "PremisesId").Value);
-            return Ok(new { data = _mapper.Map<IList<Models.Food>>(await _foodBL.getMatchedWithNumber(disID))});
+            return Ok(new { data = _mapper.Map<IList<Models.Food>>(await _foodBL.getMatchedWithNumber(disID)) });
         }
 
 
@@ -113,8 +112,9 @@ namespace CommonWebApi.Controllers
                 Entities.DistributorFood distributorFood = new Entities.DistributorFood();
                 distributorFood.FoodId = foodRequest.FoodId;
                 distributorFood.PremisesId = id;
-
-                await _foodDataBL.AddDistributor(distributorFood.FoodId, id);
+                var createById = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
+                var transactionHash = await _foodDataBL.AddDistributor(distributorFood.FoodId, id, createById);
+                await _foodBL.AddDetail(foodRequest.FoodId, EFoodDetailType.DISTRIBUTOR, transactionHash, createById);
                 await _foodBL.createDistributorFood(distributorFood);
                 return Ok(new { message = MessageConstant.INSERT_SUCCESS });
             }

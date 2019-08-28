@@ -18,6 +18,7 @@ using DTO.Models.Exception;
 using Common.Constant;
 using Newtonsoft.Json;
 using DTO.Models.FoodData;
+using ContractInteraction.ContractServices;
 
 namespace AdminWebApi.Controllers
 {
@@ -29,6 +30,7 @@ namespace AdminWebApi.Controllers
         private readonly IUserBL _userBL;
         private readonly IFoodDataBL _foodDataBL;
         private readonly IFoodDetailBL _foodDetailBL;
+        private readonly IContractServices _contractServices;
         private readonly IMapper _mapper;
         private readonly IEmailSender _mailSender;
         private readonly JWTSetttings _appSettings;
@@ -36,9 +38,10 @@ namespace AdminWebApi.Controllers
         public GuestController(
             IUserBL userBL,
             IFoodDataBL foodDataBL,
-             IFoodDetailBL foodBL,
+            IFoodDetailBL foodBL,
             IMapper mapper,
             IEmailSender mailSender,
+            IContractServices contractServices,
             IOptions<JWTSetttings> appSettings)
         {
             _userBL = userBL;
@@ -46,6 +49,7 @@ namespace AdminWebApi.Controllers
             _foodDetailBL = foodBL;
             _mapper = mapper;
             _mailSender = mailSender;
+            _contractServices = contractServices;
             _appSettings = appSettings.Value;
         }
 
@@ -153,12 +157,25 @@ namespace AdminWebApi.Controllers
             }
         }
 
-        [HttpGet("transaction")]
-        public async Task<IActionResult> getFoodTransaction()
+        [HttpGet("transactions")]
+        public async Task<IActionResult> GetFoodTransaction()
         {
             try
             {
                 return Ok(new { data = _mapper.Map<IList<Models.TransactionLog>>( await _foodDetailBL.GetFoodDetail() )});
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+        }
+
+        [HttpGet("transactions/{transactionHash}")]
+        public async Task<IActionResult> GetTransactionInput(string transactionHash)
+        {
+            try
+            {
+                return Ok(new { result = await _contractServices.GetTransactionInputByHashAsync(transactionHash) });
             }
             catch (Exception e)
             {

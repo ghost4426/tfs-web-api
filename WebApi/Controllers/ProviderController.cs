@@ -59,10 +59,11 @@ namespace CommonWebApi.Controllers
                 Treatment.CreateDate = DateTime.Now;
                 await _treatmentBL.CreateTreatment(Treatment, TreatmentProcess);
                 return Ok(new { message = MessageConstant.INSERT_SUCCESS });
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(new { message = MessageConstant.UNHANDLE_ERROR, error = ex.StackTrace });
-            }           
+            }
         }
 
         //More treatmentDetail
@@ -91,12 +92,12 @@ namespace CommonWebApi.Controllers
             {
                 var providerId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
                 var userId = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
-                var transactionHash = await _foodDataBL.AddTreatment(foodId, int.Parse(treatmentId), providerId);
+                var transactionHash = await _foodDataBL.AddTreatment(foodId, int.Parse(treatmentId), providerId, userId);
 
                 await _foodBL.AddDetail(foodId, EFoodDetailType.TREATMENT, transactionHash, userId);
                 Entities.ProviderFood food = await _foodBL.getFoodById(foodId, providerId);
                 await _foodBL.UpdateFoodTreatment(food, foodId, int.Parse(treatmentId), providerId);
-                return Ok(new { message = MessageConstant.INSERT_SUCCESS});
+                return Ok(new { message = MessageConstant.INSERT_SUCCESS });
             }
             catch (Exception ex)
             {
@@ -112,7 +113,7 @@ namespace CommonWebApi.Controllers
                 var providerId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
                 var userId = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
                 var Packaging = _mapper.Map<Models.FoodData.Packaging>(packagingRequest);
-                var transactionHash = await _foodDataBL.Packaging(foodId, Packaging, providerId);
+                var transactionHash = await _foodDataBL.Packaging(foodId, Packaging, providerId, userId);
 
                 await _foodBL.AddDetail(foodId, EFoodDetailType.PACKAGING, transactionHash, userId);
                 await _foodBL.UpdatePackagingFood(foodId, providerId);
@@ -201,7 +202,11 @@ namespace CommonWebApi.Controllers
             {
                 Entities.ProviderFood food = _mapper.Map<Entities.ProviderFood>(foodRequest);
                 food.PremisesId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
-                await _foodDataBL.AddProvider(food.FoodId, int.Parse(User.Claims.First(c => c.Type == "premisesID").Value));
+                var createById = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
+
+                var transactionHash = await _foodDataBL.AddProvider(food.FoodId, int.Parse(User.Claims.First(c => c.Type == "premisesID").Value), createById);
+
+                await _foodBL.AddDetail(food.FoodId, EFoodDetailType.PROVIDER, transactionHash, createById);
                 await _foodBL.createProviderFood(food);
                 return Ok(new { message = MessageConstant.INSERT_SUCCESS });
             }
@@ -259,7 +264,7 @@ namespace CommonWebApi.Controllers
             try
             {
                 int premisesId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
-                return Ok(new { results = _mapper.Map<IList<Models.Option>>(await _premisesBL.getAllDistriburtorAsync(search, foodId,premisesId)) });
+                return Ok(new { results = _mapper.Map<IList<Models.Option>>(await _premisesBL.getAllDistriburtorAsync(search, foodId, premisesId)) });
             }
             catch (Exception ex)
             {
@@ -288,18 +293,21 @@ namespace CommonWebApi.Controllers
             {
                 Entities.Transaction transaction = _mapper.Map<Entities.Transaction>(transactionRequest);
                 transaction.SenderId = int.Parse(User.Claims.First(c => c.Type == "premisesID").Value);
-                transaction.CreateById = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
-                var transactionHash = await _foodDataBL.ProviderAddCertification(transactionRequest.FoodId, transaction.SenderId, transactionRequest.CertificationNumber);
+                var createById = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
+                transaction.CreateById = createById;
+                var transactionHash = await _foodDataBL.ProviderAddCertification(transactionRequest.FoodId, transaction.SenderId, transactionRequest.CertificationNumber, createById);
+                await _foodBL.AddDetail(transaction.FoodId, EFoodDetailType.VERIFY, transactionHash, createById);
                 await _transactionBL.CreateSellFoodTransactionAsync(transaction);
                 var reponseModel = new Models.TransactionReponse.CreateTransactionReponse()
                 {
                     TransactionId = transaction.TransactionId
                 };
-                return Ok(new { message = MessageConstant.INSERT_SUCCESS});
-            }catch(Exception ex)
+                return Ok(new { message = MessageConstant.INSERT_SUCCESS });
+            }
+            catch (Exception ex)
             {
                 return BadRequest(new { message = MessageConstant.UNHANDLE_ERROR, error = ex.StackTrace });
-            }            
+            }
         }
 
         [HttpPost("downloadReport")]
@@ -341,7 +349,7 @@ namespace CommonWebApi.Controllers
                         worksheet.Cells[row + i, 2].Value = foodCreate[i].Breed;
                         worksheet.Cells[row + i, 3].Value = foodCreate[i].SenderName;
                         worksheet.Cells[row + i, 4].Value = foodCreate[i].CreateDate;
-                        worksheet.Cells[row + i, 4].Style.Numberformat.Format = "dd-mm-yyyy";                        
+                        worksheet.Cells[row + i, 4].Style.Numberformat.Format = "dd-mm-yyyy";
                         worksheet.Cells["A" + (row + i) + ":D" + (row + i)].Style.Border.BorderAround(ExcelBorderStyle.Thin);
                         worksheet.Cells["A" + (row + i) + ":D" + (row + i)].AutoFitColumns();
                     }

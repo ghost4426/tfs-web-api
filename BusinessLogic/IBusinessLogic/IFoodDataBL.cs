@@ -9,27 +9,24 @@ namespace BusinessLogic.IBusinessLogic
 {
    public interface IFoodDataBL
     {
-        Task<string> AddFoodData(FoodData food);
 
-        Task<string> SaveFoodData(FoodData food);
+        Task<string> CreateFood(Food newFood, int farmId, int createById);
 
-        Task<string> CreateFood(Food newFood, int farmId);
+        Task<string> AddFeedings(long foodId, List<Models.AddFeedingInfoToFoodDataRequest> addFeedingInfos, int createById);
 
-        Task<string> AddFeedings(long foodId, List<Models.AddFeedingInfoToFoodDataRequest> addFeedingInfos);
+        Task<string> AddVaccination(long foodId, List<Models.AddVaccineInfoToFoodDataRequest> addVaccineInfos, int createById);
 
-        Task<string> AddVaccination(long foodId, List<Models.AddVaccineInfoToFoodDataRequest> addVaccineInfos);
+        Task<string> AddCertification(long foodId, string certificationNumber, int createById);
 
-        Task<string> AddCertification(long foodId, string certificationNumber);
+        Task<string> ProviderAddCertification(long foodId, int providerId, string certificationNumber, int createById);
 
-        Task<string> ProviderAddCertification(long foodId, int providerId, string certificationNumber);
+        Task<string> AddProvider(long foodId, int providerId, int createById);
 
-        Task<string> AddProvider(long foodId, int providerId);
+        Task<string> AddDistributor(long foodId, int distributorId, int createById);
 
-        Task<string> AddDistributor(long foodId, int distributorId);
+        Task<string> AddTreatment(long foodId, int treamentId, int providerId, int createById);
 
-        Task<string> AddTreatment(long foodId, int treamentId, int providerId);
-
-        Task<string> Packaging(long foodId, Packaging packaging, int providerId);
+        Task<string> Packaging(long foodId, Packaging packaging, int providerId, int createById);
 
         Task<FoodData> GetFoodDataByID(long id);
 

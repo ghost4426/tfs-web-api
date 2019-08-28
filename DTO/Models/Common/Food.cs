@@ -42,6 +42,8 @@ namespace DTO.Models
         public DateTime CreateDate { get; set; }
         public Food Food { get; set; }
         public int? TreatmentId {get;set;}
+        public bool IsTreatmented { get; set; }
+        public bool IsPacked { get; set; }
     }
 
     public class FoodDistributor

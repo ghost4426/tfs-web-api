@@ -52,20 +52,22 @@ namespace ContractInteraction.FoodDataStorage
              return ContractHandler.SendRequestAndWaitForReceiptAsync(addNewDataFunction, cancellationToken);
         }
 
-        public Task<string> AddNewDataRequestAsync(BigInteger id, string data)
+        public Task<string> AddNewDataRequestAsync(BigInteger id, string data, string sender)
         {
             var addNewDataFunction = new AddNewDataFunction();
                 addNewDataFunction.Id = id;
                 addNewDataFunction.Data = data;
+                addNewDataFunction.Sender = sender;
             
              return ContractHandler.SendRequestAsync(addNewDataFunction);
         }
 
-        public Task<TransactionReceipt> AddNewDataRequestAndWaitForReceiptAsync(BigInteger id, string data, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> AddNewDataRequestAndWaitForReceiptAsync(BigInteger id, string data, string sender, CancellationTokenSource cancellationToken = null)
         {
             var addNewDataFunction = new AddNewDataFunction();
                 addNewDataFunction.Id = id;
                 addNewDataFunction.Data = data;
+                addNewDataFunction.Sender = sender;
             
              return ContractHandler.SendRequestAndWaitForReceiptAsync(addNewDataFunction, cancellationToken);
         }
@@ -80,20 +82,24 @@ namespace ContractInteraction.FoodDataStorage
              return ContractHandler.SendRequestAndWaitForReceiptAsync(saveDataFunction, cancellationToken);
         }
 
-        public Task<string> SaveDataRequestAsync(BigInteger id, string data)
+        public Task<string> SaveDataRequestAsync(BigInteger id, string data, string sender, string newData)
         {
             var saveDataFunction = new SaveDataFunction();
                 saveDataFunction.Id = id;
                 saveDataFunction.Data = data;
+                saveDataFunction.Sender = sender;
+                saveDataFunction.NewData = newData;
             
              return ContractHandler.SendRequestAsync(saveDataFunction);
         }
 
-        public Task<TransactionReceipt> SaveDataRequestAndWaitForReceiptAsync(BigInteger id, string data, CancellationTokenSource cancellationToken = null)
+        public Task<TransactionReceipt> SaveDataRequestAndWaitForReceiptAsync(BigInteger id, string data, string sender, string newData, CancellationTokenSource cancellationToken = null)
         {
             var saveDataFunction = new SaveDataFunction();
                 saveDataFunction.Id = id;
                 saveDataFunction.Data = data;
+                saveDataFunction.Sender = sender;
+                saveDataFunction.NewData = newData;
             
              return ContractHandler.SendRequestAndWaitForReceiptAsync(saveDataFunction, cancellationToken);
         }

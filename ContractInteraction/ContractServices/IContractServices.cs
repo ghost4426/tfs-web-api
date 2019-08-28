@@ -11,16 +11,18 @@ namespace ContractInteraction.ContractServices
     public interface IContractServices
     {
 
-        Task<string> AddNewFoodData(FoodData Food);
+        Task<string> AddNewFoodData(FoodData Food, string sender);
 
-        Task<string> SaveFoodData(FoodData Food);
+        Task<string> SaveFoodData(FoodData Food, string newData, string sender);
 
         Task<FoodData> GetFoodDataByID(long id);
 
-        Task<string> GetTransactionByHashAsync(string transactionHash);
+        Task<string> GetTransactionInputByHashAsync(string transactionHash);
 
-        string DecodeData(string data);
+        Task SetInvalidData(long id);
 
         Task<List<Transaction>> GetContractTransaction();
+
+        string DecodeData(string data, string function);
     }
 }

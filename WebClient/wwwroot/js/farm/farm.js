@@ -144,7 +144,7 @@ var farmFoodTable = $('#farm-food-mng').DataTable({
         {
             data: 'CreateDate', width: '15%',
             render: function (data, type, row) {
-                return jQuery.format.prettyDate(data)
+                return $.format.date(data, "dd-MM-yyyy HH:mm")
             }
         },
         {
@@ -156,7 +156,8 @@ var farmFoodTable = $('#farm-food-mng').DataTable({
                 } else {
                     return "<span class='badge badge-glow badge-pill badge-info'>Đang nuôi</span>";
                 }
-            }, width: '10%'},
+            }, width: '10%'
+        },
         {
             width: '20%',
             data: function (data, type, dataToSet) {
@@ -602,6 +603,7 @@ function callAjaxAddFeedingsData(foodId, feedingData) {
             toastr.success(result.message);
         },
         function (result) {
+            console.log(result);
             toastr.error(result.responseJSON.message);
         }
     )

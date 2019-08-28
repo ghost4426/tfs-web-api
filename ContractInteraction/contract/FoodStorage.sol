@@ -2,37 +2,47 @@ pragma solidity >=0.4.0;
 
 contract FoodDataStorage {
 
-    address private coinBaseAddress = 0x06012c8cf97BEaD5deAe237070F9587f8E7A266d;
+    address private coinBaseAddress = 0xa474456270AF10d32ca235F351904C8c0ca7d4CA;
 
     struct FarmFoodData{
         string data;
+        string newestData;
+        string lastUpdateBy;
         bool isValid;
         bool isHasData;
     }
 
-     mapping(uint => FarmFoodData) foodDatas;
+    mapping(uint => FarmFoodData) foodDatas;
 
-    function saveData(uint id, string memory data) public {
-        require(
-            msg.sender == coinBaseAddress,
-         "Invalid sender address!");
-
-         require(
-            foodDatas[id].isValid,
-         "Data has isn't valid can't modifile!");
-
+    function addNewData(uint id, string memory data, string memory sender) public {
+        require(msg.sender == coinBaseAddress);
+        require(!foodDatas[id].isHasData);
         foodDatas[id].data = data;
+        foodDatas[id].newestData = data;
+        foodDatas[id].lastUpdateBy = sender;
+        foodDatas[id].isValid = true;
+        foodDatas[id].isHasData = true;
+    }
+    
+    function saveData(uint id, string memory data, string memory sender, string memory newData) public {
+        require(msg.sender == coinBaseAddress);
+        require(foodDatas[id].isValid);
+        require(foodDatas[id].isHasData);
+        foodDatas[id].data = data;
+        foodDatas[id].newestData = newData;
+        foodDatas[id].lastUpdateBy = sender;
     }
 
-    function setValidData(uint id, bool isValid) public{
-        require(
-            msg.sender == coinBaseAddress,
-         "Invalid sender address!");
-
-        foodDatas[id].data = data;
+    function setIsValid(uint id) public{
+        require( msg.sender == coinBaseAddress);
+        foodDatas[id].isValid = false;
     }
 
     function getDataById(uint id) public view returns (string memory) {
-        return foodDatas[id].data;
+        if(foodDatas[id].isValid){
+             return foodDatas[id].data;
+        }else{
+            return "Data Invalid";
+        }
     }
 }
