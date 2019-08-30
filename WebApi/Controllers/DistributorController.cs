@@ -112,7 +112,7 @@ namespace CommonWebApi.Controllers
                 Entities.DistributorFood distributorFood = new Entities.DistributorFood();
                 distributorFood.FoodId = foodRequest.FoodId;
                 distributorFood.PremisesId = id;
-                var createById = int.Parse(User.Claims.First(c => c.Type == "userID").Value);
+                var createById = 139;
                 var transactionHash = await _foodDataBL.AddDistributor(distributorFood.FoodId, id, createById);
                 await _foodBL.AddDetail(foodRequest.FoodId, EFoodDetailType.DISTRIBUTOR, transactionHash, createById);
                 await _foodBL.createDistributorFood(distributorFood);

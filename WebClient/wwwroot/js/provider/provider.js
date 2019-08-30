@@ -253,7 +253,7 @@ var providerFoodTable = $('#provider-food-mng').DataTable({
         {
             data: 'CreateDate', width: '20%',
             render: function (data, type, row) {
-                return jQuery.format.prettyDate(data)
+                return $.format.date(data, "dd-MM-yyyy HH:mm")
             }
         },
         //{

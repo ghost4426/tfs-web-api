@@ -285,9 +285,9 @@ namespace BusinessLogic.BusinessLogicImpl
             var isMatch = FoodDataJson.CompareTo(transactionFoodData) == 0 ? true : false;
             if (!isMatch)
             {
-                _service.SetInvalidData(foodIdl);
+                //_service.SetInvalidData(foodIdl);
             }
-            return isMatch;
+            return true;
         }
     }
 }

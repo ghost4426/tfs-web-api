@@ -150,7 +150,7 @@ var farmFoodTable = $('#farm-food-mng').DataTable({
         {
             data: function (data, type, dataToSet) {
                 if (data.IsSoldOut) {
-                    return "<span class='badge badge-glow badge-pill badge-warning'>Đã bán</span>";
+                    return "<span class='badge badge-glow badge-pill badge-warning'>Đã Hết</span>";
                 } else if (data.IsReadyForSale) {
                     return "<span class='badge badge-glow badge-pill badge-success'>Đang bán</span>";
                 } else {
@@ -455,7 +455,7 @@ function loadRepeatForm(nameInput, foodId) {
         var day = ("0" + todaysDate.getDate()).slice(-2);
         var maxDate = (year + "-" + month + "-" + day);
         $("#add-detail-form").append(
-            '<input type="date" class="form-control" style="height: 40px !important" max="' + maxDate + '" id="vaccineDate"/>'
+            '<input type="date" class="form-control" style="height: 40px !important" max="' + maxDate + '" min="2019-08-28" id="vaccineDate"/>'
             + '<select class="form-control " id="dllAddVaccineData">'
             + '</select>'
             + '<span class="input-group-append" style="width: 10%"><button class="btn btn-primary" onclick="addVaccineToList()" type="button" style="width: 100%"><i class="ft-plus"></i></button> </span>'

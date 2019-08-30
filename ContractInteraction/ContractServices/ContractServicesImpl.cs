@@ -124,12 +124,12 @@ namespace ContractInteraction.ContractServices
 
         public async Task SetInvalidData(long id)
         {
-            var service = GetService();
-            var result = await service.SetIsValidRequestAndWaitForReceiptAsync(new SetIsValidFunction { Id = id, Gas = 1000000 });
-            if (result.HasErrors() ?? false)
-            {
-                throw new Exception("Xử lí thất bại");
-            }
+            //var service = GetService();
+            //var result = await service.SetIsValidRequestAndWaitForReceiptAsync(new SetIsValidFunction { Id = id, Gas = 1000000 });
+            //if (result.HasErrors() ?? false)
+            //{
+            //    throw new Exception("Xử lí thất bại");
+            //}
         }
     }
 }

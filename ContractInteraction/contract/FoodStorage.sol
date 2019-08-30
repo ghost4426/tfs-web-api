@@ -39,10 +39,6 @@ contract FoodDataStorage {
     }
 
     function getDataById(uint id) public view returns (string memory) {
-        if(foodDatas[id].isValid){
              return foodDatas[id].data;
-        }else{
-            return "Data Invalid";
-        }
     }
 }
